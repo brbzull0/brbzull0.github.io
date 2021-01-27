@@ -1,40 +1,211 @@
 
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Cache Architecture &#8212; Apache Traffic Server 10.0.0 documentation</title>
-    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Cache Initialization" href="cache-initialization.en.html" />
-    <link rel="prev" title="Cache Architecture" href="index.en.html" />
+    <link rel="prev" title="Cache Architecture" href="index.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
-
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
           
 
-          <div class="body" role="main">
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cache Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cache-layout">Cache Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-functions.en.html">API functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#volume-tagging">Volume Tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tool.en.html">Cache Tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiered-storage.en.html">Tiered Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>Cache Architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/architecture.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="cache-architecture">
 <span id="developer-cache-architecture"></span><h1>Cache Architecture<a class="headerlink" href="#cache-architecture" title="Permalink to this headline">¶</a></h1>
@@ -105,7 +276,7 @@ stripes that compose them are derived entirely from <a class="reference internal
 </div>
 <div class="section" id="span-structure">
 <h3>Span Structure<a class="headerlink" href="#span-structure" title="Permalink to this headline">¶</a></h3>
-<p>Each cache span is marked at the front with a span header of type <a class="reference internal" href="data-structures.en.html#_CPPv310DiskHeader" title="DiskHeader"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DiskHeader</span></code></a>. Each span is
+<p>Each cache span is marked at the front with a span header of type <a class="reference internal" href="data-structures.en.html#_CPPv410DiskHeader" title="DiskHeader"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DiskHeader</span></code></a>. Each span is
 divided in to <em>span blocks</em>. These can be thought of similarly to normal disk partitions, marking
 out blocks of storage. Span blocks can vary in size, subject only to being a multiple of the
 <em>volume block size</em> which is currently 128MB and, of course, being no larger than the span. The
@@ -121,8 +292,8 @@ entire span block.</p>
 span of bytes. Internally each stripe is treated almost entirely independently.
 The data structures described in this section are duplicated for each stripe.</p>
 <p>Internally the term <em>volume</em> is used for these stripes and implemented primarily
-in <a class="reference internal" href="data-structures.en.html#_CPPv33Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a>. What a user thinks of as a volume (and what this document
-calls a <em>cache volume</em>) is represented by <a class="reference internal" href="data-structures.en.html#_CPPv38CacheVol" title="CacheVol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVol</span></code></a>.</p>
+in <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a>. What a user thinks of as a volume (and what this document
+calls a <em>cache volume</em>) is represented by <a class="reference internal" href="data-structures.en.html#_CPPv48CacheVol" title="CacheVol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVol</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Stripe assignment must be done before working with an object because the
@@ -134,11 +305,11 @@ be found in the new stripe.</p>
 <div class="section" id="cache-directory">
 <span id="index-0"></span><span id="id1"></span><h3>Cache Directory<a class="headerlink" href="#cache-directory" title="Permalink to this headline">¶</a></h3>
 <span class="target" id="index-1"></span><span class="target" id="index-2"></span><p id="fragment"><span id="index-3"></span>Content in a stripe is tracked via a directory. Each element of the directory
-is a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> and is represented by <a class="reference internal" href="#_CPPv33Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>. Each entry
+is a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> and is represented by <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>. Each entry
 refers to a chunk of contiguous storage in the cache. These are referred to
 variously as <em>fragments</em>, <em>segments</em>, <em>docs</em>, <em>documents</em>, and a few other
 things. This document will use the term <em>fragment</em> as that is the most common
-reference in the code. The term <em>Doc</em> (for <a class="reference internal" href="data-structures.en.html#_CPPv33Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>) will be used to
+reference in the code. The term <em>Doc</em> (for <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>) will be used to
 refer to the header data for a fragment. Overall, the directory is treated as a
 hash with the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> as the key. See
 <a class="reference internal" href="#cache-directory-probe"><span class="std std-ref">directory probing</span></a> for how the cache ID is used
@@ -227,7 +398,7 @@ free list so that it can be found when doing a lookup of a cache ID.</p>
 <p>The storage layout is the stripe metadata followed by cached content. The
 metadata consists of three parts: the stripe header, the directory, and the
 stripe footer. The metadata is stored twice. The header and the footer are
-instances of <a class="reference internal" href="data-structures.en.html#_CPPv315VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>. This is a stub structure which can
+instances of <a class="reference internal" href="data-structures.en.html#_CPPv415VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>. This is a stub structure which can
 have a trailing variable sized array. This array is used as the segment free
 list roots in the directory. Each contains the segment index of the first
 element of the free list for the segment. The footer is a copy of the header
@@ -245,10 +416,10 @@ offset representing use of space in the cache span by other stripes.</dd>
 <dt>start</dt>
 <dd>The offset for the start of the content, after the stripe metadata.</dd>
 <dt>length</dt>
-<dd>Total number of bytes in the stripe. <a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol3lenE" title="Vol::len"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::len</span></code></a>.</dd>
+<dd>Total number of bytes in the stripe. <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol3lenE" title="Vol::len"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::len</span></code></a>.</dd>
 <dt>data length</dt>
 <dd>Total number of blocks in the stripe available for content storage.
-<a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol11data_blocksE" title="Vol::data_blocks"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::data_blocks</span></code></a>.</dd>
+<a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol11data_blocksE" title="Vol::data_blocks"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::data_blocks</span></code></a>.</dd>
 </dl>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -256,12 +427,12 @@ offset representing use of space in the cache span by other stripes.</dd>
 there are at least three different metrics (bytes, cache blocks, store
 blocks) used in various places.</p>
 </div>
-<p>The header for a stripe is a variably sized instance of <a class="reference internal" href="data-structures.en.html#_CPPv315VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>.
+<p>The header for a stripe is a variably sized instance of <a class="reference internal" href="data-structures.en.html#_CPPv415VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>.
 The variable trailing section contains the head indices of the directory entry
 free lists for the segments.</p>
 <div class="figure align-center">
 <img alt="../../_images/stripe-header.svg" src="../../_images/stripe-header.svg" /></div>
-<p>The trailing <a class="reference internal" href="data-structures.en.html#_CPPv3N15VolHeaderFooter8freelistE" title="VolHeaderFooter::freelist"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">VolHeaderFooter::freelist</span></code></a> array overlays the disk storage with
+<p>The trailing <a class="reference internal" href="data-structures.en.html#_CPPv4N15VolHeaderFooter8freelistE" title="VolHeaderFooter::freelist"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">VolHeaderFooter::freelist</span></code></a> array overlays the disk storage with
 an entry for every segment, even though the array is declared to have length <cite>1</cite>.
 Each free list entry is a 16 bit value that is the index of the first directory entry
 in the free list for that segment. E.g. <code class="code docutils literal notranslate"><span class="pre">freelist[4]</span></code> is the index of the
@@ -309,8 +480,8 @@ particularly, no disk I/O) needs to be done.</p>
 all the data about the object and the content and includes the HTTP headers.
 The content data is the content of the object, the octet stream delivered to
 the client as the object.</p>
-<p>Objects are rooted in a <a class="reference internal" href="data-structures.en.html#_CPPv33Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> structure stored in the cache.
-<a class="reference internal" href="data-structures.en.html#_CPPv33Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> serves as the header data for a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-fragment"><span class="xref std std-term">cache fragment</span></a> and is
+<p>Objects are rooted in a <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> structure stored in the cache.
+<a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> serves as the header data for a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-fragment"><span class="xref std std-term">cache fragment</span></a> and is
 contained at the start of every fragment. The first fragment for an object is
 termed the <em>First Doc</em> and always contains the object metadata. Any
 operation on the object will read this fragment first. The fragment is located
@@ -330,7 +501,7 @@ the same (first) fragment as the metadata. Each separate alternate content is
 allocated a directory entry and the key for that entry is stored in the first
 fragment metadata.</p>
 <p>Prior to version 4.0.1, the header data was stored in the
-<a class="reference internal" href="data-structures.en.html#_CPPv319CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> class which was marshaled to a variable length
+<a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> class which was marshaled to a variable length
 area of the on disk image, followed by information about additional fragments
 if needed to store the object.</p>
 <div class="figure align-center" id="id9">
@@ -340,7 +511,7 @@ if needed to store the object.</p>
 <p>This had the problem that with only one fragment table it could not be reliable
 for objects with more than one alternate[#multiple-alternates]_. Therefore, the
 fragment data was moved from being a separate variable length section of the
-metadata to being directly incorporated in to the <a class="reference internal" href="data-structures.en.html#_CPPv319CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a>,
+metadata to being directly incorporated in to the <a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a>,
 yielding a layout of the following form.</p>
 <div class="figure align-center" id="id10">
 <img alt="../../_images/cache-doc-layout-4-0-1.png" src="../../_images/cache-doc-layout-4-0-1.png" />
@@ -360,7 +531,7 @@ alternate non-resident. <em>Small</em> is defined as a length smaller than
 <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-alt-rewrite-max-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.alt_rewrite_max_size</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference internal" href="data-structures.en.html#_CPPv319CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> is stored only in the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code>.
+<p class="last">The <a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> is stored only in the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code>.
 Subsequent <code class="docutils literal notranslate"><span class="pre">Doc</span></code> instances for the object, including the earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code>,
 should have an <code class="docutils literal notranslate"><span class="pre">hlen</span></code> of zero and if not, it is ignored.</p>
 </div>
@@ -405,7 +576,7 @@ the write queue and written as its turn comes up.</p>
 <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-permit-pinning" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.permit.pinning</span></code></a> is set to non-zero (it is zero by
 default). Objects which are in use when the write cursor is near use the same
 underlying evacuation mechanism but are handled automatically and not via the
-explicit <code class="docutils literal notranslate"><span class="pre">pinned</span></code> bit in <a class="reference internal" href="#_CPPv33Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>.</p>
+explicit <code class="docutils literal notranslate"><span class="pre">pinned</span></code> bit in <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>.</p>
 </div>
 <div class="section" id="additional-notes">
 <h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
@@ -438,7 +609,7 @@ not deal particularly well with long term storage of large objects. See the
 <h3>Disk Failure<a class="headerlink" href="#disk-failure" title="Permalink to this headline">¶</a></h3>
 <p>The cache is designed to be relatively resistant to disk failures. Because each
 <a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage unit</span></a> in each <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">cache volume</span></a> is mostly independent, the
-loss of a disk simply means that the corresponding <a class="reference internal" href="data-structures.en.html#_CPPv33Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances
+loss of a disk simply means that the corresponding <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances
 (one per cache volume that uses the storage unit) becomes unusable. The primary
 issue is updating the volume assignment table to both preserve assignments for
 objects on still operational volumes while distributing the assignments from the
@@ -460,8 +631,8 @@ still under investigation.</p>
 <h3>Stripe Directory<a class="headerlink" href="#stripe-directory" title="Permalink to this headline">¶</a></h3>
 <p id="directory-entry">The in memory volume directory entries are described below.</p>
 <dl class="class">
-<dt id="_CPPv33Dir">
-<span id="_CPPv23Dir"></span><span id="Dir"></span><em class="property">class </em><code class="descname">Dir</code><a class="headerlink" href="#_CPPv33Dir" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv43Dir">
+<span id="_CPPv33Dir"></span><span id="_CPPv23Dir"></span><span id="Dir"></span><em class="property">class </em><code class="descname">Dir</code><a class="headerlink" href="#_CPPv43Dir" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Defined in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/iocore/cache/P_CacheDir.h">iocore/cache/P_CacheDir.h</a>.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -532,7 +703,7 @@ storage unit attached to that volume.</p>
 <p id="dir-size">The <em>size</em> and <em>big</em> values are used to calculate the approximate size of
 the fragment which contains the object. This value is used as the number of
 bytes to read from storage at the offset value. The exact size is contained
-in the object metadata in <a class="reference internal" href="data-structures.en.html#_CPPv33Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> which is consulted once the read
+in the object metadata in <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> which is consulted once the read
 has completed. For this reason, the approximate size needs to be at least as
 large as the actual size but can be larger, at the cost of reading the
 extraneous bytes.</p>
@@ -590,7 +761,7 @@ power of two <a class="footnote-reference" href="#cache-mult-value" id="id2">[2]
 lead to more wasted space. The default size (1M, 2^20) is a reasonable choice
 in most circumstances, although in very specific cases there can be benefit from
 tuning this parameter. Traffic Server imposes an internal maximum of a 4,194,232 bytes,
-which is 4M (2^22), less the size of a struct <a class="reference internal" href="data-structures.en.html#_CPPv33Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>. In practice,
+which is 4M (2^22), less the size of a struct <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>. In practice,
 the largest reasonable target fragment size is 4M - 262,144 = 3,932,160.</p>
 <p>When a fragment is stored to disk, the size data in the cache index entry is
 set to the finest granularity permitted by the size of the fragment. To
@@ -612,14 +783,14 @@ table manner, giving somewhat less than 2^14 buckets per segment.</p>
 <span id="cache-directory-probe"></span><h3>Directory Probing<a class="headerlink" href="#directory-probing" title="Permalink to this headline">¶</a></h3>
 <p>Directory probing is the locating of a specific <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> in the
 stripe directory based on a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a>. This is handled primarily by the
-function <a class="reference internal" href="core-cache-functions.en.html#_CPPv39dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>. This is passed the cache ID (<em>key</em>), a
+function <a class="reference internal" href="core-cache-functions.en.html#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>. This is passed the cache ID (<em>key</em>), a
 stripe (<em>d</em>), and a last collision (<em>last_collision</em>). The last of
 these is an in and out parameter, updated as useful during the probe.</p>
 <p>Given an ID, the top half (64 bits) is used as a <a class="reference internal" href="#dir-segment"><span class="std std-ref">segment</span></a>
 index, taken modulo the number of segments in the directory. The bottom half is
 used as a <a class="reference internal" href="#dir-bucket"><span class="std std-ref">bucket</span></a> index, taken modulo the number of buckets
 per segment. The <em>last_collision</em> value is used to mark the last matching
-entry returned by <a class="reference internal" href="core-cache-functions.en.html#_CPPv39dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>.</p>
+entry returned by <a class="reference internal" href="core-cache-functions.en.html#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>.</p>
 <p>After computing the appropriate bucket, the entries in that bucket are searched
 to find a match. In this case a match is detected by comparison of the bottom
 12 bits of the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> (the <em>cache tag</em>). The search starts at the base
@@ -735,8 +906,8 @@ disk to verify the object is still present in the cache.</p>
 is presumed computable from the client request headers.</p>
 </li>
 <li><p class="first">The cache stripe is determined (based on the cache key).</p>
-<p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> is used as a hash key in to an array of <a class="reference internal" href="data-structures.en.html#_CPPv33Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances by
-<a class="reference internal" href="data-structures.en.html#_CPPv3N5Cache10key_to_volEPKcPKci" title="Cache::key_to_vol"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Cache::key_to_vol()</span></code></a>. The construction and arrangement of this array is the essence of how
+<p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> is used as a hash key in to an array of <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances by
+<a class="reference internal" href="data-structures.en.html#_CPPv4N5Cache10key_to_volEPKcPKci" title="Cache::key_to_vol"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Cache::key_to_vol()</span></code></a>. The construction and arrangement of this array is the essence of how
 volumes are assigned.</p>
 </li>
 <li><p class="first">The cache stripe directory <a class="reference internal" href="#cache-directory-probe"><span class="std std-ref">is probed</span></a> using the
@@ -746,13 +917,13 @@ index key computed from the cache key.</p>
 </li>
 <li><p class="first">If the directory entry is found the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> is read from disk and
 checked for validity.</p>
-<p>This is done in <a class="reference internal" href="data-structures.en.html#_CPPv3N7CacheVC17openReadStartHeadEiP5Event" title="CacheVC::openReadStartHead"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartHead()</span></code></a> or
-<a class="reference internal" href="data-structures.en.html#_CPPv3N7CacheVC21openReadStartEarliestEiP5Event" title="CacheVC::openReadStartEarliest"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartEarliest()</span></code></a> which are tightly coupled
+<p>This is done in <a class="reference internal" href="data-structures.en.html#_CPPv4N7CacheVC17openReadStartHeadEiP5Event" title="CacheVC::openReadStartHead"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartHead()</span></code></a> or
+<a class="reference internal" href="data-structures.en.html#_CPPv4N7CacheVC21openReadStartEarliestEiP5Event" title="CacheVC::openReadStartEarliest"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartEarliest()</span></code></a> which are tightly coupled
 methods.</p>
 </li>
 </ol>
 <p>If the lookup succeeds, then a more detailed directory entry (struct
-<a class="reference internal" href="data-structures.en.html#_CPPv37OpenDir" title="OpenDir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">OpenDir</span></code></a>) is created. Note that the directory probe includes a check
+<a class="reference internal" href="data-structures.en.html#_CPPv47OpenDir" title="OpenDir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">OpenDir</span></code></a>) is created. Note that the directory probe includes a check
 for an already extant <code class="docutils literal notranslate"><span class="pre">OpenDir</span></code> which, if found, is returned without
 additional work.</p>
 </div>
@@ -799,7 +970,7 @@ age, modified by any of the client supplied cache control values (<code class="d
 client request may be changed to an <code class="docutils literal notranslate"><span class="pre">If</span> <span class="pre">Modified</span> <span class="pre">Since</span></code> request to
 <a class="reference internal" href="../../appendices/glossary.en.html#term-revalidation"><span class="xref std std-term">revalidate</span></a>.</p>
 <p>The request is served using a standard virtual connection tunnel (<code class="docutils literal notranslate"><span class="pre">HttpTunnel</span></code>)
-with the <a class="reference internal" href="data-structures.en.html#_CPPv37CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a> acting as the producer and the client <code class="docutils literal notranslate"><span class="pre">NetVC</span></code>
+with the <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a> acting as the producer and the client <code class="docutils literal notranslate"><span class="pre">NetVC</span></code>
 acting as the sink. If the request is a range request this can be modified with
 a transform to select the appropriate parts of the object or, if the request
 contains a single range, it can use the range acceleration.</p>
@@ -810,10 +981,10 @@ rather than performing reads on the intermediate fragments.</p>
 </div>
 <div class="section" id="cache-write">
 <h3>Cache Write<a class="headerlink" href="#cache-write" title="Permalink to this headline">¶</a></h3>
-<p>Writing to the cache is handled by an instance of the class <a class="reference internal" href="data-structures.en.html#_CPPv37CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a>.
+<p>Writing to the cache is handled by an instance of the class <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a>.
 This is a virtual connection which receives data and writes it to cache, acting
 as a sink. For a standard transaction data transfers between virtual connections
-(<em>VConns</em>) are handled by <a class="reference internal" href="data-structures.en.html#_CPPv310HttpTunnel" title="HttpTunnel"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HttpTunnel</span></code></a>. Writing to the cache is done
+(<em>VConns</em>) are handled by <a class="reference internal" href="data-structures.en.html#_CPPv410HttpTunnel" title="HttpTunnel"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HttpTunnel</span></code></a>. Writing to the cache is done
 by attaching a <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> instance as a tunnel consumer. It therefore operates
 in parallel with the virtual connection that transfers data to the client. The
 data does not flow to the cache and then to the client, it is split and goes
@@ -873,7 +1044,7 @@ to disk. It is possible for multiple alternates to be updated by different
 <div class="section" id="aggregation-buffer">
 <span id="id4"></span><h3>Aggregation Buffer<a class="headerlink" href="#aggregation-buffer" title="Permalink to this headline">¶</a></h3>
 <p>Disk writes to cache are handled through an <em>aggregation buffer</em>. There is one
-for each <a class="reference internal" href="data-structures.en.html#_CPPv33Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance. To minimize the number of system calls data
+for each <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance. To minimize the number of system calls data
 is written to disk in units of roughly <a class="reference internal" href="#target-fragment-size"><span class="std std-ref">target fragment size</span></a>
 bytes. The algorithm used is simple: data is piled up in the aggregation buffer
 until no more will fit without going over the target fragment size, at which
@@ -903,12 +1074,12 @@ In some cases this is not acceptable and the object is <em>evacuated</em> by rea
 it from the cache and then writing it back to cache which moves the physical
 storage of the object from in front of the write cursor to behind the write
 cursor. Objects that are evacuated are handled in this way based on data in
-stripe data structures (attached to the <a class="reference internal" href="data-structures.en.html#_CPPv33Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance).</p>
+stripe data structures (attached to the <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance).</p>
 <p>Evacuation data structures are defined by dividing up the volume content into
 a disjoint and contiguous set of regions of <code class="docutils literal notranslate"><span class="pre">EVACUATION_BUCKET_SIZE</span></code> bytes.
-The <a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol8evacuateE" title="Vol::evacuate"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evacuate</span></code></a> member is an array with an element for each
-evacuation region. Each element is a doubly linked list of <a class="reference internal" href="core-cache-functions.en.html#_CPPv315EvacuationBlock" title="EvacuationBlock"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EvacuationBlock</span></code></a>
-instances. Each instance contains a <a class="reference internal" href="#_CPPv33Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a> that specifies the fragment
+The <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol8evacuateE" title="Vol::evacuate"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evacuate</span></code></a> member is an array with an element for each
+evacuation region. Each element is a doubly linked list of <a class="reference internal" href="core-cache-functions.en.html#_CPPv415EvacuationBlock" title="EvacuationBlock"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EvacuationBlock</span></code></a>
+instances. Each instance contains a <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a> that specifies the fragment
 to evacuate. It is assumed that an evacuation block is placed in the evacuation
 bucket (array element) that corresponds to the evacuation region in which the
 fragment is located although no ordering per bucket is enforced in the linked
@@ -930,13 +1101,13 @@ finished with the object it decrements the count and removes the <code class="do
 if the count goes to zero. If the <code class="docutils literal notranslate"><span class="pre">EvacuationBlock</span></code> already exists with a
 count of zero, the count is not modified and the number of readers is not
 tracked, so the evacuation is valid as long as the object exists.</p>
-<p>Evacuation is driven by cache writes, essentially in <a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol8aggWriteE" title="Vol::aggWrite"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::aggWrite</span></code></a>.
+<p>Evacuation is driven by cache writes, essentially in <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol8aggWriteE" title="Vol::aggWrite"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::aggWrite</span></code></a>.
 This method processes the pending cache virtual connections that are trying to
 write to the stripe. Some of these may be evacuation virtual connections. If so
 then the completion callback for that virtual connection is called as the data
 is put in to the aggregation buffer.</p>
 <p>When no more cache virtual connections can be processed (due to an empty queue
-or the aggregation buffer filling) then <a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range</span></code></a> is called
+or the aggregation buffer filling) then <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range</span></code></a> is called
 to clear the range to be overwritten plus an additional <a class="reference internal" href="core-cache-functions.en.html#c.EVACUATION_SIZE" title="EVACUATION_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">EVACUATION_SIZE</span></code></a>
 range. The buckets covering that range are checked. If there are any items in
 the buckets a new cache virtual connection (a <em>doc evacuator</em>) is created and
@@ -945,7 +1116,7 @@ smallest offset in the stripe) instead of the aggregation write proceeding. When
 the read completes it is checked for validity and if valid, the cache virtual
 connection for it is placed at the front of the write queue for the stripe and
 the write aggregation resumed.</p>
-<p>Before doing a write, the method <a class="reference internal" href="data-structures.en.html#_CPPv3N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range()</span></code></a> is called to
+<p>Before doing a write, the method <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range()</span></code></a> is called to
 start an evacuation. If any fragments are found in the buckets in the range the
 earliest such fragment (smallest offset, closest to the write cursor) is
 selected and read from disk and the aggregation buffer write is suspended. The
@@ -1016,94 +1187,52 @@ caching of the object.</td></tr>
 </div>
 
 
+           </div>
+           
           </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../../index.html">
-              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
-            </a></p>
-<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../../index.html">Documentation overview</a><ul>
-  <li><a href="../index.en.html">Developer’s Guide</a><ul>
-  <li><a href="index.en.html">Cache Architecture</a><ul>
-      <li>Previous: <a href="index.en.html" title="previous chapter">Cache Architecture</a></li>
-      <li>Next: <a href="cache-initialization.en.html" title="next chapter">Cache Initialization</a></li>
-  </ul></li>
-  </ul></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cache-initialization.en.html" class="btn btn-neutral float-right" title="Cache Initialization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Cache Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+  
 
+  <hr/>
 
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
-
-
-
+</footer>
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
 <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     <span class="fa fa-book"> Apache Traffic Server</span>
@@ -1145,22 +1274,8 @@ $(function() {
   });
 });
 </script>
+ 
 
-    <div class="footer">
-      &copy;2021, dev@trafficserver.apache.org.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../../_sources/developer-guide/cache-architecture/architecture.en.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
-
-    
-
-  </body>
+</body>
 </html>
