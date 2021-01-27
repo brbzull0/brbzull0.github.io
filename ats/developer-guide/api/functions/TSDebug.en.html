@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>TSDebug &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSEventThreadSelf" href="TSEventThreadSelf.en.html" />
+    <link rel="prev" title="TSContThreadAffinitySet" href="TSContThreadAffinitySet.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tsdebug">
+<h1>TSDebug<a class="headerlink" href="#tsdebug" title="Permalink to this headline">¶</a></h1>
+<p>Traffic Server Debugging APIs.</p>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="c.TSStatus">
+void <code class="descname">TSStatus</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSNote">
+void <code class="descname">TSNote</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSNote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSWarning">
+void <code class="descname">TSWarning</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSWarning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSError">
+void <code class="descname">TSError</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSFatal">
+void <code class="descname">TSFatal</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFatal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSAlert">
+void <code class="descname">TSAlert</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSAlert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSEmergency">
+void <code class="descname">TSEmergency</code><span class="sig-paren">(</span>const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSEmergency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSDebug">
+void <code class="descname">TSDebug</code><span class="sig-paren">(</span>const char *<em>&nbsp;tag</em>, const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSIsDebugTagSet">
+int <code class="descname">TSIsDebugTagSet</code><span class="sig-paren">(</span>const char *<em>&nbsp;tag</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSIsDebugTagSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSDebugSpecific">
+void <code class="descname">TSDebugSpecific</code><span class="sig-paren">(</span>int<em>&nbsp;debug_flag</em>, const char *<em>&nbsp;tag</em>, const char *<em>&nbsp;format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebugSpecific" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnDebugSet">
+void <code class="descname">TSHttpTxnDebugSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, int<em>&nbsp;on</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpSsnDebugSet">
+void <code class="descname">TSHttpSsnDebugSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a><em>&nbsp;ssn</em>, int<em>&nbsp;on</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnDebugGet">
+int <code class="descname">TSHttpTxnDebugGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpSsnDebugGet">
+int <code class="descname">TSHttpSsnDebugGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a><em>&nbsp;ssn</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpServerStateNameLookup">
+const char* <code class="descname">TSHttpServerStateNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSServerState.en.html#c.TSServerState" title="TSServerState">TSServerState</a><em>&nbsp;state</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpServerStateNameLookup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpHookNameLookup">
+const char* <code class="descname">TSHttpHookNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID">TSHttpHookID</a><em>&nbsp;hook</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpHookNameLookup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpEventNameLookup">
+const char* <code class="descname">TSHttpEventNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSEvent.en.html#c.TSEvent" title="TSEvent">TSEvent</a><em>&nbsp;event</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpEventNameLookup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TSAssert">
+void <code class="descname">TSAssert</code><span class="sig-paren">(</span>...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSAssert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TSReleaseAssert">
+void <code class="descname">TSReleaseAssert</code><span class="sig-paren">(</span>...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSReleaseAssert" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="diags-log">
+<h2>diags.log<a class="headerlink" href="#diags-log" title="Permalink to this headline">¶</a></h2>
+<p>The following methods print to diags.log with expected reactions as a coordinated outcome of
+Traffic Server, Traffic Manager, AuTest, CI, and your log monitoring service/dashboard (e.g. Splunk)</p>
+<table border="1" class="colwidths-given docutils">
+<colgroup>
+<col width="23%" />
+<col width="31%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">API</th>
+<th class="head">Purpose</th>
+<th class="head">TrafficManager</th>
+<th class="head">AuTest+CI</th>
+<th class="head">LogMonitor</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#c.TSStatus" title="TSStatus"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatus()</span></code></a></td>
+<td>basic information</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#c.TSNote" title="TSNote"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNote()</span></code></a></td>
+<td>significant information</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#c.TSWarning" title="TSWarning"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSWarning()</span></code></a></td>
+<td>concerning information</td>
+<td>&#160;</td>
+<td>&#160;</td>
+<td>track</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#c.TSError" title="TSError"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSError()</span></code></a></td>
+<td>operational failure</td>
+<td>&#160;</td>
+<td>FAIL</td>
+<td>review</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#c.TSFatal" title="TSFatal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSFatal()</span></code></a></td>
+<td>recoverable crash</td>
+<td>restart</td>
+<td>FAIL</td>
+<td>review</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#c.TSAlert" title="TSAlert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSAlert()</span></code></a></td>
+<td>significant crash</td>
+<td>restart</td>
+<td>FAIL</td>
+<td>ALERT</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#c.TSEmergency" title="TSEmergency"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSEmergency()</span></code></a></td>
+<td>unrecoverable,misconfigured</td>
+<td>EXIT</td>
+<td>FAIL</td>
+<td>ALERT</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><a class="reference internal" href="#c.TSFatal" title="TSFatal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSFatal()</span></code></a>, <a class="reference internal" href="#c.TSAlert" title="TSAlert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSAlert()</span></code></a>, and <a class="reference internal" href="#c.TSEmergency" title="TSEmergency"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSEmergency()</span></code></a> can be called within
+<a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a>, such that Traffic Server can be shutdown promptly when
+the plugin fails to initialize properly.</p>
+</div>
+</div>
+<div class="section" id="trafficserver-out">
+<h2>trafficserver.out<a class="headerlink" href="#trafficserver-out" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a> logs the debug message only if the given debug <em>tag</em> is enabled.
+It writes output to the Traffic Server debug log through stderr.</p>
+<p><a class="reference internal" href="#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a> returns non-zero if the given debug <em>tag</em> is
+enabled.</p>
+<p>In debug mode, <a class="reference internal" href="#c.TSAssert" title="TSAssert"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSAssert</span></code></a> Traffic Server to prints the file
+name, line number and expression, and then aborts. In release mode,
+the expression is not removed but the effects of printing an error
+message and aborting are. <a class="reference internal" href="#c.TSReleaseAssert" title="TSReleaseAssert"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSReleaseAssert</span></code></a> prints an error
+message and aborts in both release and debug mode.</p>
+<p><a class="reference internal" href="#c.TSDebugSpecific" title="TSDebugSpecific"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebugSpecific()</span></code></a> emits a debug line even if the debug <em>tag</em>
+is turned off, as long as debug flag is enabled. This can be used
+in conjunction with <a class="reference internal" href="#c.TSHttpTxnDebugSet" title="TSHttpTxnDebugSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnDebugSet()</span></code></a>, <a class="reference internal" href="#c.TSHttpSsnDebugSet" title="TSHttpSsnDebugSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnDebugSet()</span></code></a>,
+<a class="reference internal" href="#c.TSHttpTxnDebugGet" title="TSHttpTxnDebugGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnDebugGet()</span></code></a> and <a class="reference internal" href="#c.TSHttpSsnDebugGet" title="TSHttpSsnDebugGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnDebugGet()</span></code></a> to enable
+debugging on specific session and transaction objects.</p>
+<p><a class="reference internal" href="#c.TSHttpServerStateNameLookup" title="TSHttpServerStateNameLookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpServerStateNameLookup()</span></code></a>, <a class="reference internal" href="#c.TSHttpHookNameLookup" title="TSHttpHookNameLookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookNameLookup()</span></code></a> and
+<a class="reference internal" href="#c.TSHttpEventNameLookup" title="TSHttpEventNameLookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpEventNameLookup()</span></code></a> converts the respective internal state to a
+string representation. This can be useful in debugging (<a class="reference internal" href="#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a>),
+logging and other types notifications.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This example uses <a class="reference internal" href="#c.TSDebugSpecific" title="TSDebugSpecific"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebugSpecific()</span></code></a> to log a message when a specific
+debugging flag is enabled:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;ts/ts.h&gt;</span>
+
+<span class="o">//</span> <span class="n">Produce</span> <span class="n">information</span> <span class="n">about</span> <span class="n">a</span> <span class="n">hook</span> <span class="n">receiving</span> <span class="n">an</span> <span class="n">event</span>
+<span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s2">&quot;Entering hook=</span><span class="si">%s</span><span class="s2">, event=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">TSHttpHookNameLookup</span><span class="p">(</span><span class="n">hook</span><span class="p">),</span> <span class="n">TSHttpEventNameLookup</span><span class="p">(</span><span class="n">event</span><span class="p">));</span>
+
+<span class="o">//</span> <span class="n">Emit</span> <span class="n">debug</span> <span class="n">message</span> <span class="k">if</span> <span class="s2">&quot;tag&quot;</span> <span class="ow">is</span> <span class="n">enabled</span> <span class="ow">or</span> <span class="n">the</span> <span class="n">txn</span> <span class="n">debug</span>
+<span class="o">//</span> <span class="n">flag</span> <span class="ow">is</span> <span class="nb">set</span><span class="o">.</span>
+<span class="n">TSDebugSpecifc</span><span class="p">(</span><span class="n">TSHttpTxnDebugGet</span><span class="p">(</span><span class="n">txn</span><span class="p">),</span> <span class="s2">&quot;tag&quot;</span> <span class="p">,</span>
+        <span class="s2">&quot;Hello World from transaction %p&quot;</span><span class="p">,</span> <span class="n">txn</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">TSAPI(3ts)</em>,
+<em class="manpage">printf(3)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">API Reference</a><ul>
+  <li><a href="index.en.html">API Functions</a><ul>
+      <li>Previous: <a href="TSContThreadAffinitySet.en.html" title="previous chapter">TSContThreadAffinitySet</a></li>
+      <li>Next: <a href="TSEventThreadSelf.en.html" title="next chapter">TSEventThreadSelf</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/api/functions/TSDebug.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

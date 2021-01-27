@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>AWS S3 Authentication plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AuthProxy Plugin" href="authproxy.en.html" />
+    <link rel="prev" title="Plugins" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="aws-s3-authentication-plugin">
+<span id="admin-plugins-s3-auth"></span><h1>AWS S3 Authentication plugin<a class="headerlink" href="#aws-s3-authentication-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This is a plugin for Apache Traffic Server that provides support for the
+<code class="docutils literal notranslate"><span class="pre">Amazon</span> <span class="pre">S3</span></code> authentication features. This is useful if you for example want
+to use <code class="docutils literal notranslate"><span class="pre">S3</span></code> as your origin server, yet want to avoid direct user access to
+the content.</p>
+<div class="section" id="using-the-plugin">
+<h2>Using the plugin<a class="headerlink" href="#using-the-plugin" title="Permalink to this headline">¶</a></h2>
+<p>Using the plugin in a remap rule would be e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># remap.config</span>
+
+<span class="o">...</span>  <span class="nd">@plugin</span><span class="o">=</span><span class="n">s3_auth</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">access_key</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">key</span> \
+                        <span class="nd">@pparam</span><span class="o">=--</span><span class="n">secret_key</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">secret</span> \
+                        <span class="nd">@pparam</span><span class="o">=--</span><span class="n">session_token</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">token</span> \
+                        <span class="nd">@pparam</span><span class="o">=--</span><span class="n">virtual_host</span>
+</pre></div>
+</div>
+<p>Alternatively, you can store the access key and secret in an external configuration file, and point the remap rule(s) to it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># remap.config</span>
+
+<span class="o">...</span>  <span class="nd">@plugin</span><span class="o">=</span><span class="n">s3_auth</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">config</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">s3_auth_v2</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">s3.config</span></code> could look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># s3_auth_v2.config</span>
+
+<span class="n">access_key</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">key</span>
+<span class="n">secret_key</span><span class="o">=</span><span class="n">my</span><span class="o">-</span><span class="n">secret</span>
+<span class="n">version</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">virtual_host</span><span class="o">=</span><span class="n">yes</span>
+</pre></div>
+</div>
+<p>Both ways could be combined as well</p>
+</div>
+<div class="section" id="aws-authentication-version-4">
+<h2>AWS Authentication version 4<a class="headerlink" href="#aws-authentication-version-4" title="Permalink to this headline">¶</a></h2>
+<p>The s3_auth plugin fully implements: <a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-authenticating-requests.html">AWS Signing Version 4</a> / <a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-auth-using-authorization-header.html">Authorization Header</a> / <a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html">Transferring Payload in a Single Chunk</a> / Unsigned Payload Option</p>
+<p>Configuration options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mandatory options</span>
+<span class="o">--</span><span class="n">access_key</span><span class="o">=&lt;</span><span class="n">access_id</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">secret_key</span><span class="o">=&lt;</span><span class="n">key</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">version</span><span class="o">=</span><span class="mi">4</span>
+
+<span class="c1"># Optional</span>
+<span class="o">--</span><span class="n">session_token</span><span class="o">=&lt;</span><span class="n">token</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">v4</span><span class="o">-</span><span class="n">include</span><span class="o">-</span><span class="n">headers</span><span class="o">=&lt;</span><span class="n">comma</span><span class="o">-</span><span class="n">separated</span><span class="o">-</span><span class="nb">list</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">headers</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">be</span><span class="o">-</span><span class="n">signed</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">v4</span><span class="o">-</span><span class="n">exclude</span><span class="o">-</span><span class="n">headers</span><span class="o">=&lt;</span><span class="n">comma</span><span class="o">-</span><span class="n">separated</span><span class="o">-</span><span class="nb">list</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">headers</span><span class="o">-</span><span class="ow">not</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">be</span><span class="o">-</span><span class="n">signed</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">v4</span><span class="o">-</span><span class="n">region</span><span class="o">-</span><span class="nb">map</span><span class="o">=</span><span class="n">region_map</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>If the following option is used then the options could be specified in a file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">config</span><span class="o">=</span><span class="n">s3_auth_v4</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">s3_auth_v4.config</span></code> config file could look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># s3_auth_v4.config</span>
+
+<span class="n">access_key</span><span class="o">=&lt;</span><span class="n">access_id</span><span class="o">&gt;</span>
+<span class="n">secret_key</span><span class="o">=&lt;</span><span class="n">secret_key</span><span class="o">&gt;</span>
+<span class="n">session_token</span><span class="o">=&lt;</span><span class="n">token</span><span class="o">&gt;</span>
+<span class="n">version</span><span class="o">=</span><span class="mi">4</span>
+<span class="n">v4</span><span class="o">-</span><span class="n">include</span><span class="o">-</span><span class="n">headers</span><span class="o">=&lt;</span><span class="n">comma</span><span class="o">-</span><span class="n">separated</span><span class="o">-</span><span class="nb">list</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">headers</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">be</span><span class="o">-</span><span class="n">signed</span><span class="o">&gt;</span>
+<span class="n">v4</span><span class="o">-</span><span class="n">exclude</span><span class="o">-</span><span class="n">headers</span><span class="o">=&lt;</span><span class="n">comma</span><span class="o">-</span><span class="n">separated</span><span class="o">-</span><span class="nb">list</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">headers</span><span class="o">-</span><span class="ow">not</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">be</span><span class="o">-</span><span class="n">signed</span><span class="o">&gt;</span>
+<span class="n">v4</span><span class="o">-</span><span class="n">region</span><span class="o">-</span><span class="nb">map</span><span class="o">=</span><span class="n">region_map</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>Where the <code class="docutils literal notranslate"><span class="pre">region_map.config</span></code> defines the entry-point hostname to region mapping i.e.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># region_map.config</span>
+
+<span class="c1"># &quot;us-east-1&quot;</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span>                     <span class="p">:</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">s3</span><span class="o">-</span><span class="n">external</span><span class="o">-</span><span class="mf">1.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span>          <span class="p">:</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">dualstack</span><span class="o">.</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mf">1.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span> <span class="p">:</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="o">-</span><span class="mi">1</span>
+
+<span class="c1"># us-west-1</span>
+<span class="n">s3</span><span class="o">-</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mf">1.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span>           <span class="p">:</span> <span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">s3</span><span class="o">.</span><span class="n">dualstack</span><span class="o">.</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mf">1.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span> <span class="p">:</span> <span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">1</span>
+
+<span class="c1"># Default region if no entry-point matches:</span>
+<span class="p">:</span> <span class="n">s3</span><span class="o">.</span><span class="n">amazonaws</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">--v4-region-map</span></code> is not specified the plugin defaults to the mapping defined in <a class="reference external" href="http://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region">“Regions and Endpoints - S3”</a></p>
+<p>According to <a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/API/sig-v4-header-based-auth.html">Transferring Payload in a Single Chunk</a> specification
+the <code class="docutils literal notranslate"><span class="pre">CanonicalHeaders</span></code> list <em>must</em> include the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header,  the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header if present in the request and all the <code class="docutils literal notranslate"><span class="pre">x-amz-*</span></code> headers
+so <code class="docutils literal notranslate"><span class="pre">--v4-include-headers</span></code> and <code class="docutils literal notranslate"><span class="pre">--v4-exclude-headers</span></code> do not impact those headers and they are <em>always</em> signed.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Via</span></code> and <code class="docutils literal notranslate"><span class="pre">X-Forwarded-For</span></code> headers are <em>always</em> excluded from the signature since they are meant to be changed by the proxies and signing them could lead to invalidation of the signature.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">--v4-include-headers</span></code> is not specified all headers except those specified in <code class="docutils literal notranslate"><span class="pre">--v4-exclude-headers</span></code> will be signed.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">--v4-include-headers</span></code> is specified only the headers specified will be signed except those specified in <code class="docutils literal notranslate"><span class="pre">--v4-exclude-headers</span></code></p>
+</div>
+<div class="section" id="aws-authentication-version-2">
+<h2>AWS Authentication version 2<a class="headerlink" href="#aws-authentication-version-2" title="Permalink to this headline">¶</a></h2>
+<p>For more details on the S3 auth version 2 , see: <a class="reference external" href="http://docs.aws.amazon.com/AmazonS3/latest/dev/RESTAuthentication.html">Signing and Authenticating REST Requests</a></p>
+<p>There are 4 plugin configuration options for version 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">access_key</span>    <span class="o">&lt;</span><span class="n">access_id</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">secret_key</span>    <span class="o">&lt;</span><span class="n">secret_key</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">virtual_host</span>
+<span class="o">--</span><span class="n">config</span>        <span class="o">&lt;</span><span class="n">config</span> <span class="n">file</span><span class="o">&gt;</span>
+<span class="o">--</span><span class="n">version</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>This is a pretty bare bone start for the S3 services, it is missing a number of features:</p>
+<ul class="simple">
+<li>It does not do UTF8 encoding (as required)</li>
+<li>It does not deal with canonicalization of AMZ headers.</li>
+<li>It does not handle POST requests (but do we need to ?)</li>
+<li>It does not incorporate query parameters.</li>
+<li>It does not support session tokens.</li>
+</ul>
+<p>Contributions to any of these would be appreciated.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Plugins</a></li>
+      <li>Next: <a href="authproxy.en.html" title="next chapter">AuthProxy Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/s3_auth.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,436 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cache.config &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="hosting.config" href="hosting.config.en.html" />
+    <link rel="prev" title="Configuration Files" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="cache-config">
+<span id="std:configfile-cache.config"></span><h1>cache.config<a class="headerlink" href="#cache-config" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file allows you to overrule the origin’s cache
+policies. You can add caching rules to specify the following:</p>
+<ul class="simple">
+<li>Not to cache objects from specific IP addresses.</li>
+<li>How long to pin particular objects in the cache.</li>
+<li>How long to consider cached objects as fresh.</li>
+<li>Whether to ignore no-cache directives from the server.</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>Generally, using this file to define cache policies is an antipattern.
+It’s usually better to have the origin specify the cache policy via the
+<a class="reference external" href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control:</a> header.
+That way, all the business logic stays with the content generation. The
+origin is in a much better position to know which content can be safely
+cached, and for how long. It can make fine grained decisions, changing
+Cache-Control: header value per object. This file allows for some overrides
+but, is relatively crude compared to what the origin can provide.</p>
+<p class="last">After modifying <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, run <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+to apply changes.</p>
+</div>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>Each line in the <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file contains a caching rule. Traffic Server
+recognizes three space-delimited tags:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">primary_destination</span><span class="o">=</span><span class="n">value</span> <span class="n">secondary_specifier</span><span class="o">=</span><span class="n">value</span> <span class="n">action</span><span class="o">=</span><span class="n">value</span>
+</pre></div>
+</div>
+<p>You can use more than one secondary specifier in a rule. However, you
+cannot repeat a secondary specifier. The following list shows the
+possible primary destinations with allowed values.</p>
+<div class="section" id="primary-destinations">
+<h3>Primary Destinations<a class="headerlink" href="#primary-destinations" title="Permalink to this headline">¶</a></h3>
+<p>The primary destination field on each line is used to restrict the requests to
+which the caching rule will apply.</p>
+<dl class="docutils" id="cache-config-format-dest-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt>
+<dd>A requested domain name. Traffic Server matches the host name of the destination from
+the URL in the request.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-dest-host">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt>
+<dd>Alias for <code class="docutils literal notranslate"><span class="pre">dest_domain</span></code>.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-dest-ip">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_ip</span></code></dt>
+<dd>A requested IP address. Traffic Server matches the IP address of the destination in
+the request.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-dest-host-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">host_regex</span></code></dt>
+<dd>A regular expression to be tested against the destination host name in the
+request.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-url-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt>
+<dd>A regular expression to be tested against the URL in the request.</dd>
+</dl>
+</div>
+<div class="section" id="secondary-specifiers">
+<h3>Secondary Specifiers<a class="headerlink" href="#secondary-specifiers" title="Permalink to this headline">¶</a></h3>
+<p>The secondary specifiers are optional and may be used to further restrict
+which requests are impacted by the caching rule. Multiple secondary specifiers
+may be used within a single rule, though each type of specifier can appear at
+most one time. In other words, you may have both a <code class="docutils literal notranslate"><span class="pre">port</span></code> and <code class="docutils literal notranslate"><span class="pre">scheme</span></code> in
+the same rule, but you may not have two <code class="docutils literal notranslate"><span class="pre">port</span></code>s.</p>
+<dl class="docutils" id="cache-config-format-port">
+<dt><code class="docutils literal notranslate"><span class="pre">port</span></code></dt>
+<dd>Request URL port.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-scheme">
+<dt><code class="docutils literal notranslate"><span class="pre">scheme</span></code></dt>
+<dd>Request URL protocol (http or https).</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-prefix">
+<dt><code class="docutils literal notranslate"><span class="pre">prefix</span></code></dt>
+<dd>Prefix in the path part of a URL.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-suffix">
+<dt><code class="docutils literal notranslate"><span class="pre">suffix</span></code></dt>
+<dd>File suffix in the URL.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-method">
+<dt><code class="docutils literal notranslate"><span class="pre">method</span></code></dt>
+<dd>Request URL method (get, put, post, trace, etc.).</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-time">
+<dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt>
+<dd>A time range, such as 08:00-14:00. Specified using a 24-hour clock in the
+timezone of the Traffic Server server.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-src-ip">
+<dt><code class="docutils literal notranslate"><span class="pre">src_ip</span></code></dt>
+<dd>Client IP address.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-internal">
+<dt><code class="docutils literal notranslate"><span class="pre">internal</span></code></dt>
+<dd>A boolean value, <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>, specifying if the rule should
+match (or not match) a transaction originating from an internal API. This
+is useful to differentiate transactions originating from a Traffic Server plugin.</dd>
+</dl>
+</div>
+<div class="section" id="actions">
+<h3>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h3>
+<p>The final component of a caching rule is the action, which determines what Traffic Server
+will do with all objects matching the primary destinations and secondary
+specifiers of the rule in question.</p>
+<dl class="docutils" id="cache-config-format-action">
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt>
+<dd><p class="first">One of the following values:</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Effect</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">never-cache</span></code></td>
+<td>Never cache specified objects, it will be
+overwritten by <code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ignore-no-cache</span></code></td>
+<td>Ignore all <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ignore-client-no-cache</span></code></td>
+<td>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
+client requests.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ignore-server-no-cache</span></code></td>
+<td>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
+origin server responses.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="docutils" id="cache-responses-to-cookies">
+<dt><code class="docutils literal notranslate"><span class="pre">cache-responses-to-cookies</span></code></dt>
+<dd>Change the style of caching with regard to cookies. This effectively
+overrides the configuration parameter
+<a class="reference internal" href="records.config.en.html#proxy-config-http-cache-cache-responses-to-cookies" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_responses_to_cookies</span></code></a>
+and uses the same values with the same semantics. The override happens
+only for requests that match.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-pin-in-cache">
+<dt><code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code></dt>
+<dd><p class="first">Preserves objects in cache, preventing them from being overwritten.
+Does not affect objects that are determined not to be cacheable. This
+setting can have performance issues, and severely affect the cache.
+For instance, if the primary destination matches all objects, once the
+cache is full, no new objects could get written as nothing would be
+evicted. Similarly, for each cache-miss, each object would incur extra
+checks to determine if the object it would replace could be overwritten.</p>
+<p>The value is the amount of time you want to keep the object(s) in the cache.
+The following time formats are allowed:</p>
+<ul class="last simple">
+<li><code class="docutils literal notranslate"><span class="pre">d</span></code> for days; for example: 2d</li>
+<li><code class="docutils literal notranslate"><span class="pre">h</span></code> for hours; for example: 10h</li>
+<li><code class="docutils literal notranslate"><span class="pre">m</span></code> for minutes; for example: 5m</li>
+<li><code class="docutils literal notranslate"><span class="pre">s</span></code> for seconds; for example: 20s</li>
+<li>mixed units; for example: 1h15m20s</li>
+</ul>
+</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-revalidate">
+<dt><code class="docutils literal notranslate"><span class="pre">revalidate</span></code></dt>
+<dd>For objects that are in cache, overrides the amount of time the object(s)
+are to be considered fresh. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</dd>
+</dl>
+<dl class="docutils" id="cache-config-format-ttl-in-cache">
+<dt><code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code></dt>
+<dd>Forces object(s) to become cached, as if they had a
+<code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">max-age:&lt;time&gt;</span></code> header. Can be overruled by requests with
+cookies. The value is the amount of time object(s) are to be kept in the
+cache, regardless of <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> response headers from the origin
+server. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="matching-multiple-rules">
+<h2>Matching Multiple Rules<a class="headerlink" href="#matching-multiple-rules" title="Permalink to this headline">¶</a></h2>
+<p>When multiple rules are specified in <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, Traffic Server will check all
+of them in order for each request. Thus, two rules which match the same request
+but have conflicting actions will result in their actions being compounded. In
+other words, Traffic Server does not stop on the first match.</p>
+<p>In some cases, this may lead to confusing behavior. For example, consider the
+following two rules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">prefix</span><span class="o">=</span><span class="n">foo</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">7</span><span class="n">d</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">action</span><span class="o">=</span><span class="n">never</span><span class="o">-</span><span class="n">cache</span>
+</pre></div>
+</div>
+<p>Reading that under the assumption that Traffic Server stops on the first match might lead
+one to assume that all Javascript files will be excluded from the Traffic Server cache,
+except for those whose paths begin with <code class="docutils literal notranslate"><span class="pre">foo</span></code>. This, however, is not correct.
+Instead, the first rule establishes that all Javascript files with the path
+prefix <code class="docutils literal notranslate"><span class="pre">foo</span></code> will be forced to revalidate every seven days, and then the
+second rule also sets an action on all Javascript files, regardless of their
+path prefix, to never be cached at all. Because none of the Javascript files
+will be cached at all, the first rule is effectively voided.</p>
+<p>A similar example, but at least one with a correct solution, might be an
+attempt to set differing values for the same action, as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Incorrect!</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">prefix</span><span class="o">=</span><span class="n">foo</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">7</span><span class="n">d</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">1</span><span class="n">d</span>
+
+<span class="c1"># Correct!</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">1</span><span class="n">d</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">prefix</span><span class="o">=</span><span class="n">foo</span> <span class="n">suffix</span><span class="o">=</span><span class="n">js</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">7</span><span class="n">d</span>
+</pre></div>
+</div>
+<p>The latter accomplishes the implied goal of having a default, or global, timer
+for cache object revalidations on Javascript files, as well as a more targeted
+(and longer) revalidation time on just those Javascript files with a particular
+prefix. The former fails at this goal, because the second rule will match all
+Javascript files and will override any previous <code class="docutils literal notranslate"><span class="pre">revalidate</span></code> values that may
+have been set by prior rules.</p>
+<div class="section" id="ttl-in-cache-and-never-cache">
+<h3>ttl-in-cache and never-cache<a class="headerlink" href="#ttl-in-cache-and-never-cache" title="Permalink to this headline">¶</a></h3>
+<p>When multiple rules are matched in the same request, <code class="docutils literal notranslate"><span class="pre">never-cache</span></code> will always
+be overwritten by <code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code>. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># ttl-in-cache=1d never-cache=false</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">action</span><span class="o">=</span><span class="n">never</span><span class="o">-</span><span class="n">cache</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">ttl</span><span class="o">-</span><span class="ow">in</span><span class="o">-</span><span class="n">cache</span><span class="o">=</span><span class="mi">1</span><span class="n">d</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following example configures Traffic Server to revalidate <code class="docutils literal notranslate"><span class="pre">gif</span></code> and <code class="docutils literal notranslate"><span class="pre">jpeg</span></code>
+objects in the domain <code class="docutils literal notranslate"><span class="pre">mydomain.com</span></code> every 6 hours, and all other objects in
+<code class="docutils literal notranslate"><span class="pre">mydomain.com</span></code> every hour. The rules are applied in the order listed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_domain</span><span class="o">=</span><span class="n">mydomain</span><span class="o">.</span><span class="n">com</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">1</span><span class="n">h</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">mydomain</span><span class="o">.</span><span class="n">com</span> <span class="n">suffix</span><span class="o">=</span><span class="n">gif</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">6</span><span class="n">h</span>
+<span class="n">dest_domain</span><span class="o">=</span><span class="n">mydomain</span><span class="o">.</span><span class="n">com</span> <span class="n">suffix</span><span class="o">=</span><span class="n">jpeg</span> <span class="n">revalidate</span><span class="o">=</span><span class="mi">6</span><span class="n">h</span>
+</pre></div>
+</div>
+<p>Force a specific regex to be in cache between 7-11pm of the server’s time for
+26 hours.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url_regex</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">articles</span><span class="o">/</span><span class="n">popular</span><span class="o">.*</span> <span class="n">time</span><span class="o">=</span><span class="mi">19</span><span class="p">:</span><span class="mi">00</span><span class="o">-</span><span class="mi">23</span><span class="p">:</span><span class="mi">00</span> <span class="n">ttl</span><span class="o">-</span><span class="ow">in</span><span class="o">-</span><span class="n">cache</span><span class="o">=</span><span class="mi">1</span><span class="n">d2h</span>
+</pre></div>
+</div>
+<p>Prevent objects from being evicted from cache:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">url_regex</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">game</span><span class="o">/.*</span> <span class="n">pin</span><span class="o">-</span><span class="ow">in</span><span class="o">-</span><span class="n">cache</span><span class="o">=</span><span class="mi">1</span><span class="n">h</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Configuration Files</a></li>
+      <li>Next: <a href="hosting.config.en.html" title="next chapter">hosting.config</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/cache.config.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Regex Remap Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Regex Revalidate Plugin" href="regex_revalidate.en.html" />
+    <link rel="prev" title="Lua Plugin" href="lua.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="regex-remap-plugin">
+<span id="admin-plugins-regex-remap"></span><h1>Regex Remap Plugin<a class="headerlink" href="#regex-remap-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This allows you to configure mapping rules based on regular expressions.
+This is similar to what you can accomplish using mod_rewrite in Apache
+httpd, but obviously not as flexible or sophisticated (yet).</p>
+<p>To use this plugin, configure a remap.config rule like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">a</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">b</span><span class="o">.</span><span class="n">com</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">regex_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span>
+</pre></div>
+</div>
+<p>The file name parameter is always required. Unless an absolute path
+is specified, the file name is assumed to be a path relative to the
+Traffic Server configuration directory.</p>
+<p>The regular expressions listed in the configuration file are evaluated
+sequentially. When a regular expression is positively matched against
+a request URL, evaluation is stopped and the rewrite rule is applied.
+If none of the regular expressions are a match, the default destination
+URL is applied (<code class="docutils literal notranslate"><span class="pre">http://b.com</span></code> in the example above).</p>
+<p>An optional argument (<code class="docutils literal notranslate"><span class="pre">&#64;pparam</span></code>) with the string “<code class="docutils literal notranslate"><span class="pre">profile</span></code>” will
+enable profiling of this regex remap rule, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">profile</span>
+</pre></div>
+</div>
+<p>Profiling is very low overhead, and the information is dumped to
+<code class="docutils literal notranslate"><span class="pre">traffic.out</span></code>, located in the log directory. This information is
+useful to optimize the order of your regular expression, such that the
+most common matches appears early in the file. In order to force a
+profile dump, you can do</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ sudo touch remap.config
+$ sudo traffic_ctl config reload
+</pre></div>
+</div>
+<p>By default, this plugin operates on the post-remap URL (including any
+remappings done by preceding plugins in the remap rule).  This behavior
+can be modified with the optional parameter</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@pparam</span><span class="o">=</span><span class="p">[</span><span class="n">no</span><span class="o">-</span><span class="p">]</span><span class="n">pristine</span>            <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">off</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">&#64;pparam=pristine</span></code>, the plugin will operate on the pre-remap, or
+pristine, URL.  (But, if no regular expression in the config file is
+matched, the resulting URL will still be the post-remap URL.)</p>
+<p>By default, only the path and query string of the URL are provided for
+the regular expressions to match. The following optional parameters can
+be used to modify the plugin instance behavior</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@pparam</span><span class="o">=</span><span class="p">[</span><span class="n">no</span><span class="o">-</span><span class="p">]</span><span class="n">method</span>              <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">off</span><span class="p">]</span>
+<span class="nd">@pparam</span><span class="o">=</span><span class="p">[</span><span class="n">no</span><span class="o">-</span><span class="p">]</span><span class="n">query</span><span class="o">-</span><span class="n">string</span>        <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">on</span><span class="p">]</span>
+<span class="nd">@pparam</span><span class="o">=</span><span class="p">[</span><span class="n">no</span><span class="o">-</span><span class="p">]</span><span class="n">matrix</span><span class="o">-</span><span class="n">parameters</span>   <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">off</span><span class="p">]</span>
+<span class="nd">@pparam</span><span class="o">=</span><span class="p">[</span><span class="n">no</span><span class="o">-</span><span class="p">]</span><span class="n">host</span>                <span class="p">[</span><span class="n">default</span><span class="p">:</span> <span class="n">off</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>If you wish to match on the HTTP method used (e.g. “<code class="docutils literal notranslate"><span class="pre">GET</span></code>”),
+you must use the option <code class="docutils literal notranslate"><span class="pre">&#64;pparam=method</span></code>. e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">method</span>
+</pre></div>
+</div>
+<p>With this enabled, the string that you will need to match will look
+like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET/path?query=bar
+</pre></div>
+</div>
+<p>The methods are always all upper-case, and always followed by one single
+space. There is no space between the method and the rest of the URL (or
+URI path).</p>
+<p>By default, the query string is part of the string that is matched
+again, to turn this off use the option ‘no-query-string’, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">no</span><span class="o">-</span><span class="n">query</span><span class="o">-</span><span class="n">string</span>
+</pre></div>
+</div>
+<p>You can also include the matrix parameters in the string, using
+the option ‘matrix-parameters’, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">matrix</span><span class="o">-</span><span class="n">parameters</span>
+</pre></div>
+</div>
+<p>Finally, to match on the host as well, use the option ‘host’, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">maps</span><span class="o">.</span><span class="n">reg</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">host</span>
+</pre></div>
+</div>
+<p>With this enabled, the string that you will need to match will look like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>//host/path?query=bar
+</pre></div>
+</div>
+<p>A typical regex would look like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>^/(ogre.*)/more     http://www.ogre.com/$h/$0/$1
+</pre></div>
+</div>
+<p>The regular expression must not contain any white spaces!</p>
+<p>When the regular expression is matched, only the URL path + query string
+is matched (without any of the optional configuration options). The path
+will always start with a “/”. Various substitution strings are allowed
+on the right hand side during evaluation</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$0     - The entire matched string
+$1-9   - Regular expression groups ($1 first group etc.)
+$h     - The host as used in the &quot;to&quot; portion of the remap rule. For a long time it was the original host header from the request.
+$f     - The host as used in the &quot;from&quot; portion of the remap rule
+$t     - The host as used in the &quot;to&quot; portion of the remap rule
+$p     - The original port number
+$s     - The scheme (e.g. http) of the request
+$P     - The entire path of the request
+$q     - The query part of the request
+$r     - The path parameters of the request (not implemented yet)
+$c     - The cookie string from the request
+$i     - The client IP for this request
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal notranslate"><span class="pre">$0</span></code> substitution expands to the characters that were
+matched by the regular expression, not to the entire string that
+the regular expression was matched against.</p>
+</div>
+<p>You can also provide options, similar to how you configure your
+remap.config. The following options are available</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>@status=&lt;nnn&gt;               - Force the response code to &lt;nnn&gt;
+@active_timeout=&lt;nnn&gt;       - Active timeout (in ms)
+@no_activity_timeout=&lt;nnn&gt;  - No activity timeout (in ms)
+@connect_timeout=&lt;nnn&gt;      - Connect timeouts (in ms)
+@dns_timeout=&lt;nnn&gt;          - Connect timeouts (in ms)
+
+@overridable-config=&lt;value&gt; - see :ref:`ts-overridable-config`
+
+@caseless                   - Make regular expressions case insensitive
+@lowercase_substitutions    - Turn on (enable) lower case substitutions
+</pre></div>
+</div>
+<p>This can be useful to force a particular response for some URLs, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">^/</span><span class="p">(</span><span class="n">ogre</span><span class="o">.*</span><span class="p">)</span><span class="o">/</span><span class="n">bad</span>      <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="nd">@status</span><span class="o">=</span><span class="mi">404</span>
+</pre></div>
+</div>
+<p>Or, to force a 302 redirect</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>^/oldurl/(.*)$      http://news.example.com/new/$1 @status=302
+</pre></div>
+</div>
+<p>Setting the status to 301 or 302 will force the new URL to be used
+as a redirect (Location:).</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="lua.en.html" title="previous chapter">Lua Plugin</a></li>
+      <li>Next: <a href="regex_revalidate.en.html" title="next chapter">Regex Revalidate Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/regex_remap.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

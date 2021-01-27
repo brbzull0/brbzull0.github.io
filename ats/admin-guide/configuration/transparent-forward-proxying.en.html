@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Forward Proxy &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Hierarchical Caching" href="hierarchical-caching.en.html" />
+    <link rel="prev" title="WCCP Service Configuration" href="transparent-proxy/wccp-service-config.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="forward-proxy">
+<span id="id1"></span><h1>Forward Proxy<a class="headerlink" href="#forward-proxy" title="Permalink to this headline">¶</a></h1>
+<p>The Apache Traffic Server is a general purpose proxy, configurable as both a
+reverse and forward proxy.</p>
+<p>A forward proxy can be used as a central tool in your infrastructure
+to access the web and it may be combined with a cache to lower your overall
+bandwidth usage. Forward proxies act as a gatekeeper between client browsers
+on your local network and all (or some, at your configuration’s discretion)
+web sites accessed by those clients. The forward proxy will receive the
+HTTP requests, perform any filtering or request alteration rules you
+establish, and when appropriate forward the request on to its destination
+website. The response will return through your proxy, where it may optionally
+be cached and/or modified, and then returned to the original client.</p>
+<p>There are two modes in which your forward proxy may operate:</p>
+<dl class="docutils">
+<dt>Forward Proxy</dt>
+<dd><p class="first">Each client must be configured explicitly to use the forward proxy. Client
+browsers will be aware of the fact they are using a proxy and will form their
+HTTP requests appropriately. This results in the initial HTTP command being
+issued with fully qualified URIs that contain the destination hostname:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>GET http://example.com/index.php?id=123 HTTP/1.1
+</pre></div>
+</div>
+</dd>
+<dt>Transparent Proxy</dt>
+<dd><p class="first">The use of a transparent proxy is typically done in concert with network
+routing rules which redirect all outbound HTTP traffic through your proxy.
+Clients will behave, and form their HTTP requests, as if they are contacting
+the remote site directly, and will not be aware of the existence of a proxy
+server in between themselves and the remote servers. HTTP requests will be
+generated per their usual form, with only paths in the command and a
+separate Host request header:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>GET /index?id=123 HTTP/1.1
+Host: example.com
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Apache Traffic Server may be configured to operate as both a forward and
+a transparent proxy simultaneously.</p>
+<div class="section" id="proxy-configuration">
+<h2>Proxy Configuration<a class="headerlink" href="#proxy-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Configuring basic forward proxy operation in Traffic Server is quite simple
+and straightforward.</p>
+<ol class="arabic">
+<li><p class="first">Permit Traffic Server to process requests for hosts not explicitly configured
+in the remap rules, by modifying <a class="reference internal" href="../files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a>
+in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">remap_required</span> <span class="n">INT</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><em>Optional</em>: If Traffic Server will be operating strictly as a forward proxy,
+you will want to disable reverse proxy support by modifying
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">reverse_proxy</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>You may also want to consider some of these configuration options:</p>
+<ul class="simple">
+<li>Setting <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-no-dns-just-forward-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.no_dns_just_forward_to_parent</span></code></a> determines which
+host will be used for DNS resolution.</li>
+<li>Proxy Authentication can be enabled or disabled with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-forward-proxy-auth-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.forward.proxy_auth_to_parent</span></code></a> should you also be
+employing a proxy cache.</li>
+<li>The client request header X-Forwarded-For may be toggled with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-squid-x-forwarded-for" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_squid_x_forwarded_for</span></code></a>.</li>
+<li>The client request header Forwarded may be configured with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a>.</li>
+</ul>
+</div>
+<div class="section" id="client-configuration">
+<h2>Client Configuration<a class="headerlink" href="#client-configuration" title="Permalink to this headline">¶</a></h2>
+<p>If you are operating your proxy in transparent mode, your clients should require
+no special proxy-related configuration.</p>
+<p>If you are operating in explicit forward proxy mode, without automatic routing
+rules on your network to direct all outbound traffic through the proxy, your
+client browsers will need to be directed to the proxy. This may be accomplished
+in two different ways.</p>
+<p>Clients may be configured to use the default <code class="docutils literal notranslate"><span class="pre">8080</span></code> port on your Traffic Server
+host as a proxy. This will result in all requests from that client browser being
+issued through the single forward proxy as configured.</p>
+</div>
+<div class="section" id="security-considerations">
+<h2>Security Considerations<a class="headerlink" href="#security-considerations" title="Permalink to this headline">¶</a></h2>
+<p>It’s important to note that once your Apache Traffic Server is configured as a
+forward proxy it will indiscriminately accept proxy requests from anyone. If it
+is reachable from the Internet, then you have configured an <em>Open Proxy</em>.</p>
+<p>This is generally not desirable, as it will permit anyone to potentially use
+your network as the source of traffic to sites of their choosing. To avoid
+this, you’ll have to make sure your proxy server is either only reachable from
+within your private network or is secured by firewall rules that permit only
+those you wish to have access to the proxy.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Proxy Cache Configuration</a><ul>
+      <li>Previous: <a href="transparent-proxy/wccp-service-config.en.html" title="previous chapter">WCCP Service Configuration</a></li>
+      <li>Next: <a href="hierarchical-caching.en.html" title="next chapter">Hierarchical Caching</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/configuration/transparent-forward-proxying.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

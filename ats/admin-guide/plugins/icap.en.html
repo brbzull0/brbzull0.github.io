@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ICAP Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="JA3 Fingerprint Plugin" href="ja3_fingerprint.en.html" />
+    <link rel="prev" title="Hook Trace Plugin" href="hook-trace.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="icap-plugin"></span><div class="section" id="id1">
+<h1>ICAP Plugin<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<p>The ICAP plugin enables passing along the response header and body to
+an external server for additional processing (generally scanning) using
+the ICAP protocol.  The scanner, depending on whether the file contains
+malicious content, will return a transformed version of the file. If the
+file is clean, then the exact same file will be returned. Otherwise, the
+scanner will block the file and return a message containing information
+regarding the infection.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is only built if the configure option</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">experimental</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+<p>is given at build time.</p>
+<p>To use this plugin, you need to compile the plugin and add the following line in plugin.config (assuming the compiled plugin library is called icap_plugin.so):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>icap_plugin.so scanner_server_ip scanner_server_port avoid_port debug_enable
+</pre></div>
+</div>
+<p>There are 4 parameters to this plugin: the scanner_server_ip and scanner_server_port (standard ICAP port is 1344) is required to initiate connection to the ICAP server, and the avoid_port is specified to avoid processing traffic that appears on particular ports (e.g, requests passed via the parent select and already checked).  Parameter debug_enable will enable debug mode, which, in cases of ICAP server connection error or ICAP server too busy to handle the request, will return the origin response body to the client instead of an error message.</p>
+</div>
+<div class="section" id="icap">
+<h2>ICAP<a class="headerlink" href="#icap" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://tools.ietf.org/html/rfc3507">ICAP</a> is a light-weight protocol for executing a remote procedure call on HTTP messages. It is very handy to request transformations on HTTP requests and responses since ICAP servers are set up on the edge of the Internet. Therefore, ICAP has become an industry standard for Anti Virus service.</p>
+</div>
+<div class="section" id="virus-scanning-via-icap">
+<h2>Virus Scanning via ICAP<a class="headerlink" href="#virus-scanning-via-icap" title="Permalink to this headline">¶</a></h2>
+<p>Performing virus scanning via ICAP has several advantages over the traditional local host virus scanner deployment model. By performing virus scanner on a remote server, local resources are not used, allowing the main thread on the server be more performant. ICAP servers are frequently deployed on the edge near Traffic Server proxies, adding minimal latency on file transmission.</p>
+</div>
+<div class="section" id="plugin-design">
+<h2>Plugin Design<a class="headerlink" href="#plugin-design" title="Permalink to this headline">¶</a></h2>
+<p>The plugin is a transform plugin that is called on READ_RESPONSE_HDR_HOOK. Upon initiating the transform, the plugin will initiate a socket connection to the scanner server. Once the connection is made successfully, the plugin will formulate an ICAP request header, and send it out along with the response body from origin server. Since ICAP requires chunked transfer-encoding for transmitting body, the request sending to the scanner server should take the following form:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>RESPMOD icap://127.0.0.1/avscan ICAP/1.0
+Host: 127.0.0.1
+Encapsulated: req-hdr=0, res-hdr=137, res-body=296
+
+GET /origin-resource HTTP/1.1
+Host: www.origin-server.com
+Accept: text/html, text/plain, image/gif
+Accept-Encoding: gzip, compress
+
+HTTP/1.1 200 OK
+Date: Mon, 10 Jan 2000 09:52:22 GMT
+Server: Apache/1.3.6 (Unix)
+ETag: &quot;63840-1ab7-378d415b&quot;
+Content-Type: text/html
+Content-Length: 51
+
+33
+This is data that was returned by an origin server.
+0
+</pre></div>
+</div>
+<p>After finishing sending the message, the plugin will receive the returned message from the scanner and try to determine the action to take. ICAP’s response message takes the following form:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ICAP/1.0 200 OK
+Date: Mon, 10 Jan 2000  09:55:21 GMT
+Server: ICAP-Server-Software/1.0
+Connection: close
+ISTag: &quot;W3E4R7U9-L2E4-2&quot;
+Encapsulated: res-hdr=0, res-body=222
+
+HTTP/1.1 200 OK
+Date: Mon, 10 Jan 2000  09:55:21 GMT
+Via: 1.0 icap.example.org (ICAP Example RespMod Service 1.1)
+Server: Apache/1.3.6 (Unix)
+ETag: &quot;63840-1ab7-378d415b&quot;
+Content-Type: text/html
+Content-Length: 95
+
+5f
+This is data that was returned by an origin server, but with
+value modified by an ICAP server.
+0
+</pre></div>
+</div>
+<p>In case of virus detected, the scanner will include fields like “X-Infection-Found” and “X-Violations-Found” in the ICAP response header. Therefore, by evaluating the ICAP header, if infection headers are found, then then plugin will discard the HTTP response header from the origin server and use the HTTP header returned by ICAP server to generate the response header. Otherwise, the file is clean, in which case headers will not be modified. Once finished reading headers, the plugin proceeds to read the message body, which is, if file is clean, an exact copy of the response from origin server or, if file is bad, an error message generated by scanner server.</p>
+</div>
+<div class="section" id="scanner-server">
+<h2>Scanner Server<a class="headerlink" href="#scanner-server" title="Permalink to this headline">¶</a></h2>
+<p>We have tested with the <a class="reference external" href="https://support.symantec.com/us/en/article.doc11058.html">Symantec Protection Engine</a>. We have also tested with the open-source ICAP server <a class="reference external" href="https://sourceforge.net/projects/c-icap/">C-ICAP</a> with the <a class="reference external" href="https://www.clamav.net/">ClamAV</a> scanning module.</p>
+</div>
+<div class="section" id="limitations">
+<h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
+<p>In the current version, the plugin only supports IPv4 addressing from the plugin to the ICAP server.</p>
+<p>The plugin only processes responses.  It could be extended to also support passing the request headers and bodies to ICAP servers for processing.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="hook-trace.en.html" title="previous chapter">Hook Trace Plugin</a></li>
+      <li>Next: <a href="ja3_fingerprint.en.html" title="next chapter">JA3 Fingerprint Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/icap.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>TLS Bridge &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Configuration Variable Implementation" href="../../config-vars.en.html" />
+    <link rel="prev" title="Example: Query Remap Plugin" href="query_remap/example-query-remap.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="name">
+<h1>TLS Bridge<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h1>
+<p>This plugin is used to provide TLS tunnels for connections between a Client and a Service via two
+gateway Traffic Server instances using explicit proxying. By configuring the Traffic Server instances the level of
+security in the tunnel can be easily controlled for all communications across the tunnels without
+having to update the client or service.</p>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The tunnel is sustained by two instances of Traffic Server.</p>
+<div class="figure align-center">
+<p class="plantuml">
+<object data="../../../_images/plantuml-2b66a31dd254e17afc991250474547cc8e9745e9.svg" type="image/svg+xml" style="width:506px;height:330px;">
+<img src="../../../_images/plantuml-2b66a31dd254e17afc991250474547cc8e9745e9.png" alt="hide empty members
+
+cloud &quot;Cloud\nUntrusted\nNetworks&quot; as Cloud
+node &quot;Ingress ATS&quot;
+node &quot;Peer ATS&quot;
+
+[Client] &lt;--&gt; [Ingress ATS] : Unsecure
+[Ingress ATS] &lt;-&gt; [Cloud] : Secure
+[Cloud] &lt;-&gt; [Peer ATS] : Secure
+[Peer ATS] &lt;-u-&gt; [Service] : Unsecure
+
+[Ingress ATS] ..&gt; [tls_bridge\nPlugin] : Uses"/>
+
+</object></p>
+</div>
+<p>The ingress Traffic Server accepts an HTTP <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> request from the Client. This connection gets
+intercepted by the TLS Bridge plugin inside Traffic Server if the destination matches one of the configured
+destinations. The plugin then makes a TLS connection to the peer Traffic Server using the configured level of
+security. The original <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> request from the Client to the ingress Traffic Server is then sent to the
+peer Traffic Server to create a connection from the peer Traffic Server to the Service. After this the Client has a
+virtual circuit to the Service and can use any TCP based communication (including TLS). Effectively
+the plugin causes the explicit proxy to work as if the Client had done the <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> directly to
+the peer Traffic Server. Note this means the DNS lookup for the Service is done by the peer Traffic Server, not the
+ingress Traffic Server.</p>
+<p>The plugin is configured with a mapping of Service names to peer Traffic Server instances. The Service names
+are URLs which will be in the original HTTP request made by the Client after connecting to the
+ingress Traffic Server. This means the FQDN for the Service is resolved in the environment of the peer
+Traffic Server and not the ingress Traffic Server.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>TLS Bridge requires at least two instances of Traffic Server (Ingress and Peer). The client connects to the
+ingress Traffic Server, and the peer Traffic Server connects to the service. The Peer could in theory be configured to
+connect on to a further Traffic Server instance, acting as the ingress to that peer, but that doesn’t seem a
+useful case.</p>
+<ol class="arabic">
+<li><p class="first">Disable caching on Traffic Server in <code class="docutils literal notranslate"><span class="pre">records.config</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.cache.http INT 0
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure the ports.</p>
+<ul>
+<li><p class="first">The Peer Traffic Server must be listening on an SSL enabled proxy port. For instance, if the proxy port
+for the Peer is 4443, then configuration in <code class="docutils literal notranslate"><span class="pre">records.config</span></code> would have:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.server_ports STRING 4443:ssl
+</pre></div>
+</div>
+</li>
+<li><p class="first">The Ingress Traffic Server must allow <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> to the Peer proxy port. This would be set in
+<code class="docutils literal notranslate"><span class="pre">records.config</span></code> by:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.connect_ports STRING 4443
+</pre></div>
+</div>
+<p>The Ingress Traffic Server also needs <code class="docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code> configured to have proxy ports
+to which the Client can connect.</p>
+</li>
+</ul>
+</li>
+<li><p class="first">By default Traffic Server requires remap in order to allow to outbound request to the peer. To disable this
+requirement and allow all connections, use the setting</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.url_remap.remap_required INT 0
+</pre></div>
+</div>
+<p>In this case Traffic Server will act as an open proxy which is unlikely to be a good idea. Therefore if
+this approach is used Traffic Server will need to run in a restricted environment or use access control
+(via <code class="docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code> or <code class="docutils literal notranslate"><span class="pre">iptables</span></code>).</p>
+<p>If this is unsuitable then an identity remap rule can be added for the peer Traffic Server. If the peer
+Traffic Server was named “peer.ats” and it listens on port 4443, then the remap rule would be</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>map https://peer.ats:4443 https://peer.ats:4443
+</pre></div>
+</div>
+<p>Remapping will be disabled for the user agent connection and so it will not need a rule.</p>
+</li>
+<li><p class="first">If remap is required on the peer to enable the outbound connection from the peer to the service
+(e.g. required remapping is not explicitly disabled) the destination port must be
+explicitly stated <a class="footnote-reference" href="#id2" id="id1">[1]</a>. E.g.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>map https://service:4443 https://service:4443
+</pre></div>
+</div>
+<p>Note this remap rule cannot alter the actual HTTP transactions between the client and service
+because those happen inside what is effectively a tunnel between the client and service,
+supported by the two Traffic Server instances. This rule serves to allows the <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> sent from the
+ingress to cause a tunnel connection from the peer to the service.</p>
+</li>
+<li><p class="first">Configure the Ingress Traffic Server to verify the Peer server certificate:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.verify.server.policy STRING ENFORCED
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure Certificate Authority used by the Ingress Traffic Server to verify the Peer server certificate.
+If this is a directory, all of the certificates in the directory are treated as Certificate
+Authorities.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.CA.cert.filename STRING &lt;/path/to/CA_certificate_file_name&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure the Ingress Traffic Server to provide a client certificate:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.cert.path STRING &lt;/path/to/certificate/dir&gt;
+CONFIG proxy.config.ssl.client.cert.filename STRING &lt;server_certificate_file_name&gt;
+</pre></div>
+</div>
+</li>
+<li><p class="first">Configure the Peer Traffic Server to verify the Ingress client certificate:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.certification_level INT 2
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enable the TLS Bridge plugin in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. The plugin is configured by arguments in
+<code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. These are arguments are in pairs of a <em>destination</em> and a <em>peer</em>. The
+destination is an anchored regular expression which is matched against the host name in the Client
+<code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>. The destinations are checked in order and the first match is used to select the peer
+Traffic Server. The peer should be an FQDN or IP address with an optional port. For the example above, if
+the Peer Traffic Server was named “peer.ats” on port 4443 and the Service at <code class="docutils literal notranslate"><span class="pre">*.service.com</span></code>, the
+peer argument would be “peer.ats:4443”. In <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> this would be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tls_bridge.so .*[.]service[.]com peer.ats:4443
+</pre></div>
+</div>
+<p>Note the ‘.’ characters are escaped with brackets so that, for instance, “someservice.com” does
+not match the rule.</p>
+<p>If there was another service, “*.altsvc.ats”, via a different peer “altpeer.ats” on port 4443,
+the configuration would be</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tls_bridge.so .*[.]service[.]com peer.ats:4443 .*[.]altsvc.ats altpeer.ats:4443
+</pre></div>
+</div>
+<p>Mappings can also be specified in an external file. For instance, if there was file named
+“bridge.config” in the default Traffic Server configuration directory which contained mappings, the
+<code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> configuration line could look like</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tls_bridge.so .*[.]service[.]com peer.ats:4443 --file bridge.config
+</pre></div>
+</div>
+<p>or</p>
+<blockquote>
+<div><p>tls_bridge.so –file bridge.config .*[.]service[.]com peer.ats:4443</p>
+</div></blockquote>
+<p>These are not identical - direct mappings and file mappings are processed in order. This means in
+the first example, the direct mapping is checked before any mapping in “bridge.config”, and in
+the latter example the mappings in “bridge.config” are checked before the direct mappings. There
+can be multiple “–file” arguments, which are processed in the order they appear in
+“plugin.config”. The file name can be absolute, or relative. If the file name is relative, it is
+relative to the Traffic Server configuration directory. Therefore, in these examples, “bridge.config” must
+be in the same directory as <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>.</p>
+<p>The contents of “bridge.config” must be one mapping per line, with a regular expression separated
+by white space from the destination service. This is identical to the format in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>
+except there is only one pair per line. E.g., valid content for “bridge.config” could be</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># Primary service location.
+.*[.]service[.]com peer.ats:4443
+
+# Secondary.
+.*[.]altsvc.ats      altpeer.ats:4443
+</pre></div>
+</div>
+<p>Leading whitespace on a line is ignored, and if the first non-whitespace character is ‘#’ then
+the entire line is ignored. Therefore if that is the content of “bridge.config”, these two
+lines in “plugin.config” would behave identically</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>tls_bridge.so --file bridge.config
+
+tls_bridge.so .*[.]service[.]com peer.ats:4443     .*[.]altsvc.ats altpeer.ats:4443
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p>TLS Bridge is distinct from more basic Layer 4 Routing available in Traffic Server. For the latter there is no
+intercept or change of the TLS exchange between the Client and the Service. The exchange looks like
+this</p>
+<div class="figure align-center">
+<p class="plantuml">
+<object data="../../../_images/plantuml-f3908041ea30c77f5669fb41b275906a385fe6ca.svg" type="image/svg+xml" style="width:557px;height:412px;">
+<img src="../../../_images/plantuml-f3908041ea30c77f5669fb41b275906a385fe6ca.png" alt="actor Client
+participant &quot;Ingress TS&quot; as Ingress
+participant Service
+
+Client &lt;-[#green]&gt; Ingress : //TCP Connect//
+Client -[#blue]-&gt; Ingress : &lt;font color=&quot;blue&quot;&gt;TLS: &quot;&quot;CLIENT HELLO&quot;&quot;&lt;/font&gt;
+note over Ingress : Map SNI to upstream Service
+Ingress &lt;-[#green]&gt; Service : //TCP Connect//
+Ingress -[#blue]-&gt; Service : &lt;font color=&quot;blue&quot;&gt;TLS: &quot;&quot;CLIENT HELLO&quot;&quot;&lt;/font&gt;
+note right : Duplicate of data from Client.
+note over Ingress : Forward bytes between Client &lt;&amp;arrow-thick-left&gt; &lt;&amp;arrow-thick-right&gt; Service
+Client &lt;--&gt; Service"/>
+
+</object></p>
+</div>
+<p>The key points are</p>
+<ul class="simple">
+<li>Traffic Server does no TLS negotiation at all. The properties of the connection between the Ingress Traffic Server
+and the Service are completely determined by the Client and Server negotiation.</li>
+<li>No packets are modified, the “”CLIENT HELLO”” sent by the Ingress Traffic Server is an exact copy of that
+sent to the Ingress Traffic Server by the Client. It is only examined for the SNI data in order to select
+the Service.</li>
+</ul>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<p>The TLS Bridge plugin uses <code class="code docutils literal notranslate"><span class="pre">TSHttpTxnIntercept</span></code> to gain control of the ingress Client session.
+If the session is valid then a separate connection to the peer Traffic Server is created using
+<code class="code docutils literal notranslate"><span class="pre">TSHttpConnect</span></code>.</p>
+<p>After the ingress Traffic Server connects to the peer Traffic Server it sends a duplicate of the Client <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>
+request. This is processed by the peer Traffic Server to connect to the Service. After this both Traffic Server
+instances then tunnel data between the Client and the Service, in effect becoming a transparent
+tunnel.</p>
+<p>The overall exchange looks like the following:</p>
+<div class="figure align-center">
+<p class="plantuml">
+<object data="../../../_images/plantuml-c530b342e104967424b31881e0d0604297f7122c.svg" type="image/svg+xml" style="width:628px;height:657px;">
+<img src="../../../_images/plantuml-c530b342e104967424b31881e0d0604297f7122c.png" alt="&#64;startuml
+
+box &quot;Client Network&quot; #DDFFDD
+actor Client
+entity &quot;User Agent\nVConn&quot; as lvc
+participant &quot;Ingress ATS&quot; as ingress
+entity &quot;Upstream\nVConn&quot; as rvc
+end box
+box &quot;Corporate Network&quot; #DDDDFF
+participant &quot;Peer ATS&quot; as peer
+database Service
+end box
+
+Client -&gt; ingress : TCP or TLS connect
+activate lvc
+Client -&gt; ingress : HTTP CONNECT
+ingress -&gt; lvc : Intercept Transaction
+ingress -&gt; peer : TLS connect
+activate rvc
+note over ingress,peer : Secure Tunnel
+ingress -&gt; peer : HTTP CONNECT
+note over peer : DNS for Service is\ndone here.
+peer -&gt; Service : TCP Connect
+
+note over Client, Service : At this point data can flow between the Client and Server\nover the secure link as a virtual connection, including any TLS handshake.
+Client &lt;--&gt; Service
+lvc &lt;-&gt; ingress : &lt;&amp;arrow-thick-left&gt; Move data &lt;&amp;arrow-thick-right&gt;
+ingress &lt;-&gt; rvc : &lt;&amp;arrow-thick-left&gt; Move data &lt;&amp;arrow-thick-right&gt;
+note over ingress : Plugin explicitly moves this data.
+
+&#64;enduml"/>
+
+</object></p>
+</div>
+<p>A detailed view of the plugin operation.</p>
+<div class="figure align-center">
+<img alt="../../../_images/TLS-Bridge-Plugin.svg" src="../../../_images/TLS-Bridge-Plugin.svg" /></div>
+<p>A sequence diagram focusing on the request / response data flow. There is a <code class="code docutils literal notranslate"><span class="pre">NetVConn</span></code> for the
+connection to the Peer Traffic Server which is omitted for clarity.</p>
+<ul class="simple">
+<li>Blue dotted lines are request or response data</li>
+<li>Green lines are network connections.</li>
+<li>Red lines are programmatic interactions.</li>
+<li>Black lines are hook call backs.</li>
+</ul>
+<p>The <code class="code docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> sent from the Peer Traffic Server is parsed and consumed by the plugin. An non-<code class="code docutils literal notranslate"><span class="pre">200</span></code> response
+means there was an error and the tunnel is shut down. To deal with the Client response clean up the
+response code is stored and used later during cleanup.</p>
+<div class="figure align-center">
+<img alt="../../../_images/TLS-Bridge-Messages.svg" src="../../../_images/TLS-Bridge-Messages.svg" /></div>
+<p>A restartable state machine is used to recognize the end of the Peer Traffic Server response. The initial part
+of the response is easy because all that is needed is to wait until there is sufficient data for a
+minimal parse. The end can be an arbitrary distance in to the stream and may not all be in the same
+socket read.</p>
+<div class="figure align-center">
+<p class="plantuml">
+<object data="../../../_images/plantuml-68e7f0c5eb82408817dece7a37cb5d4bec418815.svg" type="image/svg+xml" style="width:221px;height:450px;">
+<img src="../../../_images/plantuml-68e7f0c5eb82408817dece7a37cb5d4bec418815.png" alt="&#64;startuml
+[*] -r&gt; State_0
+State_0 --&gt; State_1 : CR
+State_1 --&gt; State_0 : *
+State_1 --&gt; State_1 : CR
+State_1 --&gt; State_2 : LF
+State_2 --&gt; State_3 : CR
+State_2 --&gt; State_0 : *
+State_3 -r&gt; [*] : LF
+State_3 --&gt; State_1 : CR
+State_3 --&gt; State_0 : *
+&#64;enduml"/>
+
+</object></p>
+</div>
+<div class="section" id="debugging">
+<h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
+<p>Debugging messages for the plugin can be enabled with the “tls_bridge” debug tag.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>This is likely due to a bug in Traffic Server, currently under investigation.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">Plugin Development</a><ul>
+  <li><a href="index.en.html">Example Plugins</a><ul>
+      <li>Previous: <a href="query_remap/example-query-remap.en.html" title="previous chapter">Example: Query Remap Plugin</a></li>
+      <li>Next: <a href="../../config-vars.en.html" title="next chapter">Configuration Variable Implementation</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/plugins/example-plugins/tls_bridge.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

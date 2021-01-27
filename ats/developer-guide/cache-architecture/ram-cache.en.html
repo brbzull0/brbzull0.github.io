@@ -1,0 +1,379 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RAM Cache &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cache Tool" href="cache-tool.en.html" />
+    <link rel="prev" title="Cache Tools" href="consistency.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ram-cache">
+<span id="developer-cache-ram-cache"></span><h1>RAM Cache<a class="headerlink" href="#ram-cache" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="new-ram-cache-algorithm-clfus">
+<h2>New RAM Cache Algorithm (CLFUS)<a class="headerlink" href="#new-ram-cache-algorithm-clfus" title="Permalink to this headline">¶</a></h2>
+<p>The new RAM Cache uses ideas from a number of cache replacement policies and
+algorithms, including LRU, LFU, CLOCK, GDFS and 2Q, called CLFUS (Clocked Least
+Frequently Used by Size). It avoids any patented algorithms and includes the
+following features:</p>
+<ul class="simple">
+<li>Balances Recentness, Frequency and Size to maximize hit rate (not byte hit
+rate).</li>
+<li>Is Scan Resistant and extracts robust hit rates even when the working set does
+not fit in the RAM Cache.</li>
+<li>Supports compression at 3 levels: fastlz, gzip (libz), and xz (liblzma).
+Compression can be moved to another thread.</li>
+<li>Has very low CPU overhead, only slightly more than a basic LRU. Rather than
+using an O(lg n) heap, it uses a probabilistic replacement policy for O(1)
+cost with low C.</li>
+<li>Has relatively low memory overhead of approximately 200 bytes per object in
+memory.</li>
+</ul>
+<p>The rationale for emphasizing hit rate over byte hit rate is that the overhead
+of pulling more bytes from secondary storage is low compared to the cost of a
+request.</p>
+<p>The RAM Cache consists of an object hash fronting 2 LRU/CLOCK lists and a <em>seen</em>
+hash table. The first cached list contains objects in memory, while the second
+contains a history of objects which have either recently been in memory or are
+being considered for keeping in memory. The <em>seen</em> hash table is used to make
+the algorithm scan resistant.</p>
+<p>The list entries record the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>key</td>
+<td>16 byte unique object identifier</td>
+</tr>
+<tr class="row-odd"><td>auxkeys</td>
+<td>8 bytes worth of version number (in our system, the block in the
+partition). When the version of an object changes old entries are
+purged from the cache.</td>
+</tr>
+<tr class="row-even"><td>hits</td>
+<td>Number of hits within this clock period.</td>
+</tr>
+<tr class="row-odd"><td>size</td>
+<td>size of the object in the cache.</td>
+</tr>
+<tr class="row-even"><td>len</td>
+<td>Length of the object, which differs from <em>size</em> because of
+compression and padding).</td>
+</tr>
+<tr class="row-odd"><td>compressed_len</td>
+<td>Compressed length of the object.</td>
+</tr>
+<tr class="row-even"><td>compressed</td>
+<td>Compression type, or <code class="docutils literal notranslate"><span class="pre">none</span></code> if no compression. Possible types
+are: <em>fastlz</em>, <em>libz</em>, and <em>liblzma</em>.</td>
+</tr>
+<tr class="row-odd"><td>uncompressible</td>
+<td>Flag indicating that content cannot be compressed (true), or that
+it mat be compressed (false).</td>
+</tr>
+<tr class="row-even"><td>copy</td>
+<td>Whether or not this object should be copied in and copied out
+(e.g. HTTP HDR).</td>
+</tr>
+<tr class="row-odd"><td>LRU link</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td>HASH link</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td>IOBufferData</td>
+<td>Smart point to the data buffer.</td>
+</tr>
+</tbody>
+</table>
+<p>The interface to the cache is <em>Get</em> and <em>Put</em> operations. Get operations check
+if an object is in the cache and are called on a read attempt. The Put operation
+decides whether or not to cache the provided object in memory. It is called
+after a read from secondary storage.</p>
+</div>
+<div class="section" id="seen-hash">
+<h2>Seen Hash<a class="headerlink" href="#seen-hash" title="Permalink to this headline">¶</a></h2>
+<p>The <em>Seen List</em> becomes active after the <em>Cached</em> and <em>History</em> lists become
+full following a cold start. The purpose is to make the cache scan resistant,
+which means that the cache state must not be affected at all by a long sequence
+Get and Put operations on objects which are seen only once. This is essential,
+and without it not only would the cache be polluted, but it could lose critical
+information about the objects that it cares about. It is therefore essential
+that the Cache and History lists are not affected by Get or Put operations on
+objects seen the first time. The Seen Hash maintains a set of 16 bit hash tags,
+and requests which do not hit in the object cache (are in the Cache List or
+History List) and do not match the hash tag result in the hash tag being updated
+but are otherwise ignored. The Seen Hash is sized to approximately the number of
+objects in the cache in order to match the number that are passed through it
+with the CLOCK rate of the Cached and History Lists.</p>
+</div>
+<div class="section" id="cached-list">
+<h2>Cached List<a class="headerlink" href="#cached-list" title="Permalink to this headline">¶</a></h2>
+<p>The <em>Cached List</em> contains objects actually in memory. The basic operation is
+LRU with new entries inserted into a FIFO queue and hits causing objects to be
+reinserted. The interesting bit comes when an object is being considered for
+insertion. A check is first made against the Object Hash to see if the object
+is in the Cached List or History. Hits result in updating the <code class="docutils literal notranslate"><span class="pre">hit</span></code> field and
+reinsertion of the object. History hits result in the <code class="docutils literal notranslate"><span class="pre">hit</span></code> field being
+updated and a comparison to see if this object should be kept in memory. The
+comparison is against the least recently used members of the Cache List, and
+is based on a weighted frequency:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CACHE_VALUE</span> <span class="o">=</span> <span class="n">hits</span> <span class="o">/</span> <span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="n">overhead</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A new object must be enough bytes worth of currently cached objects to cover
+itself. Each time an object is considered for replacement the CLOCK moves
+forward. If the History object has a greater value then it is inserted into the
+Cached List and the replaced objects are removed from memory and their list
+entries are inserted into the History List. If the History object has a lesser
+value it is reinserted into the History List. Objects considered for replacement
+(at least one) but not replaced have their <code class="docutils literal notranslate"><span class="pre">hits</span></code> field set to <code class="docutils literal notranslate"><span class="pre">0</span></code> and are
+reinserted into the Cached List. This is the CLOCK operation on the Cached List.</p>
+</div>
+<div class="section" id="history-list">
+<h2>History List<a class="headerlink" href="#history-list" title="Permalink to this headline">¶</a></h2>
+<p>Each CLOCK, the least recently used entry in the History List is dequeued and
+if the <code class="docutils literal notranslate"><span class="pre">hits</span></code> field is not greater than <code class="docutils literal notranslate"><span class="pre">1</span></code> (it was hit at least once in
+the History or Cached List) it is deleted. Otherwise, the <code class="docutils literal notranslate"><span class="pre">hits</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">0</span></code> and it is requeued on the History List.</p>
+</div>
+<div class="section" id="compression-and-decompression">
+<h2>Compression and Decompression<a class="headerlink" href="#compression-and-decompression" title="Permalink to this headline">¶</a></h2>
+<p>Compression is performed by a background operation (currently called as part of
+Put) which maintains a pointer into the Cached List and runs toward the head
+compressing entries. Decompression occurs on demand during a Get. In the case
+of objects tagged <code class="docutils literal notranslate"><span class="pre">copy</span></code>, the compressed version is reinserted in the LRU
+since we need to make a copy anyway. Those not tagged <code class="docutils literal notranslate"><span class="pre">copy</span></code> are inserted
+uncompressed in the hope that they can be reused in uncompressed form. This is
+a compile time option and may be something we want to change.</p>
+<p>There are 3 algorithms and levels of compression (speed on an Intel i7 920
+series processor using one thread):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="21%" />
+<col width="23%" />
+<col width="47%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Compression Rate</th>
+<th class="head">Decompression Rate</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>fastlz</td>
+<td>173 MB/sec</td>
+<td>442 MB/sec</td>
+<td>Basically free since disk or network
+will limit first; ~53% final size.</td>
+</tr>
+<tr class="row-odd"><td>libz</td>
+<td>55 MB/sec</td>
+<td>234 MB/sec</td>
+<td>Almost free, particularly
+decompression; ~37% final size.</td>
+</tr>
+<tr class="row-even"><td>liblzma</td>
+<td>3 MB/sec</td>
+<td>50 MB/sec</td>
+<td>Expensive; ~27% final size.</td>
+</tr>
+</tbody>
+</table>
+<p>These are ballpark numbers, and your millage will vary enormously. JPEG, for
+example, will not compress with any of these (or at least will only do so at
+such a marginal level that the cost of compression and decompression is wholly
+unjustified), and the same is true of many other media and binary file types
+which embed some form of compression. The RAM Cache does detect compression
+level and will declare something <em>incompressible</em> if it doesn’t get below 90% of
+the original size. This value is cached so that the RAM Cache will not attempt
+to compress it again (at least as long as it is in the history).</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="index.en.html">Cache Architecture</a><ul>
+      <li>Previous: <a href="consistency.en.html" title="previous chapter">Cache Tools</a></li>
+      <li>Next: <a href="cache-tool.en.html" title="next chapter">Cache Tool</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/cache-architecture/ram-cache.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

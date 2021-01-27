@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Actions &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Hosts Lookup API" href="hosts-lookup-api.en.html" />
+    <link rel="prev" title="Logging API" href="../plugin-management/logging-api.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="actions">
+<span id="developer-plugins-actions"></span><h1>Actions<a class="headerlink" href="#actions" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="hosts-lookup-api.en.html">Hosts Lookup API</a></li>
+</ul>
+</div>
+<p>An <strong>action</strong> is a handle to an operation initiated by a plugin that has
+not yet completed. For example: when a plugin connects to a remote
+server, it uses the call <code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> - which takes <code class="docutils literal notranslate"><span class="pre">TSCont</span></code> as an
+argument to call back when the connection is established.
+<code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> might not call the continuation back immediately and
+will return an <code class="docutils literal notranslate"><span class="pre">TSAction</span></code> structure that the caller can use to cancel
+the operation. Cancelling the operation does not necessarily mean that
+the operation will not occur; it simply means that the continuation
+passed into the operation will not be called back. In such an example,
+the connection might still occur if the action is cancelled; however,
+the continuation that initiated the connection would not be called back.</p>
+<p>In the preceding example, it is also possible that the connection will
+complete and call back the continuation before <code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> returns.
+If that occurs, then <code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> returns a special action that
+causes <code class="docutils literal notranslate"><span class="pre">TSActionDone</span></code> to return <code class="docutils literal notranslate"><span class="pre">1</span></code>. This specifies that the
+operation has already completed, so it’s pointless to try to cancel the
+operation. Also note that an action will never change from non-completed
+to completed. When the operation actually succeeds and the continuation
+is called back, the continuation must zero out its action pointer to
+indicate to itself that the operation succeeded.</p>
+<p>The asynchronous nature of all operations in Traffic Server necessitates
+actions. You should notice from the above discussion that once a call to
+a function like <code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> is made by a continuation and that
+function returns a valid action (<code class="docutils literal notranslate"><span class="pre">TSActionDone</span></code> returns <code class="docutils literal notranslate"><span class="pre">0</span></code>), it is
+not safe for the continuation to do anything else except return from its
+handler function. It is not safe to modify or examine the continuation’s
+data because the continuation may have already been destroyed.</p>
+<p>Below is an example of typical usage for an action:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">handler</span> <span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">edata</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">TS_EVENT_IMMEDIATE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">TSAction</span> <span class="n">actionp</span> <span class="o">=</span> <span class="n">TSNetConnect</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="mf">127.0.0.1</span><span class="p">,</span> <span class="mi">9999</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">TSActionDone</span> <span class="p">(</span><span class="n">actionp</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="n">actionp</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="cm">/* We&#39;ve already been called back... */</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">TS_EVENT_NET_CONNECT</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Net connection succeeded */</span>
+        <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">event</span> <span class="o">==</span> <span class="n">TS_EVENT_NET_CONNECT_FAILED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Net connection failed */</span>
+        <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span>
+<span class="nf">TSPluginInit</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">TSCont</span> <span class="n">contp</span><span class="p">;</span>
+
+    <span class="n">contp</span> <span class="o">=</span> <span class="n">TSContCreate</span> <span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">TSMutexCreate</span> <span class="p">());</span>
+
+    <span class="cm">/* We don&#39;t want to call things out of TSPluginInit</span>
+<span class="cm">       directly since it&#39;s called before the rest of the</span>
+<span class="cm">       system is initialized. We&#39;ll simply schedule an event</span>
+<span class="cm">       on the continuation to occur as soon as the rest of</span>
+<span class="cm">       the system is started up. */</span>
+    <span class="n">TSContScheduleOnPool</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">TS_THREAD_POOL_NET</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The example above shows a simple plugin that creates a continuation and
+then schedules it to be called immediately. When the plugin’s handler
+function is called the first time, the event is <code class="docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code>.
+The plugin then tries to open a net connection to port 9999 on
+<code class="docutils literal notranslate"><span class="pre">localhost</span></code> (127.0.0.1). The IP description was left in cider notation
+to further clarify what is going on; also note that the above won’t
+actually compile until the IP address is modified. The action returned
+from <code class="docutils literal notranslate"><span class="pre">TSNetConnect</span></code> is examined by the plugin. If the operation has
+not completed, then the plugin stores the action in its continuation.
+Otherwise, the plugin knows it has already been called back and there is
+no reason to store the action pointer.</p>
+<p>A final question might be, “why would a plugin want to cancel an
+action?” In the above example, a valid reason could be to place a limit
+on the length of time it takes to open a connection. The plugin could
+schedule itself to get called back in 30 seconds and then initiate the
+net connection. If the timeout expires first, then the plugin would
+cancel the action. The following sample code implements this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">handler</span> <span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">edata</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="p">(</span><span class="n">TS_EVENT_IMMEDIATE</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">TSContScheduleOnPool</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="mi">30000</span><span class="p">,</span> <span class="n">TS_THREAD_POOL_NET</span><span class="p">);</span>
+            <span class="n">TSAction</span> <span class="n">actionp</span> <span class="o">=</span> <span class="n">TSNetConnect</span><span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="mf">127.0.0.1</span><span class="p">,</span> <span class="mi">9999</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">TSActionDone</span> <span class="p">(</span><span class="n">actionp</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="n">actionp</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="cm">/* We&#39;ve already been called back ... */</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="p">(</span><span class="n">TS_EVENT_TIMEOUT</span><span class="p">)</span><span class="o">:</span>
+            <span class="n">TSAction</span> <span class="n">actionp</span> <span class="o">=</span> <span class="n">TSContDataGet</span> <span class="p">(</span><span class="n">contp</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">TSActionDone</span><span class="p">(</span><span class="n">actionp</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">TSActionCancel</span> <span class="p">(</span><span class="n">actionp</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="p">(</span><span class="n">TS_EVENT_NET_CONNECT</span><span class="p">)</span><span class="o">:</span>
+            <span class="cm">/* Net connection succeeded */</span>
+            <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="p">(</span><span class="n">TS_EVENT_NET_CONNECT_FAILED</span><span class="p">)</span><span class="o">:</span>
+            <span class="cm">/* Net connection failed */</span>
+            <span class="n">TSContDataSet</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span>
+<span class="nf">TSPluginInit</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">TSCont</span> <span class="n">contp</span><span class="p">;</span>
+
+    <span class="n">contp</span> <span class="o">=</span> <span class="n">TSContCreate</span> <span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">TSMutexCreate</span> <span class="p">());</span>
+    <span class="cm">/* We don&#39;t want to call things out of TSPluginInit</span>
+<span class="cm">       directly since it&#39;s called before the rest of the</span>
+<span class="cm">       system is initialized. We&#39;ll simply schedule an event</span>
+<span class="cm">       on the continuation to occur as soon as the rest of</span>
+<span class="cm">       the system is started up. */</span>
+    <span class="n">TSContScheduleOnPool</span> <span class="p">(</span><span class="n">contp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">TS_THREAD_POOL_NET</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The action functions are:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../api/functions/TSActionCancel.en.html#c.TSActionCancel" title="TSActionCancel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionCancel()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSActionDone.en.html#c.TSActionDone" title="TSActionDone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionDone()</span></code></a></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">Plugin Development</a><ul>
+      <li>Previous: <a href="../plugin-management/logging-api.en.html" title="previous chapter">Logging API</a></li>
+      <li>Next: <a href="hosts-lookup-api.en.html" title="next chapter">Hosts Lookup API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/plugins/actions/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

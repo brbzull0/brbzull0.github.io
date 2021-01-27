@@ -1,0 +1,459 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Traffic Server Blackbox Testing &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="JSONRPC" href="../jsonrpc/index.en.html" />
+    <link rel="prev" title="Testing Traffic Server" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ts-blackbox-testing">
+<span id="blackbox-testing"></span><h1>Traffic Server Blackbox Testing<a class="headerlink" href="#ts-blackbox-testing" title="Permalink to this headline">¶</a></h1>
+<p>Traffic Server uses the Reusable Gold Testing System (<a class="reference external" href="https://bitbucket.org/autestsuite/reusable-gold-testing-system/src/master/">AuTest</a>)
+for functional testing. The current layout is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gold_tests</span><span class="o">/</span> <span class="o">-</span> <span class="n">contains</span> <span class="nb">all</span> <span class="n">the</span> <span class="n">tests</span> <span class="n">that</span> <span class="n">run</span> <span class="n">on</span> <span class="n">the</span> <span class="n">Reusable</span> <span class="n">Gold</span> <span class="n">Testing</span> <span class="n">System</span> <span class="p">(</span><span class="n">AuTest</span><span class="p">)</span>
+<span class="n">tools</span><span class="o">/</span> <span class="o">-</span> <span class="n">contains</span> <span class="n">programs</span> <span class="n">used</span> <span class="n">to</span> <span class="n">help</span> <span class="k">with</span> <span class="n">testing</span><span class="o">.</span>
+</pre></div>
+</div>
+<div class="section" id="scripts">
+<h2>Scripts<a class="headerlink" href="#scripts" title="Permalink to this headline">¶</a></h2>
+<p>To ease the process of running Autest, there is <em>autest.sh</em> and <em>bootstrap.py</em>.</p>
+<p><strong>autest.sh</strong> - This file is a simple wrapper that will call the Reusable Gold Testing System (Autest) program in a pipenv.
+If the pipenv is not setup, the script will prompt user the missing components.
+That will set up the Autest on most systems in a Python virtual environment.
+The wrapper adds some basic options to the command to point to the location of the tests.
+Run the script from the <code class="docutils literal notranslate"><span class="pre">tests/</span></code> directory followed by <code class="docutils literal notranslate"><span class="pre">--ats-bin</span></code> and the bin directory where ATS is located (e.g. <code class="docutils literal notranslate"><span class="pre">~/ats/bin</span></code>)
+Use <code class="docutils literal notranslate"><span class="pre">--help</span></code> for more details on options for running Autest.</p>
+<p><strong>bootstrap.py</strong> - This script will check for the necessary packages needed to create a pipenv that can run Autest.
+If any package is missing, the script will alert the user.
+If all packages are available, it will install a virtual environment using the provided Pipfile.</p>
+</div>
+<div class="section" id="manual-setup">
+<h2>Manual Setup<a class="headerlink" href="#manual-setup" title="Permalink to this headline">¶</a></h2>
+<p>To run autest manually, the recommended way is to follow these steps:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code>: create the virtual environment(only needed once).</li>
+<li><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code>: enter a shell in the virtual environment(type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave the shell).</li>
+<li><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">gold_tests</span></code>: enter the directory containing the test files.</li>
+<li><code class="docutils literal notranslate"><span class="pre">autest</span> <span class="pre">--ats-bin</span> <span class="pre">user_ats_bin</span></code>: run autest where user_ats_bin is the bin directory in the user’s ats directory.</li>
+</ol>
+</div>
+<div class="section" id="advanced-setup">
+<h2>Advanced Setup<a class="headerlink" href="#advanced-setup" title="Permalink to this headline">¶</a></h2>
+<p>AuTest and the relevant tools can be install manually instead of using the wrapper script.
+By doing this, it is often easier to debug issues with the testing system, or the tests.
+There are two ways this can be done.</p>
+<ol class="arabic simple">
+<li>Run the bootstrap script then source the path with a <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">./env-test/bin/activate</span></code> command. At this point autest command should run without the wrapper script.</li>
+<li><dl class="first docutils">
+<dt>Make sure you install python 3.5 or better on your system. From there install these python packages (e.g. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>):</dt>
+<dd><ul class="first last">
+<li>hyper</li>
+<li>git+https://bitbucket.org/autestsuite/reusable-gold-testing-system.git</li>
+<li><a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplay/src/master/">traffic-replay</a> (This will automatically install <a class="reference external" href="https://bitbucket.org/autestsuite/microdns/src/master/">MicroDNS</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/microserver/src/master/">MicroServer</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplaylibrary/src/master/">TrafficReplayLibrary</a>, and dnslib as part of the dependencies.)</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="writing-tests">
+<h2>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h2>
+<p>When writing tests, please refer to the current <a class="reference external" href="https://autestsuite.bitbucket.io">documentation</a> for general use of the Autest system.</p>
+<div class="section" id="testing-environment">
+<h3>Testing Environment<a class="headerlink" href="#testing-environment" title="Permalink to this headline">¶</a></h3>
+<p>The environment of the testing process will have a number of added environment variables to control Traffic Server running the in the sandbox location correctly.
+This can be used to easily setup other commands that should run under same environment.</p>
+</div>
+<div class="section" id="autest-extensions">
+<h3>Autest Extensions<a class="headerlink" href="#autest-extensions" title="Permalink to this headline">¶</a></h3>
+<p>Autest allows the user to create extensions to help specialize and simplify test writing for a given application domain.</p>
+<div class="section" id="trafficserver">
+<h4>TrafficServer<a class="headerlink" href="#trafficserver" title="Permalink to this headline">¶</a></h4>
+<p>For TrafficServer, we have defined the following functions and objects in <code class="docutils literal notranslate"><span class="pre">tests/gold_tests/autest-site/trafficserver.test.ext</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">MakeATSProcess(obj,</span> <span class="pre">name,</span> <span class="pre">command='traffic_server',</span> <span class="pre">select_ports=True,</span> <span class="pre">enable_tls=False)</span></code><ul>
+<li>name - A name for this instance of ATS</li>
+<li>command - optional argument defining what process to use. Defaults to <code class="docutils literal notranslate"><span class="pre">traffic_server</span></code></li>
+<li>select_ports - have Autest automatically select a nonSSL port to use</li>
+<li>enable_tls - have Autest automatically select SSL port (<code class="docutils literal notranslate"><span class="pre">select_ports</span></code> must be <strong>True</strong>)</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">CopyConfig(file,</span> <span class="pre">targetname=None,</span> <span class="pre">process=None)</span></code><ul>
+<li>file - name of the file to copy. Relative paths are relative from the test file location</li>
+<li>targetname - the name of the file when copied to the correct configuration location</li>
+<li>process - optional process object to use for getting path location to copy to. Only needed if the Setup object call is not in the scope of the process object created with the MakeATSProcess(…) API.</li>
+</ul>
+</li>
+</ul>
+<p>This function copies a given configuration file to the location of the Traffic Server sandbox used in a test. Given a test might have more than on Traffic Server instance, it can be difficult to understand the correct location to copy to. This function will deal with the details correctly.</p>
+<p>When automatically selected, the following ports will be allocated for TS:</p>
+<ul class="simple">
+<li>port</li>
+<li>portv6</li>
+<li>ssl_port</li>
+<li>admin_port - this is set even if select_port is <strong>False</strong></li>
+</ul>
+<p>A number of file objects are also defined to help test TrafficServer. Files that are currently defined are:</p>
+<ul class="simple">
+<li>squid.log</li>
+<li>error.log</li>
+<li>diags.log</li>
+<li>records.config</li>
+<li>cache.config</li>
+<li>hosting.config</li>
+<li>ip_allow.yaml</li>
+<li>logging.yaml</li>
+<li>parent.config</li>
+<li>plugin.config</li>
+<li>remap.config</li>
+<li>sni.yaml</li>
+<li>socks.config</li>
+<li>splitdns.config</li>
+<li>ssl_multicert.config</li>
+<li>storage.config</li>
+<li>volume.config</li>
+</ul>
+<div class="section" id="example">
+<h5>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts1</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">MakeATSProcess</span><span class="p">(</span><span class="s2">&quot;ts1&quot;</span><span class="p">,</span><span class="n">select_ports</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># uses the setup object in the scope of the process object</span>
+<span class="n">ts1</span><span class="o">.</span><span class="n">Setup</span><span class="o">.</span><span class="n">ts</span><span class="o">.</span><span class="n">CopyConfig</span><span class="p">(</span><span class="s1">&#39;config/records_8090.config&#39;</span><span class="p">,</span><span class="s1">&#39;records.config&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="origin-server">
+<h4>Origin Server<a class="headerlink" href="#origin-server" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Test.MakeOriginServer(name,</span> <span class="pre">port,</span> <span class="pre">s_port,</span> <span class="pre">ip,</span> <span class="pre">delay,</span> <span class="pre">ssl,</span> <span class="pre">lookup_key,</span> <span class="pre">clientcert,</span> <span class="pre">clientkey)</span></code><ul>
+<li>name - A name for this instance of origin server.</li>
+<li>port - option to specify the nonSSL port. If left unspecified, the port will be autoselected.</li>
+<li>s_port - option to specify the SSL port. If left unspecified, the port will be autoselected (SSL has to be True).</li>
+<li>ip - option to specify IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</li>
+<li>delay - option to have MicroServer delay for set amount of seconds before returning response. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
+<li>ssl - option to enable SSL</li>
+<li>lookup_key - option to change the unique identifier that MicroServer uses to identify each transaction. Defaults to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</li>
+<li>clientcert - path to cert used for SSL. Defaults to the included cert in <code class="docutils literal notranslate"><span class="pre">tests/tools/microserver/ssl</span></code>.</li>
+<li>clientkey - path to key used for SSL. Same default as above.</li>
+</ul>
+</li>
+</ul>
+<p>This function returns a AuTest process object that launches the python-based Microserver.
+Microserver is a mock server which responds to client http requests.
+Microserver needs to be setup for the tests that require an origin server behind ATS.
+The server reads a JSON-formatted data file that contains request headers and the corresponding response headers.
+Microserver responds with payload if the response header contains Content-Length or Transfer-Encoding specified.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Test.addResponse(filename,</span> <span class="pre">request_header,</span> <span class="pre">response_header)</span></code><ul>
+<li>filename - name of the file where the request header and response header will be written to in JSON format</li>
+<li>request_header - dictionary of request header</li>
+<li>response_header - dictionary of response header corresponding to the request header.</li>
+</ul>
+</li>
+</ul>
+<p>This function adds the request header and response header to a file which is then read by the microserver to populate request-response map.
+The key-fields required for the header dictionary are ‘headers’, ‘timestamp’ and ‘body’.</p>
+<div class="section" id="id1">
+<h5>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the origin server process</span>
+<span class="n">server</span><span class="o">=</span><span class="n">Test</span><span class="o">.</span><span class="n">MakeOriginServer</span><span class="p">(</span><span class="s2">&quot;server&quot;</span><span class="p">)</span>
+<span class="c1"># define the request header and the desired response header</span>
+<span class="n">request_header</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="s2">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s2">Host: www.example.com</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;1469733493.993&quot;</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+<span class="c1"># desired response form the origin server</span>
+<span class="n">response_header</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="s2">&quot;HTTP/1.1 200 OK</span><span class="se">\r\n</span><span class="s2">Connection: close</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="s2">&quot;1469733493.993&quot;</span><span class="p">,</span> <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span>
+<span class="c1"># addResponse adds the transaction to a file which is used by the server</span>
+<span class="n">server</span><span class="o">.</span><span class="n">addResponse</span><span class="p">(</span><span class="s2">&quot;sessionlog.json&quot;</span><span class="p">,</span> <span class="n">request_header</span><span class="p">,</span> <span class="n">response_header</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="dns">
+<h4>DNS<a class="headerlink" href="#dns" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Test.MakeDNServer(name,</span> <span class="pre">filename,</span> <span class="pre">port,</span> <span class="pre">ip,</span> <span class="pre">rr,</span> <span class="pre">default)</span></code><ul>
+<li>name - A name for this instance of MicroDNS.</li>
+<li>filename - file containing zone information for MicroDNS to read from. Defaults to <code class="docutils literal notranslate"><span class="pre">dns_file.json</span></code></li>
+<li>port - option for the DNS port. Autoselected if left unspecified.</li>
+<li>ip - option for IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></li>
+<li>rr - option to enable round robin IP. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></li>
+<li>default - option to specify a default IP response when MicroDNS can’t find a domain:IP pair.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">dns.addRecords(records,</span> <span class="pre">jsonFile)</span></code><ul>
+<li>records - a dictionary of domain:IP mappings in the form of <code class="docutils literal notranslate"><span class="pre">{&quot;domain</span> <span class="pre">A&quot;:</span> <span class="pre">[IP1,</span> <span class="pre">IP2],</span> <span class="pre">&quot;domain</span> <span class="pre">B&quot;:</span> <span class="pre">[IP3,</span> <span class="pre">IP4]}</span></code></li>
+<li>jsonFile - a JSON file containing domain:IP mappings</li>
+</ul>
+</li>
+</ul>
+<p>The JSON file must take the form of</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;mappings: [</span>
+      <span class="p">{</span><span class="s2">&quot;domain A&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">IP1</span><span class="p">,</span> <span class="n">IP2</span><span class="p">]},</span>
+      <span class="p">{</span><span class="s2">&quot;domain B&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">IP3</span><span class="p">,</span> <span class="n">IP4</span><span class="p">]}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="id2">
+<h5>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># If everything is mapped to 127.0.0.1</span>
+<span class="n">dns</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">MakeDNServer</span><span class="p">(</span><span class="s2">&quot;dns&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">])</span>
+<span class="c1">#------------------------------------------------------</span>
+<span class="c1"># Using addRecords method</span>
+<span class="n">dns</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">MakeDNServer</span><span class="p">(</span><span class="s2">&quot;dns&quot;</span><span class="p">)</span>
+
+<span class="n">dns</span><span class="o">.</span><span class="n">addRecords</span><span class="p">(</span><span class="n">records</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;foo.com.&quot;</span><span class="p">:[</span><span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span> <span class="s2">&quot;127.0.1.1&quot;</span><span class="p">]})</span>
+<span class="c1"># AND/OR</span>
+<span class="n">dns</span><span class="o">.</span><span class="n">addRecords</span><span class="p">(</span><span class="n">jsonFile</span><span class="o">=</span><span class="s2">&quot;zone.json&quot;</span><span class="p">)</span> <span class="c1"># where zone.json is in the format described above</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="condition-testing">
+<h5>Condition Testing<a class="headerlink" href="#condition-testing" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasCurlFeature(feature)</span></code></dt>
+<dd>This function tests Curl for possible features it has been compiled with. Consult Curl documentation for possible features.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.PluginExists(pluginname)</span></code></dt>
+<dd>This function tests for the existence of a certain plugin in ATS.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasATSFeature(feature)</span></code></dt>
+<dd>This function tests TrafficServer for possible features it has been compiled with. Current features you can test for are:<ul class="last">
+<li>TS_HAS_LIBZ</li>
+<li>TS_HAS_LZMA</li>
+<li>TS_HAS_JEMALLOC</li>
+<li>TS_HAS_TCMALLOC</li>
+<li>TS_HAS_IN6_IS_ADDR_UNSPECIFIED</li>
+<li>TS_HAS_BACKTRACE</li>
+<li>TS_HAS_PROFILER</li>
+<li>TS_USE_FAST_SDK</li>
+<li>TS_USE_DIAGS</li>
+<li>TS_USE_EPOLL</li>
+<li>TS_USE_KQUEUE</li>
+<li>TS_USE_PORT</li>
+<li>TS_USE_POSIX_CAP</li>
+<li>TS_USE_TPROXY</li>
+<li>TS_HAS_SO_MARK</li>
+<li>TS_HAS_IP_TOS</li>
+<li>TS_USE_HWLOC</li>
+<li>TS_USE_SET_RBIO</li>
+<li>TS_USE_QUIC</li>
+<li>TS_USE_LINUX_NATIVE_AIO</li>
+<li>TS_HAS_SO_PEERCRED</li>
+<li>TS_USE_REMOTE_UNWINDING</li>
+<li>TS_HAS_128BIT_CAS</li>
+<li>TS_HAS_TESTS</li>
+<li>TS_HAS_WCCP</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="examples">
+<h5>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Test</span><span class="o">.</span><span class="n">SkipUnless</span><span class="p">(</span>
+  <span class="n">Condition</span><span class="o">.</span><span class="n">HasATSFeature</span><span class="p">(</span><span class="s1">&#39;TS_USE_LINUX_NATIVE_AIO&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">Test</span><span class="o">.</span><span class="n">SkipUnless</span><span class="p">(</span>
+  <span class="n">Condition</span><span class="o">.</span><span class="n">HasCurlFeature</span><span class="p">(</span><span class="s1">&#39;http2&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">Test</span><span class="o">.</span><span class="n">SkipUnless</span><span class="p">(</span>
+  <span class="n">Condition</span><span class="o">.</span><span class="n">PluginExists</span><span class="p">(</span><span class="s1">&#39;a-plugin.so&#39;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="index.en.html">Testing Traffic Server</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Testing Traffic Server</a></li>
+      <li>Next: <a href="../jsonrpc/index.en.html" title="next chapter">JSONRPC</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/testing/blackbox-testing.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,256 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Background Fetch Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cache Key and Parent Selection URL Manipulation Plugin" href="cachekey.en.html" />
+    <link rel="prev" title="AuthProxy Plugin" href="authproxy.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <span class="target" id="admin-plugins-background-fetch"></span><div class="section" id="background-fetch-plugin">
+<h1>Background Fetch Plugin<a class="headerlink" href="#background-fetch-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This is a plugin for Traffic Server that allows you to proactively fetch content from Origin in a way that it
+will fill the object into cache. This is particularly useful when all (or most) of your client
+requests are of the byte-Range type. The underlying problem being that Traffic Server is not able to
+cache request / responses with byte ranges.</p>
+<div class="section" id="using-the-plugin">
+<h2>Using the plugin<a class="headerlink" href="#using-the-plugin" title="Permalink to this headline">¶</a></h2>
+<p>This plugin functions as either a global or per remap plugin, and it takes an optional argument for
+specifying a config file with inclusion or exclusion criteria. The config file can be specified both
+via an absolute path or via a relative path to the install dir</p>
+<p>To activate the plugin in global mode, in <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>, simply add:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">background_fetch</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">config</span> <span class="o">&lt;</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>To activate the plugin in per remap mode, in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, simply append the
+below to the specific remap line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">background_fetch</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=&lt;</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="functionality">
+<h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this headline">¶</a></h2>
+<p>Examining the responses from origin, we decide to trigger a background fetch of the original
+(Client) request under these conditions:</p>
+<ul class="simple">
+<li>The request is a <code class="docutils literal notranslate"><span class="pre">GET</span></code> request (we only support these right now)</li>
+<li>The response is a <code class="docutils literal notranslate"><span class="pre">206</span></code> response</li>
+<li>The original client request, and the Origin server response, is clearly indicating that the
+response is cacheable. This uses the new API <a class="reference internal" href="../../developer-guide/api/functions/TSHttpTxnIsCacheable.en.html#c.TSHttpTxnIsCacheable" title="TSHttpTxnIsCacheable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIsCacheable()</span></code></a>, which also implies
+honoring current Traffic Server configurations.</li>
+</ul>
+<p>Once deemed a good candidate to performance a background fetch, we’ll replay the original client
+request through the Traffic Server proxy again, except this time eliminating the <code class="docutils literal notranslate"><span class="pre">Range</span></code> header.
+This is transparent to the original client request, which continues as normal.</p>
+<p>Only one background fetch per URL is ever performed, making sure we do not accidentally put pressure
+on the origin servers.</p>
+<p>The plugin now supports a config file that can specify exclusion or inclusion of background fetch
+based on any arbitrary header or client-ip:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">background_fetch</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">config</span> <span class="o">&lt;</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The contents of the config-file could be as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">include</span> <span class="n">User</span><span class="o">-</span><span class="n">Agent</span> <span class="n">ABCDEF</span>
+<span class="n">exclude</span> <span class="n">User</span><span class="o">-</span><span class="n">Agent</span> <span class="o">*</span>
+<span class="n">exclude</span> <span class="n">Content</span><span class="o">-</span><span class="n">Type</span> <span class="n">text</span>
+<span class="n">exclude</span> <span class="n">X</span><span class="o">-</span><span class="n">Foo</span><span class="o">-</span><span class="n">Bar</span> <span class="n">text</span>
+<span class="n">exclude</span> <span class="n">Content</span><span class="o">-</span><span class="n">Length</span> <span class="o">&lt;</span><span class="mi">1000</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">include</span></code> configuration directive is only used when there is a corresponding <code class="docutils literal notranslate"><span class="pre">exclude</span></code> to exempt.
+For example, a single line directive, <code class="docutils literal notranslate"><span class="pre">include</span> <span class="pre">Host</span> <span class="pre">example.com</span></code> would not make the plugin
+<em>only</em> act on example.com. To acheive classic allow (only) lists, one would need to have a broad
+exclude line, such as:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">exclude</span> <span class="n">Host</span> <span class="o">*</span>
+<span class="n">include</span> <span class="n">Host</span> <span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+</div>
+<p>The plugin also now supports per remap activation. To activate the plugin for a given remap, add the
+below on the remap line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">background_fetch</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=&lt;</span><span class="n">config</span><span class="o">-</span><span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="future-additions">
+<h2>Future additions<a class="headerlink" href="#future-additions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Limiting the background fetches to content of certain sizes.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="authproxy.en.html" title="previous chapter">AuthProxy Plugin</a></li>
+      <li>Next: <a href="cachekey.en.html" title="next chapter">Cache Key and Parent Selection URL Manipulation Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/background_fetch.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

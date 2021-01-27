@@ -1,0 +1,652 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Cache Storage &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugins" href="../plugins/index.en.html" />
+    <link rel="prev" title="Security" href="../security/index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="cache-storage">
+<span id="admin-cache-storage"></span><h1>Cache Storage<a class="headerlink" href="#cache-storage" title="Permalink to this headline">¶</a></h1>
+<p>The Traffic Server cache consists of a high-speed object database called
+the <a class="reference internal" href="../../appendices/glossary.en.html#term-object-store"><span class="xref std std-term">object store</span></a> that indexes <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-object"><span class="xref std std-term">cache objects</span></a>
+according to URLs and their associated headers.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="the-traffic-server-cache">
+<h2>The Traffic Server Cache<a class="headerlink" href="#the-traffic-server-cache" title="Permalink to this headline">¶</a></h2>
+<p>The Traffic Server cache consists of a high-speed object database called
+the <a class="reference internal" href="../../appendices/glossary.en.html#term-object-store"><span class="xref std std-term">object store</span></a>. The object store indexes
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-object"><span class="xref std std-term">cache objects</span></a> according to URLs and associated headers.
+This enables Traffic Server to store, retrieve, and serve not only web pages,
+but also parts of web pages - which provides optimum bandwidth savings. Using
+sophisticated object management, the object store can cache
+<a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternate</span></a> versions of the same object (versions may differ because of
+dissimilar language or encoding types). It can also efficiently store very
+small and very large documents, thereby minimizing wasted space. When the
+cache is full, Traffic Server removes <a class="reference internal" href="../../appendices/glossary.en.html#term-stale"><span class="xref std std-term">stale</span></a> data to ensure the most
+requested objects are kept readily available and fresh.</p>
+<p>Traffic Server is designed to tolerate total disk failures on any of the
+cache disks. If the disk fails completely, then Traffic Server marks the
+entire disk as corrupt and continues using the remaining disks. An alarm
+is then created to indicate which disk failed. If all of the cache disks
+fail, then Traffic Server goes into proxy-only mode.</p>
+<p>You can perform the following cache configuration tasks:</p>
+<ul class="simple">
+<li>Change the total amount of disk space allocated to the cache; refer
+to <a class="reference internal" href="#changing-cache-capacity">Changing Cache Capacity</a>.</li>
+<li>Partition the cache by reserving cache disk space for specific
+protocols and <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin servers/domains</span></a>; refer to
+<a class="reference internal" href="#id2">Partitioning the Cache</a>.</li>
+<li>Delete all data in the cache; refer to <a class="reference internal" href="#id3">Clearing the Cache</a>.</li>
+<li>Override cache directives for a requested domain name, regex on a url,
+hostname or ip, with extra filters for time, port, method of the request,
+and more. ATS can be configured to never cache, always cache,
+ignore no-cache directives, etc. These are configured in <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</li>
+</ul>
+</div>
+<div class="section" id="the-ram-cache">
+<h2>The RAM Cache<a class="headerlink" href="#the-ram-cache" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server maintains a small RAM cache of extremely popular objects.
+This RAM cache serves the most popular objects as quickly as possible
+and reduces load on disks, especially during temporary traffic peaks.
+You can configure the RAM cache size to suit your needs, as described in
+<a class="reference internal" href="#changing-the-size-of-the-ram-cache"><span class="std std-ref">Changing the Size of the RAM Cache</span></a> below.</p>
+<p>The RAM cache supports two cache eviction algorithms, a regular <em>LRU</em>
+(Least Recently Used) and the more advanced <em>CLFUS</em> (Clocked Least
+Frequently Used by Size; which balances recentness, frequency, and size
+to maximize hit rate, similar to a most frequently used algorithm).
+The default is to use <em>LRU</em>, and this is controlled via
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-algorithm" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.algorithm</span></code></a>.</p>
+<p>Both the <em>LRU</em> and <em>CLFUS</em> RAM caches support a configuration to increase
+scan resistance. In a typical <em>LRU</em>, if you request all possible objects in
+sequence, you will effectively churn the cache on every request. The option
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-use-seen-filter" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.use_seen_filter</span></code></a> can be set to add some
+resistance against this problem.</p>
+<p>In addition, <em>CLFUS</em> also supports compressing in the RAM cache itself.
+This can be useful for content which is not compressed by itself (e.g.
+images). This should not be confused with <code class="docutils literal notranslate"><span class="pre">Content-Encoding:</span> <span class="pre">gzip</span></code>, this
+feature is only present to save space internally in the RAM cache itself. As
+such, it is completely transparent to the User-Agent. The RAM cache
+compression is enabled with the option
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-compress" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.compress</span></code></a>.</p>
+<p>Possible values are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>No compression (<em>default</em>)</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td><em>fastlz</em> compression</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td><em>libz</em> compression</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td><em>liblzma</em> compression</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="changing-the-size-of-the-ram-cache">
+<span id="id1"></span><h2>Changing the Size of the RAM Cache<a class="headerlink" href="#changing-the-size-of-the-ram-cache" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides a dedicated RAM cache for fast retrieval of
+popular small objects. The default RAM cache size is automatically
+calculated based on the number and size of the
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-partition"><span class="xref std std-term">cache partitions</span></a> you have configured. If you’ve
+partitioned your cache according to protocol and/or hosts, then the size of
+the RAM cache for each partition is proportional to the size of that partition.</p>
+<p>You can increase the RAM cache size for better cache hit performance.
+However, if you increase the size of the RAM cache and observe a
+decrease in performance (such as increased latencies), then it’s
+possible that the operating system requires more memory for network
+resources. In such instances, you should return the RAM cache size to
+its previous value.</p>
+<p>To change the RAM cache size:</p>
+<ol class="arabic simple">
+<li>Stop Traffic Server.</li>
+<li>Set the variable <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.size</span></code></a>
+to specify the size of the RAM cache. The default value of <code class="docutils literal notranslate"><span class="pre">-1</span></code> means
+that the RAM cache is automatically sized at approximately 1MB per
+gigabyte of disk.</li>
+<li>Restart Traffic Server. If you increase the RAM cache to a size of
+1GB or more, then restart with the <strong class="program">trafficserver</strong> command
+(refer to <a class="reference internal" href="../installation/index.en.html#start-traffic-server"><span class="std std-ref">Start Traffic Server</span></a>).</li>
+</ol>
+<div class="section" id="disabling-the-ram-cache">
+<h3>Disabling the RAM Cache<a class="headerlink" href="#disabling-the-ram-cache" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to disable the RAM cache. If you have configured your
+storage using the <a class="reference internal" href="../files/volume.config.en.html#std:configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> you can add an optional directive
+of <code class="docutils literal notranslate"><span class="pre">ramcache=false</span></code> to whichever volumes you wish to have it disabled on.
+This may be desirable for volumes composed of storage like RAM disks where
+you may want to avoid double RAM caching.</p>
+</div>
+</div>
+<div class="section" id="changing-cache-capacity">
+<h2>Changing Cache Capacity<a class="headerlink" href="#changing-cache-capacity" title="Permalink to this headline">¶</a></h2>
+<p>You can increase or reduce the total amount of disk space allocated to
+the cache without clearing the content. To check the size of the cache
+(in bytes), enter the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-metric-arg-get"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">metric</span> <span class="pre">get</span></code></a>
+<code class="docutils literal notranslate"><span class="pre">proxy.process.cache.bytes_total</span></code>.</p>
+<div class="section" id="increasing-cache-capacity">
+<h3>Increasing Cache Capacity<a class="headerlink" href="#increasing-cache-capacity" title="Permalink to this headline">¶</a></h3>
+<p>To increase the total amount of disk space allocated to the cache on
+existing disks, or to add new disks to a Traffic Server node:</p>
+<ol class="arabic simple">
+<li>Stop Traffic Server.</li>
+<li>Add hardware, if necessary.</li>
+<li>Edit <a class="reference internal" href="../files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> to increase the amount of disk space allocated
+to the cache on existing disks or describe the new hardware you are adding.</li>
+<li>Restart Traffic Server.</li>
+</ol>
+</div>
+<div class="section" id="reducing-cache-capacity">
+<h3>Reducing Cache Capacity<a class="headerlink" href="#reducing-cache-capacity" title="Permalink to this headline">¶</a></h3>
+<p>To reduce the total amount of disk space allocated to the cache on an
+existing disk, or to remove disks from a Traffic Server node:</p>
+<ol class="arabic simple">
+<li>Stop Traffic Server.</li>
+<li>Remove hardware, if necessary.</li>
+<li>Edit <a class="reference internal" href="../files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> to reduce the amount of disk space allocated
+to the cache on existing disks or delete the reference to the hardware you’re removing.</li>
+<li>Restart Traffic Server.</li>
+</ol>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">In <a class="reference internal" href="../files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>, a formatted or raw disk must be at least 128 MB.</p>
+</div>
+</div>
+</div>
+<div class="section" id="partitioning-the-cache">
+<span id="id2"></span><h2>Partitioning the Cache<a class="headerlink" href="#partitioning-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>You can manage your cache space and restrict disk usage from specific
+<a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin servers</span></a> and/or domains by creating
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">cache volumes</span></a>.</p>
+<div class="section" id="partitioning-the-cache-according-to-origin-server-or-domain">
+<h3>Partitioning the Cache According to Origin Server or Domain<a class="headerlink" href="#partitioning-the-cache-according-to-origin-server-or-domain" title="Permalink to this headline">¶</a></h3>
+<p>You can assign the volumes you create to specific origin servers and/or
+domains. You can assign a volume to a single origin server or to
+multiple origin servers. However, if a volume is assigned to multiple
+origin servers, then there is no guarantee on the space available in the
+volumes for each origin server. Content is stored in the volumes
+according to popularity. In addition to assigning volumes to specific
+origin servers and domains, you must assign a generic volume to store
+content from all origin servers and domains that are not listed. This
+generic volume is also used if the partitions for a particular origin
+server or domain become corrupt. If you do not assign a generic volume,
+then Traffic Server will run in proxy-only mode. The volumes do
+not need to be the same size.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You do not need to stop Traffic Server before you assign volumes
+to particular hosts or domains. However, this type of configuration
+is time-consuming and can cause a spike in memory usage.
+Therefore, it’s best to configure partition assignment during
+periods of low traffic.</p>
+</div>
+<p>To partition the cache according to hostname and domain:</p>
+<ol class="arabic simple">
+<li>Enter a line in the <a class="reference internal" href="../files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file to
+allocate the volume(s) used for each origin server and/or domain.</li>
+<li>Assign a generic volume to use for content that does not belong to
+any of the origin servers or domains listed in the file. If all
+volumes for a particular origin server become corrupt, then Traffic
+Server will also use the generic volume to store content for that
+origin server as per <a class="reference internal" href="../files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>.</li>
+<li>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
+changes.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="configuring-the-cache-object-size-limit">
+<h2>Configuring the Cache Object Size Limit<a class="headerlink" href="#configuring-the-cache-object-size-limit" title="Permalink to this headline">¶</a></h2>
+<p>By default, Traffic Server allows objects of any size to be cached. You
+can change the default behavior and specify a size limit for objects in
+the cache via the steps below:</p>
+<ol class="arabic simple">
+<li>Set <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-max-doc-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.max_doc_size</span></code></a>
+to specify the maximum size in bytes allowed for objects in the cache.
+A setting of <code class="docutils literal notranslate"><span class="pre">0</span></code> (zero) will permit cache objects to be unlimited in size.</li>
+<li>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
+changes.</li>
+</ol>
+</div>
+<div class="section" id="clearing-the-cache">
+<span id="id3"></span><h2>Clearing the Cache<a class="headerlink" href="#clearing-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>When you clear the cache, you remove all data from the entire cache -
+including data in the host database. You should clear the cache before
+performing certain cache configuration tasks such as partitioning. You
+cannot clear the cache when Traffic Server is running.</p>
+<p>To clear the cache:</p>
+<ol class="arabic">
+<li><p class="first">Stop Traffic Server (see <a class="reference internal" href="../installation/index.en.html#stop-traffic-server"><span class="std std-ref">Stop Traffic Server</span></a>)</p>
+</li>
+<li><p class="first">Enter the following command to clear the cache:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">Cclear</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">clear</span></code> command deletes all data in the object store and the
+host database. Traffic Server does not prompt you to confirm the
+deletion.</p>
+</li>
+<li><p class="first">Restart Traffic Server (see <a class="reference internal" href="../installation/index.en.html#start-traffic-server"><span class="std std-ref">Start Traffic Server</span></a>).</p>
+</li>
+</ol>
+</div>
+<div class="section" id="removing-an-object-from-the-cache">
+<h2>Removing an Object From the Cache<a class="headerlink" href="#removing-an-object-from-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server accepts the custom HTTP request method <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> when
+removing a specific object from cache. If the object is found in the
+cache and is successfully removed, then Traffic Server responds with a
+<code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> HTTP message; otherwise, a <code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">File</span> <span class="pre">Not</span> <span class="pre">Found</span></code> message is
+returned.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, the PURGE request method is only processed if received on
+the localhost interface.</p>
+</div>
+<p>In the following example, Traffic Server is running on the domain
+<code class="docutils literal notranslate"><span class="pre">example.com</span></code> and you want to remove the image <code class="docutils literal notranslate"><span class="pre">remove_me.jpg</span></code>
+from cache. Because by default we do not permit <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> requests
+from any other IP, we connect to the daemon via localhost:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -vX PURGE --resolve example.com:80:127.0.0.1 http://example.com/remove_me.jpg
+* About to connect() to example.com port 80 (#0)
+* Trying 127.0.0.1... connected
+* Connected to example.com (127.0.0.1) port 80 (#0)
+
+&gt; PURGE /remove_me.jpg HTTP/1.1
+&gt; User-Agent: curl/7.19.7
+&gt; Host: example.com
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200 Ok
+&lt; Date: Thu, 08 Jan 2010 20:32:07 GMT
+&lt; Connection: keep-alive
+</pre></div>
+</div>
+<p>The next time Traffic Server receives a request for the removed object,
+it will contact the origin server to retrieve a new copy, which will replace
+the previously cached version in Traffic Server.</p>
+<p>This procedure only removes the index to the object from a specific Traffic Server
+cache. While the object remains on disk, Traffic Server will no longer able to find
+the object. The next request for that object will result in a fresh copy of the
+object fetched. Users may still see the old (removed) content if it was cached by
+intermediary caches or by the end-users’ web browser.</p>
+</div>
+<div class="section" id="pushing-an-object-into-the-cache">
+<h2>Pushing an Object into the Cache<a class="headerlink" href="#pushing-an-object-into-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server accepts the custom HTTP request method <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> to put an object
+into the cache. If the object is successfully written to the cache, then
+Traffic Server responds with a <code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> HTTP message; otherwise a
+<code class="docutils literal notranslate"><span class="pre">400</span> <span class="pre">Malformed</span> <span class="pre">Pushed</span> <span class="pre">Response</span> <span class="pre">Header</span></code> message is returned.</p>
+<p>To push an object, first save the object headers and body into a file. For instance:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -s -i -o /path/to/file &quot;http://example.com/push_me.html&quot;
+$ cat /path/to/file
+HTTP/1.1 200 OK
+Date: Wed, 31 May 2017 16:01:59 GMT
+Access-Control-Allow-Origin: *
+Cache-Control: max-age=10800, public
+Last-Modified: Wed, 31 May 2017 16:01:59 GMT
+Content-Type: text/html
+Age: 0
+Content-Length: 176970
+
+&lt;!DOCTYPE html&gt;&lt;html id= ...
+</pre></div>
+</div>
+<p>Then, to push the object, post the object using the PUSH method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -x -s -o /dev/null -X PUSH --data-binary /path/to/file &quot;http://example.com/push_me.html&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="inspecting-the-cache">
+<span id="id4"></span><h2>Inspecting the Cache<a class="headerlink" href="#inspecting-the-cache" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides a Cache Inspector utility that enables you to
+view, delete, and invalidate URLs in the cache (HTTP only). The Cache
+Inspector utility is a powerful tool that’s capable of deleting all
+the objects in your cache. Therefore, make sure that only authorized
+administrators are allowed to access this utility through proper use
+of the <code class="docutils literal notranslate"><span class="pre">&#64;src_ip</span></code> option in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> and the instructions
+detailed in <a class="reference internal" href="../security/index.en.html#admin-controlling-access"><span class="std std-ref">Controlling Access</span></a>.</p>
+<div class="section" id="accessing-the-cache-inspector-utility">
+<h3>Accessing the Cache Inspector Utility<a class="headerlink" href="#accessing-the-cache-inspector-utility" title="Permalink to this headline">¶</a></h3>
+<p>To access the Cache Inspector utility:</p>
+<ol class="arabic">
+<li><p class="first">Set <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-ui-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http_ui_enabled</span></code></a> to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</li>
+<li><p class="first">To access the cache inspector in reverse proxy mode, you must add a
+remap rule to <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> to expose the URL. This should be
+restricted to a limited set of hosts using the <code class="docutils literal notranslate"><span class="pre">&#64;src_ip</span></code> option.
+To restrict access to the network 172.28.56.0/24, use</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">yourhost</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">myCI</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="p">{</span><span class="n">cache</span><span class="p">}</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">172.28</span><span class="o">.</span><span class="mf">56.1</span><span class="o">-</span><span class="mf">172.28</span><span class="o">.</span><span class="mf">56.254</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Reload the Traffic Server configuration by running <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>.</p>
+</li>
+<li><p class="first">Open your web browser and go to the following URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">yourhost</span><span class="o">/</span><span class="n">myCI</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>You will now be presented with the Cache Inspector interface.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="using-the-cache-inspector-utility">
+<h3>Using the Cache Inspector Utility<a class="headerlink" href="#using-the-cache-inspector-utility" title="Permalink to this headline">¶</a></h3>
+<p>The Cache Inspector Utility provides several options that enable you to view and
+delete the contents of your cache.</p>
+<dl class="docutils">
+<dt>Lookup URL</dt>
+<dd>Search for a particular URL in the cache. When Traffic Server finds the URL
+in the cache, it will display details of the object that corresponds to the
+URL (e.g. header length and number of alternates). The option to delete the
+URL from the cache will be presented.</dd>
+<dt>Delete URL</dt>
+<dd>Delete the object from the cache which corresponds to the given URL. Success
+or failure will be indicated after a delete has been attempted.</dd>
+<dt>Regex Lookup</dt>
+<dd>Search URLs within the cache using one or more regular expressions.</dd>
+<dt>Regex Delete</dt>
+<dd>Deletes all objects from the cache which match the provided regular
+expressions.</dd>
+<dt>Regex Invalidate</dt>
+<dd>Marks any objects in the cache which match the given regular expressions as
+stale. Traffic Server will contact the relevant origin server(s) to confirm
+the validity and freshness of the cached object, updating the cached object
+if necessary.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only one administrator should delete and invalidate cache entries from the
+Cache Inspector at any point in time. Changes made by multiple
+administrators at the same time can lead to unpredictable results.</p>
+</div>
+</div>
+<div class="section" id="if-modified-since-if-none-match">
+<h3>If-Modified-Since/If-None-Match<a class="headerlink" href="#if-modified-since-if-none-match" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server will respond to matching If-Modified-Since/If-None-Match requests
+with a <code class="docutils literal notranslate"><span class="pre">304</span> <span class="pre">Not</span> <span class="pre">Modified</span></code> HTTP message.</p>
+<p>This table describes how Traffic Server handles these types of requests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">OS</span> <span class="o">=</span> <span class="n">Origin</span> <span class="n">Server</span><span class="s1">&#39;s response HTTP message</span>
+<span class="n">IMS</span> <span class="o">=</span> <span class="n">A</span> <span class="n">GET</span> <span class="n">request</span> <span class="n">w</span><span class="o">/</span> <span class="n">an</span> <span class="n">If</span><span class="o">-</span><span class="n">Modified</span><span class="o">-</span><span class="n">Since</span> <span class="n">header</span>
+<span class="n">LMs</span> <span class="o">=</span> <span class="n">Last</span><span class="o">-</span><span class="n">Modified</span> <span class="n">header</span> <span class="n">date</span> <span class="n">returned</span> <span class="n">by</span> <span class="n">server</span>
+<span class="n">INM</span> <span class="o">=</span> <span class="n">A</span> <span class="n">GET</span> <span class="n">request</span> <span class="n">w</span><span class="o">/</span> <span class="n">an</span> <span class="n">If</span><span class="o">-</span><span class="kc">None</span><span class="o">-</span><span class="n">Match</span> <span class="n">header</span>
+<span class="n">E</span>   <span class="o">=</span> <span class="n">Etag</span> <span class="n">header</span> <span class="n">present</span>
+<span class="n">D</span><span class="p">,</span> <span class="n">D</span><span class="s1">&#39; are Last modified dates returned by the origin server and are later used for IMS</span>
+<span class="n">The</span> <span class="n">D</span> <span class="n">date</span> <span class="ow">is</span> <span class="n">earlier</span> <span class="n">than</span> <span class="n">the</span> <span class="n">D</span><span class="s1">&#39; date</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="20%" />
+<col width="18%" />
+<col width="20%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" rowspan="2">Client’s
+Request</th>
+<th class="head" rowspan="2">Cached
+State</th>
+<th class="head" rowspan="2">Proxy’s
+Request</th>
+<th class="head" colspan="2">Response to client</th>
+</tr>
+<tr class="row-even"><th class="head">OS 200</th>
+<th class="head">OS 304</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>GET</td>
+<td>Fresh</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>GET</td>
+<td>Stale, D’</td>
+<td>IMS  D’</td>
+<td>200, new</td>
+<td>200, cached</td>
+</tr>
+<tr class="row-odd"><td>GET</td>
+<td>Stale, E</td>
+<td>INM  E</td>
+<td>200, new</td>
+<td>200, cached</td>
+</tr>
+<tr class="row-even"><td>INM E</td>
+<td>Stale, E</td>
+<td>INM  E</td>
+<td>304</td>
+<td>304</td>
+</tr>
+<tr class="row-odd"><td>INM E +
+IMS D’</td>
+<td>Stale,
+E + D’</td>
+<td>INM E
+IMS D’</td>
+<td>200, new *</td>
+<td>304</td>
+</tr>
+<tr class="row-even"><td>IMS D</td>
+<td>None</td>
+<td>GET</td>
+<td>200, new *</td>
+<td>N/A</td>
+</tr>
+<tr class="row-odd"><td>INM E</td>
+<td>None</td>
+<td>GET</td>
+<td>200, new *</td>
+<td>N/A</td>
+</tr>
+<tr class="row-even"><td>IMS D</td>
+<td>Stale, D’</td>
+<td>IMS D’</td>
+<td>200, new</td>
+<td rowspan="3">Compare
+LMs &amp; D’.
+If match, 304
+If no match,
+200, cached</td>
+</tr>
+<tr class="row-odd"><td>IMS D’</td>
+<td>Stale, D’</td>
+<td>IMS D’</td>
+<td>200, new</td>
+</tr>
+<tr class="row-even"><td>IMS D’</td>
+<td>Stale D</td>
+<td>IMS D</td>
+<td>200, new *</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+      <li>Previous: <a href="../security/index.en.html" title="previous chapter">Security</a></li>
+      <li>Next: <a href="../plugins/index.en.html" title="next chapter">Plugins</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/storage/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

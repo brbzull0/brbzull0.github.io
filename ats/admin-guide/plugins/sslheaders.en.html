@@ -1,0 +1,293 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SSL Headers Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SSL Session Reuse Plugin" href="ssl_session_reuse.en.html" />
+    <link rel="prev" title="Slice Plugin" href="slice.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ssl-headers-plugin">
+<span id="admin-plugins-ssl-headers"></span><h1>SSL Headers Plugin<a class="headerlink" href="#ssl-headers-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">sslheaders</span></code> plugins injects SSL session information into
+HTTP request headers. It can operate as a global plugin or as a
+remap plugin.</p>
+<div class="section" id="plugin-options">
+<h2>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
+<p>The following options may be specified when loading the plugin in
+<a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> or <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">--attach=<var>WHICH</var></span></kbd></td>
+<td><p class="first">This option specifies which HTTP request the SSL headers are
+attached to.</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">client</span></code> causes the headers to be injected into
+the client request. This is primarily useful if another plugin
+should inspect then. <code class="docutils literal notranslate"><span class="pre">server</span></code> is the default and injects the
+headers into the origin server request. <code class="docutils literal notranslate"><span class="pre">both</span></code> injects the
+headers into both the client request and the origin server
+request.</p>
+</td></tr>
+</tbody>
+</table>
+<p>A list of <cite>KEY=VALUE</cite> pairs follows any options. The <cite>KEY</cite> names the HTTP
+header to inject, and <cite>VALUE</cite> names the SSL session field.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SSL session field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>client.certificate</td>
+<td>The client certificate in PEM format</td>
+</tr>
+<tr class="row-odd"><td>client.subject</td>
+<td>The client certificate subject DN</td>
+</tr>
+<tr class="row-even"><td>client.issuer</td>
+<td>The client certificate issuer DN</td>
+</tr>
+<tr class="row-odd"><td>client.serial</td>
+<td>The client certificate serial number in hexadecimal format</td>
+</tr>
+<tr class="row-even"><td>client.signature</td>
+<td>The client certificate signature in hexadecimal format</td>
+</tr>
+<tr class="row-odd"><td>client.notbefore</td>
+<td>The client certificate validity start time</td>
+</tr>
+<tr class="row-even"><td>client.notafter</td>
+<td>The client certificate validity end time</td>
+</tr>
+<tr class="row-odd"><td>server.certificate</td>
+<td>The server certificate in PEM format</td>
+</tr>
+<tr class="row-even"><td>server.subject</td>
+<td>The server certificate subject DN</td>
+</tr>
+<tr class="row-odd"><td>server.issuer</td>
+<td>The server certificate issuer DN</td>
+</tr>
+<tr class="row-even"><td>server.serial</td>
+<td>The server certificate serial number in hexadecimal format</td>
+</tr>
+<tr class="row-odd"><td>server.signature</td>
+<td>The server certificate signature in hexadecimal format</td>
+</tr>
+<tr class="row-even"><td>server.notbefore</td>
+<td>The server certificate validity start time</td>
+</tr>
+<tr class="row-odd"><td>server.notafter</td>
+<td>The server certificate validity end time</td>
+</tr>
+</tbody>
+</table>
+<p>The <cite>client.certificate</cite> and <cite>server.certificate</cite> fields emit
+the corresponding certificate in PEM format, with newline characters
+replaced by spaces.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">sslheaders</span></code> plugin activates on non-SSL connections, it
+will delete all the configured HTTP header names so that malicious
+clients cannot inject misleading information. If any of the SSL
+fields expand to an empty string, those headers are also deleted.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>In this example, the origin server is interested in the subject of
+the server certificate that was used to accept a client connection.
+We can apply the <code class="docutils literal notranslate"><span class="pre">sslheaders</span></code> plugin to a generic remap rule to
+provide this information. The <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> configuration
+would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_map</span> <span class="n">https</span><span class="p">:</span><span class="o">//*.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">sslheaders</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">SSL</span><span class="o">-</span><span class="n">Server</span><span class="o">=</span><span class="n">server</span><span class="o">.</span><span class="n">subject</span>
+</pre></div>
+</div>
+<p>In this example, we have set <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-client-certification-level" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.certification_level</span></code></a>
+to request SSL client certificates. We can then configure <code class="docutils literal notranslate"><span class="pre">sslheaders</span></code>
+to populate the client certificate subject globally by adding it
+to <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sslheaders</span><span class="o">.</span><span class="n">so</span> <span class="n">SSL</span><span class="o">-</span><span class="n">Client</span><span class="o">-</span><span class="n">ID</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">subject</span> <span class="n">SSL</span><span class="o">-</span><span class="n">Client</span><span class="o">-</span><span class="n">NotBefore</span><span class="o">=</span><span class="n">client</span><span class="o">.</span><span class="n">notbefore</span> <span class="n">SSL</span><span class="o">-</span><span class="n">Client</span><span class="o">-</span><span class="n">NotAfter</span><span class="o">-</span><span class="n">client</span><span class="o">.</span><span class="n">notafter</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="slice.en.html" title="previous chapter">Slice Plugin</a></li>
+      <li>Next: <a href="ssl_session_reuse.en.html" title="next chapter">SSL Session Reuse Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/sslheaders.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>
