@@ -1,0 +1,286 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ATS Release Roadmap &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Administrator’s Guide" href="../admin-guide/index.en.html" />
+    <link rel="prev" title="Upgrading to ATS v10.x" href="upgrading.en.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ats-release-roadmap">
+<span id="roadmap"></span><h1>ATS Release Roadmap<a class="headerlink" href="#ats-release-roadmap" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>Apache Traffic Server is currently on a two year major release cycle. At any
+given time, we guarantee to have two major versions supported. Currently,
+this means v7.1.x and v8.0.x, with a possible v8.1.x coming.</p>
+<p>For details on the actual developer release process, See</p>
+<div class="section" id="versions-compatibility-and-schedules">
+<h2>Versions, compatibility and schedules<a class="headerlink" href="#versions-compatibility-and-schedules" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>We promise to make 1 major release every two years, but the RM and
+community can of course make more as necessary.</li>
+<li>We only make releases off the LTS branches, which are cut every 2 years
+off the master branch.</li>
+<li>Master is always open, for any type of change (including incompatible
+changes). But don’t break compatibility just for fun!</li>
+<li>Master is always stable, i.e. commits should be properly tested and
+reviewed before committed to master.</li>
+<li>All releases are stable releases, following strict Semantic Versioning.</li>
+<li>Minor and patch releases are made at the discretion of the community and
+the RM.</li>
+<li>Minor releases can include new (small / safe) features, but must be
+compatible within the LTS major version.</li>
+<li>The LTS cycle, 4 years, does not reset when we make a minor release.</li>
+<li>The goal is that within a major LTS version, only one minor version is
+continuously supported. For example, if we have made a v9.1.2, and the
+RM makes a v9.2.0 release, do not expect any more releases of v9.1.x.
+The exception here would be serious issues, or security problems.</li>
+</ol>
+</div>
+<div class="section" id="current-release-schedule-and-support">
+<h2>Current Release Schedule and support<a class="headerlink" href="#current-release-schedule-and-support" title="Permalink to this headline">¶</a></h2>
+<div class="figure align-center">
+<img alt="../_images/roadmap.png" src="../_images/roadmap.png" />
+</div>
+<p><strong>Note:</strong> These are examples, only the first minor release number of each
+major LTS branch is guaranteed to be made. The dates for point releases
+are also for illustration.</p>
+</div>
+<div class="section" id="how">
+<h2>How?<a class="headerlink" href="#how" title="Permalink to this headline">¶</a></h2>
+<p>As you can see, we no longer make any sort of development releases. Also,
+there’s no longer a backport voting process! The latter means that all
+developers and users must make a higher commitment to reviewing changes as
+they go into master and the incompatible release branch. Other than that,
+it’s pretty much business as usual, but easier for everyone involved.
+This git branch diagram shows an example how the git tree will be managed:</p>
+<div class="figure align-center">
+<img alt="../_images/git-versions.svg" src="../_images/git-versions.svg" /></div>
+</div>
+<div class="section" id="burning-release-numbers-or-how-our-release-process-works">
+<h2>Burning release numbers, or how our release process works<a class="headerlink" href="#burning-release-numbers-or-how-our-release-process-works" title="Permalink to this headline">¶</a></h2>
+<p>When we upload a tar ball to VOTE on as a new release and it does not work
+out, because something is broken and needs a code-change we will not reuse
+the version number. The rationale behind this is the process which guarantees
+that what we release and what’s in the tree is also what everyone has seen so
+far and no code is sneaked in.</p>
+<p>If for instance we had a release candidate trafficserver-4.1.4-rc1.tar.bz2
+(note the rc1 at the) end, and that vote passed, we’d re-roll the tar-ball to
+make sure it will simply be called trafficserver-4.1.4.tar.bz2. But now all
+sha1 and md5 sums as well as the GPG signature would also be different.
+That’s the perfect opportunity to smuggle in some code that no one will
+bother to review any more.</p>
+<p>Therefore when creating a new release the first thing we do is create a
+signed tag and push it. That way everyone can compare that signed tag with
+the signed tar-ball that we create from the tag and upload it (usually to
+people.apache.org).</p>
+<p>Now, when we notice an issue that needs a code-change, we make that on
+master, cherry-pick it to the release-branch (optional), and create the new
+tag.</p>
+</div>
+<div class="section" id="release-managers">
+<h2>Release Managers<a class="headerlink" href="#release-managers" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="16%" />
+<col width="21%" />
+<col width="26%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Version</th>
+<th class="head">Primary</th>
+<th class="head">Secondary</th>
+<th class="head">1st Release</th>
+<th class="head">Supported</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>8.x</td>
+<td>Bryan</td>
+<td>Leif</td>
+<td>8/2018</td>
+<td>1/2022</td>
+</tr>
+<tr class="row-odd"><td>9.x</td>
+<td>Leif</td>
+<td>Bryan</td>
+<td>1/2020</td>
+<td>1/2024</td>
+</tr>
+<tr class="row-even"><td>10.x</td>
+<td>TBD</td>
+<td>TBD</td>
+<td>1/2022</td>
+<td>1/2026</td>
+</tr>
+</tbody>
+</table>
+<p>Each release manager is responsible for the primary, minor release, as well
+as any patch releases within that minor release. Note that patch releases are
+primarily for truly critical bugs, and security issues. Don’t expect minor
+fixes or feature additions in a patch release, those happens on each
+quarterly release.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.en.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="whats-new.en.html">What’s New in ATS v10.x</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.en.html">Upgrading to ATS v10.x</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">ATS Release Roadmap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.en.html">Release Notes</a><ul>
+      <li>Previous: <a href="upgrading.en.html" title="previous chapter">Upgrading to ATS v10.x</a></li>
+      <li>Next: <a href="../admin-guide/index.en.html" title="next chapter">Administrator’s Guide</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/release-notes/roadmap.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

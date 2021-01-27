@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>An Overview Client Sessions and Transactions &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Core Architecture" href="core-architecture/index.en.html" />
+    <link rel="prev" title="Host Resolution Proposal" href="host-resolution-proposal.en.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="an-overview-client-sessions-and-transactions">
+<span id="client-session-architecture"></span><h1>An Overview Client Sessions and Transactions<a class="headerlink" href="#an-overview-client-sessions-and-transactions" title="Permalink to this headline">¶</a></h1>
+<p>The User Agent interacts with ATS by creating a session with the ATS server and
+submitting sequences of requests over the session. ATS supports several session protocols including
+HTTP/1.x and HTTP/2. A HTTP State Machine is created for each request to process the request.</p>
+<p>ATS uses the generic classes ProxySession and ProxyTransaction to hide the details of
+the underlying protocols from the HTTP State Machine.</p>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="proxysession">
+<h3>ProxySession<a class="headerlink" href="#proxysession" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<img alt="ProxySession hierarchy" src="../_images/session_hierarchy.png" />
+</div>
+<p>The ProxySession class abstracts the key features of a client session.  It contains zero or more ProxyTransaction objects.  It also has a reference to the associated NetVC (either UnixNetVConnection or SSLNetVConnection).  The session class is responsible for interfacing with the user agent protocol.</p>
+<p>At this point there are two concrete subclasses: Http1ClientSession and Http2ClientSession.  The Http1ClientSession
+only has at most one transaction active at a time.  The HTTP/2 protocol allows for multiple simultaneous active
+transactions</p>
+</div>
+<div class="section" id="proxytransaction">
+<h3>ProxyTransaction<a class="headerlink" href="#proxytransaction" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<img alt="ProxyTransaction hierarchy" src="../_images/transaction_hierarchy.png" />
+</div>
+<p>The ProxyTransaction class abstracts the key features of a client transaction.  It has a reference to its
+parent ProxySession.  One HttpSM is created for each ProxyTransaction.</p>
+<p>There are two concrete subclasses: Http1Transaction and Http2Stream.</p>
+</div>
+</div>
+<div class="section" id="session-object-relationships">
+<h2>Session Object Relationships<a class="headerlink" href="#session-object-relationships" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="http-1-x-objects">
+<h3>HTTP/1.x Objects<a class="headerlink" href="#http-1-x-objects" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<img alt="HTTP1 session objects" src="../_images/http1_session_objects.png" />
+</div>
+<p>This diagram shows the relationships between objects created as part of a HTTP/1.x session.  A NetVC
+object performs the basic network level protocols.  The Http1ClientSession object has a reference to the
+associated NetVC object.  The NetVC object is available via the <code class="code docutils literal notranslate"><span class="pre">ProxySession::get_netvc()</span></code> method.</p>
+<p>The Http1ClientSession object contains a Http1Transaction object.  For each HTTP request, it calls
+the <code class="code docutils literal notranslate"><span class="pre">ProxySession::new_transaction()</span></code> method to instantiate the Http1Transaction object.  With the HTTP/1.x
+protocol at most one transaction can be active at a time.</p>
+<p>When the Http1Transaction object is instantiated via <code class="code docutils literal notranslate"><span class="pre">ProxyTransaction::new_transaction()</span></code> it allocates a
+new HttpSM object, initializes it, and calls <code class="code docutils literal notranslate"><span class="pre">HttpSM::attach_client_session()</span></code> to associate the
+Http1Transaction object with the new HttpSM.</p>
+<p>The ProxyTransaction object refers to the HttpSM via the _sm member variable.  The HttpSM object
+refers to ProxyTransaction via the ua_session member variable (session in the member name is
+historical because the HttpSM used to refer directly to the ClientSession object).</p>
+</div>
+<div class="section" id="http-2-objects">
+<h3>HTTP/2 Objects<a class="headerlink" href="#http-2-objects" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center">
+<img alt="HTTP/2 session objects" src="../_images/http2_session_objects.png" />
+</div>
+<p>This diagram shows the relationships between objects created as part of a HTTP/2 session.  It is very similar
+to the HTTP/1.x case.  The Http2ClientSession object interacts with the NetVC.  The Http2Stream object creates
+a HttpSM object when <code class="code docutils literal notranslate"><span class="pre">ProxyClient::new_transaction()</span></code> is called.</p>
+<p>One difference is that the Http/2 protocol allows for multiple simultaneous transactions, so the Http2ClientSession
+object must be able to manage multiple streams. From the HttpSM perspective it is interacting with a
+ProxyTransaction object, and there is no difference between working with a Http2Stream and a Http1Transaction.</p>
+</div>
+</div>
+<div class="section" id="transaction-and-session-shutdown">
+<h2>Transaction and Session Shutdown<a class="headerlink" href="#transaction-and-session-shutdown" title="Permalink to this headline">¶</a></h2>
+<p>One of the trickiest bits of managing sessions and transactions is cleaning things up accurately and in a timely fashion.
+In addition, the TXN_CLOSE hooks and SSN_CLOSE hooks must be executed accurately.  The TXN_CLOSE hooks must be
+executed exactly once.  The SSN_CLOSE hook must also be executed exactly once and only after all the TXN_CLOSE
+hooks of all the child transactions have been executed.  The CLOSE hooks are important for many plugins to ensure that
+plugin allocated objects are appropriately reclaimed.</p>
+<p>If objects are not cleaned up, memory leaks will occurs.  If objects are reclaimed too soon, delayed events may
+cause use-after-free and other related memory corruption errors.</p>
+<p>To ensure that sessions and transactions are correctly shutdown the following assertions are maintained.</p>
+<ul class="simple">
+<li>The Session object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until all child transaction objects are fully shutdown (i.e. TXN_CLOSE hooks are called and the transaction objects have been freed).</li>
+<li>The Transaction object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until the associated HttpSM has been shutdown.  In <code class="code docutils literal notranslate"><span class="pre">HttpSM::kill_this()</span></code>, the HttpSM will call <code class="code docutils literal notranslate"><span class="pre">ProxyTransaction::transaction_done()</span></code> on the ua_session object.  If the user agent initiates the termination, the ProxyTransaction object will send a WRITE_COMPLETE, EOS, or ERROR event on the open VIO object.  This should signal to the HttpSM object to shut itself down.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.en.html">Developer’s Guide</a><ul>
+      <li>Previous: <a href="host-resolution-proposal.en.html" title="previous chapter">Host Resolution Proposal</a></li>
+      <li>Next: <a href="core-architecture/index.en.html" title="next chapter">Core Architecture</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/developer-guide/client-session-architecture.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

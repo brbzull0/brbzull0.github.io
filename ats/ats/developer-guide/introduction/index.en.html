@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Introduction &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Header Files" href="header-file-structure.en.html" />
+    <link rel="prev" title="Developer’s Guide" href="../index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction">
+<span id="developer-introduction"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This guide has the following basic components:</p>
+<ul class="simple">
+<li>Introduction and overview.</li>
+<li>Tutorials about writing specific kinds of plugins: HTTP header-based
+plugins, content transformation plugins, and protocol plugins.</li>
+<li>Guides about specific interfaces.</li>
+<li>Reference material.</li>
+</ul>
+<p>If you’re new to writing Traffic Server plugins, <a class="reference internal" href="../plugins/getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a>
+should be your starting point. <a class="reference internal" href="../plugins/example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a>
+provides details about plugins that work on HTTP headers, while
+<a class="reference internal" href="../plugins/http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a> explains how to write a plugin
+that transforms or scans the body of an HTTP response.
+<a class="reference internal" href="../plugins/new-protocol-plugins.en.html#developer-plugins-new-protocol-plugins"><span class="std std-ref">New Protocol Plugins</span></a> provides essential information if
+you want to support your own protocol on Traffic Server.</p>
+<p>For a reference to the C API functions and types that your plugin will use,
+refer to the <a class="reference internal" href="../api/index.en.html#developer-api-reference"><span class="std std-ref">API Reference</span></a>.</p>
+<p>Below is a section-by-section breakdown of this guide:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="header-file-structure.en.html#developer-header-files"><span class="std std-ref">Header Files</span></a></dt>
+<dd>The header file directory structure, where to find headers for particular tasks.</dd>
+<dt><a class="reference internal" href="../plugins/getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a></dt>
+<dd>How to compile and load plugins. Walks through a simple “hello world”
+example; explains how to initialize and register plugins. Basic structures
+that all plugins use: events, continuations, and how to hook on to Traffic Server
+processes. Detailed explication of a sample denylisting plugin.</dd>
+<dt><a class="reference internal" href="../plugins/example-plugins/query_remap/index.en.html#developer-plugins-examples-query-remap"><span class="std std-ref">Query Remap Plugin</span></a></dt>
+<dd>This chapter demonstrates on a practical example how you can
+exploit the Traffic Server remap API for your plugins.</dd>
+<dt><a class="reference internal" href="../plugins/example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a></dt>
+<dd>Detailed explanation about writing plugins that work on HTTP
+headers; discusses sample denylisting and basic authorization
+plugins.</dd>
+<dt><a class="reference internal" href="../plugins/http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a></dt>
+<dd>Detailed explanation of the null_transform example; also discusses
+<code class="docutils literal notranslate"><span class="pre">VConnections</span></code>, <code class="docutils literal notranslate"><span class="pre">VIOs</span></code>, and IO buffers.</dd>
+<dt><a class="reference internal" href="../plugins/new-protocol-plugins.en.html#developer-plugins-new-protocol-plugins"><span class="std std-ref">New Protocol Plugins</span></a></dt>
+<dd>Detailed explanation of a sample protocol plugin that supports a
+synthetic protocol. Discusses <code class="docutils literal notranslate"><span class="pre">VConnections</span></code> and mutexes, as well
+as the new <code class="docutils literal notranslate"><span class="pre">NetConnection</span></code>, DNS lookup, logging, and cache APIs.</dd>
+</dl>
+<p>The remaining sections comprise the API function reference and are organized by
+function type:</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="../plugins/plugin-interfaces.en.html#developer-plugins-interfaces"><span class="std std-ref">Plugin Interfaces</span></a></dt>
+<dd>Details error-writing and tracing functions, thread functions, and Traffic Server API
+versions of the <code class="docutils literal notranslate"><span class="pre">malloc</span></code> and <code class="docutils literal notranslate"><span class="pre">fopen</span></code> families. The Traffic Server API versions
+overcome various C library limitations.</dd>
+<dt><a class="reference internal" href="../plugins/hooks-and-transactions/index.en.html#developer-plugins-hooks-and-transactions"><span class="std std-ref">Hooks and Transactions</span></a></dt>
+<dd>Functions in this chapter hook your plugin to Traffic Server HTTP processes.</dd>
+<dt><a class="reference internal" href="../plugins/http-headers/index.en.html#developer-plugins-http-headers"><span class="std std-ref">HTTP Headers</span></a></dt>
+<dd>Contains instructions for implementing performance enhancements for
+all plugins that manipulate HTTP headers. These functions examine and
+modify HTTP headers, MIME headers, URLs, and the marshal buffers that
+contain header information. If you are working with headers, then be
+sure to read this chapter.</dd>
+</dl>
+<p><a class="reference internal" href="../plugins/mutexes.en.html#developer-plugins-mutexes"><span class="std std-ref">Mutexes</span></a></p>
+<dl class="docutils">
+<dt><a class="reference internal" href="../plugins/continuations/index.en.html#developer-plugins-continuations"><span class="std std-ref">Continuations</span></a></dt>
+<dd>Continuations provide the basic callback mechanism and data
+abstractions used in Traffic Server.</dd>
+</dl>
+<p><a class="reference internal" href="../plugins/configuration.en.html#developer-plugins-configuration"><span class="std std-ref">Plugin Configuration</span></a></p>
+<dl class="docutils">
+<dt><a class="reference internal" href="../plugins/actions/index.en.html#developer-plugins-actions"><span class="std std-ref">Actions</span></a></dt>
+<dd>Describes how to use <code class="docutils literal notranslate"><span class="pre">TSActions</span></code> and the <code class="docutils literal notranslate"><span class="pre">TSDNSLookup</span></code> API.</dd>
+<dt><a class="reference internal" href="../plugins/io/index.en.html#developer-plugins-io"><span class="std std-ref">IO</span></a></dt>
+<dd>Describes how to use the Traffic Server IO interfaces:
+<code class="docutils literal notranslate"><span class="pre">TSVConnection</span></code>, <code class="docutils literal notranslate"><span class="pre">TSVIO</span></code>, <code class="docutils literal notranslate"><span class="pre">TSIOBuffer</span></code>, <code class="docutils literal notranslate"><span class="pre">TSNetVConnection</span></code>,
+the Cache API.</dd>
+<dt><a class="reference internal" href="../plugins/plugin-management/index.en.html#developer-plugins-management"><span class="std std-ref">Plugin Management</span></a></dt>
+<dd>These functions enable you to set up a configuration interface for
+plugins, access installed plugin files, and set up plugin licensing.</dd>
+<dt><a class="reference internal" href="../plugins/adding-statistics.en.html#developer-plugins-add-statistics"><span class="std std-ref">Adding Statistics</span></a></dt>
+<dd>These functions add statistics to your plugin.</dd>
+<dt><a class="reference internal" href="../api/functions/index.en.html#developer-api-ref-functions"><span class="std std-ref">API Functions</span></a></dt>
+<dd>Traffic Server API Function Documentation.</dd>
+</dl>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+      <li>Previous: <a href="../index.en.html" title="previous chapter">Developer’s Guide</a></li>
+      <li>Next: <a href="header-file-structure.en.html" title="next chapter">Header Files</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/introduction/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

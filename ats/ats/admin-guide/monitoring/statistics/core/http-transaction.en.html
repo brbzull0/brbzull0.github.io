@@ -1,0 +1,931 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>HTTP Transaction &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="HTTP Response Code" href="http-response-code.en.html" />
+    <link rel="prev" title="SSL Cipher" href="ssl-cipher.en.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="http-transaction">
+<span id="admin-stats-core-http-transaction"></span><h1>HTTP Transaction<a class="headerlink" href="#http-transaction" title="Permalink to this headline">¶</a></h1>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-avg-transactions-per-client-connection">
+<code class="descname">proxy.process.http.avg_transactions_per_client_connection</code><a class="headerlink" href="#stat-proxy-process-http-avg-transactions-per-client-connection" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">derivative</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-avg-transactions-per-server-connection">
+<code class="descname">proxy.process.http.avg_transactions_per_server_connection</code><a class="headerlink" href="#stat-proxy-process-http-avg-transactions-per-server-connection" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">derivative</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-total-transactions-time">
+<code class="descname">proxy.process.http.total_transactions_time</code><a class="headerlink" href="#stat-proxy-process-http-total-transactions-time" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-aborts">
+<code class="descname">proxy.process.http.transaction_counts.errors.aborts</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-aborts" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-connect-failed">
+<code class="descname">proxy.process.http.transaction_counts.errors.connect_failed</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-connect-failed" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-early-hangups">
+<code class="descname">proxy.process.http.transaction_counts.errors.early_hangups</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-early-hangups" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-empty-hangups">
+<code class="descname">proxy.process.http.transaction_counts.errors.empty_hangups</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-empty-hangups" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-other">
+<code class="descname">proxy.process.http.transaction_counts.errors.other</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-other" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-possible-aborts">
+<code class="descname">proxy.process.http.transaction_counts.errors.possible_aborts</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-possible-aborts" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-errors-pre-accept-hangups">
+<code class="descname">proxy.process.http.transaction_counts.errors.pre_accept_hangups</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-errors-pre-accept-hangups" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-hit-fresh">
+<code class="descname">proxy.process.http.transaction_counts.hit_fresh</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-hit-fresh" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-hit-fresh-process">
+<code class="descname">proxy.process.http.transaction_counts.hit_fresh.process</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-hit-fresh-process" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-hit-revalidated">
+<code class="descname">proxy.process.http.transaction_counts.hit_revalidated</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-hit-revalidated" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-miss-changed">
+<code class="descname">proxy.process.http.transaction_counts.miss_changed</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-miss-changed" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-miss-client-no-cache">
+<code class="descname">proxy.process.http.transaction_counts.miss_client_no_cache</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-miss-client-no-cache" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-miss-cold">
+<code class="descname">proxy.process.http.transaction_counts.miss_cold</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-miss-cold" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-miss-not-cacheable">
+<code class="descname">proxy.process.http.transaction_counts.miss_not_cacheable</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-miss-not-cacheable" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-counts-other-unclassified">
+<code class="descname">proxy.process.http.transaction_counts.other.unclassified</code><a class="headerlink" href="#stat-proxy-process-http-transaction-counts-other-unclassified" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-errors-aborts">
+<code class="descname">proxy.process.http.transaction_totaltime.errors.aborts</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-errors-aborts" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-errors-connect-failed">
+<code class="descname">proxy.process.http.transaction_totaltime.errors.connect_failed</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-errors-connect-failed" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-errors-other">
+<code class="descname">proxy.process.http.transaction_totaltime.errors.other</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-errors-other" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-errors-possible-aborts">
+<code class="descname">proxy.process.http.transaction_totaltime.errors.possible_aborts</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-errors-possible-aborts" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-errors-pre-accept-hangups">
+<code class="descname">proxy.process.http.transaction_totaltime.errors.pre_accept_hangups</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-errors-pre-accept-hangups" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-hit-fresh">
+<code class="descname">proxy.process.http.transaction_totaltime.hit_fresh</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-hit-fresh" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-hit-fresh-process">
+<code class="descname">proxy.process.http.transaction_totaltime.hit_fresh.process</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-hit-fresh-process" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-hit-revalidated">
+<code class="descname">proxy.process.http.transaction_totaltime.hit_revalidated</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-hit-revalidated" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-miss-changed">
+<code class="descname">proxy.process.http.transaction_totaltime.miss_changed</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-miss-changed" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-miss-client-no-cache">
+<code class="descname">proxy.process.http.transaction_totaltime.miss_client_no_cache</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-miss-client-no-cache" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-miss-cold">
+<code class="descname">proxy.process.http.transaction_totaltime.miss_cold</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-miss-cold" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-miss-not-cacheable">
+<code class="descname">proxy.process.http.transaction_totaltime.miss_not_cacheable</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-miss-not-cacheable" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-transaction-totaltime-other-unclassified">
+<code class="descname">proxy.process.http.transaction_totaltime.other.unclassified</code><a class="headerlink" href="#stat-proxy-process-http-transaction-totaltime-other-unclassified" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">float</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Gathered:</th><td class="field-body">No</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+</div>
+<div class="section" id="http-2">
+<h2>HTTP/2<a class="headerlink" href="#http-2" title="Permalink to this headline">¶</a></h2>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http2-total-client-streams">
+<code class="descname">proxy.process.http2.total_client_streams</code><a class="headerlink" href="#stat-proxy-process-http2-total-client-streams" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+<p>Represents the total number of HTTP/2 streams from client to the Traffic Server.</p>
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http2-current-client-streams">
+<code class="descname">proxy.process.http2.current_client_streams</code><a class="headerlink" href="#stat-proxy-process-http2-current-client-streams" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">gauge</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+<p>Represents the current number of HTTP/2 streams from client to the Traffic Server.</p>
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http2-total-transactions-time">
+<code class="descname">proxy.process.http2.total_transactions_time</code><a class="headerlink" href="#stat-proxy-process-http2-total-transactions-time" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Units:</th><td class="field-body">seconds</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+<p>Represents the total transaction time of HTTP/2 streams from client to the Traffic Server.</p>
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http2-stream-errors">
+<code class="descname">proxy.process.http2.stream_errors</code><a class="headerlink" href="#stat-proxy-process-http2-stream-errors" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type:</th><td class="field-body">counter</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
+</tr>
+</tbody>
+</table>
+<div class="compound">
+<p>Represents the total number of HTTP/2 stream errors.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="../../index.en.html">Monitoring</a><ul>
+  <li><a href="../index.en.html">Statistics</a><ul>
+  <li><a href="../core-statistics.en.html">Core Statistics</a><ul>
+      <li>Previous: <a href="ssl-cipher.en.html" title="previous chapter">SSL Cipher</a></li>
+      <li>Next: <a href="http-response-code.en.html" title="next chapter">HTTP Response Code</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/admin-guide/monitoring/statistics/core/http-transaction.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,320 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Release Process &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Contributing to Traffic Server" href="../contributing/index.en.html" />
+    <link rel="prev" title="Header Files" href="../introduction/header-file-structure.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="release-process">
+<span id="developer-release-process"></span><h1>Release Process<a class="headerlink" href="#release-process" title="Permalink to this headline">¶</a></h1>
+<p>Managing a release is easiest in an environment that is as clean as possible.
+For this reason, cloning the code base in to a new directory for the release
+process is recommended.</p>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>A system for git and building.</li>
+<li>A cryptographic key that has been signed by at least two other PMC members.
+This should be preferentially associated with your <code class="docutils literal notranslate"><span class="pre">apache.org</span></code> email
+address but that is not required.</li>
+</ul>
+</div>
+<div class="section" id="release-candidate">
+<span id="release-management-release-candidate"></span><h2>Release Candidate<a class="headerlink" href="#release-candidate" title="Permalink to this headline">¶</a></h2>
+<p>The first step in a release is making a release candidate. This is distributed
+to the community for validation before the actual release.</p>
+</div>
+<div class="section" id="document">
+<h2>Document<a class="headerlink" href="#document" title="Permalink to this headline">¶</a></h2>
+<p>Gather up information about the changes for the release. The <code class="docutils literal notranslate"><span class="pre">CHANGES</span></code> file
+is a good starting point. You may also want to check the commits since the last
+release. The primary purpose of this is to generate a list of the important
+changes since the last release.</p>
+<p>Create or update a page on the Wiki for the release. If it is a major or minor
+release it should have its own page. Use the previous release page as a
+template. Point releases should get a section at the end of the corresponding
+release page.</p>
+<p>Write an announcement for the release. This will contain much of the same
+information that is on the Wiki page but more concisely. Check the
+<a class="reference external" href="http://mail-archives.apache.org/mod_mbox/trafficserver-dev/">mailing list archives</a>
+for examples to use as a base.</p>
+</div>
+<div class="section" id="build">
+<h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Go to the top level source directory.</p>
+</li>
+<li><p class="first">Check the version in <code class="docutils literal notranslate"><span class="pre">configure.ac</span></code>. There are two values near the top that
+need to be set, <code class="docutils literal notranslate"><span class="pre">TS_VERSION_S</span></code> and <code class="docutils literal notranslate"><span class="pre">TS_VERSION_N</span></code>. These are the release
+version number in different encodings.</p>
+</li>
+<li><p class="first">Check the variable <code class="docutils literal notranslate"><span class="pre">RC</span></code> in the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code>. This should be
+the point release value. This needs to be changed for every release
+candidate. The first release candidate is <code class="docutils literal notranslate"><span class="pre">0</span></code> (zero).</p>
+</li>
+<li><p class="first">Execute the following commands to make the distribution files.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">autoreconf</span> <span class="o">-</span><span class="n">i</span>
+<span class="o">./</span><span class="n">configure</span>
+<span class="n">make</span> <span class="n">rel</span><span class="o">-</span><span class="n">candidate</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>These steps will create the distribution files and sign them using your key.
+Expect to be prompted twice for your passphrase unless you use an ssh key agent.
+If you have multiple keys you will need to set the default appropriately
+beforehand, as no option will be provided to select the signing key. The files
+should have names that start with <code class="docutils literal notranslate"><span class="pre">trafficserver-X.Y.Z-rcA.tar.bz2</span></code> where
+<code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> is the version and <code class="docutils literal notranslate"><span class="pre">A</span></code> is the release candidate counter. There
+should be four such files, one with no extension and three others with the
+extensions <code class="docutils literal notranslate"><span class="pre">asc</span></code>, <code class="docutils literal notranslate"><span class="pre">md5</span></code>, and <code class="docutils literal notranslate"><span class="pre">sha1</span></code>. This will also create a signed git
+tag of the form <code class="docutils literal notranslate"><span class="pre">X.Y.Z-rcA</span></code>.</p>
+</div>
+<div class="section" id="distribute">
+<h2>Distribute<a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h2>
+<p>The release candidate files should be uploaded to some public storage. Your
+personal storage on <em>people.apach.org</em> is a reasonable location to use.</p>
+<p>Send the release candidate announcement to the <em>users</em> and <em>dev</em> mailing
+lists, noting that it is a release <em>candidate</em> and providing a link to the
+distribution files you uploaded. This announcement should also call for a vote
+on the candidate, generally with a 72 hours time limit.</p>
+<p>If the voting was successful (at least three “+1” votes and no “-1” votes),
+proceed to <a class="reference internal" href="#release-management-official-release"><span class="std std-ref">Official Release</span></a>. Otherwise, repeat the
+<a class="reference internal" href="#release-management-release-candidate"><span class="std std-ref">Release Candidate</span></a> process.</p>
+</div>
+<div class="section" id="official-release">
+<span id="release-management-official-release"></span><h2>Official Release<a class="headerlink" href="#official-release" title="Permalink to this headline">¶</a></h2>
+<p>Build the distribution files with the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">release</span>
+</pre></div>
+</div>
+<p>Be sure to not have changed anything since the release candidate was built so
+the checksums are identical. This will create a signed git tag of the form
+<code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> and produce the distribution files. Push the tag to the ASF repository
+with the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span> <span class="n">X</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">Z</span>
+</pre></div>
+</div>
+<p>This presumes <code class="docutils literal notranslate"><span class="pre">origin</span></code> is the name for the ASF remote repository which is
+correct if you originally clone from the ASF repository.</p>
+<p>The distribution files must be added to an SVN repository. This can be accessed
+with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">svn</span> <span class="n">co</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">dist</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">dist</span><span class="o">/</span><span class="n">release</span><span class="o">/</span><span class="n">trafficserver</span> <span class="o">&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>All four of the distribution files go here. If you are making a point release
+then you should also remove the distribution files for the previous release.
+Allow 24 hours for the files to be distributed through the ASF infrastructure.</p>
+<p>The Traffic Server website must be updated. This is an SVN repository which you
+can access with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">svn</span> <span class="n">co</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">svn</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">asf</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">site</span><span class="o">/</span><span class="n">trunk</span> <span class="o">&lt;</span><span class="n">local</span><span class="o">-</span><span class="n">directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The files of interest are in the <code class="docutils literal notranslate"><span class="pre">content</span></code> directory.</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">index.html</span></code></dt>
+<dd>This is the front page. The places to edit here are any security
+announcements at the top and the “News” section.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">downloads.en.mdtext</span></code></dt>
+<dd>Update the downloads page to point to the new download objects.</dd>
+</dl>
+<p>After making changes, commit them and then run</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">publish</span><span class="o">.</span><span class="n">pl</span> <span class="n">trafficserver</span> <span class="o">&lt;</span><span class="n">apache</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>On the <code class="docutils literal notranslate"><span class="pre">people.apache.org</span></code> host.</p>
+<p>If needed, update the Wiki page for the release to point at the release
+distribution files.</p>
+<p>Update the announcement, if needed, to refer to the release distribution files
+and remove the comments concerning the release candidate. This announcement
+should be sent to the <em>users</em> and <em>dev</em> mailing lists. It should also be sent
+to the ASF announcement list, which must be done using an <code class="docutils literal notranslate"><span class="pre">apache.org</span></code> email
+address.</p>
+<p>Finally, update various files after the release:</p>
+<ul class="simple">
+<li>The <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> file for master and for the release branch to include this version.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">CHANGES</span></code> file to have a header for the next version.</li>
+<li><code class="docutils literal notranslate"><span class="pre">configure.ac</span></code> to be set to the next version.</li>
+<li>In the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code> change <code class="docutils literal notranslate"><span class="pre">RC</span></code> to have the value <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+      <li>Previous: <a href="../introduction/header-file-structure.en.html" title="previous chapter">Header Files</a></li>
+      <li>Next: <a href="../contributing/index.en.html" title="next chapter">Contributing to Traffic Server</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/release-process/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

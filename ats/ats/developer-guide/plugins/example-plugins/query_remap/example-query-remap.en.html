@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Example: Query Remap Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="TLS Bridge" href="../tls_bridge.en.html" />
+    <link rel="prev" title="Query Remap Plugin" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="example-query-remap-plugin">
+<h1>Example: Query Remap Plugin<a class="headerlink" href="#example-query-remap-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The sample remap plugin, <code class="docutils literal notranslate"><span class="pre">query_remap.c</span></code>, maps client requests to a
+number of servers based on a hash of the request’s URL query parameter.
+This can be useful for spreading load for a given type of request among
+backend servers, while still maintaining “stickiness” to a single server
+for similar requests. For example, a search engine may want to send
+repeated queries for the same keywords to a server that has likely
+cached the result from a prior query.</p>
+<div class="section" id="configuration-of-query-remap">
+<h2>Configuration of query_remap<a class="headerlink" href="#configuration-of-query-remap" title="Permalink to this headline">¶</a></h2>
+<p>The query remap plugin will allow the query parameter name to be
+specified, along with the hostnames of the servers to hash across.
+Sample <a class="reference internal" href="../../../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> rules using <code class="docutils literal notranslate"><span class="pre">query_remap</span></code> will look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">search</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">srch1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">search</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">query_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">q</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">srch1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">srch2</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">srch3</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">profiles</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">prof1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">profiles</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">query_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">user_id</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">prof1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">prof2</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>The first <code class="code docutils literal notranslate"><span class="pre">&#64;pparam</span></code> specifies the query param key for which the value
+will be hashed. The remaining parameters list the hostnames of the
+servers. A request for <code class="docutils literal notranslate"><span class="pre">http://www.example.com/search?q=apache</span></code> will
+match the first rule. The plugin will look for the <em>``q``</em> parameter and
+hash the value ‘<code class="docutils literal notranslate"><span class="pre">apache</span></code>’ to pick from among
+<code class="docutils literal notranslate"><span class="pre">srch_[1-3]_.example.com</span></code> to send the request.</p>
+<p>If the request does not include a <em>``q``</em> query parameter and the plugin
+decides not to modify the request, the default toURL
+‘<code class="docutils literal notranslate"><span class="pre">http://srch1.example.com/search</span></code>’ will be used by TS.</p>
+<p>The parameters are passed to the plugin’s <code class="docutils literal notranslate"><span class="pre">tsremap_new_instance</span></code>
+function. In <code class="docutils literal notranslate"><span class="pre">query_remap</span></code>, <code class="docutils literal notranslate"><span class="pre">tsremap_new_instance</span></code> creates a
+plugin-defined <code class="docutils literal notranslate"><span class="pre">query_remap_info</span></code> struct to store its configuration
+parameters.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">_query_remap_info</span> <span class="p">{</span>
+  <span class="kt">char</span> <span class="o">*</span><span class="n">param_name</span><span class="p">;</span>
+  <span class="kt">size_t</span> <span class="n">param_len</span><span class="p">;</span>
+  <span class="kt">char</span> <span class="o">**</span><span class="n">hosts</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">num_hosts</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">query_remap_info</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The <code class="code docutils literal notranslate"><span class="pre">ihandle</span></code>, an opaque pointer that can be used to pass
+per-instance data, is set to this struct pointer and will be passed to
+the <code class="code docutils literal notranslate"><span class="pre">TSRemapDoRemap</span></code> function when it is triggered for a request.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TSRemapNewInstance</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[],</span> <span class="kt">void</span> <span class="o">**</span><span class="n">ih</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">errbuf</span> <span class="n">ATS_UNUSED</span><span class="p">,</span> <span class="kt">int</span> <span class="n">errbuf_size</span> <span class="n">ATS_UNUSED</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="cm">/* Called for each remap rule using this plugin. The parameters are parsed here */</span>
+  <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+  <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;new instance fromURL: %s toURL: %s&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">TSError</span><span class="p">(</span><span class="s">&quot;[%s] Missing parameters&quot;</span><span class="p">,</span> <span class="n">PLUGIN_NAME</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* initialize the struct to store info about this remap instance</span>
+<span class="cm">     the argv parameters are:</span>
+<span class="cm">       0: fromURL</span>
+<span class="cm">       1: toURL</span>
+<span class="cm">       2: query param to hash</span>
+<span class="cm">       3,4,... : server hostnames</span>
+<span class="cm">  */</span>
+  <span class="n">query_remap_info</span> <span class="o">*</span><span class="n">qri</span> <span class="o">=</span> <span class="p">(</span><span class="n">query_remap_info</span> <span class="o">*</span><span class="p">)</span><span class="n">TSmalloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">query_remap_info</span><span class="p">));</span>
+
+  <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_name</span> <span class="o">=</span> <span class="n">TSstrdup</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+  <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_len</span>  <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_name</span><span class="p">);</span>
+  <span class="n">qri</span><span class="o">-&gt;</span><span class="n">num_hosts</span>  <span class="o">=</span> <span class="n">argc</span> <span class="o">-</span> <span class="mi">3</span><span class="p">;</span>
+  <span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span>      <span class="o">=</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="p">)</span><span class="n">TSmalloc</span><span class="p">(</span><span class="n">qri</span><span class="o">-&gt;</span><span class="n">num_hosts</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">));</span>
+
+  <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot; - Hash using query parameter [%s] with %d hosts&quot;</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_name</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">num_hosts</span><span class="p">);</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">num_hosts</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">TSstrdup</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">]);</span>
+    <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot; - Host %d: %s&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+  <span class="p">}</span>
+
+  <span class="o">*</span><span class="n">ih</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">qri</span><span class="p">;</span>
+  <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;created instance %p&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">ih</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Another way remap plugins may want handle more complex configuration is
+to specify a configuration filename as a <code class="docutils literal notranslate"><span class="pre">pparam</span></code> and parse the
+specified file during instance initialization.</p>
+</div>
+<div class="section" id="performing-the-remap">
+<h2>Performing the Remap<a class="headerlink" href="#performing-the-remap" title="Permalink to this headline">¶</a></h2>
+<p>The plugin implements the <code class="docutils literal notranslate"><span class="pre">tsremap_remap</span></code> function, which is called
+when TS has read the client HTTP request headers and matched the request
+to a remap rule configured for the plugin. The <code class="docutils literal notranslate"><span class="pre">TSRemapRequestInfo</span></code>
+struct contains input and output members for the remap operation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">tsremap_remap</span></code> uses the configuration information passed via the
+<code class="code docutils literal notranslate"><span class="pre">ihandle</span></code> and checks the <code class="docutils literal notranslate"><span class="pre">request_query</span></code> for the configured query
+parameter. If the parameter is found, the plugin sets a <code class="docutils literal notranslate"><span class="pre">new_host</span></code> to
+modify the request host:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TSRemapDoRemap</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ih</span><span class="p">,</span> <span class="n">TSHttpTxn</span> <span class="n">rh</span> <span class="n">ATS_UNUSED</span><span class="p">,</span> <span class="n">TSRemapRequestInfo</span> <span class="o">*</span><span class="n">rri</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">query_remap_info</span> <span class="o">*</span><span class="n">qri</span> <span class="o">=</span> <span class="p">(</span><span class="n">query_remap_info</span> <span class="o">*</span><span class="p">)</span><span class="n">ih</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">qri</span> <span class="o">||</span> <span class="o">!</span><span class="n">rri</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">TSError</span><span class="p">(</span><span class="s">&quot;[%s] NULL private data or RRI&quot;</span><span class="p">,</span> <span class="n">PLUGIN_NAME</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">TSREMAP_NO_REMAP</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="kt">int</span> <span class="n">req_query_len</span><span class="p">;</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">req_query</span> <span class="o">=</span> <span class="n">TSUrlHttpQueryGet</span><span class="p">(</span><span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestBufp</span><span class="p">,</span> <span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestUrl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">req_query_len</span><span class="p">);</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">req_query</span> <span class="o">&amp;&amp;</span> <span class="n">req_query_len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">q</span><span class="p">,</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">s</span>     <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">hostidx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+    <span class="cm">/* make a copy of the query, as it is read only */</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">TSstrndup</span><span class="p">(</span><span class="n">req_query</span><span class="p">,</span> <span class="n">req_query_len</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="cm">/* parse query parameters */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">key</span> <span class="o">=</span> <span class="n">strtok_r</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="s">&quot;&amp;&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">);</span> <span class="n">key</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">;)</span> <span class="p">{</span>
+      <span class="kt">char</span> <span class="o">*</span><span class="n">val</span> <span class="o">=</span> <span class="n">strchr</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="sc">&#39;=&#39;</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)(</span><span class="n">val</span> <span class="o">-</span> <span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_len</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">strncmp</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_name</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">param_len</span><span class="p">))</span> <span class="p">{</span>
+        <span class="o">++</span><span class="n">val</span><span class="p">;</span>
+        <span class="cm">/* the param key matched the configured param_name</span>
+<span class="cm">           hash the param value to pick a host */</span>
+        <span class="n">hostidx</span> <span class="o">=</span> <span class="n">hash_fnv32</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">strlen</span><span class="p">(</span><span class="n">val</span><span class="p">))</span> <span class="o">%</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)</span><span class="n">qri</span><span class="o">-&gt;</span><span class="n">num_hosts</span><span class="p">;</span>
+        <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;modifying host based on %s&quot;</span><span class="p">,</span> <span class="n">key</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">key</span> <span class="o">=</span> <span class="n">strtok_r</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="s">&quot;&amp;&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">TSfree</span><span class="p">(</span><span class="n">q</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">hostidx</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kt">int</span> <span class="n">req_host_len</span><span class="p">;</span>
+      <span class="cm">/* TODO: Perhaps use TSIsDebugTagSet() before calling TSUrlHostGet()... */</span>
+      <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">req_host</span> <span class="o">=</span> <span class="n">TSUrlHostGet</span><span class="p">(</span><span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestBufp</span><span class="p">,</span> <span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestUrl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">req_host_len</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="n">TSUrlHostSet</span><span class="p">(</span><span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestBufp</span><span class="p">,</span> <span class="n">rri</span><span class="o">-&gt;</span><span class="n">requestUrl</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">[</span><span class="n">hostidx</span><span class="p">],</span> <span class="n">strlen</span><span class="p">(</span><span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">[</span><span class="n">hostidx</span><span class="p">]))</span> <span class="o">!=</span> <span class="n">TS_SUCCESS</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;Failed to modify the Host in request URL&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">TSREMAP_NO_REMAP</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;host changed from [%.*s] to [%s]&quot;</span><span class="p">,</span> <span class="n">req_host_len</span><span class="p">,</span> <span class="n">req_host</span><span class="p">,</span> <span class="n">qri</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">[</span><span class="n">hostidx</span><span class="p">]);</span>
+      <span class="k">return</span> <span class="n">TSREMAP_DID_REMAP</span><span class="p">;</span> <span class="cm">/* host has been modified */</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="cm">/* the request was not modified, TS will use the toURL from the remap rule */</span>
+  <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;request not modified&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">TSREMAP_NO_REMAP</span><span class="p">;</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../../index.en.html">Plugin Development</a><ul>
+  <li><a href="../index.en.html">Example Plugins</a><ul>
+  <li><a href="index.en.html">Query Remap Plugin</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Query Remap Plugin</a></li>
+      <li>Next: <a href="../tls_bridge.en.html" title="next chapter">TLS Bridge</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/developer-guide/plugins/example-plugins/query_remap/example-query-remap.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>
