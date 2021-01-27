@@ -1,0 +1,1373 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formatting Log Files &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Logging Cache Results" href="cache-results.en.html" />
+    <link rel="prev" title="Log Destinations" href="destinations.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="formatting-log-files">
+<span id="admin-logging-formats"></span><h1>Formatting Log Files<a class="headerlink" href="#formatting-log-files" title="Permalink to this headline">¶</a></h1>
+<p>This section covers the creation of logging formats. All but a few logging
+output related settings in Traffic Server are performed in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> and
+consulting the documentation for that file is recommended in addition to this
+section. Any configurations or settings performed outside that file will be
+clearly noted.</p>
+<div class="section" id="defining-formats">
+<span id="admin-logging-defining-format"></span><h2>Defining Formats<a class="headerlink" href="#defining-formats" title="Permalink to this headline">¶</a></h2>
+<p>Logging formats in Traffic Server are defined by editing <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>
+and adding new format entries for each format you wish to define. The syntax is
+fairly simple: every format must contain a <code class="docutils literal notranslate"><span class="pre">Format</span></code> attribute, which is the
+string defining the contents of each line in the log, and may also contain an
+optional <code class="docutils literal notranslate"><span class="pre">Interval</span></code> attribute defining the log aggregation interval for
+any logs which use the format (see <a class="reference internal" href="understanding.en.html#admin-logging-type-summary"><span class="std std-ref">Summary Logs</span></a> for more
+information).</p>
+<p>The return value from the <code class="docutils literal notranslate"><span class="pre">format</span></code> function is the log format object which
+may then be supplied to the appropriate <code class="docutils literal notranslate"><span class="pre">log.*</span></code> functions that define your
+logging destinations.</p>
+<p>A very simple example, which contains only the timestamp of when the event began
+and the canonical URL of the request, would look like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myformat</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;</span><span class="nv"> </span><span class="s">%&lt;cauc&gt;&#39;</span>
+</pre></div>
+</div>
+<p>You may include as many custom field codes as you wish. The full list of codes
+available can be found in <a class="reference internal" href="#admin-logging-fields"><span class="std std-ref">Log Fields</span></a>. You may also include
+any literal characters in your format. For example, if we wished to separate
+the timestamp and canonical URL in our customer format above with a slash
+instead of a space, or even a slash surrounded by spaces, we could do so by
+just adding the desired characters to the format string:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myformat</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">%&lt;cauc&gt;&#39;</span>
+</pre></div>
+</div>
+<p>You may define as many custom formats as you wish. To apply changes to custom
+formats, you will need to run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+after saving your changes to <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>.</p>
+</div>
+<div class="section" id="log-fields">
+<span id="admin-logging-fields"></span><h2>Log Fields<a class="headerlink" href="#log-fields" title="Permalink to this headline">¶</a></h2>
+<p>The following sections detail all the available Traffic Server logging fields, broken
+down into the following broad categories for (hopefully) easier reference:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#admin-logging-fields-auth"><span class="std std-ref">Authentication</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-cache"><span class="std std-ref">Cache Details</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-txn"><span class="std std-ref">Connections and Transactions</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-content-type"><span class="std std-ref">Content Types</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-hierarchy"><span class="std std-ref">Hierarchical Proxies</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-headers"><span class="std std-ref">HTTP Headers</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-methods"><span class="std std-ref">HTTP Methods</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-ids"><span class="std std-ref">Identifiers</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-lengths"><span class="std std-ref">Lengths and Sizes</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-network"><span class="std std-ref">Network Addresses, Ports, and Interfaces</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-plugin"><span class="std std-ref">Plugin Details</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-proto"><span class="std std-ref">Protocols and Versions</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-request"><span class="std std-ref">Request Details</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-ssl"><span class="std std-ref">SSL / Encryption</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-status"><span class="std std-ref">Status Codes</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-tcp"><span class="std std-ref">TCP Details</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-time"><span class="std std-ref">Timestamps and Durations</span></a></p></li>
+<li><p><a class="reference internal" href="#admin-logging-fields-urls"><span class="std std-ref">URLs, Schemes, and Paths</span></a></p></li>
+</ul>
+<p>Individual log fields are used within a log format string by enclosing them in
+angle brackets and prefixing with a percent sign. For example, to use the log
+field <a class="reference internal" href="#cqhl">cqhl</a> (the length in bytes of the client request headers), you
+would do the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span> <span class="o">=</span> <span class="s1">&#39;%&lt;cqhl&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Literal characters may be used, but they must be outside the log fields’
+placeholders, as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span> <span class="o">=</span> <span class="s1">&#39;Client Header Length (bytes): %&lt;cqhl&gt;&#39;</span>
+</pre></div>
+</div>
+<p>You may combine many fields into a single format string (logs wouldn’t be very
+useful if you couldn’t). Some fields do require a little extra treatment, which
+is noted clearly in their descriptions below. This affects, primarily, those
+fields which provide access to HTTP header values as you need to specify which
+header’s value you wish to appear in the log data. For these, the header name
+is noted inside the angle brackets, before the log field name, and are
+enclosed within a curly braces pair. For example, to include the value of the
+Age header from an origin server response you would do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span> <span class="o">=</span> <span class="s1">&#39;%&lt;</span><span class="si">{Age}</span><span class="s1">ssh&gt;&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="authentication">
+<span id="admin-logging-fields-auth"></span><h3>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h3>
+<p id="caun">These log fields provide access to various details of a client or proxy’s
+means of request authentication to their destination (whether it be the client
+request to a proxy server, or the proxy server’s request to an origin).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 18%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>caun</p></td>
+<td><p>Client Request</p></td>
+<td><p>Authentication User name as a result of the <a class="reference external" href="https://tools.ietf.org/html/rfc931.html">RFC931</a>/ident
+lookup for the client-provided name.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="cache-details">
+<span id="admin-logging-fields-cache"></span><h3>Cache Details<a class="headerlink" href="#cache-details" title="Permalink to this headline">¶</a></h3>
+<p id="cccs"><span id="cwra"></span><span id="crra"></span><span id="cwtr"></span><span id="cwr"></span><span id="chm"></span><span id="crsc"></span><span id="crc"></span><span id="cluc"></span>These log fields reveal details of the Traffic Server proxy interaction with its own
+cache while attempting to service incoming client requests.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 5%" />
+<col style="width: 15%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cluc</p></td>
+<td><p>Client Request</p></td>
+<td><p>Cache Lookup URL, also known as the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a>,
+which is the canonicalized version of the client request
+URL.</p></td>
+</tr>
+<tr class="row-odd"><td><p>crc</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache Result Code. The result of Traffic Server attempting to obtain
+the object from cache; <a class="reference internal" href="cache-results.en.html#admin-logging-cache-results"><span class="std std-ref">Logging Cache Results</span></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>crsc</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache Result Sub-Code. More specific code to complement the
+Cache Result Code.</p></td>
+</tr>
+<tr class="row-odd"><td><p>chm</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache Hit-Miss status. Specifies the level of cache from
+which this request was served by Traffic Server. Currently supports
+only RAM (<code class="docutils literal notranslate"><span class="pre">HIT_RAM</span></code>) vs disk (<code class="docutils literal notranslate"><span class="pre">HIT_DISK</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>cwr</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache Write Result. Specifies the result of attempting to
+write to cache: not relevant (<code class="docutils literal notranslate"><span class="pre">-</span></code>), no cache write
+(<code class="docutils literal notranslate"><span class="pre">WL_MISS</span></code>), write interrupted (<code class="docutils literal notranslate"><span class="pre">INTR</span></code>), error while
+writing (<code class="docutils literal notranslate"><span class="pre">ERR</span></code>), or cache write successful (<code class="docutils literal notranslate"><span class="pre">FIN</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>cwt</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache Write Transform Result.</p></td>
+</tr>
+<tr class="row-even"><td><p>crra</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache read retry attempts to read the object from cache.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cwra</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache write retry attempts to write a fresh or updated
+object to cache.</p></td>
+</tr>
+<tr class="row-even"><td><p>cccs</p></td>
+<td><p>Proxy Cache</p></td>
+<td><p>Cache collapsed connection success;
+-1: collapsing was attempted but failed, request went upstream
+0: collapsing was unnecessary
+1: attempted to collapse and got a cache hit on subsequent read attempts</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="connections-and-transactions">
+<span id="admin-logging-fields-txn"></span><h3>Connections and Transactions<a class="headerlink" href="#connections-and-transactions" title="Permalink to this headline">¶</a></h3>
+<p id="ctpd"><span id="ctpw"></span><span id="ctid"></span><span id="ccid"></span><span id="sstc"></span><span id="sca"></span>The following log fields are used to list various details of connections and
+transactions between Traffic Server proxies and origin servers.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 16%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>sca</p></td>
+<td><p>Proxy</p></td>
+<td><p>Number of attempts within the current transaction by Traffic Server
+in connecting to the origin server.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sstc</p></td>
+<td><p>Proxy</p></td>
+<td><p>Number of transactions between the Traffic Server proxy and the origin
+server from a single session. Any value greater than zero
+indicates connection reuse.</p></td>
+</tr>
+<tr class="row-even"><td><p>ccid</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client Connection ID, a non-negative number for a connection,
+which is different for all currently-active connections to
+clients.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ctid</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client Transaction ID, a non-negative number for a transaction,
+which is different for all currently-active transactions on the
+same client connection.  For client HTTP/2 transactions, this
+value is the stream ID for the transaction.</p></td>
+</tr>
+<tr class="row-even"><td><p>ctpw</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client Transaction Priority Weight, the priority weight for the
+underlying HTTP/2 protocol.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ctpd</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client Transaction Priority Dependence, the transaction ID that
+the current transaction depends on for HTTP/2 priority logic.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="content-types">
+<span id="admin-logging-fields-content-type"></span><h3>Content Types<a class="headerlink" href="#content-types" title="Permalink to this headline">¶</a></h3>
+<p id="psct">Log fields used to reveal the HTTP content types in effect for transactions.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 29%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>psct</p></td>
+<td><p>Origin Server Response</p></td>
+<td><p>Content type of the document obtained by Traffic Server from
+the origin server response.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="error-code">
+<span id="admin-logging-fields-error-code"></span><h3>Error Code<a class="headerlink" href="#error-code" title="Permalink to this headline">¶</a></h3>
+<p id="ctec"><span id="crec"></span>The log fields of error code which is triggered session close or
+transaction close. The first byte of this field indicates that the error
+code is session level (<code class="docutils literal notranslate"><span class="pre">S</span></code>) or transaction level (<code class="docutils literal notranslate"><span class="pre">T</span></code>).
+When no error code is received or transmitted, these fields are <code class="docutils literal notranslate"><span class="pre">-</span></code>.
+For HTTP/2, error code are described in <a class="reference external" href="https://tools.ietf.org/html/rfc7540.html">RFC 7540</a> section 7.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 19%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>crec</p></td>
+<td><p>Client Request</p></td>
+<td><p>Error code in hex which Traffic Server received</p></td>
+</tr>
+<tr class="row-odd"><td><p>ctec</p></td>
+<td><p>Client Response</p></td>
+<td><p>Error code in hex which Traffic Server transmitted</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="hierarchical-proxies">
+<span id="admin-logging-fields-hierarchy"></span><h3>Hierarchical Proxies<a class="headerlink" href="#hierarchical-proxies" title="Permalink to this headline">¶</a></h3>
+<p id="phr">The log fields detail aspects of transactions involving hierarchical caches.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 8%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>phr</p></td>
+<td><p>Proxy</p></td>
+<td><p>Proxy Hierarchy Route. Specifies the route through configured
+hierarchical caches used to retrieve the object.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="http-headers">
+<span id="admin-logging-fields-headers"></span><h3>HTTP Headers<a class="headerlink" href="#http-headers" title="Permalink to this headline">¶</a></h3>
+<p id="cssah"><span id="ssah"></span><span id="psah"></span><span id="pqah"></span><span id="cqah"></span><span id="ecssh"></span><span id="essh"></span><span id="epsh"></span><span id="epqh"></span><span id="ecqh"></span><span id="cssh"></span><span id="ssh"></span><span id="psh"></span><span id="pqh"></span><span id="cqh"></span>The following log tables provide access to the values of specified HTTP headers
+from each phase of the transaction lifecycle. Unlike many of the other log
+fields, these require a little extra notation in the log format string, so that
+Traffic Server knows the individual HTTP header from which you aim to extract a value for
+the log entry.</p>
+<p>This is done by specifying the name of the HTTP header in curly braces, just
+prior to the log field’s name, as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span> <span class="o">=</span> <span class="s1">&#39;%&lt;{User-agent}cqh&gt;&#39;</span>
+</pre></div>
+</div>
+<p>The above would insert the User Agent string from the client request headers
+into your log entry (or a blank string if no such header was present, or it did
+not contain a value).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 29%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqh</p></td>
+<td><p>Client Request</p></td>
+<td><p>Logs the value of the named header from the
+client’s request to the Traffic Server proxy.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqh</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Logs the value of the named header from the Traffic Server
+proxy’s request to the origin server.</p></td>
+</tr>
+<tr class="row-even"><td><p>psh</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>Logs the value of the named header from the Traffic Server
+proxy’s response to the client.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssh</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Logs the value of the named header from the origin
+server’s response to the proxy.</p></td>
+</tr>
+<tr class="row-even"><td><p>cssh</p></td>
+<td><p>Cached Origin Response</p></td>
+<td><p>Logs the value of the named header from the
+<em>cached</em> origin server response.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Each of these also includes a URI-encoded variant, which replaces various
+characters in the string with entity encodings - rendering them safe for use in
+URL path components or query parameters. The variants’ names follow the pattern
+of the origin field named prefixed with <code class="docutils literal notranslate"><span class="pre">e</span></code>, as shown here:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Original Field</p></th>
+<th class="head"><p>URL-Encoded Variant</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqh</p></td>
+<td><p>ecqh</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqh</p></td>
+<td><p>epqh</p></td>
+</tr>
+<tr class="row-even"><td><p>psh</p></td>
+<td><p>epsh</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssh</p></td>
+<td><p>essh</p></td>
+</tr>
+<tr class="row-even"><td><p>cssh</p></td>
+<td><p>ecssh</p></td>
+</tr>
+</tbody>
+</table>
+<p>It is also possible to log all of the headers in a transaction message with a
+single field.  For each original field, there is a variant which ends in
+<code class="docutils literal notranslate"><span class="pre">ah</span></code> rather than <code class="docutils literal notranslate"><span class="pre">h</span></code>, as shown here:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 58%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Original Field</p></th>
+<th class="head"><p>All Headers Variant</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqh</p></td>
+<td><p>cqah</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqh</p></td>
+<td><p>pqah</p></td>
+</tr>
+<tr class="row-even"><td><p>psh</p></td>
+<td><p>psah</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssh</p></td>
+<td><p>ssah</p></td>
+</tr>
+<tr class="row-even"><td><p>cssh</p></td>
+<td><p>cssah</p></td>
+</tr>
+</tbody>
+</table>
+<p>No particular header is specified when using these variants, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Format</span> <span class="o">=</span> <span class="s1">&#39;%&lt;cqah&gt;&#39;</span>
+</pre></div>
+</div>
+<p>The output generated by these fields has the pattern:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{{{</span><span class="n">tag1</span><span class="p">}:{</span><span class="n">value1</span><span class="p">}}{{</span><span class="n">tag2</span><span class="p">}:{</span><span class="n">value2</span><span class="p">}}</span><span class="o">...</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>(The size of some messages may exceed internal buffer capacity.  This may
+result in the value of the last header being truncated, in which case, the
+value will end with <code class="docutils literal notranslate"><span class="pre">...}</span></code>.  This may also result in the omission of
+entire tag/value pairs.)</p>
+</div>
+<div class="section" id="http-methods">
+<span id="admin-logging-fields-methods"></span><h3>HTTP Methods<a class="headerlink" href="#http-methods" title="Permalink to this headline">¶</a></h3>
+<p id="cqhm">These fields are used to log information about the HTTP methods/verbs used by
+requests.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 18%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqhm</p></td>
+<td><p>Client Request</p></td>
+<td><p>HTTP method used in the client request to the Traffic Server proxy
+(e.g. <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, etc.).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="admin-logging-fields-ids">
+<span id="identifiers"></span><h3>Identifiers<a class="headerlink" href="#admin-logging-fields-ids" title="Permalink to this headline">¶</a></h3>
+<p id="puuid"><span id="cruuid"></span><span id="crid"></span>Logging fields used to obtain various unique identifiers for transactions or
+objects.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 18%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>crid</p></td>
+<td><p>Client Request</p></td>
+<td><p>Sequence number of the current client request. Resets to
+<code class="docutils literal notranslate"><span class="pre">0</span></code> on every Traffic Server restart.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cruuid</p></td>
+<td><p>Client Request</p></td>
+<td><p>UUID of the current client request; generated by
+concatenating the <a class="reference internal" href="#puuid">puuid</a> and <a class="reference internal" href="#crid">crid</a> field values.</p></td>
+</tr>
+<tr class="row-even"><td><p>puuid</p></td>
+<td><p>Proxy Server</p></td>
+<td><p>UUID for the currently running <strong class="program">traffic_server</strong>
+process. Regenerated on every Traffic Server startup.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="lengths-and-sizes">
+<span id="admin-logging-fields-lengths"></span><h3>Lengths and Sizes<a class="headerlink" href="#lengths-and-sizes" title="Permalink to this headline">¶</a></h3>
+<p id="ssql"><span id="sshl"></span><span id="sscl"></span><span id="psql"></span><span id="pshl"></span><span id="pscl"></span><span id="pqql"></span><span id="pqhl"></span><span id="pqcl"></span><span id="fsiz"></span><span id="cssql"></span><span id="csshl"></span><span id="csscl"></span><span id="cqql"></span><span id="cqhl"></span><span id="cqcl"></span>These log fields are used to obtain various lengths and sizes of transaction
+components (headers, content bodies, etc.) between clients, proxies, and
+origins. Unless otherwise noted, all lengths are in bytes.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 29%" />
+<col style="width: 65%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqcl</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request content length, in bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqhl</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request header length, in bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqql</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request header and content length combined,
+in bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>csscl</p></td>
+<td><p>Cached Origin Response</p></td>
+<td><p>Content body length from cached origin response.</p></td>
+</tr>
+<tr class="row-even"><td><p>csshl</p></td>
+<td><p>Cached Origin Response</p></td>
+<td><p>Header length from cached origin response.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cssql</p></td>
+<td><p>Cached Origin Response</p></td>
+<td><p>Content and header length from cached origin
+response.</p></td>
+</tr>
+<tr class="row-even"><td><p>fsiz</p></td>
+<td><p>Origin</p></td>
+<td><p>Size of the file as seen by the origin server.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqcl</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Content body length of the Traffic Server proxy request to
+the origin server.</p></td>
+</tr>
+<tr class="row-even"><td><p>pqhl</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Header length of the Traffic Server proxy request to the
+origin server.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqql</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Content body and header length combined, of the
+Traffic Server request to the origin server.</p></td>
+</tr>
+<tr class="row-even"><td><p>pscl</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>Content body length of the Traffic Server proxy response.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pshl</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>Header length of the Traffic Server response to client.</p></td>
+</tr>
+<tr class="row-even"><td><p>psql</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>Content body and header length combined of the
+Traffic Server response to client.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sscl</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Content body length of the origin server response
+to Traffic Server.</p></td>
+</tr>
+<tr class="row-even"><td><p>sshl</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Header length of the origin server response.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssql</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Content body and header length combined of the
+origin server response to Traffic Server.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="network-addresses-ports-and-interfaces">
+<span id="admin-logging-fields-network"></span><h3>Network Addresses, Ports, and Interfaces<a class="headerlink" href="#network-addresses-ports-and-interfaces" title="Permalink to this headline">¶</a></h3>
+<p id="nhp"><span id="nhi"></span><span id="shn"></span><span id="shi"></span><span id="pqsp"></span><span id="pqsi"></span><span id="php"></span><span id="chp"></span><span id="hiih"></span><span id="hii"></span><span id="chih"></span><span id="chi"></span>The following log fields are used to log details of the network (IP) addresses,
+incoming/outgoing ports, and network interfaces used during transactions.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 17%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>chi</p></td>
+<td><p>Client</p></td>
+<td><p>IP address of the client’s host.</p></td>
+</tr>
+<tr class="row-odd"><td><p>chih</p></td>
+<td><p>Client</p></td>
+<td><p>IP address of the client’s host, in hexadecimal.</p></td>
+</tr>
+<tr class="row-even"><td><p>hii</p></td>
+<td><p>Proxy</p></td>
+<td><p>IP address for the proxy’s incoming interface (to which
+the client connected).</p></td>
+</tr>
+<tr class="row-odd"><td><p>hiih</p></td>
+<td><p>Proxy</p></td>
+<td><p>IP address for the proxy’s incoming interface (to which
+the client connected), in hexadecimal.</p></td>
+</tr>
+<tr class="row-even"><td><p>chp</p></td>
+<td><p>Client</p></td>
+<td><p>Port number of the client’s host.</p></td>
+</tr>
+<tr class="row-odd"><td><p>php</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>TCP port number from which Traffic Server serviced the request.</p></td>
+</tr>
+<tr class="row-even"><td><p>pqsi</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>IP address from which Traffic Server issued the proxy request to the
+origin server. Cache hits will result in a value of <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqsp</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Port number from which Traffic Server issued the proxy request to
+the origin server. Cache hits will yield a value of <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>shi</p></td>
+<td><p>Origin Server</p></td>
+<td><p>IP address resolved via DNS by Traffic Server for the origin server.
+For hosts with multiple IP addresses, the address used by
+Traffic Server for the connection will be reported. See note below
+regarding misleading values from cached documents.</p></td>
+</tr>
+<tr class="row-odd"><td><p>shn</p></td>
+<td><p>Origin Server</p></td>
+<td><p>Host name of the origin server.</p></td>
+</tr>
+<tr class="row-even"><td><p>nhi</p></td>
+<td><p>Origin Server</p></td>
+<td><p>Destination IP address of next hop</p></td>
+</tr>
+<tr class="row-odd"><td><p>nhp</p></td>
+<td><p>Origin Server</p></td>
+<td><p>Destination port of next hop</p></td>
+</tr>
+<tr class="row-even"><td><p>ppv</p></td>
+<td><p>Proxy Protocol
+Version</p></td>
+<td><p>Proxy Protocol Version used (if any) between the Load Balancer
+and Traffic Server</p></td>
+</tr>
+<tr class="row-odd"><td><p>pps</p></td>
+<td><p>Proxy Protocol
+Source IP</p></td>
+<td><p>Source IP received via Proxy Protocol context from the LB to
+the Traffic Server</p></td>
+</tr>
+<tr class="row-even"><td><p>ppd</p></td>
+<td><p>Proxy Protocol
+Dest IP</p></td>
+<td><p>Destination IP received via Proxy Protocol context from the LB
+to the Traffic Server</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This can be misleading for cached documents. For example: if the first
+request was a cache miss and came from <em>IP1</em> for server <em>S</em> and the second
+request for server <em>S</em> resolved to <em>IP2</em> but came from the cache, then the
+log entry for the second request will show <em>IP2</em>.</p>
+</div>
+</div>
+<div class="section" id="plugin-details">
+<span id="admin-logging-fields-plugin"></span><h3>Plugin Details<a class="headerlink" href="#plugin-details" title="Permalink to this headline">¶</a></h3>
+<p id="cqint"><span id="pitag"></span><span id="piid"></span>Logging fields which may be used to obtain details of plugins involved in the
+transaction.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 20%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>piid</p></td>
+<td><p>Proxy Plugin</p></td>
+<td><p>Plugin ID for the current transaction. This is set for
+plugin driven transactions via
+<a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnectWithPluginId.en.html#c.TSHttpConnectWithPluginId" title="TSHttpConnectWithPluginId"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnectWithPluginId()</span></code></a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pitag</p></td>
+<td><p>Proxy Plugin</p></td>
+<td><p>Plugin tag for the current transaction. This is set for
+plugin driven transactions via
+<a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnectWithPluginId.en.html#c.TSHttpConnectWithPluginId" title="TSHttpConnectWithPluginId"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnectWithPluginId()</span></code></a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqint</p></td>
+<td><p>Client Request</p></td>
+<td><p>If a request was generated internally (via a plugin), then
+this has a value of <code class="docutils literal notranslate"><span class="pre">1</span></code>, otherwise <code class="docutils literal notranslate"><span class="pre">0</span></code>. This can be
+useful when tracking internal only requests, such as those
+generated by the <code class="docutils literal notranslate"><span class="pre">authproxy</span></code> plugin.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="protocols-and-versions">
+<span id="admin-logging-fields-proto"></span><h3>Protocols and Versions<a class="headerlink" href="#protocols-and-versions" title="Permalink to this headline">¶</a></h3>
+<p id="sshv"><span id="csshv"></span><span id="cqpv"></span><span id="cqhv"></span>These logging fields may be used to determine which protocols and/or versions
+were in effect for a given event.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 27%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqhv</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request HTTP version. Deprecated since 9.0.
+Use <code class="docutils literal notranslate"><span class="pre">cqpv</span></code> instead.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqpv</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request protocol and version.</p></td>
+</tr>
+<tr class="row-even"><td><p>csshv</p></td>
+<td><p>Cached Proxy Response</p></td>
+<td><p>Origin server’s HTTP version from cached version of
+the document in Traffic Server proxy cache.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sshv</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Origin server’s response HTTP version.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="request-details">
+<span id="admin-logging-fields-request"></span><h3>Request Details<a class="headerlink" href="#request-details" title="Permalink to this headline">¶</a></h3>
+<p id="cqtx">The following logging fields are used to obtain the actual HTTP request
+details.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 18%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqtx</p></td>
+<td><p>Client Request</p></td>
+<td><p>The full HTTP client request text, minus headers, e.g.
+<code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">http://www.company.com</span> <span class="pre">HTTP/1.0</span></code>. In reverse proxy
+mode, Traffic Server logs rewritten/mapped URL (according to the
+rules in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>), not the pristine/unmapped
+URL.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ssl-encryption">
+<span id="admin-logging-fields-ssl"></span><h3>SSL / Encryption<a class="headerlink" href="#ssl-encryption" title="Permalink to this headline">¶</a></h3>
+<p id="pscert"><span id="pqssl"></span><span id="cqssu"></span><span id="cqssc"></span><span id="cqssv"></span><span id="cqssr"></span><span id="cqssl"></span><span id="cscert"></span><span id="cssn"></span>Fields which expose the use, or lack thereof, of specific SSL and encryption
+features.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 8%" />
+<col style="width: 18%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cssn</p></td>
+<td><p>Client TLS
+Hello</p></td>
+<td><p>SNI server name in client Hello message in TLS handshake.
+If no server name present in Hello, or the transaction
+was not over TLS (over TCP), this field will contain
+<code class="docutils literal notranslate"><span class="pre">-</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cscert</p></td>
+<td><p>Client Request</p></td>
+<td><p>1 if Traffic Server requested certificate from client during TLS
+handshake. 0 otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqssl</p></td>
+<td><p>Client Request</p></td>
+<td><p>SSL client request status indicates if this client
+connection is over SSL.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqssr</p></td>
+<td><p>Client Request</p></td>
+<td><p>SSL session ticket reused status; indicates if the current
+request hit the SSL session ticket and avoided a full SSL
+handshake.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqssv</p></td>
+<td><p>Client Request</p></td>
+<td><p>SSL version used to communicate with the client.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqssc</p></td>
+<td><p>Client Request</p></td>
+<td><p>SSL Cipher used by Traffic Server to communicate with the client.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqssu</p></td>
+<td><p>Client Request</p></td>
+<td><p>SSL Elliptic Curve used by Traffic Server to communicate with the
+client when using an ECDHE cipher.</p></td>
+</tr>
+<tr class="row-odd"><td><p>pqssl</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Indicates whether the connection from Traffic Server to the origin
+was over SSL or not.</p></td>
+</tr>
+<tr class="row-even"><td><p>pscert</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>1 if origin requested certificate from Traffic Server during TLS
+handshake but no client certificate was defined. 2 if origin
+requested certificate from Traffic Server during TLS handshake and a
+client certificate was defined. 0 otherwise.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="status-codes">
+<span id="admin-logging-fields-status"></span><h3>Status Codes<a class="headerlink" href="#status-codes" title="Permalink to this headline">¶</a></h3>
+<p id="prrp"><span id="sssc"></span><span id="pssc"></span><span id="pfsc"></span><span id="csssc"></span><span id="cfsc"></span>These log fields provide a variety of status codes, some numeric and some as
+strings, relating to client, proxy, and origin transactions.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 27%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cfsc</p></td>
+<td><p>Client Request</p></td>
+<td><p>Finish status code specifying whether the client
+request to Traffic Server was successfully completed
+(<code class="docutils literal notranslate"><span class="pre">FIN</span></code>) or interrupted (<code class="docutils literal notranslate"><span class="pre">INTR</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>csssc</p></td>
+<td><p>Cached Proxy Response</p></td>
+<td><p>HTTP response status code of the origin server
+response, as cached by Traffic Server.</p></td>
+</tr>
+<tr class="row-even"><td><p>pfsc</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Finish status code specifying whether the proxy
+request from Traffic Server to the origin server was
+successfully completed (<code class="docutils literal notranslate"><span class="pre">FIN</span></code>), interrupted
+(<code class="docutils literal notranslate"><span class="pre">INTR</span></code>), or timed out (<code class="docutils literal notranslate"><span class="pre">TIMEOUT</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p>prrp</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>HTTP response reason phrase sent by Traffic Server proxy to the
+client.</p></td>
+</tr>
+<tr class="row-even"><td><p>pssc</p></td>
+<td><p>Proxy Response</p></td>
+<td><p>HTTP response status code sent by Traffic Server proxy to the
+client.</p></td>
+</tr>
+<tr class="row-odd"><td><p>sssc</p></td>
+<td><p>Origin Response</p></td>
+<td><p>HTTP response status code sent by the origin server
+to the Traffic Server proxy.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="tcp-details">
+<span id="admin-logging-fields-tcp"></span><h3>TCP Details<a class="headerlink" href="#tcp-details" title="Permalink to this headline">¶</a></h3>
+<p id="cqmpt"><span id="cqtr"></span>The following logging fields reveal information about the TCP layer of client,
+proxy, and origin server connections.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 18%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqtr</p></td>
+<td><p>Client Request</p></td>
+<td><p>TCP reused status of the connection between the client and
+Traffic Server proxy, indicating whether the request was delivered
+through an already established connection.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqmpt</p></td>
+<td><p>Client Request</p></td>
+<td><p>Indicates the MPTCP state of the connection. <code class="docutils literal notranslate"><span class="pre">-1</span></code> means
+MPTCP was not enabled on the listening port, whereas <code class="docutils literal notranslate"><span class="pre">0</span></code>
+and <code class="docutils literal notranslate"><span class="pre">1</span></code> indicates whether MPTCP was successfully
+negotiated or not.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="timestamps-and-durations">
+<span id="admin-logging-fields-time"></span><h3>Timestamps and Durations<a class="headerlink" href="#timestamps-and-durations" title="Permalink to this headline">¶</a></h3>
+<p id="tts"><span id="ttmsf"></span><span id="ttmsh"></span><span id="ttms"></span><span id="sts"></span><span id="stmsf"></span><span id="stmsh"></span><span id="stms"></span><span id="msdms"></span><span id="ms"></span><span id="crat"></span><span id="cqtt"></span><span id="cqts"></span><span id="cqtq"></span><span id="cqtn"></span><span id="cqtd"></span>The logging fields expose a variety of timing related information about client,
+proxy, and origin transactions. Variants of some of the fields provide timing
+resolution of the same underlying detail in milliseconds and seconds (both
+fractional and rounded-down integers). These variants are particularly useful
+in accommodating the emulation of other HTTP proxy softwares’ logging formats.</p>
+<p>Other fields in this category provide variously formatted timestamps of
+particular events within the current transaction (e.g. the time at which a
+client request was received by Traffic Server).</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 30%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqtd</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request timestamp. Specifies the date of
+the client request in the format <code class="docutils literal notranslate"><span class="pre">YYYY-MM-DD</span></code>
+(four digit year, two digit month, two digit day
+- with leading zeros as necessary for the latter
+two).</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqtn</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request timestamp in the Netscape
+timestamp format.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqtq</p></td>
+<td><p>Client Request</p></td>
+<td><p>The time at which the client request was received
+expressed as fractional (floating point) seconds
+since midnight January 1, 1970 UTC (epoch), with
+millisecond resolution.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqts</p></td>
+<td><p>Client Request</p></td>
+<td><p>Same as <a class="reference internal" href="#cqtq">cqtq</a>, but as an integer without
+sub-second resolution.</p></td>
+</tr>
+<tr class="row-even"><td><p>cqth</p></td>
+<td><p>Client Request</p></td>
+<td><p>Same as <a class="reference internal" href="#cqts">cqts</a>, but represented in hexadecimal.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqtt</p></td>
+<td><p>Client Request</p></td>
+<td><p>Client request timestamp in the 24-hour format
+<code class="docutils literal notranslate"><span class="pre">hh:mm:ss</span></code> (two digit hour, minutes, and
+seconds - with leading zeros as necessary).</p></td>
+</tr>
+<tr class="row-even"><td><p>crat</p></td>
+<td><p>Origin Response</p></td>
+<td><p>Retry-After time in seconds if specified in the
+origin server response.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ms</p></td>
+<td><p>Proxy</p></td>
+<td><p>Timestamp in milliseconds of a specific milestone
+for this request. See note below about specifying
+which milestone to use.</p></td>
+</tr>
+<tr class="row-even"><td><p>msdms</p></td>
+<td><p>Proxy</p></td>
+<td><p>Difference in milliseconds between the timestamps
+of two milestones. See note below about
+specifying which milestones to use.</p></td>
+</tr>
+<tr class="row-odd"><td><p>stms</p></td>
+<td><p>Proxy-Origin Connection</p></td>
+<td><p>Time (in milliseconds) spent accessing the origin
+server. Measured from the time the connection
+between proxy and origin is established to the
+time it was closed.</p></td>
+</tr>
+<tr class="row-even"><td><p>stmsh</p></td>
+<td><p>Proxy-Origin Connection</p></td>
+<td><p>Same as <a class="reference internal" href="#stms">stms</a>, but represented in hexadecimal.</p></td>
+</tr>
+<tr class="row-odd"><td><p>stmsf</p></td>
+<td><p>Proxy-Origin Connection</p></td>
+<td><p>Same as <a class="reference internal" href="#stms">stms</a>, but in fractional (floating point)
+seconds.</p></td>
+</tr>
+<tr class="row-even"><td><p>sts</p></td>
+<td><p>Proxy-Origin Connection</p></td>
+<td><p>Same as <a class="reference internal" href="#stms">stms</a>, but in integer seconds (no
+sub-second precision).</p></td>
+</tr>
+<tr class="row-odd"><td><p>ttms</p></td>
+<td><p>Client-Proxy Connection</p></td>
+<td><p>Time in milliseconds spent by Traffic Server processing the
+entire client request. Measured from the time the
+connection between the client and Traffic Server proxy was
+established until the last byte of the proxy
+response was delivered to the client.</p></td>
+</tr>
+<tr class="row-even"><td><p>ttmsh</p></td>
+<td><p>Client-Proxy Connection</p></td>
+<td><p>Same as <a class="reference internal" href="#ttms">ttms</a>, but represented in hexadecimal.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ttmsf</p></td>
+<td><p>Client-Proxy Connection</p></td>
+<td><p>Same as <a class="reference internal" href="#ttms">ttms</a>, but in fraction (floating point)
+seconds.</p></td>
+</tr>
+<tr class="row-even"><td><p>tts</p></td>
+<td><p>Client Request</p></td>
+<td><p>Same as <a class="reference internal" href="#ttms">ttms</a>, but in integer seconds (no
+sub-second precision).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Logging fields for transaction milestones require specifying which of the
+milestones to use. Similar to how header logging fields are used, these log
+fields take the milestone name(s) in between curly braces, immediately
+before the logging field name, as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%&lt;</span><span class="p">{</span><span class="n">Milestone</span> <span class="n">field</span> <span class="n">name</span><span class="p">}</span><span class="n">ms</span><span class="o">&gt;</span>
+<span class="o">%&lt;</span><span class="p">{</span><span class="n">Milestone</span> <span class="n">field</span> <span class="n">name1</span><span class="o">-</span><span class="n">Milestone</span> <span class="n">field</span> <span class="n">name2</span><span class="p">}</span><span class="n">msdms</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For more information on transaction milestones in Traffic Server, refer to the
+documentation on <a class="reference internal" href="../../developer-guide/api/functions/TSHttpTxnMilestoneGet.en.html#c.TSHttpTxnMilestoneGet" title="TSHttpTxnMilestoneGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnMilestoneGet()</span></code></a>.</p>
+</div>
+</div>
+<div class="section" id="urls-schemes-and-paths">
+<span id="admin-logging-fields-urls"></span><h3>URLs, Schemes, and Paths<a class="headerlink" href="#urls-schemes-and-paths" title="Permalink to this headline">¶</a></h3>
+<p id="cquuh"><span id="cquup"></span><span id="cquuc"></span><span id="cqus"></span><span id="cqup"></span><span id="cquc"></span><span id="cqu"></span>These log fields allow capture of URLs, or components (such as schemes and
+paths), from transactions processed by Traffic Server.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 17%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field</p></th>
+<th class="head"><p>Source</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>cqu</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>URI of the client request to Traffic Server (a subset of <a class="reference internal" href="#cqtx">cqtx</a>). In
+reverse proxy mode, Traffic Server logs the rewritten/mapped URL
+(according to the rules in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>), not the
+pristine/unmapped URL.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cquc</p></td>
+<td><p>Client Request</p></td>
+<td><p>Canonical URL from the client request to Traffic Server. This field
+differs from <a class="reference internal" href="#cqu">cqu</a> by having its contents URL-escaped
+(spaces and various other characters are replaced by
+percent-escaped entity codes).</p></td>
+</tr>
+<tr class="row-even"><td><p>cqup</p></td>
+<td><p>Proxy Request</p></td>
+<td><p>Path component from the remapped client request.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cqus</p></td>
+<td><p>Client Request</p></td>
+<td><p>URL scheme from the client request.</p></td>
+</tr>
+<tr class="row-even"><td><p>cquuc</p></td>
+<td><p>Client Request</p></td>
+<td><p>Canonical (prior to remapping) effective URL from client request.</p></td>
+</tr>
+<tr class="row-odd"><td><p>cquup</p></td>
+<td><p>Client Request</p></td>
+<td><p>Canonical (prior to remapping) path component from the
+client request. Compare with <a class="reference internal" href="#cqup">cqup</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>cquuh</p></td>
+<td><p>Client Request</p></td>
+<td><p>Unmapped URL host from the client request.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="line-length">
+<h2>Line Length<a class="headerlink" href="#line-length" title="Permalink to this headline">¶</a></h2>
+<p>The maximum line size for a log entry can be configured via the following
+parameters, the details of which are documented in the linked
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> descriptions:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-max-line-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.max_line_size</span></code></a></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-ascii-buffer-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.ascii_buffer_size</span></code></a></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-log-buffer-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.log_buffer_size</span></code></a></p></li>
+</ul>
+</div>
+<div class="section" id="log-field-slicing">
+<h2>Log Field Slicing<a class="headerlink" href="#log-field-slicing" title="Permalink to this headline">¶</a></h2>
+<p>It is sometimes desirable to slice a log field to limit the length of a given
+log field’s output.</p>
+<p>Log Field slicing can be specified as below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%&lt;</span><span class="n">field</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">&gt;</span>
+<span class="o">%&lt;</span><span class="p">{</span><span class="n">field</span><span class="p">}</span><span class="n">container</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Omitting the slice notation defaults to the entire log field.</p>
+<p>Slice notation only applies to a log field that is of type string and can not
+be applied to IPs or timestamp which are converted to string from integer.</p>
+<p>The below slice specifiers are allowed.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">[start:end]</span></code></dt><dd><p>Log field value from start through end-1</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[start:]</span></code></dt><dd><p>Log field value from start through the rest of the string</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[:end]</span></code></dt><dd><p>Log field value from the beginning through end-1</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">[:]</span></code></dt><dd><p>Default - entire Log field</p>
+</dd>
+</dl>
+<p>Some examples below</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;%&lt;cqup&gt;&#39;</span>       <span class="o">//</span> <span class="n">the</span> <span class="n">whole</span> <span class="n">characters</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">cqup</span><span class="o">&gt;.</span>
+<span class="s1">&#39;%&lt;cqup&gt;[:]&#39;</span>    <span class="o">//</span> <span class="n">the</span> <span class="n">whole</span> <span class="n">characters</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">cqup</span><span class="o">&gt;.</span>
+<span class="s1">&#39;%&lt;cqup[0:30]&gt;&#39;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">first</span> <span class="mi">30</span> <span class="n">characters</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">cqup</span><span class="o">&gt;.</span>
+<span class="s1">&#39;%&lt;cqup[-10:]&gt;&#39;</span> <span class="o">//</span> <span class="n">the</span> <span class="n">last</span> <span class="mi">10</span> <span class="n">characters</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">cqup</span><span class="o">&gt;.</span>
+<span class="s1">&#39;%&lt;cqup[:-5]&gt;&#39;</span>  <span class="o">//</span> <span class="n">everything</span> <span class="k">except</span> <span class="n">the</span> <span class="n">last</span> <span class="mi">5</span> <span class="n">characters</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">cqup</span><span class="o">&gt;.</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Logging</a><ul>
+      <li>Previous: <a href="destinations.en.html" title="previous chapter">Log Destinations</a></li>
+      <li>Next: <a href="cache-results.en.html" title="next chapter">Logging Cache Results</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/logging/formatting.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Query Remap Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Example: Query Remap Plugin" href="example-query-remap.en.html" />
+    <link rel="prev" title="Sample Source Code" href="../denylist/source-code.en.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="query-remap-plugin">
+<span id="developer-plugins-examples-query-remap"></span><h1>Query Remap Plugin<a class="headerlink" href="#query-remap-plugin" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="example-query-remap.en.html">Example: Query Remap Plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example-query-remap.en.html#configuration-of-query-remap">Configuration of query_remap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example-query-remap.en.html#performing-the-remap">Performing the Remap</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>The Remap plugin provides a more flexible, dynamic way of specifying
+remap rules. It is not built on top of the Traffic Server APIs and
+exists solely for the purpose of URL remapping. The remap plugin is not
+global –it is configured on a per-remap rule basis, which enables you
+to customize how URLs are redirected based on individual rules in the
+<a class="reference internal" href="../../../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</p>
+<p>The Traffic Server Remap API enables a plugin to dynamically map a
+client request to a target URL. Each plugin is associated with one or
+more remap rules in <a class="reference internal" href="../../../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> (an “instance”). If a request URL
+matches a remap rule’s “fromURL”, then Traffic Server calls the
+plugin-defined remap function for that request.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Additional text TBD; text in this chapter is still under development</p>
+</div>
+<div class="section" id="remap-header-file">
+<h2>Remap Header File<a class="headerlink" href="#remap-header-file" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">remap.h</span></code> header file contains the Traffic Server remap API. By
+default, the header file location is: <code class="docutils literal notranslate"><span class="pre">/usr/local/include/ts/remap.h</span></code></p>
+</div>
+<div class="section" id="required-functions">
+<h2>Required Functions<a class="headerlink" href="#required-functions" title="Permalink to this headline">¶</a></h2>
+<p>A remap plugin is required to implement the following functions:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../../api/functions/TSRemap.en.html#c.TSRemapInit" title="TSRemapInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapInit()</span></code></a>:
+the remap initialization function, called once when the plugin is
+loaded</p></li>
+<li><p><a class="reference internal" href="../../../api/functions/TSRemap.en.html#c.TSRemapNewInstance" title="TSRemapNewInstance"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapNewInstance()</span></code></a>:
+a new instance is created for each rule associated with the plugin.
+Called each time the plugin used in a remap rule (this function is
+what processes the pparam values)</p></li>
+<li><p><a class="reference internal" href="../../../api/functions/TSRemap.en.html#c.TSRemapDoRemap" title="TSRemapDoRemap"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapDoRemap()</span></code></a>:
+the entry point used by Traffic Server to find the new URL to which
+it remaps; called every time a request comes in</p></li>
+</ul>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>To associate a remap plugin with a remap rule, use the <code class="code docutils literal notranslate"><span class="pre">&#64;plugin</span></code> parameter (see <a class="reference internal" href="../../../../admin-guide/files/remap.config.en.html#remap-config-plugin-chaining"><span class="std std-ref">Plugin Chaining</span></a>).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../../index.en.html">Plugin Development</a><ul>
+  <li><a href="../index.en.html">Example Plugins</a><ul>
+      <li>Previous: <a href="../denylist/source-code.en.html" title="previous chapter">Sample Source Code</a></li>
+      <li>Next: <a href="example-query-remap.en.html" title="next chapter">Example: Query Remap Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/developer-guide/plugins/example-plugins/query_remap/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

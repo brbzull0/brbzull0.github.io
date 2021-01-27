@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TSHttpHookAdd &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSHttpOverridableConfig" href="TSHttpOverridableConfig.en.html" />
+    <link rel="prev" title="TSHttpHdrVersionSet" href="TSHttpHdrVersionSet.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tshttphookadd">
+<h1>TSHttpHookAdd<a class="headerlink" href="#tshttphookadd" title="Permalink to this headline">¶</a></h1>
+<p>Intercept Traffic Server events.</p>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="c function">
+<dt id="c.TSHttpHookAdd">
+void <code class="sig-name descname">TSHttpHookAdd</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID">TSHttpHookID</a> <em>id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpHookAdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSHttpSsnHookAdd">
+void <code class="sig-name descname">TSHttpSsnHookAdd</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssnp</em>, <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID">TSHttpHookID</a> <em>id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnHookAdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSHttpTxnHookAdd">
+void <code class="sig-name descname">TSHttpTxnHookAdd</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID">TSHttpHookID</a> <em>id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnHookAdd" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Hooks are points in Apache Traffic Server transaction HTTP processing
+where plugins can step in and do some work. Registering a plugin
+function for callback amounts to adding the function to a hook. You
+can register your plugin to be called back for every single
+transaction, or for specific transactions only.</p>
+<p>HTTP <a class="reference internal" href="../../../appendices/glossary.en.html#term-transaction"><span class="xref std std-term">transaction</span></a> hooks are set on a global basis using the function
+<a class="reference internal" href="#c.TSHttpHookAdd" title="TSHttpHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookAdd()</span></code></a>. This means that the continuation specified
+as the parameter to <a class="reference internal" href="#c.TSHttpHookAdd" title="TSHttpHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookAdd()</span></code></a> is called for every
+transaction. <a class="reference internal" href="#c.TSHttpHookAdd" title="TSHttpHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookAdd()</span></code></a> must only be called from
+<a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a> or <a class="reference internal" href="TSRemap.en.html#c.TSRemapInit" title="TSRemapInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapInit()</span></code></a>.</p>
+<p><a class="reference internal" href="#c.TSHttpSsnHookAdd" title="TSHttpSsnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd()</span></code></a> adds <em>contp</em> to
+the end of the list of HTTP <a class="reference internal" href="../../../appendices/glossary.en.html#term-session"><span class="xref std std-term">session</span></a> hooks specified by <em>id</em>.
+This means that <em>contp</em> is called back for every transaction
+within the session, at the point specified by the hook ID. Since
+<em>contp</em> is added to a session, it is not possible to call
+<a class="reference internal" href="#c.TSHttpSsnHookAdd" title="TSHttpSsnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd()</span></code></a> from the plugin initialization routine;
+the plugin needs a handle to an HTTP session.</p>
+<p><a class="reference internal" href="#c.TSHttpTxnHookAdd" title="TSHttpTxnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd()</span></code></a> adds <em>contp</em>
+to the end of the list of HTTP transaction hooks specified by
+<em>id</em>. Since <em>contp</em> is added to a transaction, it is
+not possible to call <a class="reference internal" href="#c.TSHttpTxnHookAdd" title="TSHttpTxnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd()</span></code></a> from the plugin
+initialization routine but only when the plugin has a handle to an
+HTTP transaction.</p>
+<p>A single continuation can be attached to multiple hooks at the same time.
+It is good practice to conserve resources by reusing hooks in this way
+when possible.</p>
+<p>When a continuation on a hook is triggered, the name of the event passed to
+the continuation function depends on the name of the hook.  The naming
+convention is that, for hook TS_xxx_HOOK, the event passed to the continuation
+function will be TS_EVENT_xxx.  For example, when a continuation attached to
+TS_HTTP_READ_REQUEST_HDR_HOOK is triggered, the event passed to the continuation
+function will be TS_EVENT_HTTP_READ_REQUEST_HDR.</p>
+<p>When a continuation is triggered by a hook, the actual type of the event data
+(the void pointer passed as the third parameter to the continuation function) is
+determined by which hook it is.  For example, for the hook ID TS_HTTP_TXN_CLOSE_HOOK,
+the event data is of type <a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a>.  This is the case regardless of whether the
+continuation was added to the hook using <a class="reference internal" href="#c.TSHttpTxnHookAdd" title="TSHttpTxnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd()</span></code></a>, <a class="reference internal" href="#c.TSHttpSsnHookAdd" title="TSHttpSsnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd()</span></code></a>
+or <a class="reference internal" href="#c.TSHttpHookAdd" title="TSHttpHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookAdd()</span></code></a>.  If the event data is of type <a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a>, <a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpSsn</span></code></a> or
+<a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a>, the continuation function can assume the mutex of the indicated
+event data object is locked.  (But the continuation function must not unlock it.)</p>
+</div>
+<div class="section" id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p>None. Adding hooks is always successful.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following example demonstrates how to add global, session and
+transaction hooks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;ts/ts.h&gt;</span>
+
+<span class="n">static</span> <span class="nb">int</span>
+<span class="n">handler</span><span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="n">void</span> <span class="o">*</span><span class="n">edata</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">TSHttpSsn</span> <span class="n">ssnp</span><span class="p">;</span>
+    <span class="n">TSHttpTxn</span> <span class="n">txnp</span><span class="p">;</span>
+
+    <span class="n">switch</span> <span class="p">(</span><span class="n">event</span><span class="p">){</span>
+    <span class="n">case</span> <span class="n">TS_EVENT_HTTP_SSN_START</span><span class="p">:</span>
+        <span class="n">ssnp</span> <span class="o">=</span> <span class="p">(</span><span class="n">TSHttpSsn</span><span class="p">)</span> <span class="n">edata</span><span class="p">;</span>
+        <span class="o">//</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">session</span> <span class="n">hook</span> <span class="o">...</span>
+        <span class="n">TSHttpSsnHookAdd</span><span class="p">(</span><span class="n">ssnp</span><span class="p">,</span> <span class="n">TS_HTTP_TXN_START_HOOK</span><span class="p">,</span> <span class="n">contp</span><span class="p">);</span>
+        <span class="n">TSHttpSsnReenable</span><span class="p">(</span><span class="n">ssnp</span><span class="p">,</span> <span class="n">TS_EVENT_HTTP_CONTINUE</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">case</span> <span class="n">TS_EVENT_HTTP_TXN_START</span><span class="p">:</span>
+        <span class="n">txnp</span> <span class="o">=</span> <span class="p">(</span><span class="n">TSHttpTxn</span><span class="p">)</span> <span class="n">edata</span><span class="p">;</span>
+        <span class="o">//</span> <span class="n">Add</span> <span class="n">a</span> <span class="n">transaction</span> <span class="n">hook</span> <span class="o">...</span>
+        <span class="n">TSHttpTxnHookAdd</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_HTTP_READ_REQUEST_HDR_HOOK</span><span class="p">,</span> <span class="n">contp</span><span class="p">);</span>
+        <span class="n">TSHttpTxnReenable</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_EVENT_HTTP_CONTINUE</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">case</span> <span class="n">TS_EVENT_HTTP_READ_REQUEST_HDR</span><span class="p">:</span>
+        <span class="n">txnp</span> <span class="o">=</span> <span class="p">(</span><span class="n">TSHttpTxn</span><span class="p">)</span> <span class="n">edata</span><span class="p">;</span>
+        <span class="o">//</span> <span class="o">...</span>
+        <span class="n">TSHttpTxnReenable</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_EVENT_HTTP_CONTINUE</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">default</span><span class="p">:</span>
+         <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">void</span>
+<span class="n">TSPluginInit</span> <span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">const</span> <span class="n">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="n">TSCont</span> <span class="n">contp</span><span class="p">;</span>
+    <span class="n">contp</span> <span class="o">=</span> <span class="n">TSContCreate</span><span class="p">(</span><span class="n">handler</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+    <span class="n">TSHttpHookAdd</span><span class="p">(</span><span class="n">TS_HTTP_SSN_START_HOOK</span><span class="p">,</span> <span class="n">contp</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For more example code using hooks, see the test_hooks plugin in tests/tools/plugins (used by the test_hooks.test.py
+Gold test).</p>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">TSAPI(3ts)</em>,
+<em class="manpage">TSContCreate(3ts)</em>,
+<em class="manpage">TSLifecycleHookAdd(3ts)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">API Reference</a><ul>
+  <li><a href="index.en.html">API Functions</a><ul>
+      <li>Previous: <a href="TSHttpHdrVersionSet.en.html" title="previous chapter">TSHttpHdrVersionSet</a></li>
+      <li>Next: <a href="TSHttpOverridableConfig.en.html" title="next chapter">TSHttpOverridableConfig</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/api/functions/TSHttpHookAdd.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

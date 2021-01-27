@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Setting a Transaction Hook &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Denylist Plugin" href="../denylist/index.en.html" />
+    <link rel="prev" title="Working With HTTP Headers" href="working-with-http-headers.en.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="setting-a-transaction-hook">
+<h1>Setting a Transaction Hook<a class="headerlink" href="#setting-a-transaction-hook" title="Permalink to this headline">¶</a></h1>
+<p>If the request does not have the <code class="docutils literal notranslate"><span class="pre">Proxy-Authorization</span></code> field set to
+Basic authorization or a valid username/password, then the plugin sends
+the 407 Proxy authorization <code class="docutils literal notranslate"><span class="pre">required</span></code> status code back to the client.
+The client will then prompt the user for a username and password, and
+then resend the request.</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">handle_dns</span></code> routine, the following lines handle the
+authorization error case:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="nl">done</span><span class="p">:</span>
+     <span class="n">TSHttpTxnHookAdd</span> <span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_HTTP_SEND_RESPONSE_HDR_HOOK</span><span class="p">,</span> <span class="n">contp</span><span class="p">);</span>
+     <span class="n">TSHttpTxnReenable</span> <span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_EVENT_HTTP_ERROR</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">handle_dns</span></code> does not find the <code class="docutils literal notranslate"><span class="pre">Proxy-Authorization</span></code> field set to
+Basic authorization or a valid username/password, then it adds a
+<code class="docutils literal notranslate"><span class="pre">SEND_RESPONSE_HDR_HOOK</span></code> to the transaction being processed. This
+means that Traffic Server will call the plugin back when sending the
+client response. <code class="docutils literal notranslate"><span class="pre">handle_dns</span></code> reenables the transaction with
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_ERROR</span></code>, which means that the plugin wants Traffic
+Server to terminate the transaction.</p>
+<p>When Traffic Server terminates the transaction, it sends the client an
+error message. Because of the <code class="docutils literal notranslate"><span class="pre">SEND_RESPONSE_HDR_HOOK</span></code>, Traffic Server
+calls the plugin back. The <code class="docutils literal notranslate"><span class="pre">auth-plugin</span></code> routine calls
+<code class="docutils literal notranslate"><span class="pre">handle_response</span></code> to send the client a <code class="docutils literal notranslate"><span class="pre">407</span></code> status code. When the
+client resends the request with the <code class="docutils literal notranslate"><span class="pre">Proxy-Authorization</span></code> field, a new
+transaction begins.</p>
+<p><code class="docutils literal notranslate"><span class="pre">handle_dns</span></code> calls <code class="docutils literal notranslate"><span class="pre">base64_decode</span></code> to decode the username and
+password; <code class="docutils literal notranslate"><span class="pre">handle_dns</span></code> also calls <code class="docutils literal notranslate"><span class="pre">authorized</span></code> to validate the
+username and password. In this plugin, sample NT code is provided for
+password validation. UNIX programmers can supply their own validation
+mechanism.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../../index.en.html">Plugin Development</a><ul>
+  <li><a href="../index.en.html">Example Plugins</a><ul>
+  <li><a href="index.en.html">Basic Authorization Plugin</a><ul>
+      <li>Previous: <a href="working-with-http-headers.en.html" title="previous chapter">Working With HTTP Headers</a></li>
+      <li>Next: <a href="../denylist/index.en.html" title="next chapter">Denylist Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/developer-guide/plugins/example-plugins/basic-authorization/setting-a-transaction-hook.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

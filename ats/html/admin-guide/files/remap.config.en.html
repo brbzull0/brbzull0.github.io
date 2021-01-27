@@ -1,0 +1,718 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>remap.config &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="splitdns.config" href="splitdns.config.en.html" />
+    <link rel="prev" title="records.config" href="records.config.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="remap-config">
+<h1>remap.config<a class="headerlink" href="#remap-config" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="std-configfile-remap.config"><span id="std:configfile-remap.config"></span></span><div class="toctree-wrapper compound">
+</div>
+<p>The <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file (by default, located in
+<code class="docutils literal notranslate"><span class="pre">/usr/local/etc/trafficserver/</span></code>) contains mapping rules that Traffic Server
+uses to perform the following actions:</p>
+<ul class="simple">
+<li><p>Map URL requests for a specific origin server to the appropriate
+location on Traffic Server when Traffic Server acts as a reverse
+proxy for that particular origin server</p></li>
+<li><p>Reverse-map server location headers so that when origin servers
+respond to a request with a location header that redirects the client
+to another location, the clients do not bypass Traffic Server</p></li>
+<li><p>Redirect HTTP requests permanently or temporarily without Traffic
+Server having to contact any origin servers</p></li>
+</ul>
+<p>Refer to  <a class="reference internal" href="../configuration/redirecting-http-requests.en.html#reverse-proxy-and-http-redirects"><span class="std std-ref">Reverse Proxy and HTTP Redirects</span></a>, for information about
+redirecting HTTP requests and using reverse proxy.</p>
+<p>After you modify the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> run the
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the changes.</p>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>Each line in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file must contain a mapping rule. Empty lines,
+or lines starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored. Each line can be broken up into multiple
+lines for better readability by using <code class="docutils literal notranslate"><span class="pre">\</span></code> as continuation marker.</p>
+<p>Traffic Server recognizes three space-delimited fields: <code class="docutils literal notranslate"><span class="pre">type</span></code>,
+<code class="docutils literal notranslate"><span class="pre">target</span></code>, and <code class="docutils literal notranslate"><span class="pre">replacement</span></code>. The following list describes the format of each field.</p>
+<dl id="remap-config-format-type">
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Enter one of the following:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> –translates an incoming request URL to the appropriate
+origin server URL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> –exactly like ‘map’ except that it uses the port at
+which the request was received to perform the mapping instead of the port present
+in the request. The regex qualifier can also be used for this type. When present,
+‘map_with_recv_port’ mappings are checked first. If there is a match, then it is
+chosen without evaluating the “regular” forward mapping rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_referer</span></code> – extended version of ‘map’, which can be used to activate
+“deep linking protection”, where target URLs are only accessible when the Referer
+header is set to a URL that is allowed to link to the target.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reverse_map</span></code> –translates the URL in origin server redirect
+responses to point to the Traffic Server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect</span></code> –redirects HTTP requests permanently without having
+to contact the origin server. Permanent redirects notify the
+browser of the URL change (by returning an HTTP status code 301)
+so that the browser can update bookmarks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code> –redirects HTTP requests temporarily
+without having to contact the origin server. Temporary redirects
+notify the browser of the URL change for the current request only
+(by returning an HTTP status code 307).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>use the <code class="docutils literal notranslate"><span class="pre">regex_</span></code> prefix to indicate that the line has a regular expression (regex).</p>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+<dl id="remap-config-format-target">
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><p>Enter the request (“from”) URL. You can enter up to four components:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheme</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">path_prefix</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">scheme</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code>.</p>
+</dd>
+</dl>
+<dl id="remap-config-format-replacement">
+<dt><code class="docutils literal notranslate"><span class="pre">replacement</span></code></dt><dd><blockquote>
+<div><p>Enter the origin (“to”) URL. You can enter up to four components:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheme</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">path_prefix</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">scheme</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code>.</p>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A remap rule for requests that upgrade from HTTP to WebSocket still require a remap rule with the <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code> scheme.</p>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="precedence">
+<span id="remap-config-precedence"></span><h2>Precedence<a class="headerlink" href="#precedence" title="Permalink to this headline">¶</a></h2>
+<p>Remap rules are not processed top-down, but based on an internal
+priority. Once these rules are executed we pick the first match
+based on configuration file parse order.</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map_with_recv_port</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map</span></code> and <code class="docutils literal notranslate"><span class="pre">reverse_map</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regex_redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_redirect_temporary</span></code></p></li>
+</ol>
+<p>For each precedence group the rules are checked in two phases. If the first phase fails to find a
+match then the second phase is performed against the same group of rules. In the first phase the
+rules are checked using the host name of the request. Only rules that specify a host name can match.
+If there is no match in that phase, then the rules are checked again with no host name and only
+rules without a host will match. The result is that rules with an explicit host take precedence over
+rules without.</p>
+</div>
+<div class="section" id="match-all">
+<h2>Match-All<a class="headerlink" href="#match-all" title="Permalink to this headline">¶</a></h2>
+<p>A map rule with a single <code class="docutils literal notranslate"><span class="pre">/</span></code> acts as a wildcard, it will match any
+request. This should be use with care, and certainly only once at the
+end of the remap.config file. E.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="nb">all</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The following section shows example mapping rules in the
+<a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</p>
+<div class="section" id="reverse-proxy-mapping-rules">
+<h4>Reverse Proxy Mapping Rules<a class="headerlink" href="#reverse-proxy-mapping-rules" title="Permalink to this headline">¶</a></h4>
+<p>The following example shows a map rule that does not specify a path
+prefix in the target or replacement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">hoster</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">hoster</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>This rule results in the following translations:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/index.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/Widgets/index.html</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/cgi/form/submit.sh?arg=true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/cgi/form/submit.sh?arg=true</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows a map rule with path prefixes specified in
+the target:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">marketing</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">marketing</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">marketing</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">marketing</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sales</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">sales</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">sales</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">sales</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">engineering</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">engineering</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">engineering</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">engineering</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">stuff</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">info</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">info</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">stuff</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>These rules result in the following translations:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/marketing/projects/manhattan/specs.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://marketing.y.com/projects/manhattan/specs.html</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/stuff/marketing/projects/boston/specs.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://info.y.com/marketing/projects/boston/specs.html</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/engineering/marketing/requirements.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://engineering.y.com/marketing/requirements.html</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows that the order of the rules matters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">external</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">external</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">stuff</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">stuff</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">stuff</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">g</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">stuff</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>These rules result in the following translation.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.g.com/stuff/a.gif</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://external.g.com/stuff/a.gif</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>In the above examples, the second rule is never applied because all URLs
+that match the second rule also match the first rule. The first rule
+takes precedence because it appears earlier in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+file.</p>
+<p>This is different if one rule does not have a host. For example consider these rules using the <a class="reference internal" href="#match-all">Match-All</a> rule:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>These rules are set up to redirect requests to another local process. Using them will result in</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 49%" />
+<col style="width: 51%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://example.com/a.gif</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/a.gif</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://example.com/dist_get_user</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/denied.html</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>For the first request the second rule host matches but the path does not and so the second rule is
+not selected. The first rule is then matched in the second phase when the rules are checked without
+a host value.</p>
+<p>The second request is matched by the second rule even though the rules have the same base
+precedence. Because the first rule does not have a host it will not match in the first phase. The
+second rule does have a host that matches the host in the second request along with the other parts
+of the URL and is therefore selected in the first phase.</p>
+<p>This will yield the same results if the rules are reversed because the rule selection happens in
+different phases making the order irrelevant.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
+<span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The following example shows a mapping with a path prefix specified in
+the target and replacement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">h</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">h</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">customers</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">h</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">customers</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">h</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>This rule results in the following translation.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/b/c/d/doc.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.h.com/customers/x/y/c/d/doc.html</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/index.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Translation</span> <span class="pre">fails</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>The following example shows reverse-map rules:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">hoster</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span>
+<span class="n">reverse_map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">server</span><span class="o">.</span><span class="n">hoster</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>These rules result in the following translations.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 46%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 39%" />
+<col style="width: 29%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Origin Server Header</p></th>
+<th class="head"><p>Translated Request</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>When acting as a reverse proxy for multiple servers, Traffic Server is
+unable to route to URLs from older browsers that do not send the
+<code class="docutils literal notranslate"><span class="pre">Host:</span></code> header. As a solution, set the variable <a class="reference internal" href="records.config.en.html#proxy-config-header-parse-no-host-url-redirect" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.header.parse.no_host_url_redirect</span></code></a>
+in the <a class="reference internal" href="records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file to the URL to which Traffic Server will redirect
+requests without host headers.</p>
+</div>
+<div class="section" id="redirect-mapping-rules">
+<h4>Redirect Mapping Rules<a class="headerlink" href="#redirect-mapping-rules" title="Permalink to this headline">¶</a></h4>
+<p>The following rule permanently redirects all HTTP requests for
+<code class="docutils literal notranslate"><span class="pre">www.company.com</span></code> to <code class="docutils literal notranslate"><span class="pre">www.company2.com</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">redirect</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">company</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">company2</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The following rule <em>temporarily</em> redirects all HTTP requests for
+<code class="docutils literal notranslate"><span class="pre">www.company1.com</span></code> to <code class="docutils literal notranslate"><span class="pre">www.company2.com</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">redirect_temporary</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">company1</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">company2</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="regular-expression-regex-remap-support">
+<span id="remap-config-regex"></span><h2>Regular Expression (regex) Remap Support<a class="headerlink" href="#regular-expression-regex-remap-support" title="Permalink to this headline">¶</a></h2>
+<p>Regular expressions can be specified in remapping rules, with the
+limitations below:</p>
+<ul class="simple">
+<li><p>Only the <code class="docutils literal notranslate"><span class="pre">host</span></code> field can contain a regex; the <code class="docutils literal notranslate"><span class="pre">scheme</span></code>,
+<code class="docutils literal notranslate"><span class="pre">port</span></code>, and other fields cannot. For path manipulation via regexes,
+use the <a class="reference internal" href="../plugins/regex_remap.en.html#admin-plugins-regex-remap"><span class="std std-ref">Regex Remap Plugin</span></a>.</p></li>
+<li><p>The number of capturing subpatterns is limited to 9. This means that
+<code class="docutils literal notranslate"><span class="pre">$0</span></code> through <code class="docutils literal notranslate"><span class="pre">$9</span></code> can be used as subtraction placeholders (<code class="docutils literal notranslate"><span class="pre">$0</span></code>
+will be the entire input string).</p></li>
+<li><p>The number of substitutions in the expansion string is limited to 10.</p></li>
+<li><p>There is no <code class="docutils literal notranslate"><span class="pre">regex_</span></code> equivalent to <code class="docutils literal notranslate"><span class="pre">reverse_remap</span></code>, so when using
+<code class="docutils literal notranslate"><span class="pre">regex_map</span></code> you should make sure the reverse path is clear by
+setting (<a class="reference internal" href="records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a>)</p></li>
+</ul>
+<div class="section" id="id1">
+<h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>regex_map http://x([0-9]+).z.com/ http://real-x$1.z.com/
+regex_redirect http://old.(.*).z.com http://new.$1.z.com
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="map-with-referer">
+<span id="id2"></span><h2>map_with_referer<a class="headerlink" href="#map-with-referer" title="Permalink to this headline">¶</a></h2>
+<p>the format of is the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">client</span><span class="o">-</span><span class="n">URL</span> <span class="n">origin</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">URL</span> <span class="n">redirect</span><span class="o">-</span><span class="n">URL</span> <span class="n">regex1</span> <span class="p">[</span><span class="n">regex2</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>‘redirect-URL’ is a redirection URL specified according to <a class="reference external" href="https://tools.ietf.org/html/rfc2616.html">RFC 2616</a> and can
+contain special formatting instructions for run-time modifications of the
+resulting redirection URL.  All regexes Perl compatible  regular expressions,
+which describes the content of the “Referer” header which must be
+verified. In case an actual request does not have “Referer” header or it
+does not match with referer regular expression, the HTTP request will be
+redirected to ‘redirect-URL’.</p>
+<p>At least one regular expressions must be specified in order to activate
+‘deep linking protection’.  There are limitations for the number of referer
+regular expression strings - 2048.  In order to enable the ‘deep linking
+protection’ feature in Traffic Server, configure records.config with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">referer_filter</span> <span class="n">INT</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>In order to enable run-time formatting for redirect URL, configure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">referer_format_redirect</span> <span class="n">INT</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>When run-time formatting for redirect-URL was enabled the following format
+symbols can be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">r</span> <span class="o">-</span> <span class="n">to</span> <span class="n">substitute</span> <span class="n">original</span> <span class="s2">&quot;Referer&quot;</span> <span class="n">header</span> <span class="n">string</span>
+<span class="o">%</span><span class="n">f</span> <span class="o">-</span> <span class="n">to</span> <span class="n">substitute</span> <span class="n">client</span><span class="o">-</span><span class="n">URL</span> <span class="kn">from</span> <span class="s1">&#39;map_with_referer&#39;</span> <span class="n">record</span>
+<span class="o">%</span><span class="n">t</span> <span class="o">-</span> <span class="n">to</span> <span class="n">substitute</span> <span class="n">origin</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">URL</span> <span class="kn">from</span> <span class="s1">&#39;map_with_referer&#39;</span> <span class="n">record</span>
+<span class="o">%</span><span class="n">o</span> <span class="o">-</span> <span class="n">to</span> <span class="n">substitute</span> <span class="n">request</span> <span class="n">URL</span> <span class="n">to</span> <span class="n">origin</span> <span class="n">server</span><span class="p">,</span> <span class="n">which</span> <span class="n">was</span> <span class="n">created</span> <span class="n">a</span>
+     <span class="n">the</span> <span class="n">result</span> <span class="n">of</span> <span class="n">a</span> <span class="n">mapping</span> <span class="n">operation</span>
+</pre></div>
+</div>
+<p>Note: There is a special referer type “~*” that can be used in order to
+specify that the Referer header is optional in the request.  If “~*” referer
+was used in map_with_referer mapping, only requests with Referer header will
+be verified for validity.  If the “~” symbol was specified before referer
+regular expression, it means that the request with a matching referer header
+will be redirected to redirectURL. It can be used to create a so-called
+negative referer list.  If “*” was used as a referer regular expression -
+all referers are allowed.  Various combinations of “*” and “~” in a referer
+list can be used to create different filtering rules.</p>
+<div class="section" id="map-with-referer-examples">
+<h3>map_with_referer Examples<a class="headerlink" href="#map-with-referer-examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">y</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">games</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">new_games</span> <span class="o">.*</span>\<span class="o">.</span><span class="n">bar</span>\<span class="o">.</span><span class="n">com</span> <span class="n">www</span><span class="o">.</span><span class="n">bar</span><span class="o">-</span><span class="n">friends</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Explanation: Referer header must be in the request, only “.*.bar.com” and “www.bar-friends.com” are allowed.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">y</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">games</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">new_games</span> <span class="o">*</span> <span class="o">~.*</span>\<span class="o">.</span><span class="n">evil</span>\<span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Explanation: Referer header must be in the request but all referers are allowed except “.*.evil.com”.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">y</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">games</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">error</span> <span class="o">~*</span> <span class="o">*</span> <span class="o">~.*</span>\<span class="o">.</span><span class="n">evil</span>\<span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>Explanation: Referer header is optional. However, if Referer header exists, only request from “.*.evil.com” will be redirected to redirect-URL.</p>
+</div>
+</div>
+<div class="section" id="plugin-chaining">
+<span id="remap-config-plugin-chaining"></span><h2>Plugin Chaining<a class="headerlink" href="#plugin-chaining" title="Permalink to this headline">¶</a></h2>
+<p>Plugins can be configured to be evaluated in a specific order, passing
+the results from one in to the next (unless a plugin returns 0, then the
+“chain” is broken).</p>
+<div class="section" id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">url</span><span class="o">/</span><span class="n">path</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">url</span><span class="o">/</span><span class="n">path</span> \
+    <span class="nd">@plugin</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">traffic_server</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">plugin1</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="mi">1</span> <span class="nd">@pparam</span><span class="o">=</span><span class="mi">2</span> \
+    <span class="nd">@plugin</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">traffic_server</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">plugin2</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="mi">3</span>
+</pre></div>
+</div>
+<p>will pass “1” and “2” to plugin1.so and “3” to plugin2.so.</p>
+<p>This will pass “1” and “2” to plugin1.so and “3” to plugin2.so</p>
+</div>
+</div>
+<div class="section" id="acl-filters">
+<span id="remap-config-named-filters"></span><h2>Acl Filters<a class="headerlink" href="#acl-filters" title="Permalink to this headline">¶</a></h2>
+<p>Acl filters can be created to control access of specific remap lines. The markup
+is very similar to that of <a class="reference internal" href="ip_allow.yaml.en.html#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a>, with slight changes to
+accommodate remap markup</p>
+<div class="section" id="id4">
+<h3>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neverpost</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neverpost</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">onlypost</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">onlypost</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.5</span><span class="o">.</span><span class="mf">2.1</span> <span class="nd">@in_ip</span><span class="o">=</span><span class="mf">72.209</span><span class="o">.</span><span class="mf">23.4</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span> <span class="nd">@method</span><span class="o">=</span><span class="n">get</span> <span class="nd">@method</span><span class="o">=</span><span class="n">head</span>
+</pre></div>
+</div>
+<p>Note that these Acl filters will return a 403 response if the resource is restricted.</p>
+<p>The difference between <code class="docutils literal notranslate"><span class="pre">&#64;src_ip</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;in_ip</span></code> is that the <code class="docutils literal notranslate"><span class="pre">&#64;src_ip</span></code> is the client
+ip and the <code class="docutils literal notranslate"><span class="pre">in_ip</span></code> is the ip address the client is connecting to (the incoming address).</p>
+</div>
+</div>
+<div class="section" id="named-filters">
+<h2>Named Filters<a class="headerlink" href="#named-filters" title="Permalink to this headline">¶</a></h2>
+<p>Named filters can be created and applied to blocks of mappings using
+the <code class="docutils literal notranslate"><span class="pre">.definefilter</span></code>, <code class="docutils literal notranslate"><span class="pre">.activatefilter</span></code>, and <code class="docutils literal notranslate"><span class="pre">.deactivatefilter</span></code>
+directives. Named filters must be defined using <code class="docutils literal notranslate"><span class="pre">.definefilter</span></code> before
+being used. Once defined, <code class="docutils literal notranslate"><span class="pre">.activatefilter</span></code> can used to activate a
+filter for all mappings that follow until deactivated with
+<code class="docutils literal notranslate"><span class="pre">.deactivatefilter</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&#64;internal</span></code> operator can be used to filter on whether a request
+is generated by Traffic Server itself, usually by a plugin.  This operator
+is helpful for remapping internal requests without allowing access
+to external users. By default both internal and external requests
+are allowed.</p>
+<div class="section" id="id5">
+<h3>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">definefilter</span> <span class="n">disable_delete_purge</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@method</span><span class="o">=</span><span class="n">delete</span> <span class="nd">@method</span><span class="o">=</span><span class="n">purge</span>
+<span class="o">.</span><span class="n">definefilter</span> <span class="n">local_only</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">0.1</span><span class="o">-</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">0.254</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">-</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.254</span>
+
+<span class="o">.</span><span class="n">activatefilter</span> <span class="n">disable_delete_purge</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">bar</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+
+<span class="o">.</span><span class="n">activatefilter</span> <span class="n">local_only</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">admin</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">internal</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">admin</span>
+<span class="o">.</span><span class="n">deactivatefilter</span> <span class="n">local_only</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">internal</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">auth</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">auth</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@internal</span>
+</pre></div>
+</div>
+<p>The filter <cite>disable_delete_purge</cite> will be applied to all of the
+mapping rules. (It is activated before any mappings and is never
+deactivated.) The filter <cite>local_only</cite> will only be applied to the
+second mapping.</p>
+</div>
+</div>
+<div class="section" id="nexthop-selection-strategies">
+<h2>NextHop Selection Strategies<a class="headerlink" href="#nexthop-selection-strategies" title="Permalink to this headline">¶</a></h2>
+<p>You may configure Nexthop or Parent hierarchical caching rules by remap using the
+<strong>&#64;strategy</strong> tag.  See <a class="reference internal" href="../configuration/hierarchical-caching.en.html"><span class="doc">Hierarchical Caching</span></a> and <a class="reference internal" href="strategies.yaml.en.html"><span class="doc">strategies.yaml</span></a>
+for configuration details and examples.</p>
+</div>
+<div class="section" id="including-additional-remap-files">
+<h2>Including Additional Remap Files<a class="headerlink" href="#including-additional-remap-files" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.include</span></code> directive allows mapping rules to be spread across
+multiple files. The argument to the <code class="docutils literal notranslate"><span class="pre">.include</span></code> directive is a
+list of file names to be parsed for additional mapping rules. Unless
+the names are absolute paths, they are resolved relative to the
+Traffic Server configuration directory.</p>
+<p>The effect of the <code class="docutils literal notranslate"><span class="pre">.include</span></code> directive is as if the contents of
+the listed files is included in the parent and parsing restarted
+at the point of inclusion. This means that and filters named in the
+included files are global in scope, and that additional <code class="docutils literal notranslate"><span class="pre">.include</span></code>
+directives are allowed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Included remap files are not currently tracked by the configuration
+subsystem. Changes to included remap files will not be noticed
+by online configuration changes applied by <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+unless <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> has also changed.</p>
+</div>
+<div class="section" id="id6">
+<h3>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>In this example, a top-level <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file simply
+references additional mapping rules files</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">include</span> <span class="n">filters</span><span class="o">.</span><span class="n">config</span>
+<span class="o">.</span><span class="n">include</span> <span class="n">one</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">config</span> <span class="n">two</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>The file <cite>filters.config</cite> contains</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">definefilter</span> <span class="n">deny_purge</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@method</span><span class="o">=</span><span class="n">purge</span>
+<span class="o">.</span><span class="n">definefilter</span> <span class="n">allow_purge</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@method</span><span class="o">=</span><span class="n">purge</span>
+</pre></div>
+</div>
+<p>The file <cite>one.example.com.config</cite> contains:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">activatefilter</span> <span class="n">deny_purge</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">one</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">-</span><span class="n">one</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="o">.</span><span class="n">deactivatefilter</span> <span class="n">deny_purge</span>
+</pre></div>
+</div>
+<p>The file <cite>two.example.com.config</cite> contains:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">activatefilter</span> <span class="n">allow_purge</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">two</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">-</span><span class="n">two</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="o">.</span><span class="n">deactivatefilter</span> <span class="n">allow_purge</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="records.config.en.html" title="previous chapter">records.config</a></li>
+      <li>Next: <a href="splitdns.config.en.html" title="next chapter">splitdns.config</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/remap.config.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

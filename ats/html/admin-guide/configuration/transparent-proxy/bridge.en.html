@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inline on a Linux Bridge &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Inline on a Linux router" href="router-inline.en.html" />
+    <link rel="prev" title="Building ATS for transparency" href="build.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="inline-on-a-linux-bridge">
+<h1>Inline on a Linux Bridge<a class="headerlink" href="#inline-on-a-linux-bridge" title="Permalink to this headline">¶</a></h1>
+<p>A Linux can be configured to operate in <a class="reference external" href="http://www.linuxfoundation.org/collaborate/workgroups/networking/bridge">bridge mode</a>.
+Two or more physical interfaces are assigned to the bridge. A single IP
+address is shared across the interfaces. By default any packet that
+arrives on one interface is immediately routed out another bridge
+interface.</p>
+<p>Linux packages required:</p>
+<ul class="simple">
+<li><p>bridge-utils</p></li>
+<li><p>ebtables</p></li>
+</ul>
+<p>In our example of setting up bridge mode we will use a local address of
+192.168.1.11/24 and interfaces <code class="docutils literal notranslate"><span class="pre">eth0</span></code> and <code class="docutils literal notranslate"><span class="pre">eth1</span></code> as the bridge
+interfaces (more detailed documentation is available
+<a class="reference external" href="http://www.tldp.org/HOWTO/BRIDGE-STP-HOWTO/preparing-the-bridge.html">here</a>).
+You may omit the ‘#’ character and everything after it.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">brctl</span> <span class="n">addbr</span> <span class="n">br0</span> <span class="c1"># create bridge device</span>
+<span class="n">brctl</span> <span class="n">stp</span> <span class="n">br0</span> <span class="n">off</span> <span class="c1"># Disable spanning tree protocol</span>
+<span class="n">brctl</span> <span class="n">addif</span> <span class="n">br0</span> <span class="n">eth0</span> <span class="c1"># Add eth0 to bridge</span>
+<span class="n">brctl</span> <span class="n">addif</span> <span class="n">br0</span> <span class="n">eth1</span> <span class="c1"># Add eth1 to bridge</span>
+
+<span class="n">ifconfig</span> <span class="n">eth0</span> <span class="mi">0</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="c1"># Get rid of interface IP addresses</span>
+<span class="n">ifconfig</span> <span class="n">eth1</span> <span class="mi">0</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="c1"># ditto # Set the bridge IP address and enable it</span>
+<span class="n">ifconfig</span> <span class="n">br0</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.11</span> <span class="n">netmask</span> <span class="mf">255.255</span><span class="o">.</span><span class="mf">255.0</span> <span class="n">up</span>
+</pre></div>
+</div>
+<p>If you have not already done so, remember to add a default route, such
+as this one for a gateway of 192.168.1.1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="n">default</span> <span class="n">via</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.1</span>
+</pre></div>
+</div>
+<p>At this point it is a good idea to test connectivity to verify the basic
+bridge is functional.</p>
+<p>Once the bridge is verified to work, this is the basic traffic pattern
+of interest.</p>
+<div class="figure align-center" id="id3">
+<img alt="Picture of traffic flow through a bridge with ATS" src="../../../_images/ats-traffic-bridge.png" />
+<p class="caption"><span class="caption-text">Picture of traffic flow through a bridge with ATS</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+<p>The green arrows are packets originating from the client and the red
+arrows are packets originating from the origin server. All traffic not
+directed to the local address will pass through the bridge. We need to
+break into some of the traffic and subject it to routing so that it can
+be routed to ATS. This requires <code class="docutils literal notranslate"><span class="pre">ebtables</span></code>. The flows we want to
+intercept are green 1 (from client to bridge) and red 1 (origin server
+to bridge).</p>
+<p>In this example we will intercept port 80 (HTTP) traffic. We will use
+the <code class="docutils literal notranslate"><span class="pre">BROUTING</span></code> chain because it is traversed only for packets that
+originated externally and arrived on a (forwarding enabled) interface.
+Although it looks like this will intercept all port 80 traffic it will
+only affect the two flows described above. <code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">redirect</span></code> marks the
+packet as being diverted to the bridge and not forwarded, and the
+<code class="docutils literal notranslate"><span class="pre">DROP</span></code> target puts the packets in the normal <code class="docutils literal notranslate"><span class="pre">iptables</span></code> routing so
+that we can use standard device tests on them <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. Although this
+example handles only port 80, other ports are the same except for the
+port value. Note also the port here is the port from the point of view
+of the clients and origin servers, not the Traffic Server server port.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ebtables</span> <span class="o">-</span><span class="n">t</span> <span class="n">broute</span> <span class="o">-</span><span class="n">F</span> <span class="c1"># Flush the table</span>
+<span class="c1"># inbound traffic</span>
+<span class="n">ebtables</span> <span class="o">-</span><span class="n">t</span> <span class="n">broute</span> <span class="o">-</span><span class="n">A</span> <span class="n">BROUTING</span> <span class="o">-</span><span class="n">p</span> <span class="n">IPv4</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">proto</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">dport</span> <span class="mi">80</span> \
+  <span class="o">-</span><span class="n">j</span> <span class="n">redirect</span> <span class="o">--</span><span class="n">redirect</span><span class="o">-</span><span class="n">target</span> <span class="n">DROP</span>
+<span class="c1"># returning outbound traffic</span>
+<span class="n">ebtables</span> <span class="o">-</span><span class="n">t</span> <span class="n">broute</span> <span class="o">-</span><span class="n">A</span> <span class="n">BROUTING</span> <span class="o">-</span><span class="n">p</span> <span class="n">IPv4</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">proto</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">ip</span><span class="o">-</span><span class="n">sport</span> <span class="mi">80</span> \
+  <span class="o">-</span><span class="n">j</span> <span class="n">redirect</span> <span class="o">--</span><span class="n">redirect</span><span class="o">-</span><span class="n">target</span> <span class="n">DROP</span>
+</pre></div>
+</div>
+<p>Traffic Server operates at layer 3 so we need to use <code class="docutils literal notranslate"><span class="pre">iptables</span></code> to
+handle IP packets appropriately.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth1</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">-</span><span class="n">m</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">80</span> \
+  <span class="o">-</span><span class="n">j</span> <span class="n">TPROXY</span> <span class="o">--</span><span class="n">on</span><span class="o">-</span><span class="n">ip</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="o">--</span><span class="n">on</span><span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">tproxy</span><span class="o">-</span><span class="n">mark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth0</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">-</span><span class="n">m</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">sport</span> <span class="mi">80</span> \
+   <span class="o">-</span><span class="n">j</span> <span class="n">MARK</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">mark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>At this point the directionality of the interfaces matters. For the
+example <code class="docutils literal notranslate"><span class="pre">eth1</span></code> is the inbound (client side) interface, while <code class="docutils literal notranslate"><span class="pre">eth0</span></code>
+is the outbound (origin server side) interface. We mark both flows of
+packets so that we can use policy routing on them. For inbound packets
+we need to use <code class="docutils literal notranslate"><span class="pre">TPROXY</span></code> to force acceptance of packets to foreign IP
+addresses. For returning outbound packets there will be a socket open
+bound to the foreign address, we need only force it to be delivered
+locally. The value for <code class="docutils literal notranslate"><span class="pre">--on-ip</span></code> is 0 because the target port is
+listening and not bound to a specific address. The value for
+<code class="docutils literal notranslate"><span class="pre">--on-port</span></code> must match the Traffic Server server port. Otherwise its
+value is arbitrary. <code class="docutils literal notranslate"><span class="pre">--dport</span></code> and <code class="docutils literal notranslate"><span class="pre">--sport</span></code> specify the port from
+the point of view of the clients and origin servers.</p>
+<p>Once the flows are marked we can force them to be delivered locally via
+the loopback interface via a policy routing table.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">rule</span> <span class="n">add</span> <span class="n">fwmark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span> <span class="n">table</span> <span class="mi">1</span>
+<span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="n">local</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">0</span> <span class="n">dev</span> <span class="n">lo</span> <span class="n">table</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The marking used is arbitrary but it must be consistent between
+<code class="docutils literal notranslate"><span class="pre">iptables</span></code> and the routing rule. The table number must be in the range
+1..253.</p>
+<p>To configure Traffic Server set the following values in
+<a class="reference internal" href="../../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code> (see below)</p></li>
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+</ul>
+<div class="section" id="additional-troubleshooting">
+<h2>Additional troubleshooting<a class="headerlink" href="#additional-troubleshooting" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Check to make sure that <code class="docutils literal notranslate"><span class="pre">iptables</span></code> is not filtering (blocking)
+incoming HTTP connections.</p>
+<blockquote>
+<div><p>It is frequently the case that the default tables prevent incoming HTTP. You can clear all filters with the
+commands:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="nb">filter</span> <span class="o">--</span><span class="n">flush</span> <span class="n">FORWARD</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="nb">filter</span> <span class="o">--</span><span class="n">flush</span> <span class="n">INPUT</span>
+</pre></div>
+</div>
+<p>That is a bit drastic and should only be used for testing / debugging. A
+live system will likely need some filters in place but that is beyond
+the scope of this document. If this fixes the problem, then your filter
+set is too restrictive.</p>
+<p>Note that this problem will prevent the basic bridge (without ATS) from
+allowing HTTP traffic through.</p>
+</div></blockquote>
+</li>
+<li><p>Verify that IP packet forwarding is enabled.</p>
+<blockquote>
+<div><p>You can check this with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span>
+</pre></div>
+</div>
+<p>The output should be a non-zero value (usually ‘1’). If it is zero, you
+can set it with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">echo</span> <span class="s1">&#39;1&#39;</span> <span class="o">&gt;</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span>
+</pre></div>
+</div>
+<p>This can setting can be persisted by putting it in <code class="docutils literal notranslate"><span class="pre">/etc/sysctl.conf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span><span class="o">=</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">--redirect-target</span></code> can be omitted, but then the <code class="docutils literal notranslate"><span class="pre">iptables</span></code>
+rules would need to use <code class="docutils literal notranslate"><span class="pre">--physdev</span></code> instead of just <code class="docutils literal notranslate"><span class="pre">-i</span></code>. The
+actual packet processing is identical.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="../index.en.html">Proxy Cache Configuration</a><ul>
+  <li><a href="../transparent-proxy.en.html">Transparent Proxying</a><ul>
+      <li>Previous: <a href="build.en.html" title="previous chapter">Building ATS for transparency</a></li>
+      <li>Next: <a href="router-inline.en.html" title="next chapter">Inline on a Linux router</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/admin-guide/configuration/transparent-proxy/bridge.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

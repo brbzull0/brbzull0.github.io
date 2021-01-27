@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sni.yaml &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="storage.config" href="storage.config.en.html" />
+    <link rel="prev" title="ssl_multicert.config" href="ssl_multicert.config.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sni-yaml">
+<h1>sni.yaml<a class="headerlink" href="#sni-yaml" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<span id="std-configfile-sni.yaml"></span><span id="std:configfile-sni.yaml"></span><h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This file is used to configure aspects of TLS connection handling for both inbound and outbound
+connections. The configuration is driven by the SNI values provided by the inbound connection. The
+file consists of a set of configuration items, each identified by an SNI value (<code class="docutils literal notranslate"><span class="pre">fqdn</span></code>).
+When an inbound TLS connection is made, the SNI value from the TLS negotiation is matched against
+the items specified by this file and if there is a match, the values specified in that item override
+the defaults. This is done during the inbound connection processing; some outbound properties
+can be overridden again later, such as via <a class="reference internal" href="remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> or plugins.</p>
+<p>By default this is named <a class="reference internal" href="#std-configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a>. The filename can be changed by setting
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-servername-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.servername.filename</span></code></a>. This file is loaded on start up and by
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> if the file has been modified since process start.</p>
+<p>The configuration file is YAML-based. After parsing the configuration, a list of tables will be the result.
+Each table is a set of key / value pairs that create a configuration item. This configuration file accepts
+wildcard entries. To apply an SNI based setting on all the server names with a common upper level domain name,
+the user needs to enter the fqdn in the configuration with a <code class="docutils literal notranslate"><span class="pre">*.</span></code> followed by the common domain name. (<code class="docutils literal notranslate"><span class="pre">*.yahoo.com</span></code> for example).</p>
+<span id="override-verify-server-properties"></span><span id="override-verify-server-policy"></span><table class="docutils align-default" id="override-host-sni-policy">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>fqdn</p></td>
+<td><p>Fully Qualified Domain Name. This item is used if the SNI value matches this.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ip_allow</p></td>
+<td><p>Specify a list of client IP address, subnets, or ranges what are allowed to complete
+the connection. This list is comma separated. IPv4 and IPv6 addresses can be specified.
+Here is an example list: 192.168.1.0/24,192.168.10.1-4. This would allow connections
+from clients in the 19.168.1.0 network or in the range from 192.168.10.1 to 192.168.1.4.</p></td>
+</tr>
+<tr class="row-even"><td><p>verify_server_policy</p></td>
+<td><p>One of the values <code class="code docutils literal notranslate"><span class="pre">DISABLED</span></code>, <code class="code docutils literal notranslate"><span class="pre">PERMISSIVE</span></code>, or <code class="code docutils literal notranslate"><span class="pre">ENFORCED</span></code>.</p>
+<p>By default this is <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-verify-server-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.policy</span></code></a>.
+This controls how Traffic Server evaluated the origin certificate.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>verify_server_properties</p></td>
+<td><p>One of the values <code class="code docutils literal notranslate"><span class="pre">NONE</span></code>, <code class="code docutils literal notranslate"><span class="pre">SIGNATURE</span></code>, <code class="code docutils literal notranslate"><span class="pre">NAME</span></code>, and <code class="code docutils literal notranslate"><span class="pre">ALL</span></code></p>
+<p>By default this is <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-verify-server-properties" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.properties</span></code></a>.
+This controls what Traffic Server checks when evaluating the origin certificate.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>verify_client</p></td>
+<td><p>One of the values <code class="code docutils literal notranslate"><span class="pre">NONE</span></code>, <code class="code docutils literal notranslate"><span class="pre">MODERATE</span></code>, or <code class="code docutils literal notranslate"><span class="pre">STRICT</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">NONE</span></code> is specified, Traffic Server requests no certificate.  If <code class="docutils literal notranslate"><span class="pre">MODERATE</span></code> is specified
+Traffic Server will verify a certificate that is presented by the client, but it will not
+fail the TLS handshake if no certificate is presented.  If <code class="docutils literal notranslate"><span class="pre">STRICT</span></code> is specified
+the client must resent a certificate during the TLS handshake.</p>
+<p>By default this is <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-certification-level" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.certification_level</span></code></a>.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>verify_client_ca_certs</p></td>
+<td><p>Specifies an alternate set of certificate authority certs to use to verify the
+client cert.  The value must be either a file path, or a nested set of key /
+value pairs.  If the value is a file path, it must specify a file containing the
+CA certs.  Otherwise, there should be up to two nested pairs.  The possible keys
+are <code class="docutils literal notranslate"><span class="pre">file</span></code> and <code class="docutils literal notranslate"><span class="pre">dir</span></code>.  The value for <code class="docutils literal notranslate"><span class="pre">file</span></code> must be a file path for a file
+containing CA certs.  The value for <code class="docutils literal notranslate"><span class="pre">dir</span></code> must be a file path for an OpenSSL
+X509 hashed directory containing CA certs.  If a given file path does not being
+with <code class="docutils literal notranslate"><span class="pre">/</span></code> , it must be relative to the Traffic Server configuration directory.
+<code class="docutils literal notranslate"><span class="pre">verify_client_ca_certs</span></code> can only be used with capbilities provided by
+OpenSSL 1.0.2 or later.</p></td>
+</tr>
+<tr class="row-even"><td><p>host_sni_policy</p></td>
+<td><p>One of the values <code class="code docutils literal notranslate"><span class="pre">DISABLED</span></code>, <code class="code docutils literal notranslate"><span class="pre">PERMISSIVE</span></code>, or <code class="code docutils literal notranslate"><span class="pre">ENFORCED</span></code>.</p>
+<p>If not specified, the value of <a class="reference internal" href="records.config.en.html#proxy-config-http-host-sni-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.host_sni_policy</span></code></a> is used.
+This controls how policy impacting mismatches between host header and SNI values are
+dealt with.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>valid_tls_versions_in</p></td>
+<td><p>This specifies the list of TLS protocols that will be offered to user agents during
+the TLS negotiation.  This replaces the global settings in
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-tlsv1" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.TLSv1</span></code></a>, <a class="reference internal" href="records.config.en.html#proxy-config-ssl-tlsv1-1" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.TLSv1_1</span></code></a>,
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-tlsv1-2" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.TLSv1_2</span></code></a>, and <a class="reference internal" href="records.config.en.html#proxy-config-ssl-tlsv1-3" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.TLSv1_3</span></code></a>. The potential
+values are TLSv1, TLSv1_1, TLSv1_2, and TLSv1_3.  You must list all protocols that Traffic Server
+should offer to the client when using this key.  This key is only valid for openssl
+1.1.0 and later. Older versions of openssl do not provide a hook early enough to update
+the SSL object.  It is a syntax error for Traffic Server built against earlier versions.</p></td>
+</tr>
+<tr class="row-even"><td><p>client_cert</p></td>
+<td><p>The file containing the client certificate to use for the outbound connection.</p>
+<p>If this is relative, it is relative to the path in
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-cert-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.cert.path</span></code></a>. If not set
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-cert-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.cert.filename</span></code></a> is used.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>client_key</p></td>
+<td><p>The file containing the client private key that corresponds to the certificate
+for the outbound connection.</p>
+<p>If this is relative, it is relative to the path in
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-private-key-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.private_key.path</span></code></a>. If not set,
+Traffic Server tries to use a private key in client_cert.  Otherwise,
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-private-key-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.private_key.filename</span></code></a> is used.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>http2</p></td>
+<td><p>Indicates whether the H2 protocol should be added to or removed from the
+protocol negotiation list.  The valid values are <code class="code docutils literal notranslate"><span class="pre">on</span></code> or <code class="code docutils literal notranslate"><span class="pre">off</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>disable_h2</p></td>
+<td><p>Deprecated for the more general h2 setting.  Setting disable_h2
+to <code class="code docutils literal notranslate"><span class="pre">true</span></code> is the same as setting http2 to <code class="code docutils literal notranslate"><span class="pre">on</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>tunnel_route</p></td>
+<td><p>Destination as an FQDN and port, separated by a colon <code class="docutils literal notranslate"><span class="pre">:</span></code>.
+Match group number can be specified by <code class="docutils literal notranslate"><span class="pre">$N</span></code> where N should refer to a specified group
+in the FQDN, <code class="docutils literal notranslate"><span class="pre">tunnel_route:</span> <span class="pre">$1.domain</span></code>.</p>
+<p>This will forward all traffic to the specified destination without first terminating
+the incoming TLS connection.</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>forward_route</p></td>
+<td><p>Destination as an FQDN and port, separated by a colon <code class="docutils literal notranslate"><span class="pre">:</span></code>.</p>
+<p>This is similar to tunnel_route, but it terminates the TLS connection and forwards the
+decrypted traffic. Traffic Server will not interpret the decrypted data, so the contents do not
+need to be HTTP.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>partial_blind_route</p></td>
+<td><p>Destination as an FQDN and port, separated by a colon <code class="docutils literal notranslate"><span class="pre">:</span></code>.</p>
+<p>This is similar to forward_route in that Traffic Server terminates the incoming TLS connection.
+In addition partial_blind_route creates a new TLS connection to the specified origin.
+It does not interpret the decrypted data before passing it to the origin TLS
+connection, so the contents do not need to be HTTP.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Client verification, via <code class="docutils literal notranslate"><span class="pre">verify_client</span></code>, corresponds to setting
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-certification-level" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.certification_level</span></code></a> for this connection as noted below.</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">NONE</span></code> – <code class="docutils literal notranslate"><span class="pre">0</span></code></dt><dd><p>Do not request a client certificate, ignore it if one is provided.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">MODERATE</span></code> - <code class="docutils literal notranslate"><span class="pre">1</span></code></dt><dd><p>Request a client certificate and do verification if one is provided. The connection is denied if the verification of the client provided certificate fails.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">STRICT</span></code> - <code class="docutils literal notranslate"><span class="pre">2</span></code></dt><dd><p>Request a client certificate and require one to be provided and verified.
+If the verification fails the failure is logged to <a class="reference internal" href="../monitoring/diagnostic-files.en.html#std-logfile-diags.log"><code class="xref std std-file docutils literal notranslate"><span class="pre">diags.log</span></code></a> and the connection is
+denied.</p>
+</dd>
+</dl>
+<p>Upstream (server) verification, via <code class="docutils literal notranslate"><span class="pre">verify_server_policy</span></code> and <code class="docutils literal notranslate"><span class="pre">verify_server_properties</span></code>, is similar to client verification
+except there is always an upstream certificate. This is equivalent to setting
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-verify-server-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.policy</span></code></a> and <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-verify-server-properties" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.properties</span></code></a> for this connection.</p>
+<p><code class="docutils literal notranslate"><span class="pre">verify_server_policy</span></code> specifies how Traffic Server will enforce the server certificate verification.</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">DISABLED</span></code></dt><dd><p>Do not verify the upstream server certificate.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">PERMISSIVE</span></code></dt><dd><p>Do verification of the upstream certificate but do not enforce. If the verification fails the
+failure is logged in <a class="reference internal" href="../monitoring/diagnostic-files.en.html#std-logfile-diags.log"><code class="xref std std-file docutils literal notranslate"><span class="pre">diags.log</span></code></a> but the connection is allowed.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">ENFORCED</span></code></dt><dd><p>Do verification of the upstream certificate. If verification fails, the failure is
+logged in <a class="reference internal" href="../monitoring/diagnostic-files.en.html#std-logfile-diags.log"><code class="xref std std-file docutils literal notranslate"><span class="pre">diags.log</span></code></a> and the connection is denied.</p>
+</dd>
+</dl>
+<p>In addition <code class="docutils literal notranslate"><span class="pre">verify_server_properties</span></code> specifies what Traffic Server will check when performing the verification.</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">NONE</span></code></dt><dd><p>Do not check anything in the standard Traffic Server verification routine.  Rely entirely on the <code class="docutils literal notranslate"><span class="pre">TS_SSL_VERIFY_SERVER_HOOK</span></code> for evaluating the origin’s certificate.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">SIGNATURE</span></code></dt><dd><p>Check the signature of the origin certificate.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">NAME</span></code></dt><dd><p>Verify that the SNI is in the origin certificate.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">ALL</span></code></dt><dd><p>Verify both the signature and the SNI in the origin certificate.</p>
+</dd>
+</dl>
+<p>If <code class="docutils literal notranslate"><span class="pre">tunnel_route</span></code> is specified, none of the certificate verification will be done because the TLS
+negotiation will be tunneled to the upstream target, making those values irrelevant for that
+configuration item. This option is explained in more detail in <a class="reference internal" href="../layer-4-routing.en.html#sni-routing"><span class="std std-ref">SNI Routing</span></a>.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Disable HTTP/2 for <code class="docutils literal notranslate"><span class="pre">no-http2.example.com</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">no-http2.example.com</span>
+  <span class="nt">http2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">off</span>
+</pre></div>
+</div>
+<p>Require client certificate verification for <code class="docutils literal notranslate"><span class="pre">foo.com</span></code> and any server name ending with <code class="docutils literal notranslate"><span class="pre">.yahoo.com</span></code>. Therefore, client
+request for a server name ending with yahoo.com (e.g., def.yahoo.com, abc.yahoo.com etc.) will cause Traffic Server require and verify
+the client certificate.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">foo.com</span></code>, if the user agent sets the host header to foo.com but the SNI to some other value, Traffic Server will warn about the
+mismatch but continue to process the request.  Mismatches for the other domains will cause Traffic Server to warn and return 403.</p>
+<p>Traffic Server will allow a client certificate to be provided for <code class="docutils literal notranslate"><span class="pre">example.com</span></code> and if it is, Traffic Server will require the
+certificate to be valid.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example.com</span>
+  <span class="nt">verify_client</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">MODERATE</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="s">&#39;foo.com&#39;</span>
+  <span class="nt">verify_client</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRICT</span>
+  <span class="nt">host_sni_policy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">PERMISSIVE</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="s">&#39;*.yahoo.com&#39;</span>
+  <span class="nt">verify_client</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRICT</span>
+</pre></div>
+</div>
+<p>Disable outbound server certificate verification for <code class="docutils literal notranslate"><span class="pre">trusted.example.com</span></code> and require a valid
+client certificate.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">trusted.example.com</span>
+  <span class="nt">verify_server_policy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">DISABLED</span>
+  <span class="nt">verify_client</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">STRICT</span>
+</pre></div>
+</div>
+<p>Use FQDN captured group to match in <code class="docutils literal notranslate"><span class="pre">tunnel_route</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="s">&#39;*.foo.com&#39;</span>
+  <span class="nt">tunnel_route</span><span class="p">:</span> <span class="s">&#39;$1.myfoo&#39;</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="s">&#39;*.bar.*.com&#39;</span>
+  <span class="nt">tunnel_route</span><span class="p">:</span> <span class="s">&#39;$2.some.$1.yahoo&#39;</span>
+</pre></div>
+</div>
+<p>FQDN <code class="docutils literal notranslate"><span class="pre">some.foo.com</span></code> will match and the captured string will be replaced in the <code class="docutils literal notranslate"><span class="pre">tunnel_route</span></code> which will end up being
+<code class="docutils literal notranslate"><span class="pre">some.myfoo</span></code>.
+Second part is using multiple groups, having <code class="docutils literal notranslate"><span class="pre">bob.bar.example.com</span></code> as FQDN, <code class="docutils literal notranslate"><span class="pre">tunnel_route</span></code> will end up being
+<code class="docutils literal notranslate"><span class="pre">bar.some.bob.yahoo</span></code>.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../layer-4-routing.en.html#sni-routing"><span class="std std-ref">SNI Routing</span></a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="ssl_multicert.config.en.html" title="previous chapter">ssl_multicert.config</a></li>
+      <li>Next: <a href="storage.config.en.html" title="next chapter">storage.config</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/sni.yaml.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

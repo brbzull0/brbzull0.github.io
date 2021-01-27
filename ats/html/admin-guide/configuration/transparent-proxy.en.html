@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transparent Proxying &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Building ATS for transparency" href="transparent-proxy/build.en.html" />
+    <link rel="prev" title="Explicit Proxy Caching" href="explicit-forward-proxying.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="transparent-proxying">
+<span id="transparent-proxy"></span><h1>Transparent Proxying<a class="headerlink" href="#transparent-proxying" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="transparent-proxy/build.en.html">Building ATS for transparency</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transparent-proxy/bridge.en.html">Inline on a Linux Bridge</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transparent-proxy/bridge.en.html#additional-troubleshooting">Additional troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transparent-proxy/router-inline.en.html">Inline on a Linux router</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html">WCCP Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html#configuration-overview">Configuration overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transparent-proxy/wccp-service-config.en.html">WCCP Service Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transparent-proxy/wccp-service-config.en.html#security-section">Security Section</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transparent-proxy/wccp-service-config.en.html#services-section">Services Section</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Transparent Proxying is the ability of a proxy (such as ATS) to
+intercept connections between clients and servers without being visible.</p>
+<p>The general network structure that will be used in this documentation is
+shown in the following figure.</p>
+<div class="figure align-center" id="id1">
+<img alt="ATS basic traffic flow of Transparent Proxy" src="../../_images/ats-basic-traffic.png" />
+<p class="caption"><span class="caption-text">ATS basic traffic flow of Transparent Proxy</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+<p>There must be a gateway device through which all network traffic passes
+from the client to the Internet (or external cloud). The gateway is
+responsible for effectively splicing ATS in to selected streams of that
+traffic. Each traffic stream is split in two, with ATS terminating
+both sides. That is, stream green-1, red-2, is split in to the green
+connection and the red connection. Note that ATS may or may not be on
+the gateway system, the redirected traffic can flow over other network
+infrastructure.</p>
+<p>Because ATS uses two connections, transparency can be set independently
+on the client and origin server (Internet / external cloud) side. We
+will define what is generally called “transparent proxy” as two aspects,
+<em>inbound transparency</em> and <em>outbound transparency</em>.</p>
+<p>Inbound transparency is a proxy that is transparent to connections that
+are inbound to the proxy, i.e. a connection initiated by a client which
+connects to the proxy (green-1). Similarly, outbound transparency is a
+proxy that is transparent to connections that are outbound from the
+proxy, i.e. a connection initiated by the proxy to an origin server
+(red-2).</p>
+<p>In most situations these two types of transparency are combined, but that is
+not required. Traffic Server supports transparency independently on the two
+sides.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>It is critical to note that any transparency requires specialized
+routing and cannot be done solely by configuring ATS. ATS transparency
+also requires support from the Linux kernel and therefore currently only
+works on sufficiently recent Linux kernels that support the following
+features:</p>
+<ul class="simple">
+<li><p>TPROXY</p></li>
+<li><p>POSIX capabilities</p></li>
+</ul>
+<p>In addition the specialized routing will require using <code class="docutils literal notranslate"><span class="pre">iptables</span></code> and
+in some cases <code class="docutils literal notranslate"><span class="pre">ebtables</span></code>.</p>
+</div>
+<p>Standard build procedures should work for transparency support but if
+not consult these <a class="reference internal" href="transparent-proxy/build.en.html#building-ats-for-transparency"><span class="std std-ref">more detailed instructions</span></a>.</p>
+<p>Transparency is configured per server port, not globally. This is done
+via the configuration values <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a>.
+In addition, <a class="reference internal" href="../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> must be enabled if the
+client side is transparent. That should be fixed in a future patch.</p>
+<p>In the first case use the attribute character (replacing the default
+‘X’)</p>
+<p><strong>Attribute</strong> <strong>Transparency Style</strong> <strong>Reverse Proxy</strong></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">=</span></code></dt><dd><p>Full transparency: either</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></dt><dd><p>Inbound (client) transparency: enabled</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></dt><dd><p>Outbound (origin server) transparency: either</p>
+</dd>
+</dl>
+<p>In the outbound transparent case clients must connect directly to ATS
+either through an explicit proxy mechanism or by advertising the IP
+address of the ATS server via DNS as the origin server address.</p>
+<p>Some tested scenarios –</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="transparent-proxy/bridge.en.html"><span class="doc">Inline on a Linux Bridge</span></a></p></li>
+<li><p><a class="reference internal" href="transparent-proxy/router-inline.en.html"><span class="doc">Inline on a Linux router</span></a></p></li>
+<li><p><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html"><span class="doc">WCCP Configuration</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Proxy Cache Configuration</a><ul>
+      <li>Previous: <a href="explicit-forward-proxying.en.html" title="previous chapter">Explicit Proxy Caching</a></li>
+      <li>Next: <a href="transparent-proxy/build.en.html" title="next chapter">Building ATS for transparency</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/configuration/transparent-proxy.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

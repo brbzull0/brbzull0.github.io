@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Regex Revalidate Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Remap Purge Plugin" href="remap_purge.en.html" />
+    <link rel="prev" title="Regex Remap Plugin" href="regex_remap.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="regex-revalidate-plugin">
+<span id="admin-plugins-regex-revalidate"></span><h1>Regex Revalidate Plugin<a class="headerlink" href="#regex-revalidate-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin allows for the creation of rules which match regular expressions
+against mapped URLs to determine if and when a cache object revalidation should
+be forced.</p>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>This plugin’s intended use is the selective forcing of revalidations on cache
+objects which are not yet marked as stale in Traffic Server but which may have been
+updated at the origin - without needing to alter cache control headers,
+preemptively purge the object from the cache manually, or adjust the global
+cache revalidation settings (such as fuzz times) used by other plugins.</p>
+<p>Forced cache revalidations may be as specifically or loosely targeted as a
+regular expression against your origin URLs permits. Thus, individual cache
+objects may have rules created for them, or entire path prefixes, or even any
+cache objects with a particular file extension.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To make this plugin available, you must enable experimental plugins when
+building Traffic Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">experimental</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is enabled via the <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> configuration file, with
+two required arguments: the path to a rules file, and the path to a log file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_revalidate</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">rules</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">log</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The rule configuration file format is described below in <a class="reference internal" href="#revalidation-rules">Revalidation Rules</a>.</p>
+<p>By default The plugin regularly (every 60 seconds) checks its rules configuration
+file for changes and it will also check for changes when <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code>
+is run. If the file has been modified since its last scan, the contents
+are read and the in-memory rules list is updated. Thus, new rules may be added and
+existing ones modified without requiring a service restart.</p>
+<p>The configuration parameter <cite>–disable-timed-updates</cite> or <cite>-d</cite> may be used to configure
+the plugin to disable timed config file change checks.  With timed checks disabled,
+config file changes are checked are only when <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code> is run.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_revalidate</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">rules</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">log</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="revalidation-rules">
+<h2>Revalidation Rules<a class="headerlink" href="#revalidation-rules" title="Permalink to this headline">¶</a></h2>
+<p>Inside your revalidation rules configuration, each rule line is defined as a
+regular expression followed by an integer which expresses the epoch time at
+which the rule will expire:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">regular</span> <span class="n">expression</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rule</span> <span class="n">expiry</span><span class="p">,</span> <span class="k">as</span> <span class="n">seconds</span> <span class="n">since</span> <span class="n">epoch</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Blank lines and lines beginning with a <code class="docutils literal notranslate"><span class="pre">#</span></code> character are ignored.</p>
+<div class="section" id="matching-expression">
+<h3>Matching Expression<a class="headerlink" href="#matching-expression" title="Permalink to this headline">¶</a></h3>
+<p>PCRE style regular expressions are supported and should be used to match
+against the complete remapped URL of cache objects (not the original
+client-side URL), including protocol scheme and origin server domain.</p>
+</div>
+<div class="section" id="rule-expiration">
+<h3>Rule Expiration<a class="headerlink" href="#rule-expiration" title="Permalink to this headline">¶</a></h3>
+<p>Every rule must have an expiration associated with it. The rule expiration is
+expressed as an integer of seconds since epoch (equivalent to the return value
+of <em class="manpage">time(2)</em>), after which the forced revalidation will no longer
+occur.</p>
+</div>
+</div>
+<div class="section" id="caveats">
+<h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="matches-only-post-remapping">
+<h3>Matches Only Post-Remapping<a class="headerlink" href="#matches-only-post-remapping" title="Permalink to this headline">¶</a></h3>
+<p>The regular expressions in revalidation rules see only the final, remapped URL
+in a transaction. As such, they cannot be used to distinguish between two
+client-facing URLs which are mapped to the same origin object. This is due to
+the fact that the plugin uses <code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK</span></code>.</p>
+</div>
+<div class="section" id="removing-rules">
+<h3>Removing Rules<a class="headerlink" href="#removing-rules" title="Permalink to this headline">¶</a></h3>
+<p>While new rules are added dynamically (the configuration file is checked every
+60 seconds for changes), rule lines removed from the configuration file do not
+currently lead to that rule being removed from the running plugin. In these
+cases, if the rule must be taken out of service, a service restart may be
+necessary.</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following rule would cause the cache object whose origin server is
+<code class="docutils literal notranslate"><span class="pre">origin.tld</span></code> and whose path is <code class="docutils literal notranslate"><span class="pre">/images/foo.jpg</span></code> to be revalidated by force
+in Traffic Server until 6:47:27 AM on Saturday, November 14th, 2015 (UTC):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span>\<span class="o">.</span><span class="n">tld</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">foo</span>\<span class="o">.</span><span class="n">jpg</span> <span class="mi">1447483647</span>
+</pre></div>
+</div>
+<p>Note the escaping of the <code class="docutils literal notranslate"><span class="pre">.</span></code> metacharacter in the rule’s regular expression.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="regex_remap.en.html" title="previous chapter">Regex Remap Plugin</a></li>
+      <li>Next: <a href="remap_purge.en.html" title="next chapter">Remap Purge Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/regex_revalidate.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documenting Plugins &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Host Resolution Proposal" href="../host-resolution-proposal.en.html" />
+    <link rel="prev" title="Creating New Domains" href="adding-domains.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="documenting-plugins">
+<span id="developer-doc-plugins"></span><h1>Documenting Plugins<a class="headerlink" href="#documenting-plugins" title="Permalink to this headline">¶</a></h1>
+<p>Plugins can provide tremendously useful functionality for users of Traffic Server, but it
+does them little good if there are no instructions on how to use the plugins
+properly. In the interest of encouraging useful documentation on all the
+features available to those deploying Traffic Server in their infrastructure, this
+section lays out a series of guidelines and offers a basic template for adding
+new entries to the <a class="reference internal" href="../../admin-guide/plugins/index.en.html#admin-plugins"><span class="std std-ref">Plugins</span></a> chapter of the <a class="reference internal" href="../../admin-guide/index.en.html#admin-guide"><span class="std std-ref">Administrator’s Guide</span></a>.</p>
+<div class="section" id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<p>Ideally, every plugin will provide documentation covering the following general
+topics (preferably in top-level sections named to match):</p>
+<div class="section" id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>A brief section in which the plugin’s core functionality is explained in a
+quickly digestible paragraph or two. For the sake of brevity, this section
+should omit discussion of configuration details in favor of providing a more
+10,000 foot view of the plugin features.</p>
+</div>
+<div class="section" id="purpose">
+<h3>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h3>
+<p>Why would someone want to use this particular plugin? What problems does it
+solve, or what features not attainable otherwise (through core functionality or
+other plugins) does it provide to an administrator or user? While not exactly a
+product pitch, this is the section in which the case for using the plugin at
+all should be made.</p>
+</div>
+<div class="section" id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>If the plugin has external dependencies, they should be listed in full, with
+the exception of items already required by a bare-bones Traffic Server build. If the
+plugin has no unusual or non-standard dependencies, this section may be safely
+omitted.</p>
+<p>For example, there is no need to list a C++ compiler as a requirement, but if
+the plugin requires OpenCL and a specific brand of GPU expansion card to
+perform some wacky image transformations on cached objects - that really should
+be disclosed.</p>
+<p>If any of the dependencies are optional, that should be noted as well as the
+functionality that may be missing should the dependency not be present.</p>
+</div>
+<div class="section" id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<p>Detailed instructions on how to install the plugin if it is not built by
+default with Traffic Server or requires any additional libraries, services, or
+applications outside of Traffic Server to be present.</p>
+<p>If the plugin is marked stable and included by default in Traffic Server builds, then it
+may not be necessary to include any installation steps beyond noting that it is
+part of the default Traffic Server.</p>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Detailed instructions on how and where to provide configuration data for the
+plugin’s features. It is important to use reStructuredText references for all mentions of
+Traffic Server configuration variables, as well as their containing configuration files.</p>
+<p>If configurations are generated by scripts included with the plugin source
+code, those scripts should be mentioned and their usage should be shown.</p>
+</div>
+<div class="section" id="caveats-or-limitations">
+<h3>Caveats (or Limitations)<a class="headerlink" href="#caveats-or-limitations" title="Permalink to this headline">¶</a></h3>
+<p>Notes about any peculiarities with the plugin, incompatibilities or strange
+behaviors when used in conjunction with other features, or special
+considerations for its deployment that might affect an administrator’s use of
+the plugin or their infrastructure’s architecture.</p>
+<p>If the plugin contains known limitations (perhaps it only works with some
+protocols, can understand only some media types, or is especially
+non-performant under specific configurations) they should be noted. If
+possible, workarounds for these limitations should be suggested, or if none are
+available that should be noted.</p>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>Every plugin should aim to have at least one, complete example of its usage
+beginning with its basic installation, showing a complete (and ideally working)
+configuration, as well as sample output from Traffic Server in which the plugin’s effects
+may be observed.</p>
+</div>
+<div class="section" id="further-reading">
+<h3>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h3>
+<p>Consolidated list of references to outside materials and documents which may be
+relevant to the plugin, such as RFCs and white papers. If the plugin is related
+to external projects, or has been the subject of benchmarks or articles, those
+may be useful to list as well.</p>
+</div>
+</div>
+<div class="section" id="additional-sections">
+<h2>Additional Sections<a class="headerlink" href="#additional-sections" title="Permalink to this headline">¶</a></h2>
+<p>Not all plugins will fit perfectly within that list of sections. Some may
+require additional details, or such extended discussion that it is best to
+break the plugin’s documentation down a bit further. In general, it is
+recommended to place these additional documentation sections in between
+<em>Configuration</em> and <em>Caveats</em> or <em>Limitations</em>.</p>
+<p>This ordering permits a quick scanning of the plugin’s purpose, basic method of
+installation, and initial overview of its configuration before becoming mired
+down in dissertation length details of every possible configuration, warning,
+and trade-off that may affect deployments.</p>
+<p>In cases where the array of configuration possibilities is extensive, it is
+recommended that the initial <em>Configuration</em> section describe the most common
+configuration scenario(s), while noting that there are many other possibilities
+that will be covered in the sections that follow. This, it is hoped, will get
+the usual case out of the way quickly for most Traffic Server administrators while
+limiting the paralysis of choice they may face otherwise.</p>
+</div>
+<div class="section" id="documentation-template">
+<h2>Documentation Template<a class="headerlink" href="#documentation-template" title="Permalink to this headline">¶</a></h2>
+<p>For the convenience of plugin developers, this manual includes a
+<a class="reference internal" href="#developer-doc-plugin-template"><span class="std std-ref">plugin documentation template</span></a> which you
+may use as a base. The template includes placeholders, with markup, for common
+features of the documentation which may be relevant for your plugin. Developers
+are very strongly encouraged to use this template whenever possible, as a means
+of producing and maintaining a consistent format for plugin documentation.</p>
+<div class="admonition note" id="developer-doc-plugin-template">
+<p class="admonition-title">Note</p>
+<p><em>to be done</em></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="index.en.html">Documentation</a><ul>
+      <li>Previous: <a href="adding-domains.en.html" title="previous chapter">Creating New Domains</a></li>
+      <li>Next: <a href="../host-resolution-proposal.en.html" title="next chapter">Host Resolution Proposal</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/documentation/plugins.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

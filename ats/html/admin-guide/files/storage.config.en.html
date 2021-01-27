@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>storage.config &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="strategies.yaml" href="strategies.yaml.en.html" />
+    <link rel="prev" title="sni.yaml" href="sni.yaml.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="storage-config">
+<h1>storage.config<a class="headerlink" href="#storage-config" title="Permalink to this headline">¶</a></h1>
+<p id="std-configfile-storage.config"><span id="std:configfile-storage.config"></span>The <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file (by default, located in
+<code class="docutils literal notranslate"><span class="pre">/usr/local/etc/trafficserver/</span></code>) lists all the files, directories, and/or
+hard disk partitions that make up the Traffic Server cache. After you
+modify the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file the new settings will not be effective until Traffic Server is restarted.</p>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>The format of the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file is a series of lines of the form</p>
+<blockquote>
+<div><p><em>pathname</em> <em>size</em> [ <code class="docutils literal notranslate"><span class="pre">volume=</span></code><em>number</em> ] [ <code class="docutils literal notranslate"><span class="pre">id=</span></code><em>string</em> ]</p>
+</div></blockquote>
+<p>where <em>pathname</em> is the name of a partition, directory or file, <em>size</em> is the size of the
+named partition, directory or file (in bytes), and <em>volume</em> is the volume number used in the
+files <a class="reference internal" href="volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> and <a class="reference internal" href="hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>. <em>id</em> is used for seeding the
+<a class="reference internal" href="#assignment-table"><span class="std std-ref">Assignment Table</span></a>. You must specify a size for directories; size is optional for files and raw
+partitions. <em>volume</em> and arg:<cite>seed</cite> are optional.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <em>volume</em> option is independent of the <em>seed</em> option and either can be used with or without the other,
+and their ordering on the line is irrelevant.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the <em>id</em> option is used every use must have a unique value for <em>string</em>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any change to this files can (and almost always will) invalidate the existing cache in its entirety.</p>
+</div>
+<p>You can use any partition of any size. For best performance:</p>
+<ul class="simple">
+<li><p>Use raw disk partitions.</p></li>
+<li><p>For each disk, make all partitions the same size.</p></li>
+<li><p>For each node, use the same number of partitions on all disks.</p></li>
+<li><p>Group similar kinds of storage into different volumes. For example
+split out SSD’s or RAM drives into their own volume.</p></li>
+</ul>
+<p>Specify pathnames according to your operating system requirements. See
+the following examples. In the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file, a formatted or
+raw disk must be at least 128 MB.</p>
+<p>When using raw disk or partitions, you should make sure the <a class="reference internal" href="records.config.en.html#proxy-config-admin-user-id" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">Traffic</span>
+<span class="pre">Server</span> <span class="pre">user</span></code></a> used by the Traffic Server process
+has read and write privileges on the raw disk device or partition. One good
+practice is to make sure the device file is set with ‘g+rw’ and the Traffic
+Server user is in the group which owns the device file.  However, some
+operating systems have stronger requirements - see the following examples for
+more information.</p>
+<p>As with standard <code class="docutils literal notranslate"><span class="pre">records.config</span></code> integers, human readable prefixes are also
+supported. They include</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">K</span></code> Kilobytes (1024 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M</span></code> Megabytes (1024^2 or 1,048,576 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">G</span></code> Gigabytes (1024^3 or 1,073,741,824 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> Terabytes (1024^4 or 1,099,511,627,776 bytes)</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="assignment-table">
+<span id="id1"></span><h3>Assignment Table<a class="headerlink" href="#assignment-table" title="Permalink to this headline">¶</a></h3>
+<p>Each storage element defined in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> is divided in to <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">stripes</span></a>. The
+assignment table maps from an object URL to a specific stripe. The table is initialized based on a
+pseudo-random process which is seeded by hashing a string for each stripe. This string is composed
+of a base string, an offset (the start of the stripe on the storage element), and the length of the
+stripe. By default the path for the storage is used as the base string. This ensures that each
+stripe has a unique string for the assignment hash. This does make the assignment table very
+sensitive to the path for the storage elements and changing even one can have a cascading effect
+which will effectively clear most of the cache. This can be problem when drives fail and a system
+reboot causes the path names to change.</p>
+<p>The <em>id</em> option can be used to create a fixed string that an administrator can use to keep the
+assignment table consistent by maintaining the mapping from physical device to base string even in the presence of hardware changes and failures.</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following basic example shows 128 MB of cache storage in the
+<code class="docutils literal notranslate"><span class="pre">/big_dir</span></code> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">big_dir</span> <span class="mi">134217728</span>
+</pre></div>
+</div>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">.</span></code> symbol for the current directory. Here is an
+example for 64 MB of cache storage in the current directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span> <span class="mi">134217728</span>
+</pre></div>
+</div>
+<p>As an alternative, using the human readable prefixes, you can express a 64GB
+cache file with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">really_big_dir</span> <span class="mi">64</span><span class="n">G</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>When using on-filesystem cache disk storage, you can only have one such
+directory specified. This will be addressed in a future version.</p>
+</div>
+<div class="section" id="solaris-example">
+<h3>Solaris Example<a class="headerlink" href="#solaris-example" title="Permalink to this headline">¶</a></h3>
+<p>The following example is for the Solaris operating system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rdsk</span><span class="o">/</span><span class="n">c0t0d0s5</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">rdsk</span><span class="o">/</span><span class="n">c0t0d1s5</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Size is optional. If not specified, the entire partition is used.</p>
+</div>
+</div>
+<div class="section" id="linux-example">
+<h3>Linux Example<a class="headerlink" href="#linux-example" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Rather than refer to disk devices like <code class="docutils literal notranslate"><span class="pre">/dev/sda</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/sdb</span></code>, etc.,
+modern Linux supports <a class="reference external" href="https://wiki.archlinux.org/index.php/persistent_block_device_naming#by-id_and_by-path">alternative symlinked names for disk devices</a> in the <code class="docutils literal notranslate"><span class="pre">/dev/disk</span></code>
+directory structure. As noted for the <a class="reference internal" href="#assignment-table"><span class="std std-ref">Assignment Table</span></a> the path used for the disk can effect
+the cache if it changes. This can be ameliorated in some cases by using one of the alternate paths
+in via <code class="docutils literal notranslate"><span class="pre">/dev/disk</span></code>. Note that if the <code class="docutils literal notranslate"><span class="pre">by-id</span></code> or <code class="docutils literal notranslate"><span class="pre">by-path</span></code> style is used, replacing a failed drive will cause
+that path to change because the new drive will have a different physical ID or path. The original hash string can
+be kept by adding <em>id</em> or <em>path</em> with the original path to the storage line.</p>
+<p>If this is not sufficient then the <em>id</em> or <em>path</em> argument should be used to create a more permanent
+assignment table. An example would be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sde</span> <span class="nb">id</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">disk</span><span class="o">.</span><span class="mi">0</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdg</span> <span class="nb">id</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">disk</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<p>The following example will use an entire raw disk in the Linux operating
+system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="nb">id</span><span class="o">/</span><span class="p">[</span><span class="n">DiskA_ID</span><span class="p">]</span>    <span class="n">volume</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk</span><span class="o">/</span><span class="n">by</span><span class="o">-</span><span class="n">path</span><span class="o">/</span><span class="p">[</span><span class="n">DiskB_Path</span><span class="p">]</span>   <span class="n">volume</span><span class="o">=</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>In order to make sure <strong class="program">traffic_server</strong> will have access to this disk
+you can use <em class="manpage">udev(7)</em> to persistently set the right permissions. The
+following rules are targeted for an Ubuntu system, and stored in
+<code class="docutils literal notranslate"><span class="pre">/etc/udev/rules.d/51-cache-disk.rules</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign DiskA and DiskB to the tserver group</span>
+<span class="c1"># make the assignment final, no later changes allowed to the group!</span>
+<span class="n">SUBSYSTEM</span><span class="o">==</span><span class="s2">&quot;block&quot;</span><span class="p">,</span> <span class="n">KERNEL</span><span class="o">==</span><span class="s2">&quot;sd[ef]&quot;</span><span class="p">,</span> <span class="n">GROUP</span><span class="o">:=</span><span class="s2">&quot;tserver&quot;</span>
+</pre></div>
+</div>
+<p>In order to apply these settings, trigger a reload with <em class="manpage">udevadm(8)</em>::</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">udevadm</span> <span class="n">trigger</span> <span class="o">--</span><span class="n">subsystem</span><span class="o">-</span><span class="n">match</span><span class="o">=</span><span class="n">block</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="freebsd-example">
+<h3>FreeBSD Example<a class="headerlink" href="#freebsd-example" title="Permalink to this headline">¶</a></h3>
+<p>Starting with 5.1 FreeBSD dropped support for explicit raw devices. All
+devices on FreeBSD can be accessed raw now.</p>
+<p>The following example will use an entire raw disk in the FreeBSD
+operating system:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ada1</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">ada2</span>
+</pre></div>
+</div>
+<p>In order to make sure <strong class="program">traffic_server</strong> will have access to this disk
+you can use <em class="manpage">devfs(8)</em> to persistently set the right permissions. The
+following rules are stored in <em class="manpage">devfs.conf(5)</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Assign /dev/ada1 and /dev/ada2 to the tserver user</span>
+<span class="n">own</span>    <span class="n">ada</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>  <span class="n">tserver</span><span class="p">:</span><span class="n">tserver</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="advanced">
+<h3>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h3>
+<p>Because relative paths in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> are relative to the base prefix, when using customized runroot
+it may be necessary to adjust such paths in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> or adjust <code class="docutils literal notranslate"><span class="pre">runroot.yaml</span></code> itself.
+Despite the name, the cachedir value is not used for this file.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="sni.yaml.en.html" title="previous chapter">sni.yaml</a></li>
+      <li>Next: <a href="strategies.yaml.en.html" title="next chapter">strategies.yaml</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/storage.config.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

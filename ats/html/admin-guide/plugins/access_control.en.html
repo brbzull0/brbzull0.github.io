@@ -1,0 +1,599 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Control Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Certifier Plugin" href="certifier.en.html" />
+    <link rel="prev" title="XDebug Plugin" href="xdebug.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="access-control-plugin">
+<span id="admin-plugins-access-control"></span><h1>Access Control Plugin<a class="headerlink" href="#access-control-plugin" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>access_control</cite> plugin covers common use-cases related to providing access control to the objects stored in <a class="reference internal" href="#cdn">CDN</a> cache.</p>
+</div>
+<div class="section" id="requirements-and-features">
+<h2>Requirements and features<a class="headerlink" href="#requirements-and-features" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p><span class="target" id="cache-access-control">Cache Access Control</span> - cached objects to be served only to properly authenticated and authorized users.</p></li>
+<li><p><span class="target" id="authorizing-multiple-requests">Authorizing Multiple Requests</span> - all requests from a particular <a class="reference internal" href="#ua">UA</a> in a defined time period to be authenticated and authorized only once.</p></li>
+<li><p><span class="target" id="multiple-page-versions">Multiple Page Versions</span> - objects may have the same name (URI) but different content for each <a class="reference internal" href="#target-audience">target audience</a> and must be served only to the corresponding <a class="reference internal" href="#target-audience">target audience</a>.</p></li>
+<li><p><span class="target" id="proxy-only-mode">Proxy Only Mode</span> - <a class="reference internal" href="#cdn">CDN</a> proxies the request to the <a class="reference internal" href="#origin">origin</a>. In case of access control failure at the <a class="reference internal" href="#edge">Edge</a>, the <a class="reference internal" href="#ua">UA</a> would not be redirected to other services, the failed request would be forwarded to the <a class="reference internal" href="#origin">origin</a>.</p></li>
+</ol>
+</div>
+<div class="section" id="participants">
+<h2>Participants<a class="headerlink" href="#participants" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><span class="target" id="ua">UA</span> - User Agent used by a user whose requests are subject to access control.</p></li>
+<li><p><span class="target" id="target-audience">Target audience</span> - an application specific audience (role, group of users, etc) to which the authenticated and authorized user belongs and which defines user’s permissions.</p></li>
+<li><p><span class="target" id="cdn">CDN</span> / <span class="target" id="edge">Edge</span> - Content Delivery Network, sometimes CDN and Edge are used interchangeably</p></li>
+<li><p><span class="target" id="idms">IdMS</span> - Identity Management Services</p></li>
+<li><p><span class="target" id="ds">DS</span> - Directory services</p></li>
+<li><p><span class="target" id="origin">Origin</span> / <span class="target" id="application">Application</span> - origin server which is part of the particular application, sometimes origin and application are used interchangeably</p></li>
+</ul>
+</div>
+<div class="section" id="design-considerations-and-limitations">
+<h2>Design considerations and limitations<a class="headerlink" href="#design-considerations-and-limitations" title="Permalink to this headline">¶</a></h2>
+<p>The following are some thoughts and ideas behind the access control flow and the plugin design.</p>
+<p><strong>Existing standards</strong></p>
+<blockquote>
+<div><p>OAuth <a class="footnote-reference brackets" href="#id17" id="id1">1</a> <a class="footnote-reference brackets" href="#id18" id="id2">2</a> and SAML <a class="footnote-reference brackets" href="#id19" id="id3">3</a> were considered looking for use cases matching standard-based solutions but none seemed to match the requirements completely, also supporting some of the mentioned standards would require a more involved design and implementation.</p>
+</div></blockquote>
+<p><strong>Closed integration</strong></p>
+<blockquote>
+<div><p>Closed integration with existing <a class="reference internal" href="#idms">IdMS</a> and <a class="reference internal" href="#ds">DS</a> was considered in earlier design stages which resulted in a too specific and unnecessarily complicated access control flow, inflexible, with higher maintenance cost, possibly not scaling and not coping well with future changes.</p>
+</div></blockquote>
+<p><strong>Cache access approval only</strong></p>
+<blockquote>
+<div><p>Authentication and Authorization are to be performed only by the <a class="reference internal" href="#application">application</a> using various services like <a class="reference internal" href="#idms">IdMS</a>, <a class="reference internal" href="#ds">DS</a>, etc. The <a class="reference internal" href="#application">application</a> knows more about its users, their requests and permissions and need to deal with it regardless. It is assumed that the <a class="reference internal" href="#origin">origin</a> will perform its own access control. The <a class="reference internal" href="#cdn">CDN</a> is to be concerned only with the <span class="target" id="access-approval">access approval</span> (the function of actually granting or rejecting access) to the objects in its own caches based on an access token provided by the <a class="reference internal" href="#application">application</a>.</p>
+</div></blockquote>
+<p><strong>Access token</strong></p>
+<blockquote>
+<div><p>The access token should be a compact and self-contained token containing the information required for properly enforcing the access control. It can be extracted from HTTP headers, cookies, URI query parameters which would allow us to support various <a class="reference internal" href="#access-approval">access approval</a> use cases.</p>
+</div></blockquote>
+<p><strong>Access token subject</strong></p>
+<blockquote>
+<div><p>The subject of the token in some of the use cases would signify a separate <a class="reference internal" href="#target-audience">target audience</a> and should be opaque to <a class="reference internal" href="#cdn">CDN</a> which would allow <a class="reference internal" href="#cdn">CDN</a> to be taken out of the authorization and authentication equation. In those use cases the <cite>subject</cite> will be added to the cache key as a mechanism to support <a class="reference internal" href="#multiple-page-versions">multiple page versions</a>. Special considerations should be given to the cache-hit ratio and the distinct <a class="reference internal" href="#target-audience">target audience</a> count. The bigger the number of audiences the lesser the cache-hit ratio.</p>
+</div></blockquote>
+<p><strong>Cache key modifications</strong></p>
+<blockquote>
+<div><p>This plugin will not modify the cache key directly but rather rely on plugins like <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a>.</p>
+</div></blockquote>
+<p><strong>TLS only</strong></p>
+<blockquote>
+<div><p>To combat the risk of man in the middle attacks, spoofing elements of the requests, unexpectedly leaking security information only TLS will be used when requesting protected assets and exchanging access tokens.</p>
+</div></blockquote>
+</div>
+<div class="section" id="use-cases">
+<h2>Use cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h2>
+<p>Let us say <a class="reference internal" href="#cdn">CDN</a>’s domain name is <code class="docutils literal notranslate"><span class="pre">example-cdn.com</span></code> and <a class="reference internal" href="#origin">origin</a>’s domain name is <code class="docutils literal notranslate"><span class="pre">example.com</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;access_token&gt;</span></code> is an access token value created by the <a class="reference internal" href="#origin">origin</a> and validated by <a class="reference internal" href="#cdn">CDN</a>. When necessary the access token is passed from the <a class="reference internal" href="#origin">origin</a> to the <a class="reference internal" href="#cdn">CDN</a> by using a response header <code class="docutils literal notranslate"><span class="pre">TokenRespHdr</span></code> and is stored at the <a class="reference internal" href="#ua">UA</a> in a persistent cookie <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code>.</p>
+<p class="plantuml">
+<object data="../../_images/plantuml-24cd7f5203eeae62912dbc1bd1df7f8860466203.svg" type="image/svg+xml" style="width:982px;height:1065px;">
+<img src="../../_images/plantuml-24cd7f5203eeae62912dbc1bd1df7f8860466203.png" alt="&#64;startuml
+
+participant UA
+participant CDN
+participant Origin
+
+autonumber &quot;&lt;b&gt;&lt;00&gt;&quot;
+UA -&gt; CDN : GET https://example-cdn.com/path/object\n[Cookie: TokenCookie=&lt;access_token&gt;]
+activate CDN
+
+CDN-&gt;CDN:validate access_token
+
+alt valid access_token
+  CDN -&gt; CDN: extract access_token //subject//\nand add it to cache key
+else missing or invalid token
+  CDN -&gt; CDN: skip cache (same as cache-miss)
+end
+
+alt invalid access_token OR cache-miss
+  alt config:use_redirect=//true//
+    CDN -&gt; Origin : HEAD https://example.com/path/object
+    activate Origin
+  else config:use_redirect=//false//
+    CDN -&gt; Origin : GET https://example.com/path/object
+    deactivate CDN
+  end
+
+  Origin -&gt; Origin: trigger authentication\n+ authorization flow
+  note over UA,Origin #white
+    Origin &lt;=&gt; UA authentication and authorization flow using IdMS and DS, etc.
+  endnote
+
+  alt user unauthorized
+    Origin -&gt; CDN : 401 Unauthorized
+    activate CDN
+    CDN -&gt; UA : 401 Unauthorized
+  else user authorized
+
+    Origin -&gt; Origin:create or reuse\naccess_token
+
+    Origin -&gt; CDN: 200 OK\nTokenRespHdr: &lt;access_token&gt;
+    deactivate Origin
+
+    CDN-&gt;CDN:validate access_token
+
+    alt invalid access_token
+      CDN -&gt; UA : 520 Error
+    else
+      alt config:use_redirect=//true//
+        CDN -&gt; UA : 302 Redirect\nSet-Cookie: TokenCookie=&lt;access_token&gt;\nLocation: https://example-cdn.com/path/object
+      else config:use_redirect=//false//
+        CDN -&gt; UA : 200 OK\nSet-Cookie: TokenCookie=&lt;access_token&gt;
+      end
+    end
+
+  end
+else valid access_token AND cache-hit
+  CDN -&gt; UA : 200 OK
+  deactivate CDN
+end
+
+
+&#64;enduml"/>
+
+</object></p>
+<div class="section" id="use-case-1-proxy-only-mode-using-http-cookies">
+<h3><span class="target" id="use-case-1">Use Case 1</span>: Proxy only mode using HTTP cookies.<a class="headerlink" href="#use-case-1-proxy-only-mode-using-http-cookies" title="Permalink to this headline">¶</a></h3>
+<p><strong>&lt;01-02&gt;</strong>. When a request from the <a class="reference internal" href="#ua">UA</a> is received at the <a class="reference internal" href="#cdn">CDN</a> the value of <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code> is extracted and the access token is validated (missing cookie or access token is same as invalid).</p>
+<p><strong>&lt;03&gt;</strong>. If the access token is valid its opaque <cite>subject</cite> is extracted, added to the cache key and a cache lookup is performed.</p>
+<p><strong>&lt;06&gt;</strong>. Missing or invalid access token or a cache-miss leads to forwarding the request to the <a class="reference internal" href="#origin">origin</a> either for user authorization and/or for fetching the object from <a class="reference internal" href="#origin">origin</a>.</p>
+<p><strong>&lt;07&gt;</strong>. The <a class="reference internal" href="#origin">origin</a> performs authentication and authorization of the user using <a class="reference internal" href="#idms">IdMS</a>, <a class="reference internal" href="#ds">DS</a>, etc. All related authentication and authorization flows are out of scope of this document.</p>
+<p><strong>&lt;08-09&gt;</strong>. If the user is unauthorized then <code class="docutils literal notranslate"><span class="pre">401</span> <span class="pre">Unauthorized</span></code> is passed from the <a class="reference internal" href="#origin">origin</a> to the <a class="reference internal" href="#cdn">CDN</a> and then to <a class="reference internal" href="#ua">UA</a>.</p>
+<p><strong>&lt;10-11&gt;</strong>. If the user is authorized then an access token is returned by a response header <code class="docutils literal notranslate"><span class="pre">TokenRespHdr</span></code> to the <a class="reference internal" href="#cdn">CDN</a> and gets validated at the <a class="reference internal" href="#edge">Edge</a> before setting the <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code>.</p>
+<p><strong>&lt;12-13&gt;</strong>. If the validation of the access token received from the <a class="reference internal" href="#origin">origin</a> fails the <a class="reference internal" href="#origin">origin</a> response is considered invalid and <code class="docutils literal notranslate"><span class="pre">520</span> <span class="pre">Error</span></code> is returned to <a class="reference internal" href="#ua">UA</a>.</p>
+<p><strong>&lt;15&gt;</strong>. If the validation of the access token received from the <a class="reference internal" href="#origin">origin</a> succeeds then the object is returned to <a class="reference internal" href="#ua">UA</a> and a <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code> is set to the new access token with the <a class="reference internal" href="#cdn">CDN</a> response.</p>
+<p><strong>&lt;16&gt;</strong>. If the access token initial <a class="reference internal" href="#ua">UA</a> request is valid and there is a cache-hit the corresponding object is delivered to the <a class="reference internal" href="#ua">UA</a>.</p>
+<p>In this use case the request with a missing or invalid token is never cached (cache skipped) since we don’t have or cannot trust the <cite>subject</cite> from the access token to do a cache lookup and since Apache Traffic Server does not have the ability to change the cache key when it receives the <a class="reference internal" href="#origin">Origin</a> response it is impossible to cache the object based on the just received new valid token from the <a class="reference internal" href="#origin">Origin</a>.</p>
+<p>All subsequent requests having a valid token will be cached normally and if the access token is valid for long enough time not caching just the first request should not be a problem, for use cases where we cannot afford not caching the first request please see <a class="reference internal" href="#use-case-2">use case 2</a>.</p>
+</div>
+<div class="section" id="use-case-2-proxy-only-mode-using-http-cookies-and-redirects">
+<h3><span class="target" id="use-case-2">Use Case 2</span>: Proxy only mode using HTTP cookies and redirects.<a class="headerlink" href="#use-case-2-proxy-only-mode-using-http-cookies-and-redirects" title="Permalink to this headline">¶</a></h3>
+<p>This use case is similar to <a class="reference internal" href="#use-case-1">use case 1</a> but makes sure all (cacheable) requests are cached (even the one that does not have a valid access token in the <a class="reference internal" href="#ua">UA</a> request).</p>
+<p><strong>&lt;05&gt;</strong> In case of invalid access token instead of forwarding the original HTTP request to the <a class="reference internal" href="#origin">origin</a> a <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> request with all headers from the original request is sent to the <a class="reference internal" href="#origin">origin</a>.</p>
+<p><strong>&lt;14&gt;</strong> When the <a class="reference internal" href="#origin">origin</a> responds with a valid access token in <code class="docutils literal notranslate"><span class="pre">TokenRespHdr</span></code> the <a class="reference internal" href="#cdn">CDN</a> sets the <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code> by using a <code class="docutils literal notranslate"><span class="pre">302</span> <span class="pre">Redirect</span></code> response with a <code class="docutils literal notranslate"><span class="pre">Location</span></code> header containing the URI of original <a class="reference internal" href="#ua">UA</a> request.</p>
+<p>In this way the after the initial failure the <a class="reference internal" href="#ua">UA</a> request is repeated with a valid access token and can be safely cached in the <a class="reference internal" href="#cdn">CDN</a> cache (if the object is cacheable)</p>
+<p>The support of this use case is still not implemented.</p>
+</div>
+</div>
+<div class="section" id="access-token">
+<h2>Access token<a class="headerlink" href="#access-token" title="Permalink to this headline">¶</a></h2>
+<p>The access token could contain the following claims:</p>
+<ul class="simple">
+<li><p><span class="target" id="subject">subject</span> - the subject of the access token is an opaque string provided by the <a class="reference internal" href="#application">application</a>, in <a class="reference internal" href="#use-case-1">use case 1</a> and <a class="reference internal" href="#use-case-2">use case 2</a> the subject signifies a <a class="reference internal" href="#target-audience">target audience</a></p></li>
+<li><p><span class="target" id="expiration">expiration</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> after which the access token is not considered valid (expired)</p></li>
+<li><p><span class="target" id="not-before-time">not before time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> before which the access token is not considered valid (used before its time)</p></li>
+<li><p><span class="target" id="issued-at-time">issued at time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> the access token was issued</p></li>
+<li><p><span class="target" id="token-id">token id</span> - unique opaque token id for debugging and tracking assigned by the <a class="reference internal" href="#application">application</a>,</p></li>
+<li><p><span class="target" id="version">version</span> - access token version</p></li>
+<li><p><span class="target" id="scope">scope</span> - defines the scope in which this subject is valid</p></li>
+<li><p><span class="target" id="key-id">key id</span> - the key in a map or database of secrets to be used to calculate the digest</p></li>
+<li><p><span class="target" id="signature-type">signature type</span>  - name of the HMAC hash function / cryptographic signature scheme to be used for calculating the message digest, supported signature types: <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-256</span></code>, <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-512</span></code>, <code class="docutils literal notranslate"><span class="pre">RSA-PSS</span></code> (still not implemented)</p></li>
+<li><p><span class="target" id="message-digest">message digest</span> - the message digest that signs the access token</p></li>
+</ul>
+<p>To make the plugin more configurable and to support more use cases various formats could be supported in the future, i.e <cite>Named Claim</cite> formats , <cite>Positional Claim</cite> formats, <cite>JWT</cite> <a class="footnote-reference brackets" href="#id20" id="id6">4</a>, etc.</p>
+<p>The format of the access token will be specifiable <strong>only</strong> through the plugin configuration by design and not the access token since migrations from one format to another during upgrades are not expected in normal circumstances.</p>
+<p>Changes in claim names (claim positions in <cite>Positional Claims</cite>), in their interpretation, adding new claims, removing claims, switching from <cite>required</cite> to <cite>optional</cite> and vice versa will be handled by having a <a class="reference internal" href="#version">version</a> claim in the token.</p>
+<p><a class="reference internal" href="#version">Version</a> and <a class="reference internal" href="#signature-type">signature type</a> claims are part of the token (“user input”) to allow easier migration between different versions and signature types, but they could be overridable through configuration in future versions to force the usage only to specific versions or signature types (in which case the corresponding claim could be omitted from the token and would be ignored if specified).</p>
+<p>The following <cite>Named Claim</cite> format is the only one currently supported.</p>
+<div class="section" id="query-param-style-named-claim-format">
+<h3>Query-Param-Style Named Claim format<a class="headerlink" href="#query-param-style-named-claim-format" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="simple">
+<dt>claim names</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub</span></code> for <a class="reference internal" href="#subject">subject</a>, <cite>required</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exp</span></code> for <a class="reference internal" href="#expiration">expiration</a>, <cite>required</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbf</span></code> for <a class="reference internal" href="#not-before-time">not before time</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iat</span></code> for <a class="reference internal" href="#issued-at-time">issued at time</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tid</span></code> for <a class="reference internal" href="#token-id">token id</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ver</span></code> for <a class="reference internal" href="#version">version</a>, <cite>optional</cite>, defaults to <code class="docutils literal notranslate"><span class="pre">ver=1</span></code> if not specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scope</span></code> for <a class="reference internal" href="#scope">scope</a>, <cite>optional</cite>, ignored by the current version of the plugin, still not finalized (more applications and their use cases need to be studied to finalize the format)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kid</span></code> for <a class="reference internal" href="#key-id">key id</a>, <cite>required</cite> (tokens to be always signed)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">st</span></code> for <a class="reference internal" href="#signature-type">signature type</a>, <cite>optional</cite> (default would be <code class="docutils literal notranslate"><span class="pre">SHA-256</span></code> if not specified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">md</span></code> for <a class="reference internal" href="#message-digest">message digest</a> - this claim is <cite>required</cite> and expected to be always the last claim.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>delimiters</dt><dd><ul>
+<li><p>claims are separated by <code class="docutils literal notranslate"><span class="pre">&amp;</span></code></p></li>
+<li><p>keys and values in each claim are separated by <code class="docutils literal notranslate"><span class="pre">=</span></code></p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>notes and limitations</dt><dd><ul>
+<li><p>if any claim value contains <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> or <code class="docutils literal notranslate"><span class="pre">=</span></code> escaping would be necessary (i.e. through Percent-Encoding <a class="footnote-reference brackets" href="#id22" id="id7">6</a>)</p></li>
+<li><p>the size of the access token cannot be larger then 4K to limit the amount of data the <a class="reference internal" href="#application">application</a> could fit in the opaque claims, in general the access token is meant to be small since it could end up stored in a cookie and be sent as part of lots and lots of requests.</p></li>
+<li><p>during signing the access token payload should end with <code class="docutils literal notranslate"><span class="pre">&amp;md=</span></code> and the calculated <a class="reference internal" href="#message-digest">message digest</a> would be appended directly to the payload to form the token (see the example below).</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Let us say we have a user <a class="reference external" href="https://en.wikipedia.org/wiki/Kermit_the_Frog">Kermit the Frog</a> and a user <a class="reference external" href="https://en.wikipedia.org/wiki/Michigan_J._Frog">Michigan J. Frog</a> who are part of a <a class="reference internal" href="#target-audience">target audience</a> <code class="docutils literal notranslate"><span class="pre">frogs-in-a-well</span></code> and a user <a class="reference external" href="https://en.wikipedia.org/wiki/Finding_Nemo">Nemo the Clownfish</a> who is part of a <a class="reference internal" href="#target-audience">target audience</a> <code class="docutils literal notranslate"><span class="pre">fish-in-a-sea</span></code>.</p>
+<p>Both users <a class="reference external" href="https://en.wikipedia.org/wiki/Kermit_the_Frog">Kermit the Frog</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Michigan_J._Frog">Michigan J. Frog</a> will be authorized with the following access token:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sub</span><span class="o">=</span><span class="s2">&quot;frogs-in-a-well&quot;</span>   <span class="c1"># opaque id assigned by origin</span>
+<span class="nv">exp</span><span class="o">=</span><span class="s2">&quot;1577836800&quot;</span>       <span class="c1"># token expires   : 01/01/2020 @ 12:00am (UTC)</span>
+<span class="nv">nbf</span><span class="o">=</span><span class="s2">&quot;1514764800&quot;</span>       <span class="c1"># don&#39;t use before: 01/01/2018 @ 12:00am (UTC)</span>
+<span class="nv">iat</span><span class="o">=</span><span class="s2">&quot;1514160000&quot;</span>       <span class="c1"># token issued at : 12/25/2017 @ 12:00am (UTC)</span>
+<span class="nv">tid</span><span class="o">=</span><span class="s2">&quot;1234567890&quot;</span>       <span class="c1"># unique opaque id assigned by origin (i.e UUID)</span>
+<span class="nv">kid</span><span class="o">=</span><span class="s2">&quot;key1&quot;</span>             <span class="c1"># secret corresponding to this key is &#39;PEIFtmunx9&#39;</span>
+</pre></div>
+</div>
+<p>Constructing the access token using <cite>openssl</cite> tool (from <cite>bash</cite>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">payload</span><span class="o">=</span><span class="s1">&#39;sub=frogs-in-a-well&amp;exp=1577836800&amp;nbf=1514764800&amp;iat=1514160000&amp;tid=1234567890&amp;kid=key1&amp;st=HMAC-SHA-256&amp;md=&#39;</span>
+<span class="nv">signature</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="si">${</span><span class="nv">payload</span><span class="si">}</span> <span class="p">|</span> openssl dgst -sha256 -hmac <span class="s2">&quot;PEIFtmunx9&quot;</span><span class="k">)</span>
+<span class="nv">access_token</span><span class="o">=</span><span class="si">${</span><span class="nv">payload</span><span class="si">}${</span><span class="nv">signature</span><span class="si">}</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="#application">application</a> would create and send the access token in a response header <code class="docutils literal notranslate"><span class="pre">TokenRespHdr</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>TokenRespHdr: <span class="nv">sub</span><span class="o">=</span>frogs-in-a-well<span class="p">&amp;</span><span class="nv">exp</span><span class="o">=</span><span class="m">1577836800</span><span class="p">&amp;</span><span class="nv">nbf</span><span class="o">=</span><span class="m">1514764800</span><span class="p">&amp;</span><span class="nv">iat</span><span class="o">=</span><span class="m">1514160000</span><span class="p">&amp;</span><span class="nv">tid</span><span class="o">=</span><span class="m">1234567890</span><span class="p">&amp;</span><span class="nv">kid</span><span class="o">=</span>key1<span class="p">&amp;</span><span class="nv">st</span><span class="o">=</span>HMAC-SHA-256<span class="p">&amp;</span><span class="nv">md</span><span class="o">=</span>8879af98ab6071315a7ab55e5245cbe1c106303bcc4690cbfc807a4402d11ab3
+</pre></div>
+</div>
+<p><a class="reference internal" href="#cdn">CDN</a> would set a cookie <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">TokenCookie</span><span class="o">=</span>c3ViPWZyb2dzLWluLWEtd2VsbCZleHA9MTU3NzgzNjgwMCZuYmY9MTUxNDc2NDgwMCZpYXQ9MTUxNDE2MDAwMCZ0aWQ9MTIzNDU2Nzg5MCZraWQ9a2V5MSZzdD1ITUFDLVNIQS0yNTYmbWQ9ODg3OWFmOThhYjYwNzEzMTVhN2FiNTVlNTI0NWNiZTFjMTA2MzAzYmNjNDY5MGNiZmM4MDdhNDQwMmQxMWFiMw<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Wed, <span class="m">01</span> Jan <span class="m">2020</span> <span class="m">00</span>:00:00 GMT<span class="p">;</span> Secure<span class="p">;</span> HttpOnly
+</pre></div>
+</div>
+<p>The value of the cookie is the access token provided by the <a class="reference internal" href="#origin">origin</a> encoded with a <cite>base64url Encoding without Padding</cite> <a class="footnote-reference brackets" href="#id20" id="id10">4</a></p>
+<p>The following attributes are added to the <cite>Set-Cookie</cite> header <a class="footnote-reference brackets" href="#id21" id="id11">5</a>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Secure</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to include the cookie in an HTTP request only if the request is transmitted over a secure channel, typically HTTP over Transport Layer Security (TLS)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HttpOnly</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to omit the cookie when providing access to cookies via “non-HTTP” APIs such as a web browser API that exposes cookies to scripts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Expires</span></code> - this attribute will be set to the time specified in the <a class="reference internal" href="#expiration">expiration</a> claim</p></li>
+</ul>
+<p>Just for a reference the following access token would be assigned to the user <a class="reference external" href="https://en.wikipedia.org/wiki/Finding_Nemo">Nemo the Clownfish</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sub</span><span class="o">=</span>fish-in-a-sea<span class="p">&amp;</span><span class="nv">exp</span><span class="o">=</span><span class="m">1577836800</span><span class="p">&amp;</span><span class="nv">nbf</span><span class="o">=</span><span class="m">1514764800</span><span class="p">&amp;</span><span class="nv">iat</span><span class="o">=</span><span class="m">1514160000</span><span class="p">&amp;</span><span class="nv">tid</span><span class="o">=</span><span class="m">2345678901</span><span class="p">&amp;</span><span class="nv">kid</span><span class="o">=</span>key1<span class="p">&amp;</span><span class="nv">st</span><span class="o">=</span>HMAC-SHA-256<span class="p">&amp;</span><span class="nv">md</span><span class="o">=</span>a43d8a46804d9e9319b7d1337007eed73daf37105f1feaae1d68567389654f88
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="plugin-configuration">
+<h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Specify where to look for the access token</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--check-cookie=&lt;cookie_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the name of the cookie that contains the access token, although it is optional if not specified the plugin does not perform access control since this is the only currently supported access token source.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--token-response-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the <a class="reference internal" href="#origin">origin</a> response header name that contains the access token passed from the <a class="reference internal" href="#origin">origin</a> to the CDN, although it is optional this is the only currently supported way to get the access token from the <a class="reference internal" href="#origin">origin</a>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Signify some common failures through HTTP status code.</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-syntax-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">400</span></code>) - access token bad syntax error</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-signature-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">401</span></code>) - invalid access token signature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-timing-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - bad timing when validating the access token (expired, or too early)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-scope-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - access token scope validation failed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-origin-response=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">520</span></code>) - <a class="reference internal" href="#origin">origin</a> response did not look right, i.e. the access token provided by <a class="reference internal" href="#origin">origin</a> is not valid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--internal-error-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">500</span></code>) - unexpected internal error (should not happened ideally)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Extract information into a request header</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-subject-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>subject</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging or to be able to modify the cache key by using <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a> plugin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-tokenid-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>token id</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-status-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token validation status request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Plugin setup related</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--symmetric-keys-map=&lt;txt_file_name&gt;</span></code> (<cite>optional</cite>, default: empty/unused) - the name of a file containing a map of symmetric encrypt secrets, secrets are expected one per line in format <code class="docutils literal notranslate"><span class="pre">key_name_N=secret_value_N</span></code> (key names are used in access token signature validation, multiple keys would be useful for key rotation). Although it is <cite>optional</cite> this is the only source of secrets supported and if not specified / used access token validation would constantly fail.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that match.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--exclude-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that do not match.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Behavior modifiers to support various use-cases</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reject-invalid-token-requests</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - reject invalid token requests instead of forwarding them to <a class="reference internal" href="#origin">origin</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--use-redirects</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - used to configure <a class="reference internal" href="#use-case-2">use case 2</a>, not implemented yet.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="configuration-and-troubleshooting-examples">
+<h3>Configuration and Troubleshooting examples<a class="headerlink" href="#configuration-and-troubleshooting-examples" title="Permalink to this headline">¶</a></h3>
+<p>The following configuration can be used to implement <a class="reference internal" href="#use-case-1">use case 1</a></p>
+<div class="section" id="configuration-files">
+<h4>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Apache traffic server <code class="docutils literal notranslate"><span class="pre">remap.config</span></code></p></li>
+</ul>
+<p><a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a> is used to add the access token <cite>subject</cite> into the cache key (<code class="docutils literal notranslate"><span class="pre">&#64;TokenSubject</span></code>). and should always follow the <a class="reference internal" href="#admin-plugins-access-control"><span class="std std-ref">Access Control Plugin</span></a> in the remap rule in order for this mechanism to work properly.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>map https://example-cdn.com http://example.com <span class="se">\</span>
+    @plugin<span class="o">=</span>access_control.so <span class="se">\</span>
+        @pparam<span class="o">=</span>--symmetric-keys-map<span class="o">=</span>hmac_keys.txt <span class="se">\</span>
+        @pparam<span class="o">=</span>--check-cookie<span class="o">=</span>TokenCookie <span class="se">\</span>
+        @pparam<span class="o">=</span>--extract-subject-to-header<span class="o">=</span>@TokenSubject <span class="se">\</span>
+        @pparam<span class="o">=</span>--extract-tokenid-to-header<span class="o">=</span>@TokenId <span class="se">\</span>
+        @pparam<span class="o">=</span>--extract-status-to-header<span class="o">=</span>@TokenStatus <span class="se">\</span>
+        @pparam<span class="o">=</span>--token-response-header<span class="o">=</span>TokenRespHdr <span class="se">\</span>
+    @plugin<span class="o">=</span>cachekey.so <span class="se">\</span>
+        @pparam<span class="o">=</span>--static-prefix<span class="o">=</span>views <span class="se">\</span>
+        @pparam<span class="o">=</span>--include-headers<span class="o">=</span>@TokenSubject
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Secrets map <code class="docutils literal notranslate"><span class="pre">hmac_keys.txt</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cat etc/trafficserver/hmac_keys.txt
+<span class="nv">key1</span><span class="o">=</span>PEIFtmunx9
+<span class="nv">key2</span><span class="o">=</span>BtYjpTbH6a
+<span class="nv">key3</span><span class="o">=</span>SS75kgYonh
+<span class="nv">key4</span><span class="o">=</span>qMmCV2vUsu
+<span class="nv">key5</span><span class="o">=</span>YfMxMaygax
+<span class="nv">key6</span><span class="o">=</span>tVeuPtfJP8
+<span class="nv">key7</span><span class="o">=</span>oplEZT5CpB
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Format the <code class="docutils literal notranslate"><span class="pre">access_control.log</span></code></p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span>
+  <span class="nt">formats</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;</span><span class="nv"> </span><span class="s">sub=%&lt;{@TokenSubject}cqh&gt;</span><span class="nv"> </span><span class="s">tid=%&lt;{@TokenId}cqh&gt;</span><span class="nv"> </span><span class="s">status=%&lt;{@TokenStatus}cqh&gt;</span><span class="nv"> </span><span class="s">cache=%&lt;{x-cache}psh&gt;</span><span class="nv"> </span><span class="s">key=%&lt;{x-cache-key}psh&gt;&#39;</span>
+    <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">access_control_format</span>
+  <span class="nt">logs</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">access_control</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">access_control_format</span>
+    <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>X-Debug plugin added to <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code></p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cat etc/trafficserver/plugin.config
+xdebug.so
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-tests-and-troubleshooting">
+<h4>Configuration tests and troubleshooting<a class="headerlink" href="#configuration-tests-and-troubleshooting" title="Permalink to this headline">¶</a></h4>
+<p>Let us assume that the <a class="reference internal" href="#origin">origin</a> responds with the access tokens considered in <a class="reference internal" href="#query-param-style-named-claim-format">Query-Param-Style Named Claim format</a> corresponding to user <a class="reference external" href="https://en.wikipedia.org/wiki/Kermit_the_Frog">Kermit the Frog</a> and user <a class="reference external" href="https://en.wikipedia.org/wiki/Finding_Nemo">Nemo the Clownfish</a></p>
+<p>If user <a class="reference external" href="https://en.wikipedia.org/wiki/Kermit_the_Frog">Kermit the Frog</a> sends a request without a valid token, i.e <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code> is missing from the request. Cache key would be <code class="docutils literal notranslate"><span class="pre">/views/object</span></code> but never used since the cache is always <code class="docutils literal notranslate"><span class="pre">skipped</span></code>.</p>
+<p>After the <a class="reference internal" href="#origin">origin</a> responds with a valid access token (assuming the user authentication and authorization succeeded) the plugin will respond with <code class="docutils literal notranslate"><span class="pre">Set-Cookie</span></code> header containing the new access token.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -sD - https://example-cdn.com/object <span class="se">\</span>
+    -H <span class="s1">&#39;X-Debug:X-Cache, X-Cache-Key&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> grep -ie <span class="s1">&#39;x-cache&#39;</span> -e <span class="s1">&#39;tokencookie&#39;</span>
+
+set-cookie: <span class="nv">TokenCookie</span><span class="o">=</span>c3ViPWZyb2dzLWluLWEtd2VsbCZleHA9MTU3NzgzNjgwMCZuYmY9MTUxNDc2NDgwMCZpYXQ9MTUxNDE2MDAwMCZ0aWQ9MTIzNDU2Nzg5MCZraWQ9a2V5MSZzdD1ITUFDLVNIQS0yNTYmbWQ9ODg3OWFmOThhYjYwNzEzMTVhN2FiNTVlNTI0NWNiZTFjMTA2MzAzYmNjNDY5MGNiZmM4MDdhNDQwMmQxMWFiMw<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Wed, <span class="m">01</span> Jan <span class="m">2020</span> <span class="m">00</span>:00:00 GMT<span class="p">;</span> Secure<span class="p">;</span> HttpOnly
+x-cache-key: /views/object
+x-cache: skipped
+</pre></div>
+</div>
+<p>Now let us send the same request with a valid access token, add the <code class="docutils literal notranslate"><span class="pre">TokenCookie</span></code> to the request. Cache key will be <code class="docutils literal notranslate"><span class="pre">/views/&#64;TokenSubject:frogs-in-a-well/object</span></code> but since the object is not in the cache we get <code class="docutils literal notranslate"><span class="pre">miss</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -sD - https://example-cdn.com/object <span class="se">\</span>
+    -H <span class="s1">&#39;X-Debug:X-Cache, X-Cache-Key&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;cookie: TokenCookie=c3ViPWZyb2dzLWluLWEtd2VsbCZleHA9MTU3NzgzNjgwMCZuYmY9MTUxNDc2NDgwMCZpYXQ9MTUxNDE2MDAwMCZ0aWQ9MTIzNDU2Nzg5MCZraWQ9a2V5MSZzdD1ITUFDLVNIQS0yNTYmbWQ9ODg3OWFmOThhYjYwNzEzMTVhN2FiNTVlNTI0NWNiZTFjMTA2MzAzYmNjNDY5MGNiZmM4MDdhNDQwMmQxMWFiMw; Expires=Wed, 01 Jan 2020 00:00:00 GMT; Secure; HttpOnly&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> grep -ie <span class="s1">&#39;x-cache&#39;</span> -e <span class="s1">&#39;tokencookie&#39;</span>
+
+x-cache-key: /views/@TokenSubject:frogs-in-a-well/object
+x-cache: miss
+</pre></div>
+</div>
+<p>Now let us send the same request again and since the object is in cache we get <code class="docutils literal notranslate"><span class="pre">hit-fresh</span></code>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ curl -sD - https://example-cdn.com/object <span class="se">\</span>
+    -H <span class="s1">&#39;X-Debug:X-Cache, X-Cache-Key&#39;</span> <span class="se">\</span>
+    -H <span class="s1">&#39;cookie: TokenCookie=c3ViPWZyb2dzLWluLWEtd2VsbCZleHA9MTU3NzgzNjgwMCZuYmY9MTUxNDc2NDgwMCZpYXQ9MTUxNDE2MDAwMCZ0aWQ9MTIzNDU2Nzg5MCZraWQ9a2V5MSZzdD1ITUFDLVNIQS0yNTYmbWQ9ODg3OWFmOThhYjYwNzEzMTVhN2FiNTVlNTI0NWNiZTFjMTA2MzAzYmNjNDY5MGNiZmM4MDdhNDQwMmQxMWFiMw; Expires=Wed, 01 Jan 2020 00:00:00 GMT; Secure; HttpOnly&#39;</span> <span class="se">\</span>
+  <span class="p">|</span> grep -ie <span class="s1">&#39;x-cache&#39;</span> -e <span class="s1">&#39;tokencookie&#39;</span>
+
+x-cache-key: /views/@TokenSubject:frogs-in-a-well/object
+x-cache: hit-fresh
+</pre></div>
+</div>
+<p>The previous activity should result in the following log (as defined in <code class="docutils literal notranslate"><span class="pre">logging.yaml</span></code>)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="m">1521588755</span>.424 <span class="nv">sub</span><span class="o">=</span>- <span class="nv">tid</span><span class="o">=</span>- <span class="nv">status</span><span class="o">=</span>U_UNUSED,O_VALID <span class="nv">cache</span><span class="o">=</span>skipped <span class="nv">key</span><span class="o">=</span>/views/object
+<span class="m">1521588986</span>.262 <span class="nv">sub</span><span class="o">=</span>frogs-in-a-well <span class="nv">tid</span><span class="o">=</span>this-year-frog-view <span class="nv">status</span><span class="o">=</span>U_VALID,O_UNUSED <span class="nv">cache</span><span class="o">=</span>miss <span class="nv">key</span><span class="o">=</span>/views/@TokenSubject:frogs-in-a-well
+<span class="m">1521589276</span>.535 <span class="nv">sub</span><span class="o">=</span>frogs-in-a-well <span class="nv">tid</span><span class="o">=</span>this-year-frog-view <span class="nv">status</span><span class="o">=</span>U_VALID,O_UNUSED <span class="nv">cache</span><span class="o">=</span>hit-fresh <span class="nv">key</span><span class="o">=</span>/views/@TokenSubject:frogs-in-a-well
+</pre></div>
+</div>
+<p>Just for a reference the same request for user <a class="reference external" href="https://en.wikipedia.org/wiki/Finding_Nemo">Nemo the Clownfish</a>, with a different subject/target audience <code class="docutils literal notranslate"><span class="pre">fish-in-a-sea</span></code>, will end up having cache key <code class="docutils literal notranslate"><span class="pre">/views/&#64;TokenSubject:fish-in-a-sea/object</span></code> and would never match the same object cached for users in the <code class="docutils literal notranslate"><span class="pre">frogs-in-a-well</span></code> audience as they use cache key <code class="docutils literal notranslate"><span class="pre">/views/&#64;TokenSubject:frogs-in-a-well/object</span></code>.</p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>“The OAuth 1.0 Protocol”, <a class="reference external" href="https://tools.ietf.org/html/rfc5849">RFC 5849</a>, April 2010.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>“The OAuth 2.0 Authorization Framework”, <a class="reference external" href="https://tools.ietf.org/html/rfc6749">RFC 6749</a>, October 2012</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>“Security Assertion Markup Language 2.0 (SAML 2.0)” <a class="reference external" href="https://wiki.oasis-open.org">OASIS</a>, March 2005.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets">4</span><span class="fn-backref">(<a href="#id6">1</a>,<a href="#id10">2</a>)</span></dt>
+<dd><p>“JSON Web Signature (JWS)”, Appendix C. “Notes on Implementing base64url Encoding without Padding”, <a class="reference external" href="https://tools.ietf.org/html/rfc7515#appendix-C">RFC 7515</a>, May 2015</p>
+</dd>
+<dt class="label" id="id21"><span class="brackets"><a class="fn-backref" href="#id11">5</a></span></dt>
+<dd><p>“HTTP State Management Mechanism”, 4.1 “Set-Cookie”, <a class="reference external" href="https://tools.ietf.org/html/rfc6265#section-4.1">RFC 6225</a>, April 2011</p>
+</dd>
+<dt class="label" id="id22"><span class="brackets"><a class="fn-backref" href="#id7">6</a></span></dt>
+<dd><p>“Uniform Resource Identifier (URI): Generic Syntax”, 2.1. “Percent-Encoding”, <a class="reference external" href="https://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986</a>, January 2005.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="xdebug.en.html" title="previous chapter">XDebug Plugin</a></li>
+      <li>Next: <a href="certifier.en.html" title="next chapter">Certifier Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/access_control.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plugin Statistics &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSTextLogObjectCreate" href="TSTextLogObjectCreate.en.html" />
+    <link rel="prev" title="TSSslSession" href="TSSslSession.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="plugin-statistics">
+<h1>Plugin Statistics<a class="headerlink" href="#plugin-statistics" title="Permalink to this headline">¶</a></h1>
+<p>A plugin can create statistics (metrics) that are accessible in the same way as Traffic Server core
+statistics. In general monitoring the behavior of plugins in production is easier to do in this way
+in contrast to processing log files.</p>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="c function">
+<dt id="c.TSStatCreate">
+int <code class="sig-name descname">TSStatCreate</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a> <em>type</em>, <a class="reference internal" href="../types/TSStatPeristence.en.html#c.TSStatPersistence" title="TSStatPersistence">TSStatPersistence</a> <em>persistence</em>, <a class="reference internal" href="../types/TSStatSync.en.html#c.TSStatSync" title="TSStatSync">TSStatSync</a> <em>sync_style</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatCreate" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSStatFindName">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSStatFindName</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, int *<em>idx_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatFindName" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSStatIntGet">
+<a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <code class="sig-name descname">TSStatIntGet</code><span class="sig-paren">(</span>int <em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntGet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSStatIntSet">
+void <code class="sig-name descname">TSStatIntSet</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntSet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSStatIntIncrement">
+void <code class="sig-name descname">TSStatIntIncrement</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntIncrement" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSStatIntDecrement">
+void <code class="sig-name descname">TSStatIntDecrement</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntDecrement" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt id="c.TSRecordDumpCb">
+<em class="property">typedef </em>void (*<code class="sig-name descname">TSRecordDumpCb</code>)<span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a> *type, void *edata, int registered, <em class="property">const</em> char *name, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a> type, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordData" title="TSRecordData">TSRecordData</a> *datum<span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDumpCb" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSRecordDump">
+void <code class="sig-name descname">TSRecordDump</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a> <em>rect_type</em>, <a class="reference internal" href="#c.TSRecordDumpCb" title="TSRecordDumpCb">TSRecordDumpCb</a> <em>callback</em>, void *<em>edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDump" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A plugin statistic is created by <a class="reference internal" href="#c.TSStatCreate" title="TSStatCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatCreate()</span></code></a>. The <em>name</em> must be globally unique and
+should follow the standard dotted tag form. To avoid collisions and for easy of use the first tag
+should be the plugin name or something easily derived from it. Currently only integers are supported
+therefore <em>type</em> must be <code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_RECORDDATATYPE_INT</span></code>. The return value is the index of the
+statistic. In general this should work but if it doesn’t it will <code class="code docutils literal notranslate"><span class="pre">assert</span></code>. In particular,
+creating the same statistic twice will fail in this way, which can happen if statistics are created
+as part of or based on configuration files and Traffic Server is reloaded.</p>
+<p><a class="reference internal" href="#c.TSStatFindName" title="TSStatFindName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatFindName()</span></code></a> locates a statistic by <em>name</em>. If found the function returns
+<code class="docutils literal notranslate"><span class="pre">TS_SUCCESS</span></code> and the value pointed at by <em>idx_ptr</em> is updated to be the index of the
+statistic. Otherwise it returns <code class="docutils literal notranslate"><span class="pre">TS_ERROR</span></code>.</p>
+<p>The values in statistics are manipulated by <a class="reference internal" href="#c.TSStatIntSet" title="TSStatIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntSet()</span></code></a> to set the statistic directly,
+<a class="reference internal" href="#c.TSStatIntIncrement" title="TSStatIntIncrement"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntIncrement()</span></code></a> to increase it by <em>value</em>, and <a class="reference internal" href="#c.TSStatIntDecrement" title="TSStatIntDecrement"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntDecrement()</span></code></a> to
+decrease it by <em>value</em>.</p>
+<p>A group of records can be examined via <a class="reference internal" href="#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a>. A set of records is specified and the
+iterated over. For each record in the set the callbac <em>callback</em> is invoked.</p>
+<p>The records are specified by the <a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSRecordType</span></code></a>. This this is <code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_RECORDTYPE_NULL</span></code> then all records are examined. The callback is passed</p>
+<blockquote>
+<div><dl class="simple">
+<dt><em>type</em></dt><dd><p>The record type.</p>
+</dd>
+<dt><em>edata</em></dt><dd><p>Callback context. This is the <em>edata</em> value passed to <a class="reference internal" href="#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a>.</p>
+</dd>
+<dt><em>registered</em></dt><dd><p>A flag indicating if the value has been registered.</p>
+</dd>
+<dt><em>name</em></dt><dd><p>The name of the record. This is nul terminated.</p>
+</dd>
+<dt><em>type</em></dt><dd><p>The storage type of the data in the record.</p>
+</dd>
+<dt><em>datum</em></dt><dd><p>The record data.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="return-values">
+<h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="TSRecords.en.html#c.TSMgmtStringCreate" title="TSMgmtStringCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtStringCreate()</span></code></a> and <a class="reference internal" href="TSRecords.en.html#c.TSMgmtIntCreate" title="TSMgmtIntCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtIntCreate()</span></code></a> return <code class="docutils literal notranslate"><span class="pre">TS_SUCCESS</span></code> if the management
+value was created and <code class="docutils literal notranslate"><span class="pre">TS_ERROR</span></code> if not.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="../../plugins/adding-statistics.en.html#developer-plugins-add-statistics"><span class="std std-ref">Adding Statistics</span></a>
+<em class="manpage">TSAPI(3ts)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">API Reference</a><ul>
+  <li><a href="index.en.html">API Functions</a><ul>
+      <li>Previous: <a href="TSSslSession.en.html" title="previous chapter">TSSslSession</a></li>
+      <li>Next: <a href="TSTextLogObjectCreate.en.html" title="next chapter">TSTextLogObjectCreate</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/api/functions/TSStat.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

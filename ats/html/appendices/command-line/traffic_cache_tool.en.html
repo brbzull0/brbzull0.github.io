@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>traffic_cache_tool &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_cli" href="traffic_cli.en.html" />
+    <link rel="prev" title="Command Line Utilities" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="traffic-cache-tool">
+<span id="id1"></span><h1>traffic_cache_tool<a class="headerlink" href="#traffic-cache-tool" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_cache_tool</strong> [OPTIONS] COMMAND [SUBCOMMAND …] [OPTIONS]</p>
+</div>
+<div class="section" id="description">
+<span id="traffic-cache-tool-commands"></span><h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_cache_tool</strong> is designed to interact with the Traffic Server cache both for inspection and
+modification. It uses a nested command keyword style for specifying operations. There are some
+global options that apply to all commands. These should be specified before any command. These can
+be abbreviated to any unique initial substring (e.g. “–sp” for “–span”).</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-help">
+<span id="cmdoption-traffic-cache-tool-help"></span><code class="sig-name descname">--help</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints a brief usage message along with the current command hierarchy.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-spans">
+<span id="cmdoption-traffic-cache-tool-spans"></span><code class="sig-name descname">--spans</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-spans" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the span (storage) configuration. This can be a device, a cache directory, or a
+configuration file in the form of <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. In the latter case all devices listed
+in the configuration file become active.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-volumes">
+<span id="cmdoption-traffic-cache-tool-volumes"></span><code class="sig-name descname">--volumes</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-volumes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the volume configuration file in the format of <a class="reference internal" href="../../admin-guide/files/volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>. This is important
+primarily for allocation operations where having the volume configuration is needed in order to
+properly allocate storage in spans to specific volumes.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-write">
+<span id="cmdoption-traffic-cache-tool-write"></span><code class="sig-name descname">--write</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enable writing to storage devices. If this flag is not present then all storage will be opened
+read only and no operation will write to any storage device. This makes “dry run” the default and
+actual changes require specifying this flag.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-aos">
+<span id="cmdoption-traffic-cache-tool-aos"></span><code class="sig-name descname">--aos</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-aos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific the average object size in bytes. This is used in various computations. It is identical
+to <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-min-average-object-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.min_average_object_size</span></code></a>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_cache_tool-input">
+<span id="cmdoption-traffic-cache-tool-input"></span><code class="sig-name descname">--input</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_cache_tool-input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the input file or disk.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="commands">
+<h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">list</span></code></dt><dd><p>Search the spans for stripe data and display it. This is potentially slow as large sections of
+the disk may need to be read to find the stripe headers.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">stripes</span></code></dt><dd><p>Print internal stripe metadata.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">clear</span></code></dt><dd><p>Clear all the spans by writing updated span headers.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">span</span></code></dt><dd><p>Clears an specific span and it’s stripes. The span to be cleared is specified via <code class="docutils literal notranslate"><span class="pre">--device</span></code></p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">dir_check</span></code></dt><dd><p>Perform diagnostics on the stripe directories.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">full</span></code></dt><dd><p>Full check of the directories.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">freelist</span></code></dt><dd><p>Validate the directory free lists.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">bucket_chain</span></code></dt><dd><p>Validate the bucket chains in the directories.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">volumes</span></code></dt><dd><p>Compute storage allocation to stripes based on the volume configuration and print it.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">alloc</span></code></dt><dd><p>Allocate storage to stripes, updating the span and stripe headers.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">free</span></code></dt><dd><p>Allocate only free (unused) storage to volumes, updating span and stripe headers as needed.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">init</span></code></dt><dd><p>Initializes an uninitialized span and creates stripes on that span according to the volume and storage configuration
+The span to be initialized can be passed via <code class="docutils literal notranslate"><span class="pre">--input</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">find</span></code></dt><dd><p>Determines the stripe in disk cache where the content corresponding to the provided URL may be cached.
+This command takes an input file which lists all the urls for which the stripe assignment needs to be determined.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>List the basic span data.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> <span class="o">--</span><span class="n">spans</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>Allocate unused storage space.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> \
+   <span class="o">--</span><span class="n">spans</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> \
+   <span class="o">--</span><span class="n">volumes</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">volume</span><span class="o">.</span><span class="n">config</span> \
+   <span class="n">alloc</span> <span class="n">free</span>
+</pre></div>
+</div>
+<p>Clear all spans.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> \
+ <span class="o">--</span><span class="n">spans</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> \
+ <span class="o">--</span><span class="n">volumes</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">volume</span><span class="o">.</span><span class="n">config</span> \
+ <span class="n">clear</span>
+</pre></div>
+</div>
+<p>Clear a single span.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> \
+<span class="o">--</span><span class="n">span</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> \
+<span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">volume</span><span class="o">.</span><span class="n">config</span> \
+<span class="n">clear</span> <span class="n">span</span> <span class="o">--</span><span class="n">device</span> <span class="s2">&quot;/dev/sdb3&quot;</span> <span class="o">--</span><span class="n">write</span>
+</pre></div>
+</div>
+<p>Initialize a new span.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> \
+<span class="o">--</span><span class="n">span</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> \
+<span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">volume</span><span class="o">.</span><span class="n">config</span> \
+<span class="n">init</span> <span class="o">--</span><span class="nb">input</span> <span class="s2">&quot;/dev/sdb3&quot;</span> <span class="o">--</span><span class="n">write</span>
+</pre></div>
+</div>
+<p>Find Stripe Assignment.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_cache_tool</span> \
+<span class="o">--</span><span class="n">span</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">storage</span><span class="o">.</span><span class="n">config</span> \
+<span class="o">--</span><span class="n">volume</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">volume</span><span class="o">.</span><span class="n">config</span> \
+<span class="n">init</span> <span class="o">--</span><span class="nb">input</span> <span class="s2">&quot;/home/user/urls.txt&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">storage.config(5)</em>
+<em class="manpage">volume.config(5)</em>,</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Appendices</a><ul>
+  <li><a href="index.en.html">Command Line Utilities</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Command Line Utilities</a></li>
+      <li>Next: <a href="traffic_cli.en.html" title="next chapter">traffic_cli</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/appendices/command-line/traffic_cache_tool.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

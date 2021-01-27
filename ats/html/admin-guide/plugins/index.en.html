@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plugins &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="AWS S3 Authentication plugin" href="s3_auth.en.html" />
+    <link rel="prev" title="Cache Storage" href="../storage/index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="plugins">
+<span id="admin-plugins"></span><h1>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>One of the key features of Apache Traffic Server™ is its modularity. Features that aren’t needed
+in the core simply aren’t there. This helps to provide an additional guarantee
+that our core can remain fast by concentrating on the things that we always
+provide: caching and proxying.</p>
+<p>All other functionality can be moved into plugins and by offering a consistent
+C API, everyone can implement their own functionality, without having to touch
+the core.</p>
+</div>
+<div class="section" id="stable-plugins">
+<h2>Stable plugins<a class="headerlink" href="#stable-plugins" title="Permalink to this headline">¶</a></h2>
+<p>Plugins that are considered stable are installed by default in Traffic Server releases.</p>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="simple">
+<dt><a class="reference internal" href="authproxy.en.html"><span class="doc">AuthProxy</span></a></dt><dd><p>Delegates the authorization decision of a request to an external HTTP service.</p>
+</dd>
+<dt><a class="reference internal" href="s3_auth.en.html"><span class="doc">AWS S3 Authentication</span></a></dt><dd><p>Support for Amazon S3 authentication features.</p>
+</dd>
+<dt><a class="reference internal" href="background_fetch.en.html"><span class="doc">Background Fetch</span></a></dt><dd><p>Proactively fetch content from Origin in a way that it will fill the object into cache.</p>
+</dd>
+<dt><a class="reference internal" href="cachekey.en.html"><span class="doc">Cache Key and Parent Selection URL Manipulation</span></a></dt><dd><p>Allows some common cache key or parent selection URL manipulations based on various HTTP request elements.</p>
+</dd>
+<dt><a class="reference internal" href="cache_promote.en.html"><span class="doc">Cache Promotion Policies</span></a></dt><dd><p>Allows for control over which assets should be written to cache, or not.</p>
+</dd>
+<dt><a class="reference internal" href="cache_range_requests.en.html"><span class="doc">Cache Range Requests</span></a></dt><dd><p>Cache ranges by adding the range request header to the cache key.</p>
+</dd>
+<dt><a class="reference internal" href="combo_handler.en.html"><span class="doc">Combo Handler</span></a></dt><dd><p>Provides an intelligent way to combine multiple URLs into a single URL, and have Apache Traffic Server combine the components into one response.</p>
+</dd>
+<dt><a class="reference internal" href="conf_remap.en.html"><span class="doc">Configuration Remap</span></a></dt><dd><p>Override configuration directives on a per-rule basis.</p>
+</dd>
+<dt><a class="reference internal" href="esi.en.html"><span class="doc">ESI</span></a></dt><dd><p>Implements the Edge Side Includes (ESI) specification.</p>
+</dd>
+<dt><a class="reference internal" href="escalate.en.html"><span class="doc">Escalate</span></a></dt><dd><p>Escalate: when the origin returns specific status codes, retry the request at a secondary origin (failover/fail-action)</p>
+</dd>
+<dt><a class="reference internal" href="generator.en.html"><span class="doc">Generator</span></a></dt><dd><p>Generate arbitrary response data.</p>
+</dd>
+<dt><a class="reference internal" href="compress.en.html"><span class="doc">Compress</span></a></dt><dd><p>Compress or deflate cache responses.</p>
+</dd>
+<dt><a class="reference internal" href="header_rewrite.en.html"><span class="doc">Header Rewrite</span></a></dt><dd><p>Modify requests and responses based on incoming and outgoing headers and
+other transaction attributes.</p>
+</dd>
+<dt><a class="reference internal" href="healthchecks.en.html"><span class="doc">Health Checks</span></a></dt><dd><p>Define service health check links.</p>
+</dd>
+<dt><a class="reference internal" href="lua.en.html"><span class="doc">Lua</span></a></dt><dd><p>Allows plugins to be written in Lua instead of C code.</p>
+</dd>
+<dt><a class="reference internal" href="regex_remap.en.html"><span class="doc">Regex Remap</span></a></dt><dd><p>Configure remapping rules using regular expressions.</p>
+</dd>
+<dt><a class="reference internal" href="regex_revalidate.en.html"><span class="doc">Regex Revalidate</span></a></dt><dd><p>Configurable rules for forcing cache object revalidations using regular expressions.</p>
+</dd>
+<dt><a class="reference internal" href="stats_over_http.en.html"><span class="doc">Stats over HTTP</span></a></dt><dd><p>Provide an HTTP interface to all Traffic Server statistics.</p>
+</dd>
+<dt><a class="reference internal" href="tcpinfo.en.html"><span class="doc">TCPInfo</span></a></dt><dd><p>Log TCP metrics at various points of the HTTP processing pipeline.</p>
+</dd>
+<dt><a class="reference internal" href="xdebug.en.html"><span class="doc">XDebug</span></a></dt><dd><p>Allows HTTP clients to debug the operation of the Traffic Server cache using the X-Debug header.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="experimental-plugins">
+<h2>Experimental plugins<a class="headerlink" href="#experimental-plugins" title="Permalink to this headline">¶</a></h2>
+<p>Plugins that are considered experimental are located in the
+<a class="reference external" href="https://git-wip-us.apache.org/repos/asf?p=trafficserver.git;a=tree;f=plugins/experimental;hb=HEAD">plugins/experimental</a>
+directory of the Traffic Server source tree. Experimental plugins can be compiled by passing the
+<cite>–enable-experimental-plugins</cite> option to <cite>configure</cite>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ autoconf -i
+$ ./configure --enable-experimental-plugins
+$ make
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<dl class="simple">
+<dt><a class="reference internal" href="access_control.en.html"><span class="doc">Access Control</span></a></dt><dd><p>Access control plugin that handles various access control use-cases.</p>
+</dd>
+<dt><a class="reference internal" href="certifier.en.html"><span class="doc">Certifier</span></a></dt><dd><p>Manages and/or generates certificates for incoming HTTPS requests.</p>
+</dd>
+<dt><a class="reference internal" href="cert_reporting_tool.en.html"><span class="doc">Cert Reporting Tool</span></a></dt><dd><p>Examines and logs information on loaded certificates.</p>
+</dd>
+<dt><a class="reference internal" href="collapsed_forwarding.en.html"><span class="doc">Collapsed-Forwarding</span></a></dt><dd><p>Allows to Collapse multiple Concurrent requests by downloading once from the Origin and serving
+all clients in parallel.</p>
+</dd>
+<dt><a class="reference internal" href="fq_pacing.en.html"><span class="doc">FQ Pacing</span></a></dt><dd><p>FQ Pacing: Rate Limit TCP connections using Linux’s Fair Queuing queue discipline</p>
+</dd>
+<dt><a class="reference internal" href="geoip_acl.en.html"><span class="doc">GeoIP ACL</span></a></dt><dd><p>Deny or allow requests based on the source IP geo-location.</p>
+</dd>
+<dt><a class="reference internal" href="header_freq.en.html"><span class="doc">Header Frequency</span></a></dt><dd><p>Count the frequency of headers.</p>
+</dd>
+<dt><a class="reference internal" href="icap.en.html"><span class="doc">ICAP</span></a></dt><dd><p>Pass response data to external server for further processing using the ICAP protocol.</p>
+</dd>
+<dt><a class="reference internal" href="ja3_fingerprint.en.html"><span class="doc">JA3 Fingerprint</span></a></dt><dd><p>Calculates JA3 Fingerprints for incoming SSL traffic.</p>
+</dd>
+<dt><a class="reference internal" href="maxmind_acl.en.html"><span class="doc">MaxMind ACL</span></a></dt><dd><p>ACL based on the maxmind geo databases (GeoIP2 mmdb and libmaxminddb)</p>
+</dd>
+<dt><a class="reference internal" href="memcache.en.html"><span class="doc">Memcache</span></a></dt><dd><p>Implements the memcache protocol for cache contents.</p>
+</dd>
+<dt><a class="reference internal" href="metalink.en.html"><span class="doc">Metalink</span></a></dt><dd><p>Implements the Metalink download description format in order to try not to download the same file twice.</p>
+</dd>
+<dt><a class="reference internal" href="money_trace.en.html"><span class="doc">Money Trace</span></a></dt><dd><p>Allows Trafficserver to participate in a distributed tracing system based upon the Comcast Money library.</p>
+</dd>
+<dt><a class="reference internal" href="mp4.en.html"><span class="doc">MP4</span></a></dt><dd><p>MP4 streaming media.</p>
+</dd>
+<dt><a class="reference internal" href="multiplexer.en.html"><span class="doc">Multiplexer</span></a></dt><dd><p>Multiplex inbound requests to multiple upstream destinations. This is useful for requests that
+are beacons or other metric gathering requests, to report to multiple upstreams. Alternatively
+this can be used to do A/B testing by sending a duplicated slice of inbound production traffic to
+experimental upstreams.</p>
+</dd>
+<dt><a class="reference internal" href="mysql_remap.en.html"><span class="doc">MySQL Remap</span></a></dt><dd><p>Allows dynamic remaps from a MySQL database.</p>
+</dd>
+<dt><a class="reference internal" href="prefetch.en.html"><span class="doc">Prefetch</span></a></dt><dd><p>Pre-fetch objects based on the requested URL path pattern.</p>
+</dd>
+<dt><a class="reference internal" href="remap_purge.en.html"><span class="doc">Remap Purge</span></a></dt><dd><p>This remap plugin allows the administrator to easily setup remotely
+controlled <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> for the content of an entire remap rule.</p>
+</dd>
+<dt><a class="reference internal" href="url_sig.en.html"><span class="doc">Signed URLs</span></a></dt><dd><p>Adds support for verifying URL signatures for incoming requests to either deny or redirect access.</p>
+</dd>
+<dt><a class="reference internal" href="slice.en.html"><span class="doc">Slice</span></a></dt><dd><p>Slice full file or range based requests into deterministic chunks, allowing large files to be
+spread across multiple cache stripes. Allows arbitrary range requests to be satisfied by stitching
+these chunks together.</p>
+</dd>
+<dt><a class="reference internal" href="ssl_session_reuse.en.html"><span class="doc">SSL Session Reuse</span></a></dt><dd><p>Coordinates Session ID and ticket based TLS session resumption between a group of ATS machines.</p>
+</dd>
+<dt><a class="reference internal" href="sslheaders.en.html"><span class="doc">SSL Headers</span></a></dt><dd><p>Populate request headers with SSL session information.</p>
+</dd>
+<dt><a class="reference internal" href="system_stats.en.html"><span class="doc">System Stats</span></a></dt><dd><p>Inserts system statistics in to the stats list</p>
+</dd>
+<dt><a class="reference internal" href="traffic_dump.en.html"><span class="doc">Traffic Dump</span></a></dt><dd><p>Dumps traffic data into a JSON format file which can be used to replay traffic.</p>
+</dd>
+<dt><a class="reference internal" href="webp_transform.en.html"><span class="doc">WebP Transform</span></a></dt><dd><p>Converts jpeg and png images to webp format.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+      <li>Previous: <a href="../storage/index.en.html" title="previous chapter">Cache Storage</a></li>
+      <li>Next: <a href="s3_auth.en.html" title="next chapter">AWS S3 Authentication plugin</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/index.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

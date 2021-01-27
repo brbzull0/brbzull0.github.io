@@ -1,0 +1,404 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>URLs &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="HTTP Transformations" href="../http-transformations/index.en.html" />
+    <link rel="prev" title="Marshal Buffers" href="marshal-buffers.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="urls">
+<span id="developer-plugins-http-headers-urls"></span><h1>URLs<a class="headerlink" href="#urls" title="Permalink to this headline">¶</a></h1>
+<p>API URL functions provide access to URL data stored in marshal buffers.
+The URL functions can create, copy, retrieve or delete entire URLs; they
+can also retrieve or modify parts of URLs, such as port or scheme
+information.</p>
+<p>The general form of an Internet URL is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheme</span><span class="p">:</span><span class="o">//</span><span class="n">user</span><span class="p">:</span><span class="n">password</span><span class="nd">@host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">stuff</span>
+</pre></div>
+</div>
+<p>The URL data structure includes support for two specific types of
+internet URLs. HTTP URLs have the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://user:password@host:port/path;params?query#fragment
+</pre></div>
+</div>
+<p>The URL port is stored as integer. All remaining parts of the URL
+(scheme, user, etc.) are stored as strings. Traffic Server URL functions
+are named according to the portion of the URL on which they operate. For
+instance, the function that retrieves the host portion of a URL is named
+<code class="docutils literal notranslate"><span class="pre">TSUrlHostGet</span></code>.</p>
+<p>To facilitate fast comparisons and reduce storage size, Traffic Server
+defines several preallocated scheme names.</p>
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_FILE</code></dt>
+<dt>
+<code class="sig-name descname">&quot;file&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_FILE</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_FTP</code></dt>
+<dt>
+<code class="sig-name descname">&quot;ftp&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_FTP</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_GOPHER</code></dt>
+<dt>
+<code class="sig-name descname">&quot;gopher&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_GOPHER</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_HTTP</code></dt>
+<dt>
+<code class="sig-name descname">&quot;http&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_HTTP</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_HTTPS</code></dt>
+<dt>
+<code class="sig-name descname">&quot;https&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_HTTPS</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_MAILTO</code></dt>
+<dt>
+<code class="sig-name descname">&quot;mailto&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_MAILTO</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_NEWS</code></dt>
+<dt>
+<code class="sig-name descname">&quot;news&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_NEWS</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_NNTP</code></dt>
+<dt>
+<code class="sig-name descname">&quot;nntp&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_NNTP</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_PROSPERO</code></dt>
+<dt>
+<code class="sig-name descname">&quot;prospero&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_PROSPERO</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_TELNET</code></dt>
+<dt>
+<code class="sig-name descname">&quot;telnet&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_TELNET</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_WAIS</code></dt>
+<dt>
+<code class="sig-name descname">&quot;wais&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_WAIS</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_WS</code></dt>
+<dt>
+<code class="sig-name descname">&quot;ws&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_WS</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_SCHEME_WSS</code></dt>
+<dt>
+<code class="sig-name descname">&quot;wss&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="c var">
+<dt>
+<code class="sig-name descname">TS_URL_LEN_WSS</code></dt>
+<dd></dd></dl>
+
+<p>The scheme names above are defined in <code class="docutils literal notranslate"><span class="pre">ts.h</span></code> as <code class="docutils literal notranslate"><span class="pre">const</span></code> <code class="docutils literal notranslate"><span class="pre">char*</span></code>
+strings. When Traffic Server sets the scheme portion of the URL (or any
+portion for that matter), it quickly checks to see if the new value is
+one of the known values. If it is, then it stores a pointer into a
+global table (instead of storing the known value in the marshal buffer).
+The scheme values listed above are also pointers into this table. This
+allows simple pointer comparison of the value returned from
+<code class="docutils literal notranslate"><span class="pre">TSUrlSchemeGet</span></code> with one of the values listed above. You should use
+the Traffic Server-defined values when referring to one of the known
+schemes, since doing so can prevent the possibility of spelling errors.</p>
+<p>Traffic Server <strong>URL functions</strong> are listed below:</p>
+<p><a class="reference internal" href="../../api/functions/TSUrlCreate.en.html#c.TSUrlClone" title="TSUrlClone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlClone()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlCreate.en.html#c.TSUrlCopy" title="TSUrlCopy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlCopy()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlCreate.en.html#c.TSUrlCreate" title="TSUrlCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlCreate()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlStringGet.en.html#c.TSUrlPrint" title="TSUrlPrint"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPrint()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlFtpTypeGet.en.html#c.TSUrlFtpTypeGet" title="TSUrlFtpTypeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlFtpTypeGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlFtpTypeSet.en.html#c.TSUrlFtpTypeSet" title="TSUrlFtpTypeSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlFtpTypeSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlHostGet" title="TSUrlHostGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHostGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlHostSet" title="TSUrlHostSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHostSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlHttpFragmentGet" title="TSUrlHttpFragmentGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpFragmentGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlHttpFragmentSet" title="TSUrlHttpFragmentSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpFragmentSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlHttpParamsGet" title="TSUrlHttpParamsGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpParamsGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlHttpParamsSet" title="TSUrlHttpParamsSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpParamsSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlHttpQueryGet" title="TSUrlHttpQueryGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpQueryGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlHttpQuerySet" title="TSUrlHttpQuerySet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpQuerySet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlStringGet.en.html#c.TSUrlLengthGet" title="TSUrlLengthGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlLengthGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlCreate.en.html#c.TSUrlParse" title="TSUrlParse"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlParse()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlPasswordGet" title="TSUrlPasswordGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPasswordGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlPasswordSet" title="TSUrlPasswordSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPasswordSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlPathGet" title="TSUrlPathGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPathGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlPathSet" title="TSUrlPathSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPathSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlPortGet" title="TSUrlPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlPortSet" title="TSUrlPortSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlSchemeGet" title="TSUrlSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlSchemeGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlSchemeSet" title="TSUrlSchemeSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlSchemeSet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlStringGet.en.html#c.TSUrlStringGet" title="TSUrlStringGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlStringGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostGet.en.html#c.TSUrlUserGet" title="TSUrlUserGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlUserGet()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSUrlHostSet.en.html#c.TSUrlUserSet" title="TSUrlUserSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlUserSet()</span></code></a></p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">Plugin Development</a><ul>
+  <li><a href="index.en.html">HTTP Headers</a><ul>
+      <li>Previous: <a href="marshal-buffers.en.html" title="previous chapter">Marshal Buffers</a></li>
+      <li>Next: <a href="../http-transformations/index.en.html" title="next chapter">HTTP Transformations</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/plugins/http-headers/urls.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,593 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuration Examples &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Monitoring" href="../monitoring/index.en.html" />
+    <link rel="prev" title="Log Filters" href="filters.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-examples">
+<span id="admin-logging-examples"></span><h1>Configuration Examples<a class="headerlink" href="#configuration-examples" title="Permalink to this headline">¶</a></h1>
+<p>This section provides examples for a wide range of logging scenarios. While not
+exhaustive of all possibilities (Traffic Server logging is quite flexible), these entries
+should hopefully get most administrators headed onto the right path.</p>
+<p>Unless otherwise noted, the example configurations here are to be applied in
+<a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>.</p>
+<div class="section" id="online-event-log-builder">
+<h2>Online Event Log Builder<a class="headerlink" href="#online-event-log-builder" title="Permalink to this headline">¶</a></h2>
+<p>If you need any assistance building your event log, you can try out our
+<a class="reference external" href="https://trafficserver.apache.org/logbuilder/">online log builder</a>. This is a
+work in progress, so any comments, critique or suggestions are most welcome.</p>
+</div>
+<div class="section" id="emulating-other-http-server-formats">
+<h2>Emulating Other HTTP Server Formats<a class="headerlink" href="#emulating-other-http-server-formats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="netscape-common">
+<span id="admin-logging-examples-netscape"></span><h3>Netscape Common<a class="headerlink" href="#netscape-common" title="Permalink to this headline">¶</a></h3>
+<p>The following figure shows a sample log entry in a Netscape Common log file.</p>
+<div class="figure align-center">
+<img alt="Sample Netscape Common log entry" src="../../_images/netscape_common_format.jpg" />
+</div>
+<p>The numbered sections correspond to the following log fields in Traffic Server:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 8%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>chi</p></td>
+<td><p>The IP address of the client’s host machine.</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>–</p></td>
+<td><p>This hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>) is always present in Netscape log entries.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>caun</p></td>
+<td><p>The authenticated client username. A hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>) means no
+authentication was required.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>cqtn</p></td>
+<td><p>The date and time of the client request, enclosed in brackets.</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>cqtx</p></td>
+<td><p>The request line, enclosed in quotes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>pssc</p></td>
+<td><p>The proxy response status code (HTTP reply code).</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>pscl</p></td>
+<td><p>The length of the Traffic Server response to the client in bytes.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To recreate this as a log format in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> you would define the
+following format object:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">common</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;chi&gt;</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">[%&lt;cqtn&gt;]</span><span class="nv"> </span><span class="s">&quot;%&lt;cqtx&gt;&quot;</span><span class="nv"> </span><span class="s">%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;pscl&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="netscape-extended">
+<span id="admin-logging-examples-extended"></span><h3>Netscape Extended<a class="headerlink" href="#netscape-extended" title="Permalink to this headline">¶</a></h3>
+<p>The following figure shows a sample log entry in a Netscape Extended log file.</p>
+<div class="figure align-center">
+<img alt="Sample Netscape Extended log entry" src="../../_images/netscape_extended_format.jpg" />
+</div>
+<p>In addition to fields 1-7 from the Netscape Common log format, the Extended
+format adds the following fields:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 6%" />
+<col style="width: 90%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>sssc</p></td>
+<td><p>The origin server response status code.</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>sshl</p></td>
+<td><p>The server response transfer length; the body length in the
+origin server response to Traffic Server, in bytes.</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>cqcl</p></td>
+<td><p>The client request transfer length; the body length in the
+client request to Traffic Server, in bytes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>pqcl</p></td>
+<td><p>The proxy request transfer length; the body length in the Traffic Server
+request to the origin server.</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>cqhl</p></td>
+<td><p>The client request header length; the header length in the
+client request to Traffic Server.</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>pshl</p></td>
+<td><p>The proxy response header length; the header length in the
+Traffic Server response to the client.</p></td>
+</tr>
+<tr class="row-even"><td><p>14</p></td>
+<td><p>pqhl</p></td>
+<td><p>The proxy request header length; the header length in Traffic Server
+request to the origin server.</p></td>
+</tr>
+<tr class="row-odd"><td><p>15</p></td>
+<td><p>sshl</p></td>
+<td><p>The server response header length; the header length in the
+origin server response to Traffic Server.</p></td>
+</tr>
+<tr class="row-even"><td><p>16</p></td>
+<td><p>tts</p></td>
+<td><p>The time Traffic Server spent processing the client request; the number
+of seconds between the time that the client established the
+connection with Traffic Server and the time that Traffic Server sent the last byte
+of the response back to the client.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To recreate this as a log format in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> you would define the
+following format object:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extended</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;chi&gt;</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">[%&lt;cqtn&gt;]</span><span class="nv"> </span><span class="s">&quot;%&lt;cqtx&gt;&quot;</span><span class="nv"> </span><span class="s">%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;pscl&gt;</span><span class="nv"> </span><span class="s">%&lt;sssc&gt;</span><span class="nv"> </span><span class="s">%&lt;sscl&gt;</span><span class="nv"> </span><span class="s">%&lt;cqcl&gt;</span><span class="nv"> </span><span class="s">%&lt;pqcl&gt;</span><span class="nv"> </span><span class="s">%&lt;cqhl&gt;</span><span class="nv"> </span><span class="s">%&lt;pshl&gt;</span><span class="nv"> </span><span class="s">%&lt;pqhl&gt;</span><span class="nv"> </span><span class="s">%&lt;sshl&gt;</span><span class="nv"> </span><span class="s">%&lt;tts&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="netscape-extended-2">
+<span id="admin-logging-examples-extended2"></span><h3>Netscape Extended-2<a class="headerlink" href="#netscape-extended-2" title="Permalink to this headline">¶</a></h3>
+<p>The following figure shows a sample log entry in a Netscape Extended2 log file.</p>
+<div class="figure align-center">
+<img alt="Sample Netscape Extended-2 log entry" src="../../_images/netscape_extended2_format.jpg" />
+</div>
+<p>In addition to fields 1-16 from the Netscape Common and Netscape Extended log
+formats above, the Extended-2 format adds the following fields:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 8%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>phr</p></td>
+<td><p>The proxy hierarchy route; the route Traffic Server used to retrieve
+the object.</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>cfsc</p></td>
+<td><p>The client finish status code: <code class="docutils literal notranslate"><span class="pre">FIN</span></code> if the client request
+completed successfully or <code class="docutils literal notranslate"><span class="pre">INTR</span></code> if the client request was
+interrupted.</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>pfsc</p></td>
+<td><p>The proxy finish status code: <code class="docutils literal notranslate"><span class="pre">FIN</span></code> if the Traffic Server request to
+the origin server completed successfully or <code class="docutils literal notranslate"><span class="pre">INTR</span></code> if the
+request was interrupted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>crc</p></td>
+<td><p>The cache result code; how the Traffic Server cache responded to the
+request: <code class="docutils literal notranslate"><span class="pre">HIT</span></code>, <code class="docutils literal notranslate"><span class="pre">MISS</span></code>, and so on. Cache result codes are
+listed in <a class="reference internal" href="cache-results.en.html#admin-logging-crc"><span class="std std-ref">Cache Result Codes</span></a>.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To recreate this as a log format in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> you would define the
+following format object:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">extended2</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;chi&gt;</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">[%&lt;cqtn&gt;]</span><span class="nv"> </span><span class="s">&quot;%&lt;cqtx&gt;&quot;</span><span class="nv"> </span><span class="s">%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;pscl&gt;</span><span class="nv"> </span><span class="s">%&lt;sssc&gt;</span><span class="nv"> </span><span class="s">%&lt;sscl&gt;</span><span class="nv"> </span><span class="s">%&lt;cqcl&gt;</span><span class="nv"> </span><span class="s">%&lt;pqcl&gt;</span><span class="nv"> </span><span class="s">%&lt;cqhl&gt;</span><span class="nv"> </span><span class="s">%&lt;pshl&gt;</span><span class="nv"> </span><span class="s">%&lt;pqhl&gt;</span><span class="nv"> </span><span class="s">%&lt;sshl&gt;</span><span class="nv"> </span><span class="s">%&lt;tts&gt;</span><span class="nv"> </span><span class="s">%&lt;phr&gt;</span><span class="nv"> </span><span class="s">%&lt;cfsc&gt;</span><span class="nv"> </span><span class="s">%&lt;pfsc&gt;</span><span class="nv"> </span><span class="s">%&lt;crc&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="squid">
+<span id="admin-logging-examples-squid"></span><h3>Squid<a class="headerlink" href="#squid" title="Permalink to this headline">¶</a></h3>
+<p>The following figure shows a sample log entry in a Squid log file.</p>
+<div class="figure align-center">
+<img alt="Sample Squid log entry" src="../../_images/squid_format.jpg" />
+</div>
+<p>The numbered sections correspond to the following log fields in Traffic Server:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 10%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>No.</p></th>
+<th class="head"><p>Field</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>cqtq</p></td>
+<td><p>The client request timestamp in Squid format. The time of the
+client request in seconds since January 1, 1970 UTC (with
+millisecond resolution).</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>ttms</p></td>
+<td><p>The time Traffic Server spent processing the client request. The number
+of milliseconds between the time the client established the
+connection with Traffic Server and the time Traffic Server sent the last byte of
+the response back to the client.</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>chi</p></td>
+<td><p>The IP address of the client’s host machine.</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>crc/pssc</p></td>
+<td><p>The cache result code; how the cache responded to the request:
+<code class="docutils literal notranslate"><span class="pre">HIT</span></code>, <code class="docutils literal notranslate"><span class="pre">MISS</span></code>, and so on. Cache result codes are described
+in <a class="reference internal" href="cache-results.en.html#admin-logging-cache-results"><span class="std std-ref">Logging Cache Results</span></a>. The
+proxy response status code (HTTP response status code from
+Traffic Server to client).</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>psql</p></td>
+<td><p>The length of the Traffic Server response to the client in bytes,
+including headers and content.</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>cqhm</p></td>
+<td><p>The client request method: <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, and so on.</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>cauc</p></td>
+<td><p>The client request canonical URL; blanks and other characters
+that might not be parsed by log analysis tools are replaced by
+escape sequences. The escape sequence is a percentage sign
+followed by the ASCII code number of the replaced character in
+hex.</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>caun</p></td>
+<td><p>The username of the authenticated client. A hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>)
+means that no authentication was required.</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>phr/shn</p></td>
+<td><p>The proxy hierarchy route. The route Traffic Server used to retrieve the
+object.</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>psct</p></td>
+<td><p>The proxy response content type. The object content type taken
+from the Traffic Server response header.</p></td>
+</tr>
+</tbody>
+</table>
+<p>To recreate this as a log format in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> you would define the
+following format object:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">squid</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;</span><span class="nv"> </span><span class="s">%&lt;ttms&gt;</span><span class="nv"> </span><span class="s">%&lt;chi&gt;</span><span class="nv"> </span><span class="s">%&lt;crc&gt;/%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;psql&gt;</span><span class="nv"> </span><span class="s">%&lt;cqhm&gt;</span><span class="nv"> </span><span class="s">%&lt;cquc&gt;</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">%&lt;phr&gt;/%&lt;shn&gt;</span><span class="nv"> </span><span class="s">%&lt;psct&gt;&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="hourly-rotated-squid-proxy-logs">
+<h2>Hourly Rotated Squid Proxy Logs<a class="headerlink" href="#hourly-rotated-squid-proxy-logs" title="Permalink to this headline">¶</a></h2>
+<p>The following example demonstrates the creation of a Squid-compatible log
+format, which is then applied to a log object containing an hourly rotation
+policy.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">squid</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;</span><span class="nv"> </span><span class="s">%&lt;ttms&gt;</span><span class="nv"> </span><span class="s">%&lt;chi&gt;</span><span class="nv"> </span><span class="s">%&lt;crc&gt;/%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;psql&gt;</span><span class="nv"> </span><span class="s">%&lt;cqhm&gt;</span><span class="nv"> </span><span class="s">%&lt;cquc&gt;</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">%&lt;phr&gt;/%&lt;shn&gt;</span><span class="nv"> </span><span class="s">%&lt;psct&gt;&#39;</span>
+
+<span class="nt">logs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">squid</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">squid</span>
+  <span class="nt">rolling_enabled</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">time</span>
+  <span class="nt">rolling_interval_sec</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
+  <span class="nt">rolling_offset_hr</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summarizing-number-of-requests-and-total-bytes-sent-every-10-seconds">
+<h2>Summarizing Number of Requests and Total Bytes Sent Every 10 Seconds<a class="headerlink" href="#summarizing-number-of-requests-and-total-bytes-sent-every-10-seconds" title="Permalink to this headline">¶</a></h2>
+<p>The following example format generates one entry every 10 seconds. Each entry
+contains the timestamp of the last entry of the interval, a count of the number
+of entries seen within that 10-second interval, and the sum of all bytes sent
+to clients:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysummary</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;LAST(cqts)&gt;:%&lt;COUNT(*)&gt;:%&lt;SUM(psql)&gt;&#39;</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dual-output-to-compact-binary-logs-and-ascii-pipes">
+<h2>Dual Output to Compact Binary Logs and ASCII Pipes<a class="headerlink" href="#dual-output-to-compact-binary-logs-and-ascii-pipes" title="Permalink to this headline">¶</a></h2>
+<p>This example demonstrates logging the same event data to multiple locations, in
+a hypothetical scenario where we may wish to keep a compact form of our logs
+available for archival purposes, while performing live log analysis on a stream
+of the event data.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ourformat = format {</span>
+  <span class="l l-Scalar l-Scalar-Plain">Format = &#39;%&lt;chi&gt; - %&lt;caun&gt; [%&lt;cqtn&gt;] &quot;%&lt;cqtx&gt;&quot; %&lt;pssc&gt; %&lt;pscl&gt;&#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">}</span>
+
+<span class="l l-Scalar l-Scalar-Plain">log.binary {</span>
+  <span class="l l-Scalar l-Scalar-Plain">Format = ourformat,</span>
+  <span class="l l-Scalar l-Scalar-Plain">Filename = &#39;archived_events&#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">}</span>
+<span class="l l-Scalar l-Scalar-Plain">log.pipe {</span>
+  <span class="l l-Scalar l-Scalar-Plain">Format = ourformat,</span>
+  <span class="l l-Scalar l-Scalar-Plain">Filename = &#39;streaming_log&#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filtering-events-to-ascii-pipe-for-alerting">
+<h2>Filtering Events to ASCII Pipe for Alerting<a class="headerlink" href="#filtering-events-to-ascii-pipe-for-alerting" title="Permalink to this headline">¶</a></h2>
+<p>This example illustrates a situation in which our Traffic Server cache contains <em>canary</em>
+objects, which upon their access we want an external alerting system to fire
+off all sorts of alarms. To accomplish this, we demonstrate the use of a filter
+object that matches events against these particular canaries and emits log data
+for them to a UNIX pipe that the alerting software can constantly read from.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canaryformat</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;chi&gt;</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">%&lt;caun&gt;</span><span class="nv"> </span><span class="s">[%&lt;cqtn&gt;]</span><span class="nv"> </span><span class="s">&quot;%&lt;cqtx&gt;&quot;</span><span class="nv"> </span><span class="s">%&lt;pssc&gt;</span><span class="nv"> </span><span class="s">%&lt;pscl&gt;&#39;</span>
+
+<span class="nt">filters</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canaryfilter</span>
+  <span class="nt">accept</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cqup MATCH &quot;/nightmare/scenario/dont/touch&quot;</span>
+
+<span class="nt">logs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii_pipe</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canaryformat</span>
+  <span class="nt">filters</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">canaryfilter</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alerting_canaries</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-ascii-pipe-buffer-size">
+<h2>Configuring ASCII Pipe Buffer Size<a class="headerlink" href="#configuring-ascii-pipe-buffer-size" title="Permalink to this headline">¶</a></h2>
+<p>This example mirrors the one above but also sets a <code class="docutils literal notranslate"><span class="pre">`pipe_buffer_size`</span></code> of
+1024 * 1024 for the pipe. This can be set on a per-pipe basis but is only
+available on Linux (later than 2.6.35). If this field is not set, the pipe buffer
+will default to the OS default size.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii_pipe</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">canaryformat</span>
+  <span class="nt">filters</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">canaryfilter</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">alerting_canaries</span>
+  <span class="nt">pipe_buffer_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1048576</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="summarizing-origin-responses-by-hour">
+<h2>Summarizing Origin Responses by Hour<a class="headerlink" href="#summarizing-origin-responses-by-hour" title="Permalink to this headline">¶</a></h2>
+<p>This example demonstrates a simple use of aggregation operators to produce an
+hourly event line reporting on the total number of requests made to origin
+servers (where we assume that any cache result code without the string <code class="docutils literal notranslate"><span class="pre">HIT</span></code>
+in it signals origin access), as well as the average time it took to fulfill
+the request to clients during that hour.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span>
+  <span class="nt">formats</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">originrepformat</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;FIRST(cqtq)&gt;</span><span class="nv"> </span><span class="s">%&lt;COUNT(*)&gt;</span><span class="nv"> </span><span class="s">%&lt;AVG(ttms)&gt;&#39;</span>
+    <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
+
+  <span class="nt">filters</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">originfilter</span>
+    <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">reject</span>
+    <span class="nt">condition</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">crc CONTAINS &quot;HIT&quot;</span>
+
+  <span class="nt">logs</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii</span>
+    <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">originrepformat</span>
+    <span class="nt">filters</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">originfilter</span>
+    <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">origin_access_summary</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Logging</a><ul>
+      <li>Previous: <a href="filters.en.html" title="previous chapter">Log Filters</a></li>
+      <li>Next: <a href="../monitoring/index.en.html" title="next chapter">Monitoring</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/logging/examples.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

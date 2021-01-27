@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conventions &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Structure" href="structure.en.html" />
+    <link rel="prev" title="Documentation" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="conventions">
+<span id="developer-doc-conventions"></span><h1>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h1>
+<p>The conventions detailed in this chapter should be followed when modifying the
+project documentation to maintain readability and consistency.</p>
+<div class="section" id="typographic">
+<h2>Typographic<a class="headerlink" href="#typographic" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt>Italic</dt><dd><p>Used to introduce new terms. Italics used solely for emphasis should be
+avoided. When introducing new terms, only the first use should be set in
+italics, and its introduction should be followed with a definition or
+description of the term.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">The</span> <span class="o">|</span><span class="n">ATS</span><span class="o">|</span> <span class="nb">object</span> <span class="n">storage</span> <span class="ow">is</span> <span class="n">based</span> <span class="n">on</span> <span class="n">a</span> <span class="o">*</span><span class="n">cyclone</span> <span class="n">buffer</span><span class="o">*</span> <span class="n">architecture</span><span class="o">.</span>
+<span class="n">Cyclone</span> <span class="n">buffers</span> <span class="n">are</span> <span class="n">most</span> <span class="n">simply</span> <span class="n">described</span> <span class="k">as</span> <span class="n">a</span> <span class="n">fixed</span> <span class="n">size</span><span class="p">,</span> <span class="n">but</span>
+<span class="n">continually</span> <span class="n">looping</span> <span class="n">block</span> <span class="n">of</span> <span class="n">storage</span> <span class="n">updated</span> <span class="n">by</span> <span class="n">a</span> <span class="n">single</span> <span class="n">writer</span>
+<span class="n">process</span><span class="p">,</span> <span class="n">wherein</span> <span class="n">the</span> <span class="n">writer</span> <span class="n">continually</span> <span class="n">reclaims</span> <span class="n">the</span> <span class="n">oldest</span> <span class="n">allocations</span>
+<span class="k">for</span> <span class="n">the</span> <span class="n">most</span> <span class="n">recent</span> <span class="nb">object</span> <span class="n">updates</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd>
+<dt>Bold</dt><dd><p>Bold typesetting is to be reserved for section, table, and glossary
+headings and should be avoided in paragraph copy.</p>
+</dd>
+<dt>Monospace</dt><dd><p>Used to indicate filesystem paths, variable names, language keywords and
+functions, and command output. Note that in the case of variables and
+functions, whenever possible references to their documentation should be
+used in place of simple monospace markup.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Documentation source files for |TS| are located in the ``doc/``
+directory of the project source tree.
+</pre></div>
+</div>
+</dd>
+<dt>Bracketed Monospace</dt><dd><p>Used to indicate, within command or source code examples, variables for
+which the reader should substitute a value.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>To examine a performance statistic of a running |TS| instance, you may
+run the command ``traffic_ctl metric get &lt;name&gt;``, replacing ``&lt;name&gt;`` with
+the statistic you wish to examine.
+</pre></div>
+</div>
+</dd>
+<dt>Ellipsis</dt><dd><p>Used to indicate the omission of irrelevant or unimportant information. May
+also be used to separate matter to be treated in detail elsewhere.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="layout-styles">
+<h2>Layout Styles<a class="headerlink" href="#layout-styles" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="block-content">
+<h3>Block Content<a class="headerlink" href="#block-content" title="Permalink to this headline">¶</a></h3>
+<dl class="simple">
+<dt>Notes</dt><dd><p>Use of <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">note::</span></code> blocks should be sparing. In most rendered forms, the
+note block will appear quite prominently and draw the readers’ eyes away
+from the surrounding copy. It is therefore advisable that the note itself
+provide enough context and detail to be read on its own, without a full
+reading of the surrounding copy.</p>
+</dd>
+<dt>Important Notes</dt><dd><p>The use of <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">important::</span></code> callout blocks should be limited only to those
+situations in which critical information needs to be prominently displayed.
+Suitable use would include noting that resizing a cache volume will result
+in Traffic Server resetting the cache contents to empty when the service is started.
+This is information that may not be obvious, or safe to assume, for the
+reader but which can significantly (and negatively) impact the use and
+performance of Traffic Server in their environment. Important note blocks should not
+be used for behavior or actions which generally do not have potential
+negative side effects.</p>
+</dd>
+<dt>Sidebars</dt><dd><p>The use of <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">sidebar::</span></code> blocks in Traffic Server documentation should be avoided,
+and note blocks favored in their place.</p>
+</dd>
+<dt>Code Samples</dt><dd><p>Content should be set within <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">code::</span></code> blocks whenever a full line or
+multiple lines of source code are being included in the documentation, or
+when example shell or network commands are being demonstrated. Blank lines
+may be used to separate lines of code within the block for readability, and
+all normal indentation practices should be followed. No additional markup
+should be used within the content block.</p>
+</dd>
+<dt>Definition Lists</dt><dd><p>Definition lists may be used in multiple ways, not just for the term
+listings in the glossary section. They may be used to provide individual
+detailed treatment for a list of function or command arguments or where
+any series of terms need to be explained outside of the formal glossary.</p>
+</dd>
+<dt>Ordered Lists</dt><dd><p>Explicitly numbered ordered lists should be avoided. reStructuredText provides two
+methods of marking up ordered, numbered lists, and the automatic numbering
+form should be used in all cases where surrounding paragraphs do not need
+to reference individual list entries.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="tables">
+<h3>Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h3>
+<p>Tabular content may be used in any situation where a selection of items, terms,
+options, formats, etc. are being compared or where a grouping of the same are
+being presented alongside a small number of attributes which do not require
+detailed expositions.</p>
+<p>The Traffic Server project documentation supplies a custom styling override which causes
+cell contents to wrap within wide tables whenever possible in cases where it is
+necessary to prevent the content from overflowing into the margin. If, however,
+the cell content cannot be wrapped because there are no breaking spaces present
+(for example, a long variable name containing only letters, periods,
+underscores, dashes, and so no, but no whitespace), the table may still require
+overflowing into the page margin. Whenever possible, please try to avoid the
+use of tables when presenting information that will lead to this, as it greatly
+hampers readability on smaller screens, especially tablets and mobile devices.
+Alternatives such as a definition list may be better suited to the content.</p>
+<p>Tables may be marked up using any of the reStructuredText styles, though it is generally
+easiest to maintain those using the <em>simple</em> table markup style.</p>
+</div>
+</div>
+<div class="section" id="structural">
+<h2>Structural<a class="headerlink" href="#structural" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="common-definitions">
+<h3>Common Definitions<a class="headerlink" href="#common-definitions" title="Permalink to this headline">¶</a></h3>
+<p>The Traffic Server project documentation maintains a common definitions, abbreviations,
+and shortcut listing in the file <code class="docutils literal notranslate"><span class="pre">doc/common.defs</span></code>. This file should be
+included by all reStructuredText source files after the standard project copyright notice.</p>
+<p>The file should always be included using a relative path from the current file’s
+location. Any commonly or repeatedly used abbreviations, especially those of
+product, company, or person names, should be added to the definitions file as
+useful to avoid repetitive typing and ensure accurate spellings or legal usage.</p>
+</div>
+<div class="section" id="tables-of-content">
+<h3>Tables of Content<a class="headerlink" href="#tables-of-content" title="Permalink to this headline">¶</a></h3>
+<p>Any chapters of non-trivial scope should begin with a table of contents on the
+chapter index. The <code class="docutils literal notranslate"><span class="pre">:depth:</span></code> option for the table of contents may be set to
+a value appropriate to the amount of content in the chapter sections. A depth of
+<code class="docutils literal notranslate"><span class="pre">2</span></code> will generally provide a balance between usefully describing the contents
+of the chapter without overwhelming a reader scanning for topics relevant to
+their needs or interests.</p>
+</div>
+<div class="section" id="sections-and-headings">
+<h3>Sections and Headings<a class="headerlink" href="#sections-and-headings" title="Permalink to this headline">¶</a></h3>
+<p>Each chapter section should be located in a separate reStructuredText file. Each file
+should contain the standard project copyright notice first, followed by a
+unique reference marker for the section.</p>
+<p>While reStructuredText itself does not define a fixed ordering of section markers, Traffic Server
+documentation source files should use the same set of single line section
+markings, proceeding through the section levels without skipping. For
+consistency, the following section line markers should be used in order:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Top</span> <span class="n">Level</span>
+<span class="o">*********</span>
+
+<span class="n">Second</span> <span class="n">Level</span>
+<span class="o">============</span>
+
+<span class="n">Third</span> <span class="n">Level</span>
+<span class="o">-----------</span>
+
+<span class="n">Fourth</span> <span class="n">Level</span>
+<span class="o">~~~~~~~~~~~~</span>
+</pre></div>
+</div>
+<p>Any section file which reaches or has need to exceed the fourth level style of
+section line markings is an excellent candidate for breaking into several
+smaller, and ideally more focused, reStructuredText source files and referenced by an
+index with its own table of contents.</p>
+</div>
+<div class="section" id="footnotes-and-endnotes">
+<h3>Footnotes and Endnotes<a class="headerlink" href="#footnotes-and-endnotes" title="Permalink to this headline">¶</a></h3>
+<p>Both footnotes and endnotes should be avoided. The Traffic Server documentation is
+intended primarily for online viewing and the positioning of footnotes in the
+rendered output is not always intuitive. In cases where a footnote might have
+been appropriate in print-oriented material for referencing an external
+resource, that reference is more ideally integrated as a standard reStructuredText
+reference.</p>
+<p>For more descriptive content that might have been included as a footnote, it is
+less disruptive and more useful to choose between reformatting the text to
+simply include the additional wording, or consider the use of an inline note
+block.</p>
+</div>
+</div>
+<div class="section" id="grammatical">
+<h2>Grammatical<a class="headerlink" href="#grammatical" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="index.en.html">Documentation</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Documentation</a></li>
+      <li>Next: <a href="structure.en.html" title="next chapter">Structure</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/developer-guide/documentation/conventions.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

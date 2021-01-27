@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>traffic_crashlog &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_ctl" href="traffic_ctl.en.html" />
+    <link rel="prev" title="traffic_cli" href="traffic_cli.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="traffic-crashlog">
+<span id="id1"></span><h1>traffic_crashlog<a class="headerlink" href="#traffic-crashlog" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_crashlog</strong> [options]</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_crashlog</strong> is a helper process that catches Traffic Server
+crashes and writes a crash report log to the logging directory. Other than for
+debugging or development purposes, <strong class="program">traffic_crashlog</strong> is not intended
+for users to run directly.</p>
+<p>When <a class="reference internal" href="traffic_server.en.html#traffic-server"><span class="std std-ref">traffic_server</span></a> starts, it will launch a <strong class="program">traffic_crashlog</strong>
+process and keep it stopped, activating it only if a crash occurs.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="std option">
+<dt id="cmdoption-traffic_crashlog-host">
+<span id="cmdoption-traffic-crashlog-host"></span><code class="sig-name descname">--host</code><code class="sig-prename descclassname"> TRIPLE</code><a class="headerlink" href="#cmdoption-traffic_crashlog-host" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option specifies the host triple for the process that
+<strong class="program">traffic_crashlog</strong> should examine. If a supported host
+triple is specified, <strong class="program">traffic_crashlog</strong> expects to
+receive a <code class="docutils literal notranslate"><span class="pre">siginfo_t</span></code> structure on it’s standard input,
+followed by a <code class="docutils literal notranslate"><span class="pre">ucontext_t</span></code>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_crashlog-target">
+<span id="cmdoption-traffic-crashlog-target"></span><code class="sig-name descname">--target</code><code class="sig-prename descclassname"> PID</code><a class="headerlink" href="#cmdoption-traffic_crashlog-target" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the process ID of the crashing <strong class="program">traffic_server</strong>
+process. If this option is not specified, <strong class="program">traffic_crashlog</strong>
+assumes it should examine it’s parent process.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_crashlog-syslog">
+<span id="cmdoption-traffic-crashlog-syslog"></span><code class="sig-name descname">--syslog</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_crashlog-syslog" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option causes <strong class="program">traffic_crashlog</strong> to log the name
+of the crash log it creates to the system log.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_crashlog-debug">
+<span id="cmdoption-traffic-crashlog-debug"></span><code class="sig-name descname">--debug</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_crashlog-debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option enables debugging mode. In this mode,
+<strong class="program">traffic_crashlog</strong> emits the log to it’s standard
+output.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_crashlog-wait">
+<span id="cmdoption-traffic-crashlog-wait"></span><code class="sig-name descname">--wait</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_crashlog-wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option causes <strong class="program">traffic_crashlog</strong> to stop itself
+immediately after it is launched. <strong class="program">traffic_server</strong>
+will allow it to continue only when a crash occurs.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="caveats">
+<h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_crashlog</strong> makes use of various Traffic Server management
+APIs. If <a class="reference internal" href="traffic_manager.en.html#traffic-manager"><span class="std std-ref">traffic_manager</span></a> is not available, the crash log will be
+incomplete.</p>
+<p><strong class="program">traffic_crashlog</strong> may generate a crash log containing information you
+would rather not share outside your organization. Please examine the crash log
+carefully before posting it in a public forum.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">records.config(5)</em>,
+<em class="manpage">traffic_manager(8)</em>,
+<em class="manpage">traffic_server(8)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Appendices</a><ul>
+  <li><a href="index.en.html">Command Line Utilities</a><ul>
+      <li>Previous: <a href="traffic_cli.en.html" title="previous chapter">traffic_cli</a></li>
+      <li>Next: <a href="traffic_ctl.en.html" title="next chapter">traffic_ctl</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/appendices/command-line/traffic_crashlog.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

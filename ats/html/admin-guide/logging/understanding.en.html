@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Understanding Traffic Server Logs &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Log Destinations" href="destinations.en.html" />
+    <link rel="prev" title="Logging" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="understanding-ts-logs">
+<span id="admin-logging-understanding"></span><h1>Understanding Traffic Server Logs<a class="headerlink" href="#understanding-ts-logs" title="Permalink to this headline">¶</a></h1>
+<p>Traffic Server records information about every transaction (or request) it processes and
+every error it detects in log files. This information is separated into various
+logs, which are discussed below.</p>
+<p>By analyzing the log files, you can determine how many people use the Traffic Server
+cache, how much information each person requested, what pages are most popular,
+and so on. You can analyze the standard format log files with off-the-shelf
+analysis packages. To help with log file analysis, you can separate log files
+so they contain information specific to protocol or hosts. You can also
+configure Traffic Server to roll log files automatically at specific intervals during the
+day or when they reach a certain size.</p>
+<div class="section" id="enabling-logs">
+<h2>Enabling Logs<a class="headerlink" href="#enabling-logs" title="Permalink to this headline">¶</a></h2>
+<p>By default, Traffic Server creates both error and event log files and
+records system information in system log files. You can disable event
+logging and/or error logging by setting the configuration variable
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-log-logging-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logging_enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+to one of the following values:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 6%" />
+<col style="width: 94%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Disable both event and error logging.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Enable error logging only.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>Enable event logging only.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+<td><p>Enable both event and error logging.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="log-types">
+<span id="admin-logging-types"></span><h2>Log Types<a class="headerlink" href="#log-types" title="Permalink to this headline">¶</a></h2>
+<p>Three separate classes of log files exist: <a class="reference internal" href="#system-logs">System Logs</a>, <a class="reference internal" href="#error-logs">Error Logs</a>, and
+<a class="reference internal" href="#event-logs">Event Logs</a>. The fourth log type covered here, <a class="reference internal" href="#summary-logs">Summary Logs</a> are a special
+instance of the event logs, but instead of including details of individual
+transactions, the summary logs allow you to emit log entries which aggregate
+all events that occur over arbitrary periods of time (the specific period of
+time being a fixed configuration of each summary log you create).</p>
+<div class="section" id="system-logs">
+<span id="admin-logging-type-system"></span><h3>System Logs<a class="headerlink" href="#system-logs" title="Permalink to this headline">¶</a></h3>
+<p>System log files record system information, including messages about the state
+of Traffic Server and any errors or warnings it produces.  This kind of information might
+include a note that event log files were rolled or an error indicating that Traffic Server
+was restarted. If Traffic Server is failing to start properly on your system(s), this is
+the first place you’ll want to look for possible hints as to the cause.</p>
+<p>All system information messages are logged with the system-wide logging
+facility <em class="manpage">syslog</em> under the daemon facility. The
+<em class="manpage">syslog.conf(5)</em> configuration file (stored in the <code class="docutils literal notranslate"><span class="pre">/etc</span></code> directory)
+specifies where these messages are logged. A typical location is
+<code class="docutils literal notranslate"><span class="pre">/var/log/messages</span></code> (Linux).</p>
+<p>The <em class="manpage">syslog(8)</em> process works on a system-wide basis, so it serves as
+the single repository for messages from all Traffic Server processes (including
+<strong class="program">traffic_server</strong> and <strong class="program">traffic_manager</strong>).</p>
+<p>System information logs observe a static format. Each log entry in the log
+contains information about the date and time the error was logged, the hostname
+of the Traffic Server that reported the error, and a description of the error or warning.</p>
+</div>
+<div class="section" id="error-logs">
+<span id="admin-logging-type-error"></span><h3>Error Logs<a class="headerlink" href="#error-logs" title="Permalink to this headline">¶</a></h3>
+<p>Error log files record information about why a particular transaction was in
+error. Refer to <a class="reference internal" href="../monitoring/error-messages.en.html#admin-monitoring-errors"><span class="std std-ref">Error Messages</span></a> for a list of the messages
+logged by Traffic Server.</p>
+</div>
+<div class="section" id="event-logs">
+<span id="admin-logging-type-event"></span><h3>Event Logs<a class="headerlink" href="#event-logs" title="Permalink to this headline">¶</a></h3>
+<p>Event log files (also called access logs) record information about the state of
+each transaction Traffic Server processes and form the true bulk of logging output in
+Traffic Server installations. Most of the remaining documentation in this chapter applies
+to creating, formatting, rotating, and filtering event logs.</p>
+<p>Individual event log outputs are configured in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> and as
+such, the documentation provided in that configuration file’s section should be
+consulted in concert with the sections of this chapter.</p>
+</div>
+<div class="section" id="summary-logs">
+<span id="admin-logging-type-summary"></span><h3>Summary Logs<a class="headerlink" href="#summary-logs" title="Permalink to this headline">¶</a></h3>
+<p>Summary logs are an extension of the event logs, but instead of providing
+details for individual events, aggregate statistics are presented for all
+events occurring within the specified time window. Summary logs have access to
+all of the same fields as event logs, with the restriction that every field
+must be used within an aggregating function. Summary logs may not mix both
+aggregated and unaggregated fields.</p>
+<p>The aggregating functions available are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AVG</span></code></p></td>
+<td><p>Average (mean) of the given field’s value from all events within
+the interval. May only be used on numeric fields.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">COUNT</span></code></p></td>
+<td><p>The total count of events which occurred within the interval. No
+field name is necessary (<code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> may be used instead).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code></p></td>
+<td><p>The value of the first event, chronologically, which was observed
+within the interval. May be used with any type of field; numeric or
+otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LAST</span></code></p></td>
+<td><p>The value of the last event, chronologically, which was observed
+within the interval. May be used with any type of field; numeric or
+otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SUM</span></code></p></td>
+<td><p>Sum of the given field’s value from all events within the interval.
+May only be used on numeric fields.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Summary logs are defined in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> just like regular event
+logs, with the only two differences being the exclusive use of the
+aforementioned aggregate functions and the specification of an interval, as so:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysummary</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;operator(field)&gt;</span><span class="nv"> </span><span class="s">,</span><span class="nv"> </span><span class="s">%&lt;operator(field)&gt;&#39;</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">n</span>
+</pre></div>
+</div>
+<p>The interval itself is given with <em>n</em> as the number of seconds for each period
+of aggregation. There is no default value.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Logging</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Logging</a></li>
+      <li>Next: <a href="destinations.en.html" title="next chapter">Log Destinations</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/logging/understanding.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

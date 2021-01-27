@@ -1,0 +1,261 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>volume.config &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="JSONRPC API" href="../jsonrpc/index.en.html" />
+    <link rel="prev" title="strategies.yaml" href="strategies.yaml.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="volume-config">
+<h1>volume.config<a class="headerlink" href="#volume-config" title="Permalink to this headline">¶</a></h1>
+<p id="std-configfile-volume.config"><span id="std:configfile-volume.config"></span>The <a class="reference internal" href="#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> file enables you to manage your cache space more
+efficiently and restrict disk usage by creating cache volumes of
+different sizes. By distributing the cache across multiple volumes,
+you can help decrease single-lock pressure when there are not many hard drives
+present. You can further configure these volumes to store data from certain
+origin servers and/or domains in the <a class="reference internal" href="hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file.</p>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>For each volume you want to create, enter a line with the following
+format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span><span class="o">=</span><span class="n">volume_number</span>  <span class="n">scheme</span><span class="o">=</span><span class="n">protocol_type</span>  <span class="n">size</span><span class="o">=</span><span class="n">volume_size</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">volume_number</span></code> is a number between 1 and 255 (the maximum
+number of volumes is 255) and <code class="docutils literal notranslate"><span class="pre">protocol_type</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>. Traffic
+Server supports <code class="docutils literal notranslate"><span class="pre">http</span></code> for HTTP volume types; <code class="docutils literal notranslate"><span class="pre">volume_size</span></code> is the
+amount of cache space allocated to the volume. This value can be either
+a percentage of the total cache space or an absolute value. The absolute
+value must be a multiple of 128 MB, where 128 MB is the smallest value.
+If you specify a percentage, then the size is rounded down to the
+closest multiple of 128 MB.</p>
+<p>Each volume is striped across several disks to achieve parallel I/O. For
+example: if there are four disks, then a 1-GB volume will have 256 MB on
+each disk (assuming each disk has enough free space available). If you
+do not allocate all the disk space in the cache, then the extra disk
+space is not used. You can use the extra space later to create new
+volumes without deleting and clearing the existing volumes.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Changing this file to add, remove or modify volumes effectively invalidates
+the cache.</p>
+</div>
+<div class="section" id="optional-ramcache-setting">
+<h3>Optional ramcache setting<a class="headerlink" href="#optional-ramcache-setting" title="Permalink to this headline">¶</a></h3>
+<p>You can also add an option <code class="docutils literal notranslate"><span class="pre">ramcache=true/false</span></code> to the volume configuration
+line.  True is the default setting and so not needed unless you want to explicitly
+set it.  Setting <code class="docutils literal notranslate"><span class="pre">ramcache=false</span></code> will disable the ramcache that normally
+sits in front of a volume.  This may be desirable if you are using something like
+ramdisks, to avoid wasting RAM and cpu time on double caching objects.</p>
+</div>
+</div>
+<div class="section" id="exclusive-spans-and-volume-sizes">
+<h2>Exclusive spans and volume sizes<a class="headerlink" href="#exclusive-spans-and-volume-sizes" title="Permalink to this headline">¶</a></h2>
+<p>In the following sample configuration 2 spans <cite>/dev/disk1</cite> and <cite>/dev/disk2</cite> are defined
+in <a class="reference internal" href="storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>, where span <cite>/dev/disk2</cite> is assigned to <cite>volume 3</cite> exclusively
+(<cite>volume 3</cite> is forced to an “exclusive” span <cite>/dev/disk2</cite>).
+In <a class="reference internal" href="#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> there are 3 volumes defined, where <cite>volume 1</cite> and <cite>volume 2</cite>
+occupy span <cite>/dev/disk1</cite> taking each 50% of its space and <cite>volume 3</cite> takes 100% of span
+<cite>/dev/disk2</cite> exclusively.</p>
+<p>storage.config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk1</span>
+<span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">disk2</span> <span class="n">volume</span><span class="o">=</span><span class="mi">3</span> <span class="c1"># &lt;- exclusive span</span>
+</pre></div>
+</div>
+<p>volume.config:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span><span class="o">=</span><span class="mi">1</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">2</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">50</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">3</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">512</span> <span class="c1"># &lt;- volume forced to a specific exclusive span</span>
+</pre></div>
+</div>
+<p>It is important to note that when percentages are used to specify volume sizes
+and “exclusive” spans are assigned (forced) to a particular volume (in this case <cite>volume 3</cite>),
+the “exclusive” spans (in this case <cite>/dev/disk2</cite>) are excluded from the total cache
+space when the “non-forced” volumes sizes are calculated (in this case <cite>volume 1</cite> and <cite>volume 2</cite>).</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following example partitions the cache across 5 volumes to decreasing
+single-lock pressure for a machine with few drives. The last volume being
+an example of one that might be composed of purely ramdisks so that the
+ramcache has been disabled.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">volume</span><span class="o">=</span><span class="mi">1</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">2</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">3</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">4</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="o">%</span>
+<span class="n">volume</span><span class="o">=</span><span class="mi">5</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="o">%</span> <span class="n">ramcache</span><span class="o">=</span><span class="n">false</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="strategies.yaml.en.html" title="previous chapter">strategies.yaml</a></li>
+      <li>Next: <a href="../jsonrpc/index.en.html" title="next chapter">JSONRPC API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/volume.config.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stats Over HTTP Plugin &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="TCPInfo Plugin" href="tcpinfo.en.html" />
+    <link rel="prev" title="Remap Purge Plugin" href="remap_purge.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="stats-over-http-plugin">
+<span id="admin-plugins-stats-over-http"></span><h1>Stats Over HTTP Plugin<a class="headerlink" href="#stats-over-http-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin implements an HTTP interface to all Traffic Server statistics. The
+metrics returned are in a JSON format by default, for easy processing. You can
+also output the stats in CSV format as well. This plugin is now part of the
+standard ATS build process, and should be available after install.</p>
+<div class="section" id="enabling-stats-over-http">
+<h2>Enabling Stats Over HTTP<a class="headerlink" href="#enabling-stats-over-http" title="Permalink to this headline">¶</a></h2>
+<p>To enable this plugin, add to the <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>After starting Traffic Server, the JSON metrics are now available on the
+default URL:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">_stats</span>
+</pre></div>
+</div>
+<p>where host and port is the hostname/IP and port number of the server.</p>
+</div>
+<div class="section" id="plugin-options">
+<h2>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
+<dl class="std option">
+<dt id="cmdoption-integer-counters">
+<code class="sig-name descname">--integer-counters</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-integer-counters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This option causes the plugin to emit floating point and integral
+metric values as JSON numbers, rather then JSON strings. This can
+cause interoperability problems since integer metrics have a 64-bit
+unsigned range.</p>
+<dl class="std option">
+<dt id="cmdoption-wrap-counters">
+<code class="sig-name descname">--wrap-counters</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-wrap-counters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This option wraps 64-bit unsigned values to the 64-bit signed range.
+This aids interoperability with Java, since prior to the Java SE 8
+release, Java did not have a 64-bit unsigned type.</p>
+<p>You can optionally modify the path to use, and this is highly
+recommended in a public facing server. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span> <span class="mi">81</span><span class="n">c075bc0cca1435ea899ba4ad72766b</span>
+</pre></div>
+</div>
+<p>and the URL would then be e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="mi">81</span><span class="n">c075bc0cca1435ea899ba4ad72766b</span>
+</pre></div>
+</div>
+<p>This is weak security at best, since the secret could possibly leak if you are
+careless and send it over clear text.</p>
+</div>
+<div class="section" id="config-file-usage">
+<h2>Config File Usage<a class="headerlink" href="#config-file-usage" title="Permalink to this headline">¶</a></h2>
+<p>stats_over_http.so also accepts a configuration file taken as a parameter</p>
+<p>The plugin first checks if the parameter that was passed in is a file that exists, if so
+it uses that as a config file, otherwise if a parameter exists it assumes that it is meant
+to be used a path value (as if you were not using a config file)</p>
+<p>You can add comments to the config file, starting with a <cite>#</cite> value</p>
+<p>Other options you can specify:</p>
+<dl class="std option">
+<dt id="cmdoption-arg-path">
+<code class="sig-name descname">path</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This sets the path value for stats</p>
+<dl class="std option">
+<dt id="cmdoption-arg-allow_ip">
+<span id="cmdoption-arg-allow-ip"></span><code class="sig-name descname">allow_ip</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-allow_ip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A comma separated list of IPv4 addresses allowed to access the endpoint</p>
+<dl class="std option">
+<dt id="cmdoption-arg-allow_ip6">
+<span id="cmdoption-arg-allow-ip6"></span><code class="sig-name descname">allow_ip6</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-allow_ip6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A comma separated list of IPv6 addresses allowed to access the endpoint</p>
+</div>
+<div class="section" id="output-format">
+<h2>Output Format<a class="headerlink" href="#output-format" title="Permalink to this headline">¶</a></h2>
+<p>By default stats_over_http.so will output all the stats in JSON format. However
+if you wish to have it in CSV format you can do so by passing an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header:</p>
+<dl class="std option">
+<dt id="cmdoption-arg-Accept">
+<span id="cmdoption-arg-accept"></span><code class="sig-name descname">Accept:</code><code class="sig-prename descclassname"> text/csv</code><a class="headerlink" href="#cmdoption-arg-Accept" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>In either case the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header returned by stats_over_http.so will reflect
+the content that has been returned, either <code class="docutils literal notranslate"><span class="pre">text/json</span></code> or <code class="docutils literal notranslate"><span class="pre">text/csv</span></code>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Plugins</a><ul>
+      <li>Previous: <a href="remap_purge.en.html" title="previous chapter">Remap Purge Plugin</a></li>
+      <li>Next: <a href="tcpinfo.en.html" title="next chapter">TCPInfo Plugin</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/plugins/stats_over_http.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

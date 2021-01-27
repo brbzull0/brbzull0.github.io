@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>splitdns.config &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ssl_multicert.config" href="ssl_multicert.config.en.html" />
+    <link rel="prev" title="remap.config" href="remap.config.en.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="splitdns-config">
+<h1>splitdns.config<a class="headerlink" href="#splitdns-config" title="Permalink to this headline">¶</a></h1>
+<p id="std-configfile-splitdns.config"><span id="std:configfile-splitdns.config"></span>The <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file enables you to specify the DNS server that
+Traffic Server should use for resolving hosts under specific conditions.
+For more information, refer to <a class="reference internal" href="../security/index.en.html#admin-split-dns"><span class="std std-ref">Split DNS</span></a>.</p>
+<p>To specify a DNS server, you must supply the following information in
+each active line within the file:</p>
+<ul class="simple">
+<li><p>A primary destination specifier in the form of a destination domain,
+a destination host, or a URL regular expression</p></li>
+<li><p>A set of server directives, listing one or more DNS servers with
+corresponding port numbers</p></li>
+</ul>
+<p>You can also include the following optional information with each DNS
+server specification:</p>
+<ul class="simple">
+<li><p>A default domain for resolving hosts</p></li>
+<li><p>A search list specifying the domain search order when multiple
+domains are specified</p></li>
+</ul>
+<p>After you modify the <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file,
+run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the changes.</p>
+<div class="section" id="format">
+<h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
+<p>Each line in the <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file uses one of the following
+formats:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_domain</span><span class="o">=</span><span class="n">dest_domain</span> <span class="o">|</span> <span class="n">dest_host</span> <span class="o">|</span> <span class="n">url_regex</span> <span class="n">named</span><span class="o">=</span><span class="n">dns_server</span> <span class="n">def_domain</span><span class="o">=</span><span class="n">def_domain</span> <span class="n">search_list</span><span class="o">=</span><span class="n">search_list</span>
+</pre></div>
+</div>
+<p>The following list describes each field.</p>
+<dl class="simple" id="splitdns-config-format-dest-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt><dd><p>A valid domain name. This specifies that DNS server selection will
+be based on the destination domain. You can prefix the domain with
+an exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the NOT logical operator.</p>
+</dd>
+</dl>
+<dl class="simple" id="splitdns-config-format-dest-host">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt><dd><p>A valid hostname. This specifies that DNS server selection will be
+based on the destination host. You can prefix the host with an
+exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the <code class="docutils literal notranslate"><span class="pre">NOT</span></code> logical operator.</p>
+</dd>
+</dl>
+<dl class="simple" id="splitdns-config-format-url-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt><dd><p>A valid URL regular expression. This specifies that DNS server
+selection will be based on a regular expression.</p>
+</dd>
+</dl>
+<dl id="splitdns-config-format-named">
+<dt><code class="docutils literal notranslate"><span class="pre">named</span></code></dt><dd><p>This is a required directive. It identifies the DNS server that
+Traffic Server should use with the given destination specifier. You
+can specify a port using a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>). If you do not specify a
+port, then 53 is used. Specify multiple DNS servers with spaces or
+semicolons (<code class="docutils literal notranslate"><span class="pre">;</span></code>) as separators.</p>
+<p>You must specify the domains with IP addresses in CIDR (“dot”)
+notation.</p>
+</dd>
+</dl>
+<dl class="simple" id="splitdns-config-format-def-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">def_domain</span></code></dt><dd><p>A valid domain name. This optional directive specifies the default
+domain name to use for resolving hosts. Only one entry is allowed.
+If you do not provide the default domain, the system determines its
+value from <code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code></p>
+</dd>
+</dl>
+<dl class="simple" id="splitdns-config-format-search-list">
+<dt><code class="docutils literal notranslate"><span class="pre">search_list</span></code></dt><dd><p>A list of domains separated by spaces or semicolons (;). This
+specifies the domain search order. If you do not provide the search
+list, the system determines the value from <em class="manpage">resolv.conf(5)</em></p>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Consider the following DNS server selection specifications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>dest_domain=internal.company.com named=&quot;255.255.255.255:212 255.255.255.254&quot; def_domain=company.com search_list=&quot;company.com company1.com&quot;
+dest_domain=!internal.company.com named=255.255.255.253
+</pre></div>
+</div>
+<p>Now consider the following two requests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">minstar</span><span class="o">.</span><span class="n">internal</span><span class="o">.</span><span class="n">company</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>This request matches the first line and therefore selects DNS server
+<code class="docutils literal notranslate"><span class="pre">255.255.255.255</span></code> on port <code class="docutils literal notranslate"><span class="pre">212</span></code>. All resolver requests use
+<code class="docutils literal notranslate"><span class="pre">company.com</span></code> as the default domain, and <code class="docutils literal notranslate"><span class="pre">company.com</span></code> and
+<code class="docutils literal notranslate"><span class="pre">company1.com</span></code> as the set of domains to search first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">microsoft</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>This request matches the second line. Therefore, Traffic Server selects
+DNS server <code class="docutils literal notranslate"><span class="pre">255.255.255.253</span></code>. Because no <code class="docutils literal notranslate"><span class="pre">def_domain</span></code> or
+<code class="docutils literal notranslate"><span class="pre">search_list</span></code> was supplied, Traffic Server retrieves this information
+from <em class="manpage">resolv.conf(5)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="index.en.html">Configuration Files</a><ul>
+      <li>Previous: <a href="remap.config.en.html" title="previous chapter">remap.config</a></li>
+      <li>Next: <a href="ssl_multicert.config.en.html" title="next chapter">ssl_multicert.config</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/admin-guide/files/splitdns.config.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

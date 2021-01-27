@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Circonus &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="Logstash" href="logstash.en.html" />
+    <link rel="prev" title="Integrating Third-Party Tools" href="index.en.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="circonus">
+<span id="admin-monitoring-circonus"></span><h1>Circonus<a class="headerlink" href="#circonus" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.circonus.com/">Circonus</a> is a commercial systems monitoring and
+analytics product, available in hosted (SaaS) and on-site configurations.</p>
+<p>While it does not currently offer a module specific to Apache Traffic Server™ statistics, it is
+very easy to add monitoring by combining the Traffic Server plugin <a class="reference internal" href="../../../plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP</span></a> with Circonus’s JSON metrics collector.</p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<p>The following steps assume that you already have an active Circonus account on
+their hosted service, or that you already have an on-site installation. If you
+do not, that must be set up first. Trial accounts are available and will
+suffice for this guide.</p>
+<div class="section" id="enable-stats-over-http">
+<h3>Enable Stats Over HTTP<a class="headerlink" href="#enable-stats-over-http" title="Permalink to this headline">¶</a></h3>
+<p>Follow the directions in the <a class="reference internal" href="../../../plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a> chapter to
+configure the plugin. At a bare minimum, you will need to add the plugin to
+<a class="reference internal" href="../../../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>. For this guide, we will assume the following entry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span> <span class="n">_statistics</span>
+</pre></div>
+</div>
+<p>This enables the plugin and makes Traffic Server statistics available at the path
+<code class="docutils literal notranslate"><span class="pre">/_statistics</span></code>. For production environments, you are strongly encouraged to
+use a different (and obfuscated) path for your statistics since they reveal
+many internal details of your caching proxy. The plugin documentation provides
+more details.</p>
+</div>
+<div class="section" id="create-circonus-check">
+<h3>Create Circonus Check<a class="headerlink" href="#create-circonus-check" title="Permalink to this headline">¶</a></h3>
+<p>For these steps, we will assume that Traffic Server is listening on port <code class="docutils literal notranslate"><span class="pre">80</span></code> at the
+domain <code class="docutils literal notranslate"><span class="pre">trafficserver.example.com</span></code>. You should adjust these to match your
+environment.</p>
+<ol class="arabic">
+<li><p>Begin the new check creation process from within your Circonus account by
+clicking the <em>New Check</em> button near the top-right of the checks screen.</p>
+<div class="figure align-center">
+<img alt="Circonus New Check button" src="../../../../_images/new-check-button.png" />
+</div>
+</li>
+<li><p>For the check type, you should select <em>JSON</em> under the <em>Custom</em> list, and
+then choose the <em>Pull</em> type. The broker you choose to use is entirely up to
+you and will depend largely on whether you are using on-site Circonus or the
+hosted service, as well as the geographic location of your Traffic Server instance(s).</p>
+<div class="figure align-center">
+<img alt="Choosing a check type" src="../../../../_images/check-config-1.png" />
+</div>
+</li>
+<li><p>Click on <em>Configure Check</em> to proceed.</p></li>
+<li><p>Click on the <em>Show Advanced Configuration</em> link to expand the check options.
+Enter your Traffic Server instance’s externally-accessible domain for <em>Host</em> and make
+sure to set <em>URI</em> to the path at which the statistics are available. Adjust
+any of the other options to match your environment if necessary (for this
+guide, only <em>Host</em> and <em>URI</em> will need to be entered).</p>
+<div class="figure align-center">
+<img alt="Advanced check configuration" src="../../../../_images/check-config-2.png" />
+</div>
+</li>
+<li><p>Click on <em>Test Check</em> to proceed.</p></li>
+<li><p>If all is well, you should see a long list (several hundred entries) of Traffic Server
+statistics, with their associated values. If you do not, verify that Traffic Server is
+running and use <code class="docutils literal notranslate"><span class="pre">curl</span></code> to manually fetch the statistics data from your
+server.</p>
+<div class="figure align-center">
+<img alt="Check test" src="../../../../_images/check-config-3.png" />
+</div>
+</li>
+<li><p>You may want to limit the metrics you actually track from Traffic Server, since so
+many are made available. If so, simply uncheck those you aren’t interested
+in from the list. If you only want to track a few metrics, click
+<em>Select None</em> and then check the ones you want. You can filter the results
+to easily find metrics in the list.</p></li>
+<li><p>Save your new check.</p></li>
+<li><p>Verify the collected metrics in Circonus by opening your new check and
+clicking on <em>Metrics Grid</em> for an overview visualization of all the data
+being collected.</p>
+<div class="figure align-center">
+<img alt="Circonus metric grid" src="../../../../_images/metric-grid.png" />
+</div>
+</li>
+</ol>
+<p>Congratulations! You’re now ready to begin setting up alerts, visualizations,
+and dashboards for your Traffic Server statistics. You can repeat the above steps for any
+additional Traffic Server instances you have running.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.circonus.com/">Official Circonus Website</a></p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.en.html">Administrator’s Guide</a><ul>
+  <li><a href="../../index.en.html">Monitoring</a><ul>
+  <li><a href="../index.en.html">Monitoring</a><ul>
+  <li><a href="index.en.html">Integrating Third-Party Tools</a><ul>
+      <li>Previous: <a href="index.en.html" title="previous chapter">Integrating Third-Party Tools</a></li>
+      <li>Next: <a href="logstash.en.html" title="next chapter">Logstash</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../../_sources/admin-guide/monitoring/monitoring/third-party/circonus.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

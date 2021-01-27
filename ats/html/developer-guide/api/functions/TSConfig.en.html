@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TSConfig Functions &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSContCall" href="TSContCall.en.html" />
+    <link rel="prev" title="TSClientProtocolStack" href="TSClientProtocolStack.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tsconfig-functions">
+<h1>TSConfig Functions<a class="headerlink" href="#tsconfig-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="c type">
+<dt id="c.TSConfigDestroyFunc">
+<em class="property">typedef </em>void (*<code class="sig-name descname">TSConfigDestroyFunc</code>)<span class="sig-paren">(</span>void*<span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDestroyFunc" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSConfigSet">
+unsigned int <code class="sig-name descname">TSConfigSet</code><span class="sig-paren">(</span>unsigned int <em>id</em>, void *<em>data</em>, <a class="reference internal" href="#c.TSConfigDestroyFunc" title="TSConfigDestroyFunc">TSConfigDestroyFunc</a> <em>funcp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigSet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSConfigGet">
+<a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <code class="sig-name descname">TSConfigGet</code><span class="sig-paren">(</span>unsigned int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigGet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSConfigRelease">
+void <code class="sig-name descname">TSConfigRelease</code><span class="sig-paren">(</span>unsigned int <em>id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <em>configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigRelease" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSConfigDataGet">
+void *<code class="sig-name descname">TSConfigDataGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <em>configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDataGet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>These functions provide a mechanism to safely update configurations for a plugin.</p>
+<p>If a plugin stores its configuration in a data structure, updating that structure due to changes in
+the configuration file can be dangerous due to the asynchronous nature of plugin callbacks. To avoid
+that problem these functions allow a plugin to register a configuration and then later replace it
+with another instance without changing the instance in use by plugin callbacks. This works in the
+same manner as <a class="reference external" href="https://en.wikipedia.org/wiki/Smart_pointer">shared pointer</a>. When a plugin needs
+to access the configuration data, it calls <a class="reference internal" href="#c.TSConfigGet" title="TSConfigGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigGet()</span></code></a> which returns a pointer that will
+remain valid until the plugin calls <a class="reference internal" href="#c.TSConfigRelease" title="TSConfigRelease"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigRelease()</span></code></a>. The configuration instance is updated
+with <a class="reference internal" href="#c.TSConfigSet" title="TSConfigSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigSet()</span></code></a> which will update an internal pointer but will not change any instance in
+use via <a class="reference internal" href="#c.TSConfigGet" title="TSConfigGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigGet()</span></code></a>. When the last in use pointer is released, the old configuration is
+destructed using the function passed to func:<cite>TSConfigSet</cite>. This handles the overlapping
+configuration update case correctly.</p>
+<p>Initialization is done with <a class="reference internal" href="#c.TSConfigSet" title="TSConfigSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigSet()</span></code></a>. The <em>id</em> should be zero on the first call.
+This will allocate a slot for the configuration, which is returned. Subsequent calls must use this
+value. If the <em>id</em> is not zero, that value is returned. In general, the code will look
+something like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Config</span> <span class="p">{</span> <span class="o">...</span> <span class="p">};</span> <span class="o">//</span> <span class="n">Configuration</span> <span class="n">data</span><span class="o">.</span>
+<span class="nb">int</span> <span class="n">Config_Id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="o">//...</span>
+<span class="n">void</span> <span class="n">ConfigUpdate</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">Config</span><span class="o">*</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Config</span><span class="p">;</span>
+   <span class="n">cfg</span><span class="o">.</span><span class="n">load</span><span class="p">();</span> <span class="o">//</span> <span class="n">load</span> <span class="n">config</span><span class="o">...</span>
+   <span class="n">Config_Id</span> <span class="o">=</span> <span class="n">TSConfigSet</span><span class="p">(</span><span class="n">Config_Id</span><span class="p">,</span> <span class="n">cfg</span><span class="p">,</span>
+      <span class="p">[](</span><span class="n">void</span><span class="o">*</span> <span class="n">cfg</span><span class="p">){</span><span class="n">delete</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">Config</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">config</span><span class="p">);});</span>
+<span class="p">}</span>
+<span class="o">//...</span>
+<span class="n">PluginInit</span><span class="p">()</span> <span class="p">{</span>
+   <span class="o">//</span> <span class="o">...</span>
+   <span class="n">ConfigUpdate</span><span class="p">();</span>
+   <span class="o">//</span> <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">Config_Id</span></code> is a global variable holding the configuration id, which is updated by the
+return value of <a class="reference internal" href="#c.TSConfigSet" title="TSConfigSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigSet()</span></code></a>.</p>
+<p>The configuration instance is retrieved with <a class="reference internal" href="#c.TSConfigGet" title="TSConfigGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigGet()</span></code></a>. This returns a wrapper class from
+which the configuration can be extracted with <a class="reference internal" href="#c.TSConfigDataGet" title="TSConfigDataGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSConfigDataGet()</span></code></a>. The wrapper is used to
+release the configuration instance when it is no longer in use. The code in a callback tends to look
+like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">callback</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">auto</span> <span class="n">cfg_ref</span> <span class="o">=</span> <span class="n">TSConfigGet</span><span class="p">(</span><span class="n">Config_Id</span><span class="p">);</span>
+   <span class="n">Config</span><span class="o">*</span> <span class="n">cfg</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">Config</span><span class="o">*&gt;</span><span class="p">(</span><span class="n">TSConfigDataGet</span><span class="p">(</span><span class="n">cfg_ref</span><span class="p">));</span>
+   <span class="o">//</span> <span class="o">...</span> <span class="n">use</span> <span class="n">cfg</span>
+   <span class="n">TSConfigRelease</span><span class="p">(</span><span class="n">Config_Id</span><span class="p">,</span> <span class="n">cfg_ref</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">API Reference</a><ul>
+  <li><a href="index.en.html">API Functions</a><ul>
+      <li>Previous: <a href="TSClientProtocolStack.en.html" title="previous chapter">TSClientProtocolStack</a></li>
+      <li>Next: <a href="TSContCall.en.html" title="next chapter">TSContCall</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/api/functions/TSConfig.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

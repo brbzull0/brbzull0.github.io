@@ -1,0 +1,305 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TLS User Agent Hooks &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TLS Session Plugin API" href="ssl-session-api.en.html" />
+    <link rel="prev" title="HTTP Alternate Selection" href="http-alternate-selection.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tls-user-agent-hooks">
+<span id="developer-plugins-ssl-hooks"></span><h1>TLS User Agent Hooks<a class="headerlink" href="#tls-user-agent-hooks" title="Permalink to this headline">¶</a></h1>
+<p>In addition to the HTTP oriented hooks, a plugin can add hooks (by calling <a class="reference internal" href="../../api/functions/TSHttpHookAdd.en.html#c.TSHttpHookAdd" title="TSHttpHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpHookAdd()</span></code></a>)
+to trigger code during the TLS handshake with the user agent.  This TLS handshake occurs well
+before the HTTP transaction is available, so a separate state machine is required to track the
+TLS hooks.</p>
+<div class="section" id="tls-hooks">
+<h2>TLS Hooks<a class="headerlink" href="#tls-hooks" title="Permalink to this headline">¶</a></h2>
+<p>In all cases, the hook callback has the following signature.</p>
+<dl class="py function">
+<dt>
+<code class="sig-name descname">int SSL_callback(TSCont contp, TSEvent event, void * edata)</code></dt>
+<dd></dd></dl>
+
+<p>The edata parameter is a TSVConn object.</p>
+<p>The following actions are valid from these callbacks.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Fetch the SSL object associated with the connection - <a class="reference internal" href="../../api/functions/TSVConnSslConnectionGet.en.html#c.TSVConnSslConnectionGet" title="TSVConnSslConnectionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnSslConnectionGet()</span></code></a></p></li>
+<li><p>Set a connection to blind tunnel - <a class="reference internal" href="../../api/functions/TSVConnTunnel.en.html#c.TSVConnTunnel" title="TSVConnTunnel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnTunnel()</span></code></a></p></li>
+<li><p>Reenable the ssl connection - <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a></p></li>
+<li><p>Find SSL context by name - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByName" title="TSSslContextFindByName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByName()</span></code></a></p></li>
+<li><p>Find SSL context by address - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByAddr" title="TSSslContextFindByAddr"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByAddr()</span></code></a></p></li>
+<li><p>Determine whether the TSVConn is really representing a SSL connection - <a class="reference internal" href="../../api/functions/TSVConnIsSsl.en.html#c.TSVConnIsSsl" title="TSVConnIsSsl"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnIsSsl()</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="ts-vconn-start-hook">
+<h2>TS_VCONN_START_HOOK<a class="headerlink" href="#ts-vconn-start-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is invoked after the client has connected to ATS and before the SSL handshake is started,
+i.e., before any bytes have been read from the client. The data for the callback is a TSVConn
+instance which represents the client connection. There is no HTTP transaction as no headers have
+been read.</p>
+<p>In theory this hook could apply and be useful for non-SSL connections as well, but at this point
+this hook is only called in the SSL sequence.</p>
+<p>The TLS handshake processing will not proceed until <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> is called either
+from within the hook callback or from another piece of code.</p>
+</div>
+<div class="section" id="ts-vconn-close-hook">
+<h2>TS_VCONN_CLOSE_HOOK<a class="headerlink" href="#ts-vconn-close-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is invoked after the SSL handshake is done and when the IO is closing. The TSVConnArgs
+should be cleaned up here. A callback at this point must reenable.</p>
+</div>
+<div class="section" id="ts-ssl-client-hello-hook">
+<h2>TS_SSL_CLIENT_HELLO_HOOK<a class="headerlink" href="#ts-ssl-client-hello-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is called when the client hello arrived for the TLS handshake. If called it will always be
+called after TS_VCONN_START_HOOK. The plugin callback can execute code to examine client hello
+information.</p>
+<p>TLS handshake processing will pause until the hook callback executes <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a>.</p>
+</div>
+<div class="section" id="ts-ssl-servername-hook">
+<h2>TS_SSL_SERVERNAME_HOOK<a class="headerlink" href="#ts-ssl-servername-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is called if the client provides SNI information in the SSL handshake. If called it will
+always be called after TS_VCONN_START_HOOK.</p>
+<p>The Traffic Server core first evaluates the settings in the ssl_multicert.config file based on the
+server name. Then the core SNI callback executes the plugin registered SNI callback code. The plugin
+callback can access the servername by calling the openssl function SSL_get_servername().</p>
+<p>Processing will continue regardless of whether the hook callback executes
+<a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> since the openssl implementation does not allow for pausing processing
+during the openssl servername callback.</p>
+</div>
+<div class="section" id="ts-ssl-cert-hook">
+<h2>TS_SSL_CERT_HOOK<a class="headerlink" href="#ts-ssl-cert-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is called as the server certificate is selected for the TLS handshake. The plugin callback
+can execute code to create or select the certificate that should be used for the TLS handshake.
+This will override the default Traffic Server certificate selection.</p>
+<p>If you are running with openssl 1.0.2 or later, you can control whether the TLS handshake processing
+will continue after the certificate hook callback execute by calling <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> or
+not.  The TLS handshake processing will not proceed until <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> is called.</p>
+<p>It may be useful to delay the TLS handshake processing if other resources must be consulted to
+select or create a certificate.</p>
+</div>
+<div class="section" id="ts-ssl-verify-client-hook">
+<h2>TS_SSL_VERIFY_CLIENT_HOOK<a class="headerlink" href="#ts-ssl-verify-client-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is called when a client connects to Traffic Server and presents a client certificate in the case of
+a mutual TLS handshake.  The callback can use the TSVConn argument and fetch the TSSslVerifyCTX
+object using the <a class="reference internal" href="../../api/functions/TSVConnSslVerifyCTXGet.en.html#c.TSVConnSslVerifyCTXGet" title="TSVConnSslVerifyCTXGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnSslVerifyCTXGet()</span></code></a> method and fetch the peer’s certificates to make
+any additional checks.</p>
+<p>Processing will continue regardless of whether the hook callback executes
+<a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> since the openssl implementation does not allow for pausing processing
+during the certificate verify callback.  The plugin can use the <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenableEx" title="TSVConnReenableEx"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenableEx()</span></code></a>
+function to pass in the TS_EVENT_ERROR and stop the TLS handshake.</p>
+</div>
+<div class="section" id="ts-ssl-verify-server-hook">
+<h2>TS_SSL_VERIFY_SERVER_HOOK<a class="headerlink" href="#ts-ssl-verify-server-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is called when a Traffic Server connects to an origin and the origin presents a
+certificate.  The callback can use the TSVConn argument and fetch the TSSslVerifyCTX object using
+the <a class="reference internal" href="../../api/functions/TSVConnSslVerifyCTXGet.en.html#c.TSVConnSslVerifyCTXGet" title="TSVConnSslVerifyCTXGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnSslVerifyCTXGet()</span></code></a> method and fetch the peer’s certificates to make any
+additional checks.</p>
+<p>Processing will continue regardless of whether the hook callback executes
+<a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> since the openssl implementation does not allow for pausing processing
+during the certificate verify callback.  The plugin can use the <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenableEx" title="TSVConnReenableEx"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenableEx()</span></code></a>
+function to pass in the TS_EVENT_ERROR and</p>
+</div>
+<div class="section" id="ts-vconn-outbound-start-hook">
+<h2>TS_VCONN_OUTBOUND_START_HOOK<a class="headerlink" href="#ts-vconn-outbound-start-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is invoked after ATS has connected to the upstream server and before the SSL handshake has
+started.  This gives the plugin the option of overriding the default SSL connection options on the
+SSL object.</p>
+<p>In theory this hook could apply and be useful for non-SSL connections as well, but at this point
+this hook is only called in the SSL sequence.</p>
+<p>The TLS handshake processing will not proceed until <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a> is called either
+from within the hook callback or from another piece of code.</p>
+</div>
+<div class="section" id="ts-vconn-outbound-close-hook">
+<h2>TS_VCONN_OUTBOUND_CLOSE_HOOK<a class="headerlink" href="#ts-vconn-outbound-close-hook" title="Permalink to this headline">¶</a></h2>
+<p>This hook is invoked after the SSL handshake is done and right before the outbound connection
+closes.  A callback at this point must reenable.</p>
+</div>
+<div class="section" id="tls-inbound-hook-state-diagram">
+<h2>TLS Inbound Hook State Diagram<a class="headerlink" href="#tls-inbound-hook-state-diagram" title="Permalink to this headline">¶</a></h2>
+<div class="graphviz"><img src="../../../_images/graphviz-4f04f5ebf28121c1ce0e202e2cc9ad4886ce7e97.png" alt="TLS Inbound Hook State Diagram" class="graphviz" /></div>
+</div>
+<div class="section" id="tls-outbound-hook-state-diagram">
+<h2>TLS Outbound Hook State Diagram<a class="headerlink" href="#tls-outbound-hook-state-diagram" title="Permalink to this headline">¶</a></h2>
+<div class="graphviz"><img src="../../../_images/graphviz-0a94a617e8c971eb8cef9346b205358d8638bd34.png" alt="TLS Outbound Hook State Diagram" class="graphviz" /></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">Plugin Development</a><ul>
+  <li><a href="index.en.html">Hooks and Transactions</a><ul>
+      <li>Previous: <a href="http-alternate-selection.en.html" title="previous chapter">HTTP Alternate Selection</a></li>
+      <li>Next: <a href="ssl-session-api.en.html" title="next chapter">TLS Session Plugin API</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/plugins/hooks-and-transactions/ssl-hooks.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>

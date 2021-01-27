@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TSmalloc &#8212; Apache Traffic Server 10.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Continuous Integration" href="../../continuous-integration/index.en.html" />
+    <link rel="prev" title="TSfwrite" href="TSfwrite.en.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tsmalloc">
+<h1>TSmalloc<a class="headerlink" href="#tsmalloc" title="Permalink to this headline">¶</a></h1>
+<p>Traffic Server memory allocation API.</p>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="c function">
+<dt id="c.TSmalloc">
+void *<code class="sig-name descname">TSmalloc</code><span class="sig-paren">(</span>size_t <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSmalloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSrealloc">
+void *<code class="sig-name descname">TSrealloc</code><span class="sig-paren">(</span>void *<em>ptr</em>, size_t <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSrealloc" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSstrdup">
+char *<code class="sig-name descname">TSstrdup</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSstrdup" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSstrndup">
+char *<code class="sig-name descname">TSstrndup</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>str</em>, size_t <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSstrndup" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSstrlcpy">
+size_t <code class="sig-name descname">TSstrlcpy</code><span class="sig-paren">(</span>char *<em>dst</em>, <em class="property">const</em> char *<em>src</em>, size_t <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSstrlcpy" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSstrlcat">
+size_t <code class="sig-name descname">TSstrlcat</code><span class="sig-paren">(</span>char *<em>dst</em>, <em class="property">const</em> char *<em>src</em>, size_t <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSstrlcat" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSfree">
+void <code class="sig-name descname">TSfree</code><span class="sig-paren">(</span>void *<em>ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSfree" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides a number of routines for allocating and freeing
+memory. These routines correspond to similar routines in the C library.
+For example, <a class="reference internal" href="#c.TSrealloc" title="TSrealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSrealloc()</span></code></a> behaves like the C library routine <code class="code docutils literal notranslate"><span class="pre">realloc</span></code>.
+There are two reasons to use the routines provided by Traffic Server. The
+first is portability. The Traffic Server API routines behave the same on
+all of Traffic Servers supported platforms. For example, <code class="code docutils literal notranslate"><span class="pre">realloc</span></code> does
+not accept an argument of <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on some platforms. The second reason is
+that the Traffic Server routines actually track the memory allocations by
+file and line number. This tracking is very efficient, is always turned
+on, and is useful for tracking down memory leaks.</p>
+<p><a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a> returns a pointer to size bytes of memory allocated from the
+heap. Traffic Server uses <a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a> internally for memory allocations.
+Always use <a class="reference internal" href="#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a> to release memory allocated by <a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a>; do not use
+<code class="code docutils literal notranslate"><span class="pre">free</span></code>.</p>
+<p><a class="reference internal" href="#c.TSstrdup" title="TSstrdup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrdup()</span></code></a> returns a pointer to a new string that is a duplicate of the
+string pointed to by str. The memory for the new string is allocated using
+<a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a> and should be freed by a call to <a class="reference internal" href="#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a>.
+<a class="reference internal" href="#c.TSstrndup" title="TSstrndup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrndup()</span></code></a> returns a pointer to a new string that is a duplicate of the
+string pointed to by <em>str</em> but is at most <em>size</em> bytes long. The new
+string will be NUL-terminated. This API is very useful for transforming non
+NUL-terminated string values returned by APIs such as
+<a class="reference internal" href="TSMimeHdrFieldValueStringGet.en.html#c.TSMimeHdrFieldValueStringGet" title="TSMimeHdrFieldValueStringGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueStringGet()</span></code></a> into NUL-terminated string values. The
+memory for the new string is allocated using <a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a> and should be
+freed by a call to <a class="reference internal" href="#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a>.</p>
+<p><a class="reference internal" href="#c.TSstrlcpy" title="TSstrlcpy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrlcpy()</span></code></a> copies up to <em>size</em> - 1 characters from the NUL-terminated
+string <em>src</em> to <em>dst</em>, NUL-terminating the result.</p>
+<p><a class="reference internal" href="#c.TSstrlcat" title="TSstrlcat"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrlcat()</span></code></a> appends the NUL-terminated string <em>src</em> to the end of <em>dst</em>. It
+will append at most <em>size</em> - <code class="code docutils literal notranslate"><span class="pre">strlen(dst)</span></code> - 1 bytes, NUL-terminating the
+result.</p>
+<p><a class="reference internal" href="#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a> releases the memory allocated by <a class="reference internal" href="#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a> or <a class="reference internal" href="#c.TSrealloc" title="TSrealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSrealloc()</span></code></a>. If
+ptr is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>, <a class="reference internal" href="#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a> does no operation.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">TSAPI(3ts)</em></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/trans_logo_tm_380x69.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">Apache Traffic Server</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.en.html">Developer’s Guide</a><ul>
+  <li><a href="../index.en.html">API Reference</a><ul>
+  <li><a href="index.en.html">API Functions</a><ul>
+      <li>Previous: <a href="TSfwrite.en.html" title="previous chapter">TSfwrite</a></li>
+      <li>Next: <a href="../../continuous-integration/index.en.html" title="next chapter">Continuous Integration</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+
+    <div class="footer">
+      &copy;2021, dev@trafficserver.apache.org.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.4.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../../_sources/developer-guide/api/functions/TSmalloc.en.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+
+  </body>
+</html>
