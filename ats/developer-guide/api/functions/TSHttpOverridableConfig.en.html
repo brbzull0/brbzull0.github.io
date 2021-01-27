@@ -1,0 +1,968 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TSHttpOverridableConfig &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSHttpParserCreate" href="TSHttpParserCreate.en.html" />
+    <link rel="prev" title="TSHttpHookAdd" href="TSHttpHookAdd.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../types/index.en.html">API Types</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">API Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="TSAPI.en.html">TSAPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSAcceptor.en.html">TSAcceptor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSActionCancel.en.html">TSActionCancel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSActionDone.en.html">TSActionDone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheRead.en.html">TSCacheRead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheRemove.en.html">TSCacheRemove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheWrite.en.html">TSCacheWrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSClientProtocolStack.en.html">TSClientProtocolStack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSConfig.en.html">TSConfig Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContCall.en.html">TSContCall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContCreate.en.html">TSContCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDataGet.en.html">TSContDataGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityGet.en.html">TSContThreadAffinityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinitySet.en.html">TSContThreadAffinitySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSDebug.en.html">TSDebug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSEventThreadSelf.en.html">TSEventThreadSelf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSFetchCreate.en.html">TSFetchCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHostLookup.en.html">TSHostLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHostLookupResultAddrGet.en.html">TSHostLookupResultAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpArgs.en.html">TSHttpArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnect.en.html">TSHttpConnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnectWithPluginId.en.html">TSHttpConnectWithPluginId</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrClone.en.html">TSHttpHdrClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrCopy.en.html">TSHttpHdrCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrCreate.en.html">TSHttpHdrCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrDestroy.en.html">TSHttpHdrDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrHostGet.en.html">TSHttpHdrHostGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrLengthGet.en.html">TSHttpHdrLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrMethodGet.en.html">TSHttpHdrMethodGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrMethodSet.en.html">TSHttpHdrMethodSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrPrint.en.html">TSHttpHdrPrint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonGet.en.html">TSHttpHdrReasonGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonLookup.en.html">TSHttpHdrReasonLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonSet.en.html">TSHttpHdrReasonSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrStatusGet.en.html">TSHttpHdrStatusGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrStatusSet.en.html">TSHttpHdrStatusSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrTypeGet.en.html">TSHttpHdrTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrTypeSet.en.html">TSHttpHdrTypeSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrUrlGet.en.html">TSHttpHdrUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrUrlSet.en.html">TSHttpHdrUrlSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrVersionGet.en.html">TSHttpHdrVersionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrVersionSet.en.html">TSHttpHdrVersionSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHookAdd.en.html">TSHttpHookAdd</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TSHttpOverridableConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpParserCreate.en.html">TSHttpParserCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnClientFdGet.en.html">TSHttpSsnClientFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnIdGet.en.html">TSHttpSsnIdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnReenable.en.html">TSHttpSsnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnAborted.en.html">TSHttpTxnAborted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCacheLookupStatusGet.en.html">TSHttpTxnCacheLookupStatusGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCacheLookupUrlGet.en.html">TSHttpTxnCacheLookupUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCachedReqGet.en.html">TSHttpTxnCachedReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCachedRespGet.en.html">TSHttpTxnCachedRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientFdGet.en.html">TSHttpTxnClientFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketDscpSet.en.html">TSHttpTxnClientPacketDscpSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketMarkSet.en.html">TSHttpTxnClientPacketMarkSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketTosSet.en.html">TSHttpTxnClientPacketTosSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientReqGet.en.html">TSHttpTxnClientReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientRespGet.en.html">TSHttpTxnClientRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamIdGet.en.html">TSHttpTxnClientStreamIdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamPriorityGet.en.html">TSHttpTxnClientStreamPriorityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnErrorBodySet.en.html">TSHttpTxnErrorBodySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIncomingAddrGet.en.html">TSHttpTxnIncomingAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnInfoIntGet.en.html">TSHttpTxnInfoIntGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIntercept.en.html">TSHttpTxnIntercept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsCacheable.en.html">TSHttpTxnIsCacheable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsInternal.en.html">TSHttpTxnIsInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsWebsocket.en.html">TSHttpTxnIsWebsocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnMilestoneGet.en.html">TSHttpTxnMilestoneGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnNextHopAddrGet.en.html">TSHttpTxnNextHopAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnNextHopNameGet.en.html">TSHttpTxnNextHopNameGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnOutgoingAddrGet.en.html">Local outbound address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnParentProxySet.en.html">TSHttpTxnParentProxySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnParentSelectionUrlGet.en.html">TSHttpTxnParentSelectionUrlSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnPluginTagGet.en.html">TSHttpTxnPluginTagGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnRedoCacheLookup.en.html">TSHttpTxnRedoCacheLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnReenable.en.html">TSHttpTxnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerAddrGet.en.html">TSHttpTxnServerAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerAddrSet.en.html">TSHttpTxnServerAddrSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerFdGet.en.html">TSHttpTxnServerFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerIntercept.en.html">TSHttpTxnServerIntercept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketDscpSet.en.html">TSHttpTxnServerPacketDscpSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketMarkSet.en.html">TSHttpTxnServerPacketMarkSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketTosSet.en.html">TSHttpTxnServerPacketTosSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPush.en.html">TSHttpTxnServerPush</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerReqGet.en.html">TSHttpTxnServerReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerRespGet.en.html">TSHttpTxnServerRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnSsnGet.en.html">TSHttpTxnSsnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformRespGet.en.html">TSHttpTxnTransformRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformedRespCache.en.html">TSHttpTxnTransformedRespCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnUntransformedRespCache.en.html">TSHttpTxnUntransformedRespCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferBlockReadStart.en.html">TSIOBufferBlockReadStart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferCopy.en.html">TSIOBufferCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferCreate.en.html">TSIOBufferCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferReader.en.html">TSIOBufferReader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSInstallDirGet.en.html">TSInstallDirGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIpStringToAddr.en.html">TSIpStringToAddr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSLifecycleHookAdd.en.html">TSLifecycleHookAdd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMBufferCreate.en.html">TSMBufferCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtCounterGet.en.html">TSMgmtCounterGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtDataTypeGet.en.html">TSMgmtDataTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtFloatGet.en.html">TSMgmtFloatGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtIntGet.en.html">TSMgmtIntGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtSourceGet.en.html">TSMgmtSourceGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtStringGet.en.html">TSMgmtStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtUpdateRegister.en.html">TSMgmtUpdateRegister</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrClone.en.html">TSMimeHdrClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrCopy.en.html">TSMimeHdrCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrCreate.en.html">TSMimeHdrCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrDestroy.en.html">TSMimeHdrDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldAppend.en.html">TSMimeHdrFieldAppend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldClone.en.html">TSMimeHdrFieldClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCopy.en.html">TSMimeHdrFieldCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCopyValues.en.html">TSMimeHdrFieldCopyValues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCreate.en.html">TSMimeHdrFieldCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldDestroy.en.html">TSMimeHdrFieldDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldFind.en.html">TSMimeHdrFieldFind</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldGet.en.html">TSMimeHdrFieldGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldLengthGet.en.html">TSMimeHdrFieldLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNameGet.en.html">TSMimeHdrFieldNameGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNameSet.en.html">TSMimeHdrFieldNameSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNext.en.html">TSMimeHdrFieldNext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNextDup.en.html">TSMimeHdrFieldNextDup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldRemove.en.html">TSMimeHdrFieldRemove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueAppend.en.html">TSMimeHdrFieldValueAppend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueDateInsert.en.html">TSMimeHdrFieldValueDateInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueDateSet.en.html">TSMimeHdrFieldValueDateSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueIntSet.en.html">TSMimeHdrFieldValueIntSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringGet.en.html">TSMimeHdrFieldValueStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringInsert.en.html">TSMimeHdrFieldValueStringInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringSet.en.html">TSMimeHdrFieldValueStringSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueUintInsert.en.html">TSMimeHdrFieldValueUintInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueUintSet.en.html">TSMimeHdrFieldValueUintSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValuesClear.en.html">TSMimeHdrFieldValuesClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValuesCount.en.html">TSMimeHdrFieldValuesCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldsClear.en.html">TSMimeHdrFieldsClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldsCount.en.html">TSMimeHdrFieldsCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrLengthGet.en.html">TSMimeHdrLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrParse.en.html">TSMimeHdrParse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrPrint.en.html">TSMimeHdrPrint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserClear.en.html">TSMimeParserClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserCreate.en.html">TSMimeParserCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserDestroy.en.html">TSMimeParserDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexCreate.en.html">TSMutexCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexDestroy.en.html">TSMutexDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexLock.en.html">TSMutexLock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexLockTry.en.html">TSMutexLockTry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexUnlock.en.html">TSMutexUnlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetAccept.en.html">TSNetAccept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetAcceptNamedProtocol.en.html">TSNetAcceptNamedProtocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetConnect.en.html">TSNetConnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetInvokingGet.en.html">TSNetInvokingContGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginDSOReloadEnable.en.html">TSPluginDSOReloadEnable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginInit.en.html">TSPluginInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecords.en.html">Traffic Server Records</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRemap.en.html">TSRemapInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRemapFromToUrlGet.en.html">TSRemapFrom/ToUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSStat.en.html">Plugin Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTextLogObjectCreate.en.html">TSTextLogObjectCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadCreate.en.html">TSThreadCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadDestroy.en.html">TSThreadDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadInit.en.html">TSThreadInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadSelf.en.html">TSThreadSelf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTrafficServerVersionGet.en.html">TSTrafficServerVersionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTransformCreate.en.html">TSTransformCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTransformOutputVConnGet.en.html">TSTransformOutputVConnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTypes.en.html">TSAPI Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlCreate.en.html">TSUrlCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlFtpTypeGet.en.html">TSUrlFtpTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlFtpTypeSet.en.html">TSUrlFtpTypeSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlHostGet.en.html">TSUrlHostGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlHostSet.en.html">TSUrlHostSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlPercentEncode.en.html">TSUrlPercentEncode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlStringGet.en.html">TSUrlStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUserArgs.en.html">TSUserArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUuidCreate.en.html">TSUuidCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConn.en.html">TSVConn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnAbort.en.html">TSVConnAbort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnArgs.en.html">TSVConnArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnCacheObjectSizeGet.en.html">TSVConnCacheObjectSizeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnClose.en.html">TSVConnClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnClosedGet.en.html">TSVConnClosedGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnCreate.en.html">TSVConnCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnFdCreate.en.html">TSVConnFdCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnIsSsl.en.html">TSVConnIsSsl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnProtocol.en.html">TSVConnProtocolEnable/Disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnProvidedSslCert.en.html">TSVConnProvidedSslCert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnRead.en.html">TSVConnRead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReadVIOGet.en.html">TSVConnReadVIOGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html">TSVConnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html#tsvconnreenableex">TSVConnReenableEx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnShutdown.en.html">TSVConnShutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslConnectionGet.en.html">TSVConnSslConnectionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslVerifyCTXGet.en.html">TSVConnSslVerifyCTXGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnTunnel.en.html">TSVConnTunnel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnWrite.en.html">TSVConnWrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnWriteVIOGet.en.html">TSVConnWriteVIOGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOBufferGet.en.html">TSVIOBufferGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOContGet.en.html">TSVIOContGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOMutexGet.en.html">TSVIOMutexGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONBytesGet.en.html">TSVIONBytesGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONBytesSet.en.html">TSVIONBytesSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONDoneGet.en.html">TSVIONDoneGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONDoneSet.en.html">TSVIONDoneSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONTodoGet.en.html">TSVIONTodoGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOReaderGet.en.html">TSVIOReaderGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOReenable.en.html">TSVIOReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOVConnGet.en.html">TSVIOVConnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfclose.en.html">TSfclose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfflush.en.html">TSfflush</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfgets.en.html">TSfgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfopen.en.html">TSfopen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfread.en.html">TSfread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfwrite.en.html">TSfwrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSmalloc.en.html">TSmalloc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.en.html">API Functions</a> &raquo;</li>
+        
+      <li>TSHttpOverridableConfig</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/api/functions/TSHttpOverridableConfig.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tshttpoverridableconfig">
+<span id="ts-overridable-config"></span><h1>TSHttpOverridableConfig<a class="headerlink" href="#tshttpoverridableconfig" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="c.TSHttpTxnConfigIntSet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigIntSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a><em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigIntGet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigIntGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a>*<em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigFloatSet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigFloatSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat">TSMgmtFloat</a><em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigFloatGet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigFloatGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat">TSMgmtFloat</a>*<em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigStringSet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigStringSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, const char*<em>&nbsp;value</em>, int<em>&nbsp;length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringSet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigStringGet">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigStringGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a><em>&nbsp;key</em>, const char**<em>&nbsp;value</em>, int*<em>&nbsp;length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="c.TSHttpTxnConfigFind">
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnConfigFind</code><span class="sig-paren">(</span>const char*<em>&nbsp;name</em>, int<em>&nbsp;length</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a>*<em>&nbsp;key</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a>*<em>&nbsp;type</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Some of the values that are set in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> can be changed for a
+specific transaction. It is important to note that these functions change the
+configuration values stored for the transaction, which is not quite the same as
+changing the actual operating values of the transaction. The critical effect is
+the value must be changed before it is used by the transaction - after that,
+changes will not have any effect.</p>
+<p>All of the <code class="docutils literal notranslate"><span class="pre">...Get</span></code> functions store the internal value in the storage
+indicated by the <em>value</em> argument. For strings <em>length*</em> will receive
+the length of the string.</p>
+<p>The values are identified by the enumeration <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSOverridableConfigKey</span></code></a>.
+String values can be used indirectly by first passing them to
+<a class="reference internal" href="#c.TSHttpTxnConfigFind" title="TSHttpTxnConfigFind"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnConfigFind()</span></code></a> which, if the string matches an overridable value,
+return the key and data type.</p>
+</div>
+<div class="section" id="configurations">
+<h2>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h2>
+<p>The following configurations (from <code class="docutils literal notranslate"><span class="pre">records.config</span></code>) are overridable:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="49%" />
+<col width="51%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">TSOverridableConfigKey Value</th>
+<th class="head">Configuration Value</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_BODY_FACTORY_TEMPLATE_BASE" title="TS_CONFIG_BODY_FACTORY_TEMPLATE_BASE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_BODY_FACTORY_TEMPLATE_BASE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-body-factory-template-base" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.body_factory.template_base</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ALLOW_HALF_OPEN" title="TS_CONFIG_HTTP_ALLOW_HALF_OPEN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ALLOW_HALF_OPEN</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-allow-half-open" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.allow_half_open</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ALLOW_MULTI_RANGE" title="TS_CONFIG_HTTP_ALLOW_MULTI_RANGE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ALLOW_MULTI_RANGE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-allow-multi-range" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.allow_multi_range</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_INSERT_CLIENT_IP" title="TS_CONFIG_HTTP_ANONYMIZE_INSERT_CLIENT_IP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_INSERT_CLIENT_IP</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-client-ip" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_client_ip</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_REMOVE_CLIENT_IP" title="TS_CONFIG_HTTP_ANONYMIZE_REMOVE_CLIENT_IP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_REMOVE_CLIENT_IP</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-anonymize-remove-client-ip" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.anonymize_remove_client_ip</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_REMOVE_COOKIE" title="TS_CONFIG_HTTP_ANONYMIZE_REMOVE_COOKIE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_REMOVE_COOKIE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-anonymize-remove-cookie" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.anonymize_remove_cookie</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_REMOVE_FROM" title="TS_CONFIG_HTTP_ANONYMIZE_REMOVE_FROM"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_REMOVE_FROM</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-anonymize-remove-from" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.anonymize_remove_from</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_REMOVE_REFERER" title="TS_CONFIG_HTTP_ANONYMIZE_REMOVE_REFERER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_REMOVE_REFERER</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-anonymize-remove-referer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.anonymize_remove_referer</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ANONYMIZE_REMOVE_USER_AGENT" title="TS_CONFIG_HTTP_ANONYMIZE_REMOVE_USER_AGENT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ANONYMIZE_REMOVE_USER_AGENT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-anonymize-remove-user-agent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.anonymize_remove_user_agent</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_ATTACH_SERVER_SESSION_TO_CLIENT" title="TS_CONFIG_HTTP_ATTACH_SERVER_SESSION_TO_CLIENT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_ATTACH_SERVER_SESSION_TO_CLIENT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-attach-server-session-to-client" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.attach_server_session_to_client</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_AUTH_SERVER_SESSION_PRIVATE" title="TS_CONFIG_HTTP_AUTH_SERVER_SESSION_PRIVATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_AUTH_SERVER_SESSION_PRIVATE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-auth-server-session-private" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.auth_server_session_private</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_BACKGROUND_FILL_ACTIVE_TIMEOUT" title="TS_CONFIG_HTTP_BACKGROUND_FILL_ACTIVE_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_BACKGROUND_FILL_ACTIVE_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_BACKGROUND_FILL_COMPLETED_THRESHOLD" title="TS_CONFIG_HTTP_BACKGROUND_FILL_COMPLETED_THRESHOLD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_BACKGROUND_FILL_COMPLETED_THRESHOLD</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-background-fill-completed-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_completed_threshold</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_CACHE_RESPONSES_TO_COOKIES" title="TS_CONFIG_HTTP_CACHE_CACHE_RESPONSES_TO_COOKIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_CACHE_RESPONSES_TO_COOKIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-cache-responses-to-cookies" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_responses_to_cookies</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_CACHE_URLS_THAT_LOOK_DYNAMIC" title="TS_CONFIG_HTTP_CACHE_CACHE_URLS_THAT_LOOK_DYNAMIC"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_CACHE_URLS_THAT_LOOK_DYNAMIC</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-cache-urls-that-look-dynamic" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_urls_that_look_dynamic</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_GENERATION" title="TS_CONFIG_HTTP_CACHE_GENERATION"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_GENERATION</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-generation" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.generation</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_GUARANTEED_MAX_LIFETIME" title="TS_CONFIG_HTTP_CACHE_GUARANTEED_MAX_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_GUARANTEED_MAX_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-guaranteed-max-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.guaranteed_max_lifetime</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_GUARANTEED_MIN_LIFETIME" title="TS_CONFIG_HTTP_CACHE_GUARANTEED_MIN_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_GUARANTEED_MIN_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-guaranteed-min-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.guaranteed_min_lifetime</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_HEURISTIC_LM_FACTOR" title="TS_CONFIG_HTTP_CACHE_HEURISTIC_LM_FACTOR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_HEURISTIC_LM_FACTOR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-heuristic-lm-factor" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_lm_factor</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_HEURISTIC_MAX_LIFETIME" title="TS_CONFIG_HTTP_CACHE_HEURISTIC_MAX_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_HEURISTIC_MAX_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-heuristic-max-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_max_lifetime</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_HEURISTIC_MIN_LIFETIME" title="TS_CONFIG_HTTP_CACHE_HEURISTIC_MIN_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_HEURISTIC_MIN_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-heuristic-min-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_min_lifetime</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_HTTP" title="TS_CONFIG_HTTP_CACHE_HTTP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_HTTP</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_CHARSET_MISMATCH" title="TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_CHARSET_MISMATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_CHARSET_MISMATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-accept-charset-mismatch" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_accept_charset_mismatch</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_ENCODING_MISMATCH" title="TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_ENCODING_MISMATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_ENCODING_MISMATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-accept-encoding-mismatch" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_accept_encoding_mismatch</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_LANGUAGE_MISMATCH" title="TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_LANGUAGE_MISMATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_LANGUAGE_MISMATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-accept-language-mismatch" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_accept_language_mismatch</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_MISMATCH" title="TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_MISMATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_ACCEPT_MISMATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-accept-mismatch" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_accept_mismatch</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_AUTHENTICATION" title="TS_CONFIG_HTTP_CACHE_IGNORE_AUTHENTICATION"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_AUTHENTICATION</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-authentication" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_authentication</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_CC_MAX_AGE" title="TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_CC_MAX_AGE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_CC_MAX_AGE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-client-cc-max-age" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_client_cc_max_age</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_NO_CACHE" title="TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_NO_CACHE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_CLIENT_NO_CACHE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-client-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_client_no_cache</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IGNORE_SERVER_NO_CACHE" title="TS_CONFIG_HTTP_CACHE_IGNORE_SERVER_NO_CACHE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IGNORE_SERVER_NO_CACHE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ignore-server-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_server_no_cache</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_IMS_ON_CLIENT_NO_CACHE" title="TS_CONFIG_HTTP_CACHE_IMS_ON_CLIENT_NO_CACHE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_IMS_ON_CLIENT_NO_CACHE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-ims-on-client-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ims_on_client_no_cache</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_MAX_OPEN_READ_RETRIES" title="TS_CONFIG_HTTP_CACHE_MAX_OPEN_READ_RETRIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_MAX_OPEN_READ_RETRIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-max-open-read-retries" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.max_open_read_retries</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES" title="TS_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_MAX_OPEN_WRITE_RETRIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-max-open-write-retries" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.max_open_write_retries</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_MAX_STALE_AGE" title="TS_CONFIG_HTTP_CACHE_MAX_STALE_AGE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_MAX_STALE_AGE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-max-stale-age" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.max_stale_age</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_OPEN_READ_RETRY_TIME" title="TS_CONFIG_HTTP_CACHE_OPEN_READ_RETRY_TIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_OPEN_READ_RETRY_TIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-open-read-retry-time" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.open_read_retry_time</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_OPEN_WRITE_FAIL_ACTION" title="TS_CONFIG_HTTP_CACHE_OPEN_WRITE_FAIL_ACTION"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_OPEN_WRITE_FAIL_ACTION</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-open-write-fail-action" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.open_write_fail_action</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_RANGE_LOOKUP" title="TS_CONFIG_HTTP_CACHE_RANGE_LOOKUP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_RANGE_LOOKUP</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-range-lookup" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.range.lookup</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_RANGE_WRITE" title="TS_CONFIG_HTTP_CACHE_RANGE_WRITE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_RANGE_WRITE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-range-write" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.range.write</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_REQUIRED_HEADERS" title="TS_CONFIG_HTTP_CACHE_REQUIRED_HEADERS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_REQUIRED_HEADERS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-required-headers" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.required_headers</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CACHE_WHEN_TO_REVALIDATE" title="TS_CONFIG_HTTP_CACHE_WHEN_TO_REVALIDATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CACHE_WHEN_TO_REVALIDATE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-cache-when-to-revalidate" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.when_to_revalidate</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CHUNKING_ENABLED" title="TS_CONFIG_HTTP_CHUNKING_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CHUNKING_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-chunking-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.chunking_enabled</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CHUNKING_SIZE" title="TS_CONFIG_HTTP_CHUNKING_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CHUNKING_SIZE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-chunking-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.chunking.size</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES_DEAD_SERVER" title="TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES_DEAD_SERVER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES_DEAD_SERVER</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-max-retries-dead-server" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_max_retries_dead_server</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES" title="TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CONNECT_ATTEMPTS_MAX_RETRIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-max-retries" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_max_retries</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CONNECT_ATTEMPTS_RR_RETRIES" title="TS_CONFIG_HTTP_CONNECT_ATTEMPTS_RR_RETRIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CONNECT_ATTEMPTS_RR_RETRIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-rr-retries" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_rr_retries</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_CONNECT_ATTEMPTS_TIMEOUT" title="TS_CONFIG_HTTP_CONNECT_ATTEMPTS_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_CONNECT_ATTEMPTS_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_timeout</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_DEFAULT_BUFFER_SIZE" title="TS_CONFIG_HTTP_DEFAULT_BUFFER_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_DEFAULT_BUFFER_SIZE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-default-buffer-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.default_buffer_size</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_DEFAULT_BUFFER_WATER_MARK" title="TS_CONFIG_HTTP_DEFAULT_BUFFER_WATER_MARK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_DEFAULT_BUFFER_WATER_MARK</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-default-buffer-water-mark" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.default_buffer_water_mark</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_DOC_IN_CACHE_SKIP_DNS" title="TS_CONFIG_HTTP_DOC_IN_CACHE_SKIP_DNS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_DOC_IN_CACHE_SKIP_DNS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-doc-in-cache-skip-dns" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.doc_in_cache_skip_dns</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_DOWN_SERVER_ABORT_THRESHOLD" title="TS_CONFIG_HTTP_DOWN_SERVER_ABORT_THRESHOLD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_DOWN_SERVER_ABORT_THRESHOLD</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-down-server-abort-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.down_server.abort_threshold</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_DOWN_SERVER_CACHE_TIME" title="TS_CONFIG_HTTP_DOWN_SERVER_CACHE_TIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_DOWN_SERVER_CACHE_TIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-down-server-cache-time" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.down_server.cache_time</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED" title="TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-flow-control-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.enabled</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-flow-control-high-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.high_water</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-flow-control-low-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.low_water</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FORWARD_CONNECT_METHOD" title="TS_CONFIG_HTTP_FORWARD_CONNECT_METHOD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FORWARD_CONNECT_METHOD</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-forward-connect-method" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.forward_connect_method</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FORWARD_PROXY_AUTH_TO_PARENT" title="TS_CONFIG_HTTP_FORWARD_PROXY_AUTH_TO_PARENT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FORWARD_PROXY_AUTH_TO_PARENT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-forward-proxy-auth-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.forward.proxy_auth_to_parent</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_GLOBAL_USER_AGENT_HEADER" title="TS_CONFIG_HTTP_GLOBAL_USER_AGENT_HEADER"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_GLOBAL_USER_AGENT_HEADER</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-global-user-agent-header" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.global_user_agent_header</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_INSERT_AGE_IN_RESPONSE" title="TS_CONFIG_HTTP_INSERT_AGE_IN_RESPONSE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_INSERT_AGE_IN_RESPONSE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-age-in-response" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_age_in_response</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_INSERT_FORWARDED" title="TS_CONFIG_HTTP_INSERT_FORWARDED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_INSERT_FORWARDED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_INSERT_REQUEST_VIA_STR" title="TS_CONFIG_HTTP_INSERT_REQUEST_VIA_STR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_INSERT_REQUEST_VIA_STR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-request-via-str" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_request_via_str</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_INSERT_RESPONSE_VIA_STR" title="TS_CONFIG_HTTP_INSERT_RESPONSE_VIA_STR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_INSERT_RESPONSE_VIA_STR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-response-via-str" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_response_via_str</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_INSERT_SQUID_X_FORWARDED_FOR" title="TS_CONFIG_HTTP_INSERT_SQUID_X_FORWARDED_FOR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_INSERT_SQUID_X_FORWARDED_FOR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-insert-squid-x-forwarded-for" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_squid_x_forwarded_for</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_IN" title="TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_IN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_IN</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-keep-alive-enabled-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_enabled_in</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT" title="TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_KEEP_ALIVE_ENABLED_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-keep-alive-enabled-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_enabled_out</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_IN" title="TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_IN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_IN</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-keep-alive-no-activity-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_no_activity_timeout_in</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_OUT" title="TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_KEEP_ALIVE_NO_ACTIVITY_TIMEOUT_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-keep-alive-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_no_activity_timeout_out</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_KEEP_ALIVE_POST_OUT" title="TS_CONFIG_HTTP_KEEP_ALIVE_POST_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_KEEP_ALIVE_POST_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-keep-alive-post-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_post_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NEGATIVE_CACHING_ENABLED" title="TS_CONFIG_HTTP_NEGATIVE_CACHING_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NEGATIVE_CACHING_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-negative-caching-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_caching_enabled</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NEGATIVE_CACHING_LIFETIME" title="TS_CONFIG_HTTP_NEGATIVE_CACHING_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NEGATIVE_CACHING_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-negative-caching-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_caching_lifetime</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_ENABLED" title="TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-negative-revalidating-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_revalidating_enabled</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_LIFETIME" title="TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_LIFETIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NEGATIVE_REVALIDATING_LIFETIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-negative-revalidating-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_revalidating_lifetime</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NORMALIZE_AE" title="TS_CONFIG_HTTP_NORMALIZE_AE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NORMALIZE_AE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-normalize-ae" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.normalize_ae</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS" title="TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-number-of-redirections" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.number_of_redirections</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT" title="TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.connect_attempts_timeout</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD" title="TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-fail-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.fail_threshold</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME" title="TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-retry-time" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.retry_time</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-total-connect-attempts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.total_connect_attempts</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-per-parent-connect-attempts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.per_parent_connect_attempts</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-per-server-connection-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.match</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-per-server-connection-max" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.max</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED" title="TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-post-check-content-length-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post.check.content_length.enabled</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT" title="TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-post-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post_connect_attempts_timeout</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY" title="TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-redirect-use-orig-cache-key" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.redirect_use_orig_cache_key</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_REQUEST_BUFFER_ENABLED" title="TS_CONFIG_HTTP_REQUEST_BUFFER_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_REQUEST_BUFFER_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-request-buffer-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.request_buffer_enabled</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_REQUEST_HEADER_MAX_SIZE" title="TS_CONFIG_HTTP_REQUEST_HEADER_MAX_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_REQUEST_HEADER_MAX_SIZE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-request-header-max-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.request_header_max_size</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_RESPONSE_HEADER_MAX_SIZE" title="TS_CONFIG_HTTP_RESPONSE_HEADER_MAX_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_RESPONSE_HEADER_MAX_SIZE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-response-header-max-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.response_header_max_size</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_RESPONSE_SERVER_ENABLED" title="TS_CONFIG_HTTP_RESPONSE_SERVER_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_RESPONSE_SERVER_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-response-server-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.response_server_enabled</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_RESPONSE_SERVER_STR" title="TS_CONFIG_HTTP_RESPONSE_SERVER_STR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_RESPONSE_SERVER_STR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-response-server-str" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.response_server_str</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_SEND_HTTP11_REQUESTS" title="TS_CONFIG_HTTP_SEND_HTTP11_REQUESTS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_SEND_HTTP11_REQUESTS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-send-http11-requests" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.send_http11_requests</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_SERVER_SESSION_SHARING_MATCH" title="TS_CONFIG_HTTP_SERVER_SESSION_SHARING_MATCH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_SERVER_SESSION_SHARING_MATCH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-server-session-sharing-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_session_sharing.match</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_SLOW_LOG_THRESHOLD" title="TS_CONFIG_HTTP_SLOW_LOG_THRESHOLD"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_SLOW_LOG_THRESHOLD</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-slow-log-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.slow.log.threshold</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_IN" title="TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_IN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_IN</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-transaction-active-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_in</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_OUT" title="TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_TRANSACTION_ACTIVE_TIMEOUT_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-transaction-active-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_IN" title="TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_IN"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_IN</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_in</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_OUT" title="TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_TRANSACTION_NO_ACTIVITY_TIMEOUT_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_UNCACHEABLE_REQUESTS_BYPASS_PARENT" title="TS_CONFIG_HTTP_UNCACHEABLE_REQUESTS_BYPASS_PARENT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_UNCACHEABLE_REQUESTS_BYPASS_PARENT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-uncacheable-requests-bypass-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.uncacheable_requests_bypass_parent</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_NET_SOCK_OPTION_FLAG_OUT" title="TS_CONFIG_NET_SOCK_OPTION_FLAG_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_NET_SOCK_OPTION_FLAG_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-net-sock-option-flag-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.sock_option_flag_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_NET_SOCK_PACKET_MARK_OUT" title="TS_CONFIG_NET_SOCK_PACKET_MARK_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_NET_SOCK_PACKET_MARK_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-net-sock-packet-mark-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.sock_packet_mark_out</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_NET_SOCK_PACKET_TOS_OUT" title="TS_CONFIG_NET_SOCK_PACKET_TOS_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_NET_SOCK_PACKET_TOS_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-net-sock-packet-tos-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.sock_packet_tos_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_NET_SOCK_RECV_BUFFER_SIZE_OUT" title="TS_CONFIG_NET_SOCK_RECV_BUFFER_SIZE_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_NET_SOCK_RECV_BUFFER_SIZE_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-net-sock-recv-buffer-size-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.sock_recv_buffer_size_out</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_NET_SOCK_SEND_BUFFER_SIZE_OUT" title="TS_CONFIG_NET_SOCK_SEND_BUFFER_SIZE_OUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_NET_SOCK_SEND_BUFFER_SIZE_OUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-net-sock-send-buffer-size-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.sock_send_buffer_size_out</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_PARENT_FAILURES_UPDATE_HOSTDB" title="TS_CONFIG_PARENT_FAILURES_UPDATE_HOSTDB"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_PARENT_FAILURES_UPDATE_HOSTDB</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-mark-down-hostdb" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.mark_down_hostdb</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SRV_ENABLED" title="TS_CONFIG_SRV_ENABLED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SRV_ENABLED</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-srv-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.srv_enabled</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_CERT_FILENAME" title="TS_CONFIG_SSL_CLIENT_CERT_FILENAME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_CERT_FILENAME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-cert-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.cert.filename</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CERT_FILEPATH" title="TS_CONFIG_SSL_CERT_FILEPATH"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CERT_FILEPATH</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-cert-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.cert.path</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_PROPERTIES" title="TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_PROPERTIES"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_PROPERTIES</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-verify-server-properties" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.properties</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_POLICY" title="TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_POLICY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_VERIFY_SERVER_POLICY</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-verify-server-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.verify.server.policy</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_SNI_POLICY" title="TS_CONFIG_SSL_CLIENT_SNI_POLICY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_SNI_POLICY</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-sni-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.sni_policy</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_HSTS_INCLUDE_SUBDOMAINS" title="TS_CONFIG_SSL_HSTS_INCLUDE_SUBDOMAINS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_HSTS_INCLUDE_SUBDOMAINS</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-hsts-include-subdomains" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.hsts_include_subdomains</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_HSTS_MAX_AGE" title="TS_CONFIG_SSL_HSTS_MAX_AGE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_HSTS_MAX_AGE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-hsts-max-age" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.hsts_max_age</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_URL_REMAP_PRISTINE_HOST_HDR" title="TS_CONFIG_URL_REMAP_PRISTINE_HOST_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_URL_REMAP_PRISTINE_HOST_HDR</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_WEBSOCKET_ACTIVE_TIMEOUT" title="TS_CONFIG_WEBSOCKET_ACTIVE_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_WEBSOCKET_ACTIVE_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-websocket-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.websocket.active_timeout</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_WEBSOCKET_NO_ACTIVITY_TIMEOUT" title="TS_CONFIG_WEBSOCKET_NO_ACTIVITY_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_WEBSOCKET_NO_ACTIVITY_TIMEOUT</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-websocket-no-activity-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.websocket.no_activity_timeout</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_CERT_FILENAME" title="TS_CONFIG_SSL_CLIENT_CERT_FILENAME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_CERT_FILENAME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-cert-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.cert.filename</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_PRIVATE_KEY_FILENAME" title="TS_CONFIG_SSL_CLIENT_PRIVATE_KEY_FILENAME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_PRIVATE_KEY_FILENAME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-private-key-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.private_key.filename</span></code></a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_SSL_CLIENT_CA_CERT_FILENAME" title="TS_CONFIG_SSL_CLIENT_CA_CERT_FILENAME"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_SSL_CLIENT_CA_CERT_FILENAME</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-client-ca-cert-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.CA.cert.filename</span></code></a></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_HOST_RESOLUTION_PREFERENCE" title="TS_CONFIG_HTTP_HOST_RESOLUTION_PREFERENCE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_HOST_RESOLUTION_PREFERENCE</span></code></a></td>
+<td><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-hostdb-ip-resolve" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.hostdb.ip_resolve</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Enable <a class="reference internal" href="../../../admin-guide/configuration/cache-basics.en.html#transaction-buffering-control"><span class="std std-ref">transaction buffer control</span></a> with a
+high water mark of <code class="docutils literal notranslate"><span class="pre">262144</span></code> and a low water mark of <code class="docutils literal notranslate"><span class="pre">65536</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">int</span> <span class="n">callback</span><span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="n">void</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">TSHttpTxn</span> <span class="n">txnp</span> <span class="o">=</span> <span class="n">static_cast</span><span class="o">&lt;</span><span class="n">TSHttpTxn</span><span class="o">&gt;</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+   <span class="n">TSHttpTxnConfigIntSet</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+   <span class="n">TSHttpTxnConfigIntSet</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK</span><span class="p">,</span> <span class="mi">262144</span><span class="p">);</span>
+   <span class="n">TSHttpTxnConfigIntSet</span><span class="p">(</span><span class="n">txnp</span><span class="p">,</span> <span class="n">TS_CONFIG_HTTP_FLOW_CONTROL_LOWER_WATER_MARK</span><span class="p">,</span> <span class="mi">65536</span><span class="p">);</span>
+   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">TSAPI(3ts)</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="TSHttpParserCreate.en.html" class="btn btn-neutral float-right" title="TSHttpParserCreate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSHttpHookAdd.en.html" class="btn btn-neutral float-left" title="TSHttpHookAdd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

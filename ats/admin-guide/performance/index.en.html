@@ -1,0 +1,732 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Performance Tuning &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Configuration Files" href="../files/index.en.html" />
+    <link rel="prev" title="Layer 4 Routing" href="../layer-4-routing.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Performance Tuning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#before-you-start">Before You Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-traffic-server">Building Traffic Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-tuning">Hardware Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cpu-selection">CPU Selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-allocation">Memory Allocation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disk-storage">Disk Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#operating-system-tuning">Operating System Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#general-recommendations">General Recommendations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#freebsd">FreeBSD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#omnios-illumos">OmniOS / illumos</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#macos">macOS</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#traffic-server-tuning">Traffic Server Tuning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cpu-and-thread-optimization">CPU and Thread Optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#timeout-settings">Timeout Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-optimization">Memory Optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#disk-storage-optimization">Disk Storage Optimization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#network-tuning">Network Tuning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thread-types">Thread Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging-configuration">Logging Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#plugin-tuning">Plugin Tuning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-scenarios-and-pitfalls">Common Scenarios and Pitfalls</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+      <li>Performance Tuning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/performance/index.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="performance-tuning">
+<span id="id1"></span><h1>Performance Tuning<a class="headerlink" href="#performance-tuning" title="Permalink to this headline">¶</a></h1>
+<p>Apache Traffic Server™ in its default configuration should perform suitably for running the
+included regression test suite, but will need special attention to both its own
+configuration and the environment in which it runs to perform optimally for
+production usage.</p>
+<p>There are numerous options and strategies for tuning the performance of Traffic Server
+and we attempt to document as many of them as possible in the sections below.
+Because Traffic Server offers enough flexibility to be useful for many caching and
+proxying scenarios, which tuning strategies will be most effective for any
+given use case may differ, as well as the specific values for various
+configuration options.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="section" id="before-you-start">
+<h2>Before You Start<a class="headerlink" href="#before-you-start" title="Permalink to this headline">¶</a></h2>
+<p>One of the most important aspects of any attempt to optimize the performance
+of a Traffic Server installation is the ability to measure that installation’s
+performance; both prior to and after any changes are made. To that end, it is
+strongly recommended that you establish some means to monitor and record a
+variety of performance metrics: request and response speed, latency, and
+throughput; memory and CPU utilization; and storage I/O operations.</p>
+<p>Attempts to tune a system without being able to compare the impact of changes
+made will at best result in haphazard, <em>feel good</em> results that may end up
+having no real world impact on your customers’ experiences, and at worst may
+even result in lower performance than before you started. Additionally, in the
+all too common situation of budget constraints, having proper measurements of
+existing performance will greatly ease the process of focusing on those
+individual components that, should they require hardware expenditures or larger
+investments of employee time, have the highest potential gains relative to
+their cost.</p>
+</div>
+<div class="section" id="building-traffic-server">
+<h2>Building Traffic Server<a class="headerlink" href="#building-traffic-server" title="Permalink to this headline">¶</a></h2>
+<p>While the default compilation settings for Traffic Server will produce a set of binaries
+capable of serving most caching and proxying needs, there are some build
+options worth considering in specific environments.</p>
+</div>
+<div class="section" id="hardware-tuning">
+<h2>Hardware Tuning<a class="headerlink" href="#hardware-tuning" title="Permalink to this headline">¶</a></h2>
+<p>As with any other server software, efficient allocation of hardware resources
+will have a significant impact on Traffic Server performance.</p>
+<div class="section" id="cpu-selection">
+<h3>CPU Selection<a class="headerlink" href="#cpu-selection" title="Permalink to this headline">¶</a></h3>
+<p>Apache Traffic Server™ uses a hybrid event-driven engine and multi-threaded processing model for
+handling incoming requests. As such, it is highly scalable and makes efficient
+use of modern, multicore processor architectures.</p>
+</div>
+<div class="section" id="memory-allocation">
+<h3>Memory Allocation<a class="headerlink" href="#memory-allocation" title="Permalink to this headline">¶</a></h3>
+<p>Though Traffic Server stores cached content within an on-disk host database, the entire
+<a class="reference internal" href="../../developer-guide/cache-architecture/architecture.en.html#cache-directory"><span class="std std-ref">Cache Directory</span></a> is always maintained in memory during server operation.
+Additionally, most operating systems will maintain disk caches within system
+memory. It is also possible, and commonly advisable, to maintain an in-memory
+cache of frequently accessed content.</p>
+<p>The memory footprint of the Traffic Server process is largely fixed at the time of server
+startup. Your Traffic Server systems will need at least enough memory to satisfy basic
+operating system requirements, as well as capacity for the cache directory, and
+any memory cache you wish to use. The default settings allocate roughly 10
+megabytes of RAM cache for every gigabyte of disk cache storage, though this
+setting can be adjusted manually in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> using the setting
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.size</span></code></a>. Traffic Server will, under the default
+configuration, adjust this automatically if your system does not have enough
+physical memory to accommodate the aforementioned target.</p>
+<p>Aside from the cost of physical memory, and necessary supporting hardware to
+make use of large amounts of RAM, there is little downside to increasing the
+memory allocation of your cache servers. You will see, however, no benefit from
+sizing your memory allocation larger than the sum of your content (and index
+overhead).</p>
+</div>
+<div class="section" id="disk-storage">
+<h3>Disk Storage<a class="headerlink" href="#disk-storage" title="Permalink to this headline">¶</a></h3>
+<p>Except in cases where your entire cache may fit into system memory, your cache
+nodes will eventually need to interact with their disks. While a more detailed
+discussion of storage stratification is covered in <a class="reference internal" href="#cache-partitioning">Cache Partitioning</a> below,
+very briefly you may be able to realize gains in performance by separating
+more frequently accessed content onto faster disks (PCIe SSDs, for instance)
+while maintaining the bulk of your on-disk cache objects, which may not receive
+the same high volume of requests, on lower-cost mechanical drives.</p>
+</div>
+</div>
+<div class="section" id="operating-system-tuning">
+<h2>Operating System Tuning<a class="headerlink" href="#operating-system-tuning" title="Permalink to this headline">¶</a></h2>
+<p>Apache Traffic Server™ is supported on a variety of operating systems, and as a result the tuning
+strategies available at the OS level will vary depending upon your chosen
+platform.</p>
+<div class="section" id="general-recommendations">
+<h3>General Recommendations<a class="headerlink" href="#general-recommendations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="tcp-keep-alive">
+<h4>TCP Keep Alive<a class="headerlink" href="#tcp-keep-alive" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="tcp-congestion-control-settings">
+<h4>TCP Congestion Control Settings<a class="headerlink" href="#tcp-congestion-control-settings" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="ephemeral-and-reserved-ports">
+<h4>Ephemeral and Reserved Ports<a class="headerlink" href="#ephemeral-and-reserved-ports" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="jumbo-frames">
+<h4>Jumbo Frames<a class="headerlink" href="#jumbo-frames" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="linux">
+<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="freebsd">
+<h3>FreeBSD<a class="headerlink" href="#freebsd" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="omnios-illumos">
+<h3>OmniOS / illumos<a class="headerlink" href="#omnios-illumos" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="macos">
+<h3>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="traffic-server-tuning">
+<h2>Traffic Server Tuning<a class="headerlink" href="#traffic-server-tuning" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server itself, of course, has many options you may want to consider adjusting to
+achieve optimal performance in your environment. Many of these settings are
+recorded in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> and may be adjusted with the
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-set"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">set</span></code></a> command line utility while the server is operating.</p>
+<div class="section" id="cpu-and-thread-optimization">
+<h3>CPU and Thread Optimization<a class="headerlink" href="#cpu-and-thread-optimization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="thread-scaling">
+<h4>Thread Scaling<a class="headerlink" href="#thread-scaling" title="Permalink to this headline">¶</a></h4>
+<p>By default, Traffic Server creates one thread per CPU core on the host system. This may
+be adjusted with the following settings in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-exec-thread-autoconfig" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.exec_thread.autoconfig</span></code></a></li>
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-exec-thread-autoconfig-scale" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.exec_thread.autoconfig.scale</span></code></a></li>
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-exec-thread-limit" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.exec_thread.limit</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="thread-affinity">
+<h4>Thread Affinity<a class="headerlink" href="#thread-affinity" title="Permalink to this headline">¶</a></h4>
+<p>On multi-socket servers, such as Intel architectures with NUMA, you can adjust
+the thread affinity configuration to take advantage of cache pipelines and
+faster memory access, as well as preventing possibly costly thread migrations
+across sockets. This is adjusted with <a class="reference internal" href="../files/records.config.en.html#proxy-config-exec-thread-affinity" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.exec_thread.affinity</span></code></a>
+in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">exec_thread</span><span class="o">.</span><span class="n">affinity</span> <span class="n">INT</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="thread-stack-size">
+<h4>Thread Stack Size<a class="headerlink" href="#thread-stack-size" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-thread-default-stacksize" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.thread.default.stacksize</span></code></a></p>
+</div>
+</div>
+<div class="section" id="timeout-settings">
+<span id="admin-performance-timeouts"></span><h3>Timeout Settings<a class="headerlink" href="#timeout-settings" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server has a variety of timeout settings which may be modified to help tune the
+performance of various proxy components. In general it is recommended to leave
+the timeouts at their default values unless you have identified specific causes
+for an adjustment.</p>
+<p>Note that not all proxy configurations will be impacted by every timeout. For
+instance, if you are not using any hierarchical caching then the parent proxy
+timeouts will be irrelevant.</p>
+<p>While all of the timeouts described below may be set globally for your Traffic Server
+instance using <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, many of them are also overridable on a
+per-transaction basis by plugins (including <a class="reference internal" href="../plugins/conf_remap.en.html#admin-plugins-conf-remap"><span class="std std-ref">Configuration Remap Plugin</span></a>).
+This allows the possibility for adjusting timeout value for individual subsets
+of your cache.</p>
+<p>For example, you may wish to be fairly lenient on activity timeouts for most of
+your cache, leaving the default at a minute or two, but enforce a much stricter
+timeout on a set of very small, incredibly heavily accessed objects for which
+you can construct a <code class="docutils literal notranslate"><span class="pre">map</span></code> rule with the goal of reducing the chances that a
+few bad actors (misconfigured or misbehaving clients) may generate too much
+connection pressure on your cache. The trade off may be that some perfectly
+innocent, but slow clients may have their connections terminated early. As with
+all performance tuning efforts, your needs are likely to vary from others’ and
+should be carefully considered and closely monitored.</p>
+<div class="section" id="default-inactivity-timeout">
+<h4>Default Inactivity Timeout<a class="headerlink" href="#default-inactivity-timeout" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="../files/records.config.en.html#proxy-config-net-default-inactivity-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.default_inactivity_timeout</span></code></a> setting is applied to
+the HTTP state machine when no other inactivity timeouts have been applied. In
+effect, it sets an upper limit, in seconds, on state machine inactivity.</p>
+<p>In addition to the timeout itself, there is a related statistic:
+<a class="reference internal" href="../monitoring/statistics/core/network-io.en.html#proxy-process-net-default-inactivity-timeout-applied" title="records.config"><code class="xref ts ts-stat docutils literal notranslate"><span class="pre">proxy.process.net.default_inactivity_timeout_applied</span></code></a> which tracks
+the number of times the default inactivity timeout was applied to transactions
+(as opposed to a more specific timeout having been applied).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">default_inactivity_timeout</span> <span class="n">INT</span> <span class="mi">86400</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accept-timeout">
+<h4>Accept Timeout<a class="headerlink" href="#accept-timeout" title="Permalink to this headline">¶</a></h4>
+<p>The variable <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-accept-no-activity-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.accept_no_activity_timeout</span></code></a> sets, in
+seconds, the time after which Traffic Server will close incoming connections which remain
+inactive (have not sent data). Lowering this timeout can ease pressure on the
+proxy if misconfigured or misbehaving clients are opening a large number of
+connections without submitting requests.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">accept_no_activity_timeout</span> <span class="n">INT</span> <span class="mi">120</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="background-fill-timeout">
+<h4>Background Fill Timeout<a class="headerlink" href="#background-fill-timeout" title="Permalink to this headline">¶</a></h4>
+<p>When <a class="reference internal" href="../configuration/cache-basics.en.html#admin-config-read-while-writer"><span class="std std-ref">background fills</span></a> are enabled,
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a> sets in seconds the
+time after which Traffic Server will abort the fill attempt and close the origin
+server connection that was being used. Setting this to zero disables the
+timeout, but modifying the value and enforcing a timeout may help in
+situations where your origin servers stall connections without closing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">background_fill_active_timeout</span> <span class="n">INT</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dns-timeouts">
+<h4>DNS Timeouts<a class="headerlink" href="#dns-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Traffic Server performs all DNS queries for origin servers through the HostDB subsystem.
+Two settings affect the potential frequency and amount of time Traffic Server will spend
+on these lookups. <a class="reference internal" href="../files/records.config.en.html#proxy-config-hostdb-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.hostdb.timeout</span></code></a> is used to establish the
+time-to-live, in minutes, for all DNS records and
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-hostdb-lookup-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.hostdb.lookup_timeout</span></code></a> sets, in seconds, the timeout for
+actual DNS queries.</p>
+<p>Setting a higher <code class="docutils literal notranslate"><span class="pre">timeout</span></code> value will reduce the number of times Traffic Server needs
+to perform DNS queries for origin servers, but may also prevent your Traffic Server
+instance from updating its records to reflect external DNS record changes in a
+timely manner (refer to <a class="reference internal" href="../files/records.config.en.html#proxy-config-hostdb-ttl-mode" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.hostdb.ttl_mode</span></code></a> for more
+information on when this TTL value will actually be used).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hostdb</span><span class="o">.</span><span class="n">timeout</span> <span class="n">INT</span> <span class="mi">1440</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hostdb</span><span class="o">.</span><span class="n">lookup_timeout</span> <span class="n">INT</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="keepalive-timeouts">
+<h4>Keepalive Timeouts<a class="headerlink" href="#keepalive-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Traffic Server keepalive timeouts may be set both for maintaining a client connection for
+subsequent requests, using
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-keep-alive-no-activity-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_no_activity_timeout_in</span></code></a>, as well as origin
+server connections for subsequent object requests (when not servable from the
+cache) using <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-keep-alive-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_no_activity_timeout_out</span></code></a>.
+Both are specified in seconds. Keep in mind that
+<code class="docutils literal notranslate"><span class="pre">keep_alive_no_activity_timeout_out</span></code> for origin server connections is
+effectively an advisory maximum, as the origin server may have its own
+keepalive timeout which (if set lower) will likely take precedence.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">keep_alive_no_activity_timeout_in</span> <span class="n">INT</span> <span class="mi">120</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">keep_alive_no_activity_timeout_out</span> <span class="n">INT</span> <span class="mi">120</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="origin-connection-timeouts">
+<h4>Origin Connection Timeouts<a class="headerlink" href="#origin-connection-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Origin server connection timeouts are configured with <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_timeout</span></code></a>,
+which is applied both to the initial connection as well as any retries attempted,
+should an attempt timeout. The timeout applies from the moment Traffic Server begins the
+connection attempt until the origin fully establishes a connection (the connection is ready to write).
+After the connection is established the value of
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_out</span></code></a> is used to established timeouts on the data over the connection.</p>
+<p>In the case where you wish to have a different (generally longer) timeout for
+<code class="docutils literal notranslate"><span class="pre">POST</span></code> and <code class="docutils literal notranslate"><span class="pre">PUT</span></code> connections to an origin server, you may also adjust
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-post-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post_connect_attempts_timeout</span></code></a> which applies only to
+origin connections using those HTTP verbs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">30</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">post_connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">1800</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="parent-proxy-timeout">
+<h4>Parent Proxy Timeout<a class="headerlink" href="#parent-proxy-timeout" title="Permalink to this headline">¶</a></h4>
+<p>In hierarchical caching configurations, the <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-parent-proxy-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.connect_attempts_timeout</span></code></a>
+setting is used for all connection attempts to parent caches. It may be useful,
+in cases where you wish to have Traffic Server fall back to an alternate parent cache
+(in configurations where you have multiple parents for the same cache) more
+quickly, to lower this timeout.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span>  <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">parent_proxy</span><span class="o">.</span><span class="n">connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="polling-timeout">
+<h4>Polling Timeout<a class="headerlink" href="#polling-timeout" title="Permalink to this headline">¶</a></h4>
+<p>If you are experiencing unusually or unacceptably high CPU utilization during
+idle workloads, you may consider adjusting the polling timeout with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-net-poll-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.poll_timeout</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">poll_timeout</span> <span class="n">INT</span> <span class="mi">60</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="socks-timeouts">
+<h4>SOCKS Timeouts<a class="headerlink" href="#socks-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>In Traffic Server configurations where SOCKS has been enabled, three timeouts are made
+available for tuning. Basic activity timeout for SOCKS server connections may
+be adjusted with <a class="reference internal" href="../files/records.config.en.html#proxy-config-socks-socks-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.socks.socks_timeout</span></code></a>, in seconds. Server
+connection attempts (initial connections attempts only) are covered by
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-socks-server-connect-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.socks.server_connect_timeout</span></code></a>, again in seconds, and
+server connection retry attempts are set with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-socks-server-retry-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.socks.server_retry_timeout</span></code></a>. Note that the retry timeout
+is the timeout for the actual connection attempt on a retry, not the delay
+after which a retry will be performed (the delay is configured with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-socks-server-retry-time" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.socks.server_retry_time</span></code></a>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">socks_timeout</span> <span class="n">INT</span> <span class="mi">100</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">server_connect_timeout</span> <span class="n">INT</span> <span class="mi">10</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">server_retry_timeout</span> <span class="n">INT</span> <span class="mi">300</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">socks</span><span class="o">.</span><span class="n">server_retry_time</span> <span class="n">INT</span> <span class="mi">300</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ssl-timeouts">
+<h4>SSL Timeouts<a class="headerlink" href="#ssl-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Traffic Server offers a few timeouts specific to encrypted connections handled by the SSL
+engine.</p>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-handshake-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.handshake_timeout_in</span></code></a> configures the time, in seconds,
+after which incoming client connections will abort should the SSL handshake not
+be completed. The default of <code class="docutils literal notranslate"><span class="pre">0</span></code> disables the timeout.</p>
+<p>When <a class="reference internal" href="../security/index.en.html#admin-ocsp-stapling"><span class="std std-ref">OCSP Stapling</span></a> is enabled in Traffic Server, you can configure two
+separate timeouts; one for setting the length of time which cached OCSP results
+will persist, specified in seconds using
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-ocsp-cache-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.ocsp.cache_timeout</span></code></a>, and the timeout for requests to
+the remote OCSP responders, in seconds, with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-ocsp-request-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.ocsp.request_timeout</span></code></a>.</p>
+<p>Lastly, you can control the number of seconds for which SSL sessions will be
+cached in Traffic Server using <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.timeout</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">handshake_timeout_in</span> <span class="n">INT</span> <span class="mi">0</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ocsp</span><span class="o">.</span><span class="n">cache_timeout</span> <span class="n">INT</span> <span class="mi">3600</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ocsp</span><span class="o">.</span><span class="n">request_timeout</span> <span class="n">INT</span> <span class="mi">10</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">session_cache</span><span class="o">.</span><span class="n">timeout</span> <span class="n">INT</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="transaction-activity-timeouts">
+<h4>Transaction Activity Timeouts<a class="headerlink" href="#transaction-activity-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Traffic Server specifies two sets of general transaction activity timeouts: a pair for
+active transactions, and a pair for inactive connections (ones which are not
+receiving or sending data during the timeout period). Each pair includes one
+timeout for client connections (the <code class="docutils literal notranslate"><span class="pre">_in</span></code> variant) and another for origin
+server transactions (<code class="docutils literal notranslate"><span class="pre">_out</span></code> variants).</p>
+<p>For active transactions,
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-active-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_in</span></code></a> and
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-active-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_out</span></code></a> set the maximum time,
+in seconds, which Traffic Server will spend sending/receiving data with a client or
+origin server, respectively. If the data transfer has not completed within the
+time specified then the connection will be closed automatically. This may
+result in the lack of a cache update, or partial data transmitted to a client.
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-active-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_out</span></code></a> is disabled (set to <code class="docutils literal notranslate"><span class="pre">0</span></code>) by default.
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-active-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_active_timeout_in</span></code></a> is set to 900 seconds by default.</p>
+<p>In general, it’s unlikely you will want to enable either of these timeouts
+globally, especially if your cache contains objects of varying sizes and deals
+with clients which may support a range of speeds (and therefore take less or
+more time to complete normal, healthy data exchanges). However, there may be
+configurations in which small objects need to be exchanged in very short
+periods and you wish your Traffic Server cache to enforce these time restrictions by
+closing connections which exceed them.</p>
+<p>The variables <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_in</span></code></a> and
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_out</span></code></a> control the
+maximum amount of time which Traffic Server will spend in a transaction which is stalled
+and not transmitting data, for clients and origin servers respectively.</p>
+<p>Unlike the active transaction timeouts, these two inactive transaction timeout
+values prove somewhat more generally applicable.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">transaction_active_timeout_in</span> <span class="n">INT</span> <span class="mi">900</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">transaction_active_timeout_out</span> <span class="n">INT</span> <span class="mi">0</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">transaction_no_activity_timeout_in</span> <span class="n">INT</span> <span class="mi">30</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">transaction_no_activity_timeout_out</span> <span class="n">INT</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="websocket-timeouts">
+<h4>WebSocket Timeouts<a class="headerlink" href="#websocket-timeouts" title="Permalink to this headline">¶</a></h4>
+<p>Traffic Server provides two configurable timeouts for WebSocket connections. The setting
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-websocket-no-activity-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.websocket.no_activity_timeout</span></code></a> will establish the maximum
+length of time a stalled WebSocket connection will remain before Traffic Server closes
+it. <a class="reference internal" href="../files/records.config.en.html#proxy-config-websocket-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.websocket.active_timeout</span></code></a> sets the maximum duration
+for all WebSocket connections, regardless of their level of activity.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">no_activity_timeout</span> <span class="n">INT</span> <span class="mi">600</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">websocket</span><span class="o">.</span><span class="n">active_timeout</span> <span class="n">INT</span> <span class="mi">3600</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="memory-optimization">
+<h3>Memory Optimization<a class="headerlink" href="#memory-optimization" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-thread-default-stacksize" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.thread.default.stacksize</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-ram-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.ram_cache.size</span></code></a></p>
+</div>
+<div class="section" id="disk-storage-optimization">
+<h3>Disk Storage Optimization<a class="headerlink" href="#disk-storage-optimization" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-force-sector-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.force_sector_size</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-max-doc-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.max_doc_size</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-target-fragment-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.target_fragment_size</span></code></a></p>
+<div class="section" id="cache-partitioning">
+<h4>Cache Partitioning<a class="headerlink" href="#cache-partitioning" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="network-tuning">
+<h3>Network Tuning<a class="headerlink" href="#network-tuning" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-net-connections-throttle" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.connections_throttle</span></code></a></p>
+<div class="section" id="error-responses-from-origins-are-consistent-and-costly">
+<h4>Error responses from origins are consistent and costly<a class="headerlink" href="#error-responses-from-origins-are-consistent-and-costly" title="Permalink to this headline">¶</a></h4>
+<p>If error responses are costly for your origin server to generate, you may elect
+to have Traffic Server cache these responses for a period of time. The default behavior is
+to consider all of these responses to be uncacheable, which will lead to every
+client request resulting in an origin request.</p>
+<p>This behavior is controlled by both enabling the feature via
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-negative-caching-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_caching_enabled</span></code></a> and setting the cache time
+(in seconds) with <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-negative-caching-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_caching_lifetime</span></code></a>. Configured
+status code for negative caching can be set with <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-negative-caching-list" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.negative_caching_list</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">negative_caching_enabled</span> <span class="n">INT</span> <span class="mi">1</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">negative_caching_lifetime</span> <span class="n">INT</span> <span class="mi">10</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">negative_caching_list</span> <span class="n">STRING</span> <span class="mi">204</span> <span class="mi">305</span> <span class="mi">403</span> <span class="mi">404</span> <span class="mi">414</span> <span class="mi">500</span> <span class="mi">501</span> <span class="mi">502</span> <span class="mi">503</span> <span class="mi">504</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="ssl-specific-options">
+<h4>SSL-Specific Options<a class="headerlink" href="#ssl-specific-options" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-max-record-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.max_record_size</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.size</span></code></a></p>
+</div>
+</div>
+<div class="section" id="thread-types">
+<h3>Thread Types<a class="headerlink" href="#thread-types" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="logging-configuration">
+<h3>Logging Configuration<a class="headerlink" href="#logging-configuration" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="plugin-tuning">
+<h2>Plugin Tuning<a class="headerlink" href="#plugin-tuning" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="common-scenarios-and-pitfalls">
+<h2>Common Scenarios and Pitfalls<a class="headerlink" href="#common-scenarios-and-pitfalls" title="Permalink to this headline">¶</a></h2>
+<p>While environments vary widely and Traffic Server is useful in a great number of different
+situations, there are at least some recurring elements that may be used as
+shortcuts to identifying problem areas, or realizing easier performance gains.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../files/index.en.html" class="btn btn-neutral float-right" title="Configuration Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../layer-4-routing.en.html" class="btn btn-neutral float-left" title="Layer 4 Routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

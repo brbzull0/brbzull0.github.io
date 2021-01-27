@@ -1,0 +1,385 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Promote Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cache Range Requests Plugin" href="cache_range_requests.en.html" />
+    <link rel="prev" title="Cache Key and Parent Selection URL Manipulation Plugin" href="cachekey.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Cache Promotion Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_range_requests.en.html">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="esi.en.html">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compress.en.html">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcpinfo.en.html">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Cache Promote Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/cache_promote.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cache-promote-plugin">
+<span id="admin-plugins-cache-promote"></span><h1>Cache Promote Plugin<a class="headerlink" href="#cache-promote-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The <strong class="program">cache_promote</strong> plugin provides a means to control when an object should
+be allowed to enter the cache. This is orthogonal from normal Cache-Control
+directives, providing a different set of policies to apply. The typical use
+case for this plugin is when you have a very large data set, where you want to
+avoid churning the ATS cache for the long tail content.</p>
+<p>All configuration is done via <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, and the following options
+are available:</p>
+<dl class="option">
+<dt id="cmdoption-cache-promote-policy">
+<code class="descname">--policy</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-policy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The promotion policy. The values <code class="docutils literal notranslate"><span class="pre">lru</span></code> and <code class="docutils literal notranslate"><span class="pre">chance</span></code> are supported.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-cache-promote-sample">
+<code class="descname">--sample</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sampling rate for the request to be considered</p>
+</dd></dl>
+
+<p>If <a class="reference internal" href="#cmdoption-cache-promote-policy"><code class="xref std std-option docutils literal notranslate"><span class="pre">--policy</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">lru</span></code> the following options are also available:</p>
+<dl class="option">
+<dt id="cmdoption-cache-promote-label">
+<code class="descname">--label</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-label" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional label for this LRU, to allow sharing an LRU across multiple remap
+rules. Note: In order for an LRU to be used by multiple remap rules, not only
+must the label match, both the <a class="reference internal" href="#cmdoption-cache-promote-hits"><code class="xref std std-option docutils literal notranslate"><span class="pre">--hits</span></code></a> and  <a class="reference internal" href="#cmdoption-cache-promote-buckets"><code class="xref std std-option docutils literal notranslate"><span class="pre">--buckets</span></code></a>
+options must be identical.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-cache-promote-hits">
+<code class="descname">--hits</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum number of hits before promotion.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-cache-promote-buckets">
+<code class="descname">--buckets</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-buckets" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size (number of entries) of the LRU.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-cache-promote-stats-enable-with-id">
+<code class="descname">--stats-enable-with-id</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-stats-enable-with-id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables collecting statistics.  The option requires an argument, the
+remap-identifier.  The remap-identifier is a string that is concatenated
+to the stat name.  The following stats are collected.</p>
+</dd></dl>
+
+<ul class="simple">
+<li><strong>plugin.cache_promote.${remap-identifier}.cache_hits</strong> - Cache hit total, available for all policies.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.freelist_size</strong> - Size of the freelist when using the LRU policy.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.lru_size</strong> - Size of the LRU when using the LRU policy.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.lru_hit</strong> - LRU hit count when using the LRU policy.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.lru_miss</strong> - LRU miss count when using the LRU policy.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.lru_vacated</strong> - count of LRU entries removed to make room for a new request.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.promoted</strong> - count requests promoted, available in all policies.</li>
+<li><strong>plugin.cache_promote.${remap-identifier}.total_requests</strong> - count of all requests.</li>
+</ul>
+<p>These two options combined with your usage patterns will control how likely a
+URL is to become promoted to enter the cache.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>These two examples shows how to use the chance and LRU policies, respectively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_promote</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">policy</span><span class="o">=</span><span class="n">chance</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">sample</span><span class="o">=</span><span class="mi">10</span><span class="o">%</span>
+
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_promote</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">policy</span><span class="o">=</span><span class="n">lru</span> \
+  <span class="nd">@pparam</span><span class="o">=--</span><span class="n">hits</span><span class="o">=</span><span class="mi">10</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">buckets</span><span class="o">=</span><span class="mi">10000</span>
+</pre></div>
+</div>
+<p>Note <a class="reference internal" href="#cmdoption-cache-promote-sample"><code class="xref std std-option docutils literal notranslate"><span class="pre">--sample</span></code></a> is available for all policies and can be used to reduce pressure under heavy load.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cache_range_requests.en.html" class="btn btn-neutral float-right" title="Cache Range Requests Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cachekey.en.html" class="btn btn-neutral float-left" title="Cache Key and Parent Selection URL Manipulation Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

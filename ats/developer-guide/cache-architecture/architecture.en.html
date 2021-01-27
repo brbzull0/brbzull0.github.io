@@ -1,0 +1,1281 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cache Initialization" href="cache-initialization.en.html" />
+    <link rel="prev" title="Cache Architecture" href="index.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cache Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cache-layout">Cache Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-functions.en.html">API functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#volume-tagging">Volume Tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tool.en.html">Cache Tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiered-storage.en.html">Tiered Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>Cache Architecture</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/architecture.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cache-architecture">
+<span id="developer-cache-architecture"></span><h1>Cache Architecture<a class="headerlink" href="#cache-architecture" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>In addition to being an HTTP proxy, Apache Traffic Server™ is also an HTTP cache. Traffic Server can cache
+any octet stream, although it currently supports only those octet streams
+delivered by the HTTP protocol. When such a stream is cached (along with the
+HTTP protocol headers) it is termed an <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-object"><span class="xref std std-term">object</span></a> in the
+cache. Each object is identified by a globally unique value called a
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a>.</p>
+<p>The purpose of this document is to describe the basic structure and
+implementation details of the Traffic Server cache. Configuration of the cache will be
+discussed only to the extent needed to understand the internal mechanisms. This
+document will be useful primarily to Traffic Server developers working on the Traffic Server
+codebase or plugins for Traffic Server. It is assumed the reader is already familiar with
+the <a class="reference internal" href="../../admin-guide/index.en.html#admin-guide"><span class="std std-ref">Administrator’s Guide</span></a> and specifically with <a class="reference internal" href="../../admin-guide/configuration/cache-basics.en.html#http-proxy-caching"><span class="std std-ref">HTTP Proxy Caching</span></a> and
+<a class="reference internal" href="../../admin-guide/configuration/index.en.html#admin-configuration"><span class="std std-ref">Proxy Cache Configuration</span></a> along with the associated <a class="reference internal" href="../../admin-guide/files/index.en.html#admin-configuration-files"><span class="std std-ref">configuration files</span></a>.</p>
+<p>Unfortunately, the internal terminology is not particularly consistent, so this
+document will frequently use terms in different ways than they are used in the
+code in an attempt to create some consistency.</p>
+</div>
+<div class="section" id="cache-layout">
+<h2>Cache Layout<a class="headerlink" href="#cache-layout" title="Permalink to this headline">¶</a></h2>
+<p>The following sections describe how persistent cache data is structured. Traffic Server
+treats its persistent storage as an undifferentiated collection of bytes,
+assuming no other structure to it. In particular, it does not use the file
+system of the host operating system. If a file is used it is used only to mark
+out the set of bytes to be used.</p>
+<div class="section" id="cache-storage">
+<h3>Cache storage<a class="headerlink" href="#cache-storage" title="Permalink to this headline">¶</a></h3>
+<p>The raw storage for the Traffic Server cache is configured in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. Each
+line in the file defines a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-span"><span class="xref std std-term">cache span</span></a> which is treated as a uniform
+persistent store.</p>
+<div class="figure align-center" id="id7">
+<img alt="../../_images/cache-spans.png" src="../../_images/cache-spans.png" />
+<p class="caption"><span class="caption-text">Two cache spans</span></p>
+</div>
+<p>This storage organized into a set of administrative units which are called <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">cache volumes</span></a>. These are defined in <a class="reference internal" href="../../admin-guide/files/volume.config.en.html#std:configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>. Cache volumes can be assigned
+different properties in <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>.</p>
+<p>Cache volumes can be defined by a percentage of the total storage or as an absolute amount of
+storage. By default, each cache volume is spread across all of the cache spans for robustness. The
+intersection of a cache volume and a cache span is a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">cache stripe</span></a>. Each cache span is
+divided into cache stripes and each cache volume is a collection of those stripes. Every cache
+stripe is in a single cache span and part of a single cache volume.</p>
+<p>If the cache volumes for the example cache spans were defined as:</p>
+<div class="figure align-center">
+<img alt="../../_images/ats-cache-volume-definition.png" src="../../_images/ats-cache-volume-definition.png" />
+</div>
+<p>Then the actual layout would look like:</p>
+<div class="figure align-center">
+<img alt="../../_images/cache-span-layout.png" src="../../_images/cache-span-layout.png" />
+</div>
+<p>Cache stripes are the fundamental unit of cache for the implementation. A
+cached object is stored entirely in a single stripe, and therefore in a single
+cache span. Objects are never split across cache spans or volumes. Objects are
+assigned to a stripe (and in turn to a cache volume) automatically based on a
+hash of the URI used to retrieve the object from the <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin server</span></a>. It
+is possible to configure this to a limited extent in <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>,
+which supports content from specific hosts or domain to be stored on specific
+cache volumes. It’s also possible to control which cache spans (and hence,
+which cache stripes) are contained in a specific cache volume.</p>
+<p>The layout and structure of the cache spans, the cache volumes, and the cache
+stripes that compose them are derived entirely from <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> and
+<a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> and is recomputed from scratch when the
+<strong class="program">traffic_server</strong> is started. Therefore, any change to those files can
+(and almost always will) invalidate the existing cache in its entirety.</p>
+</div>
+<div class="section" id="span-structure">
+<h3>Span Structure<a class="headerlink" href="#span-structure" title="Permalink to this headline">¶</a></h3>
+<p>Each cache span is marked at the front with a span header of type <a class="reference internal" href="data-structures.en.html#_CPPv410DiskHeader" title="DiskHeader"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">DiskHeader</span></code></a>. Each span is
+divided in to <em>span blocks</em>. These can be thought of similarly to normal disk partitions, marking
+out blocks of storage. Span blocks can vary in size, subject only to being a multiple of the
+<em>volume block size</em> which is currently 128MB and, of course, being no larger than the span. The
+relationship between a span block and a cache stripe is the same as between a disk partition and a
+file system. A cache stripe is structured data contained in a span block and always occupies the
+entire span block.</p>
+<div class="figure align-center">
+<img alt="../../_images/span-header.svg" src="../../_images/span-header.svg" /></div>
+</div>
+<div class="section" id="stripe-structure">
+<h3>Stripe Structure<a class="headerlink" href="#stripe-structure" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server treats the storage associated with a cache stripe as an undifferentiated
+span of bytes. Internally each stripe is treated almost entirely independently.
+The data structures described in this section are duplicated for each stripe.</p>
+<p>Internally the term <em>volume</em> is used for these stripes and implemented primarily
+in <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a>. What a user thinks of as a volume (and what this document
+calls a <em>cache volume</em>) is represented by <a class="reference internal" href="data-structures.en.html#_CPPv48CacheVol" title="CacheVol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVol</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stripe assignment must be done before working with an object because the
+directory is local to the stripe. Any cached objects for which the stripe
+assignment is changed are effectively lost as their directory data will not
+be found in the new stripe.</p>
+</div>
+</div>
+<div class="section" id="cache-directory">
+<span id="index-0"></span><span id="id1"></span><h3>Cache Directory<a class="headerlink" href="#cache-directory" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-1"></span><span class="target" id="index-2"></span><p id="fragment"><span id="index-3"></span>Content in a stripe is tracked via a directory. Each element of the directory
+is a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> and is represented by <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>. Each entry
+refers to a chunk of contiguous storage in the cache. These are referred to
+variously as <em>fragments</em>, <em>segments</em>, <em>docs</em>, <em>documents</em>, and a few other
+things. This document will use the term <em>fragment</em> as that is the most common
+reference in the code. The term <em>Doc</em> (for <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>) will be used to
+refer to the header data for a fragment. Overall, the directory is treated as a
+hash with the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> as the key. See
+<a class="reference internal" href="#cache-directory-probe"><span class="std std-ref">directory probing</span></a> for how the cache ID is used
+to locate a directory entry. The cache ID is in turn computed from a
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> which by default is the URL of the content.</p>
+<p>The directory is used as a memory resident structure, which means a directory
+entry is as small as possible (currently 10 bytes). This forces some
+compromises on the data that can be stored there. On the other hand this means
+that most cache misses do not require disk I/O, which has a large performance
+benefit.</p>
+<p>The directory is always fully sized; once a stripe is initialized the directory
+size is fixed and never changed. This size is related (roughly linearly) to the
+size of the stripe. It is for this reason the memory footprint of Traffic Server depends
+strongly on the size of the disk cache. Because the directory size does not
+change, neither does this memory requirement, so Traffic Server does not consume more
+memory as more content is stored in the cache. If there is enough memory to run
+Traffic Server with an empty cache there is enough to run it with a full cache.</p>
+<div class="figure align-center">
+<img alt="../../_images/cache-directory-structure.png" src="../../_images/cache-directory-structure.png" />
+</div>
+<p>Each entry stores an offset in the stripe and a size. The size stored in the
+directory entry is an <a class="reference internal" href="#dir-size"><span class="std std-ref">approximate size</span></a> which is at least as
+big as the actual data in the fragment. Exact size data is stored in the
+fragment header on disk.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Data in HTTP headers cannot be examined without disk I/O. This includes the
+original URL for the object. The cache key is not stored explicitly and
+therefore cannot be reliably retrieved.</p>
+</div>
+<p>The directory is a hash table that uses <a class="reference external" href="http://en.wikibooks.org/wiki/Data_Structures/Hash_Tables#Collision_resolution">chaining</a>
+for collision resolution. Because each entry is small they are used directly as
+the list header of the hash bucket.</p>
+<p id="dir-bucket"><span id="dir-segment"></span>Chaining is implemented by imposing grouping structures on the entries in a
+directory. The first level grouping is a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-bucket"><span class="xref std std-term">directory bucket</span></a>. This is a
+fixed number (currently 4, defined as <code class="docutils literal notranslate"><span class="pre">DIR_DEPTH</span></code>) of entries. This serves to
+define the basic hash buckets with the first entry in each cache bucket serving
+as the root of the hash bucket.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The term <em>bucket</em> is used in the code to mean both the conceptual bucket for
+hashing and for a structural grouping mechanism in the directory. These will
+be qualified as needed to distinguish them. The unqualified term <em>bucket</em> is
+almost always used to mean the structural grouping in the directory.</p>
+</div>
+<p>Directory buckets are grouped in to <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-segment"><span class="xref std std-term">segments</span></a>. All
+segments in a stripe have the same number of buckets. The number of segments in
+a stripe is chosen so that each segment has as many buckets as possible without
+exceeding 65,535 (2<sup>16</sup>-1) entries in a segment.</p>
+<div class="figure align-center">
+<img alt="../../_images/dir-segment-bucket.png" src="../../_images/dir-segment-bucket.png" />
+</div>
+<p>Each directory entry has a previous and next index value which is used to link
+entries in the same segment. Because no segment has more than 65,535 entries,
+16 bits suffices for storing the index values. The stripe header contains an
+array of entry indices which are used as the roots of entry free lists, one for
+each segment. Active entries are stored via the bucket structure. When a stripe
+is initialized the first entry in each bucket is zeroed (marked unused) and all
+other entries are put in the corresponding segment free list in the stripe
+header. This means the first entry of each <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-bucket"><span class="xref std std-term">directory bucket</span></a> is used as
+the root of a hash bucket and is therefore marked unused rather than being put
+a free list. The other entries in the directory bucket are preferred for adding
+to the corresponding hash bucket but this is not required. The segment free
+lists are initialized such that the extra bucket entries are added in order;
+all the seconds, then the thirds, then the fourths. Because the free lists are
+FIFOs, this means extra entries will be selected from the fourth entries across
+all the buckets first, then the thirds, etc. When allocating a new directory
+entry in a bucket the entries are searched from first to last, which maximizes
+bucket locality (that is, <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache IDs</span></a> that map to the same
+hash bucket will also tend to use the same directory bucket).</p>
+<div class="figure align-center">
+<img alt="../../_images/dir-bucket-assign.png" src="../../_images/dir-bucket-assign.png" />
+</div>
+<p>Entries are removed from the free list when used and returned when no longer in
+use. When a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-fragment"><span class="xref std std-term">fragment</span></a> needs to be put in to the
+directory the cache ID is used to locate a hash bucket (which also determines
+the segment and directory bucket). If the first entry in the directory bucket
+is marked unused, it is used. Otherwise, the other entries in the bucket are
+searched and if any are on the free list, that entry is used. If none are
+available then the first entry on the segment free list is used. This entry is
+attached to the hash bucket via the same next and previous indices used for the
+free list so that it can be found when doing a lookup of a cache ID.</p>
+</div>
+<div class="section" id="storage-layout">
+<h3>Storage Layout<a class="headerlink" href="#storage-layout" title="Permalink to this headline">¶</a></h3>
+<p>The storage layout is the stripe metadata followed by cached content. The
+metadata consists of three parts: the stripe header, the directory, and the
+stripe footer. The metadata is stored twice. The header and the footer are
+instances of <a class="reference internal" href="data-structures.en.html#_CPPv415VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>. This is a stub structure which can
+have a trailing variable sized array. This array is used as the segment free
+list roots in the directory. Each contains the segment index of the first
+element of the free list for the segment. The footer is a copy of the header
+without the segment free lists. This makes the size of the header dependent on
+the directory but not that of the footer.</p>
+<div class="figure align-center">
+<img alt="../../_images/cache-stripe-layout.png" src="../../_images/cache-stripe-layout.png" />
+</div>
+<p>Each stripe has several values that describe its basic layout:</p>
+<dl class="docutils">
+<dt>skip</dt>
+<dd>The start of stripe data. This represents either space reserved at the start
+of a physical device to avoid problems with the host operating system, or an
+offset representing use of space in the cache span by other stripes.</dd>
+<dt>start</dt>
+<dd>The offset for the start of the content, after the stripe metadata.</dd>
+<dt>length</dt>
+<dd>Total number of bytes in the stripe. <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol3lenE" title="Vol::len"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::len</span></code></a>.</dd>
+<dt>data length</dt>
+<dd>Total number of blocks in the stripe available for content storage.
+<a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol11data_blocksE" title="Vol::data_blocks"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::data_blocks</span></code></a>.</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Great care must be taken with sizes and lengths in the cache code because
+there are at least three different metrics (bytes, cache blocks, store
+blocks) used in various places.</p>
+</div>
+<p>The header for a stripe is a variably sized instance of <a class="reference internal" href="data-structures.en.html#_CPPv415VolHeaderFooter" title="VolHeaderFooter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">VolHeaderFooter</span></code></a>.
+The variable trailing section contains the head indices of the directory entry
+free lists for the segments.</p>
+<div class="figure align-center">
+<img alt="../../_images/stripe-header.svg" src="../../_images/stripe-header.svg" /></div>
+<p>The trailing <a class="reference internal" href="data-structures.en.html#_CPPv4N15VolHeaderFooter8freelistE" title="VolHeaderFooter::freelist"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">VolHeaderFooter::freelist</span></code></a> array overlays the disk storage with
+an entry for every segment, even though the array is declared to have length <cite>1</cite>.
+Each free list entry is a 16 bit value that is the index of the first directory entry
+in the free list for that segment. E.g. <code class="code docutils literal notranslate"><span class="pre">freelist[4]</span></code> is the index of the
+directory entry in segment <cite>4</cite> that is the first directory entry in the free list for
+segment <cite>4</cite>. The rest of the free list is chained from that directory entry.</p>
+<p>The segment freelist is attached only to the header - the trailer, although of the same class, does
+not have a freelist and is always a fixed size.</p>
+<p>The total size of the directory (the number of <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">entries</span></a>)
+is computed by taking the size of the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">cache stripe</span></a> and dividing by the
+average object size. The directory always consumes this amount of memory which
+has the effect that if cache size is increased so is the memory requirement for
+Traffic Server. The average object size defaults to 8000 bytes but can be configured using
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-min-average-object-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.min_average_object_size</span></code></a>. Increasing the average
+object size will reduce the memory footprint of the directory at the expense of
+reducing the number of distinct objects that can be stored in the cache.</p>
+<p id="write-cursor">The content area stores the actual objects and is used as a circular buffer
+where new objects overwrite the least recently cached objects. The location in
+a stripe where new cache data is written is called the <em>write cursor</em>. This
+means that objects can be de facto evicted from cache even if they have not
+expired if the data is overwritten by the write cursor. If an object is
+overwritten this is not detected at that time and the directory is not updated.
+Instead it will be noted if the object is accessed in the future and the disk
+read of the fragment fails.</p>
+<div class="figure align-center" id="id8">
+<img alt="../../_images/ats-cache-write-cursor.png" src="../../_images/ats-cache-write-cursor.png" />
+<p class="caption"><span class="caption-text">The write cursor and documents in the cache.</span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Cache data on disk is never updated.</p>
+</div>
+<p>This is a key thing to keep in mind. What appear to be updates (such as doing a
+refresh on <a class="reference internal" href="../../appendices/glossary.en.html#term-stale"><span class="xref std std-term">stale</span></a> content and getting back a 304) are actually new
+copies of data being written at the write cursor. The originals are left as
+“dead” space which will be consumed when the write cursor arrives at that disk
+location. Once the stripe directory is updated (in memory) the original
+fragment in the cache is effectively destroyed. This is the general space
+management technique used in other cases as well. If an object needs to removed
+from cache, only the directory needs to be changed. No other work (and
+particularly, no disk I/O) needs to be done.</p>
+</div>
+<div class="section" id="object-structure">
+<h3>Object Structure<a class="headerlink" href="#object-structure" title="Permalink to this headline">¶</a></h3>
+<p>Objects are stored as two types of data: metadata and content data. Metadata is
+all the data about the object and the content and includes the HTTP headers.
+The content data is the content of the object, the octet stream delivered to
+the client as the object.</p>
+<p>Objects are rooted in a <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> structure stored in the cache.
+<a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> serves as the header data for a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-fragment"><span class="xref std std-term">cache fragment</span></a> and is
+contained at the start of every fragment. The first fragment for an object is
+termed the <em>First Doc</em> and always contains the object metadata. Any
+operation on the object will read this fragment first. The fragment is located
+by converting the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> for the object to a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> and
+then doing a lookup for a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> with that key. The directory
+entry has the offset and approximate size of the first fragment which is then
+read from the disk. This fragment will contain the request header and response
+along with overall object properties (such as content length).</p>
+<p id="index-4">Traffic Server supports <a class="reference external" href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.44">varying content</a>
+for objects. These are called <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a>. All metadata for
+all alternates is stored in the first fragment including the set of alternates
+and the HTTP headers for them. This enables <a class="reference internal" href="../plugins/hooks-and-transactions/http-alternate-selection.en.html"><span class="doc">“alternate selection”</span></a>
+to be done after the <em>first Doc</em> is read from disk. An object that has more than
+one alternate will have the alternate content stored separately from the first
+fragment. For objects with only one alternate the content may or may not be in
+the same (first) fragment as the metadata. Each separate alternate content is
+allocated a directory entry and the key for that entry is stored in the first
+fragment metadata.</p>
+<p>Prior to version 4.0.1, the header data was stored in the
+<a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> class which was marshaled to a variable length
+area of the on disk image, followed by information about additional fragments
+if needed to store the object.</p>
+<div class="figure align-center" id="id9">
+<img alt="../../_images/cache-doc-layout-3-2-0.png" src="../../_images/cache-doc-layout-3-2-0.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Doc</span></code> layout 3.2.0</span></p>
+</div>
+<p>This had the problem that with only one fragment table it could not be reliable
+for objects with more than one alternate[#multiple-alternates]_. Therefore, the
+fragment data was moved from being a separate variable length section of the
+metadata to being directly incorporated in to the <a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a>,
+yielding a layout of the following form.</p>
+<div class="figure align-center" id="id10">
+<img alt="../../_images/cache-doc-layout-4-0-1.png" src="../../_images/cache-doc-layout-4-0-1.png" />
+<p class="caption"><span class="caption-text"><code class="docutils literal notranslate"><span class="pre">Doc</span></code> layout 4.0.1</span></p>
+</div>
+<p>Each element in the vector contains for each alternate, in addition to the HTTP
+headers and the fragment table (if any), a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a>. This cache key
+identifies a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> that is referred to as the <em>earliest Doc</em>.
+This is the location where the content for the alternate begins.</p>
+<p>When the object is first cached, it will have a single alternate and that will
+be stored (if not too large) in first <code class="docutils literal notranslate"><span class="pre">Doc</span></code>. This is termed a <em>resident alternate</em>
+in the code. This can only happen on the initial store of the object. If the
+metadata is updated (such as a <code class="docutils literal notranslate"><span class="pre">304</span></code> response to an <code class="docutils literal notranslate"><span class="pre">If-Modified-Since</span></code>
+request) then unless the object is small, the object data will be left in the
+original fragment and a new fragment written as the first fragment, making the
+alternate non-resident. <em>Small</em> is defined as a length smaller than
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-alt-rewrite-max-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.alt_rewrite_max_size</span></code></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="data-structures.en.html#_CPPv419CacheHTTPInfoVector" title="CacheHTTPInfoVector"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHTTPInfoVector</span></code></a> is stored only in the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code>.
+Subsequent <code class="docutils literal notranslate"><span class="pre">Doc</span></code> instances for the object, including the earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code>,
+should have an <code class="docutils literal notranslate"><span class="pre">hlen</span></code> of zero and if not, it is ignored.</p>
+</div>
+<p>Large objects are split in to multiple fragments when written to the cache. This
+is indicated by a total document length that is longer than the content in
+first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> or an earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code>. In such a case a fragment offset table is
+stored. This contains the byte offset in the object content of the first byte
+of content data for each fragment past the first (as the offset for the first
+is always zero). This allows range requests to be serviced much more
+efficiently for large objects, as intermediate fragments that do not contain
+data in the range can be skipped. The last fragment in the sequence is detected
+by the fragment size and offset reaching the end of the total size of the
+object, there is no explicit end mark. Each fragment is computationally chained
+from the previous in that the cache key for fragment N is computed by:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">key_for_N_plus_one</span> <span class="o">=</span> <span class="n">next_key</span><span class="p">(</span><span class="n">key_for_N</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">next_key</span></code> is a global function that deterministically computes a new
+cache key from an existing cache key.</p>
+<p>Objects with multiple fragments are laid out such that the data fragments
+(including the earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code>) are written first and the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> is
+written last. When read from disk, both the first and earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code> are
+validated (tested to ensure that they haven’t been overwritten by the write
+cursor) to verify that the entire document is present on disk (as they bookend
+the other fragments - the write cursor cannot overwrite them without overwriting
+at least one of the verified <code class="docutils literal notranslate"><span class="pre">Doc</span></code> instances). Note that while the fragments
+of a single object are ordered they are not necessarily contiguous, as data from
+different objects are interleaved as the data arrives in Traffic Server.</p>
+<div class="figure align-center" id="id11">
+<img alt="../../_images/cache-multi-fragment.png" src="../../_images/cache-multi-fragment.png" />
+<p class="caption"><span class="caption-text">Multi-alternate and multi-fragment object storage</span></p>
+</div>
+<p id="index-5">Documents which are pinned into the cache must not be overwritten so they are
+evacuated from in front of the write cursor. Each fragment is read and
+rewritten. There is a special lookup mechanism for objects that are being
+evacuated so that they can be found in memory rather than the potentially
+unreliable disk regions. The cache scans ahead of the write cursor to discover
+pinned objects as there is a dead zone immediately before the write cursor from
+which data cannot be evacuated. Evacuated data is read from disk and placed in
+the write queue and written as its turn comes up.</p>
+<p>Objects can only be pinned via <a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> and while
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-permit-pinning" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.permit.pinning</span></code></a> is set to non-zero (it is zero by
+default). Objects which are in use when the write cursor is near use the same
+underlying evacuation mechanism but are handled automatically and not via the
+explicit <code class="docutils literal notranslate"><span class="pre">pinned</span></code> bit in <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>.</p>
+</div>
+<div class="section" id="additional-notes">
+<h3>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h3>
+<p>Some general observations on the data structures.</p>
+</div>
+<div class="section" id="cyclone-buffer">
+<h3>Cyclone buffer<a class="headerlink" href="#cyclone-buffer" title="Permalink to this headline">¶</a></h3>
+<p>Because the cache is a <em>cyclone cache</em>, objects are not preserved for an
+indefinite time. Even if the object is not <a class="reference internal" href="../../appendices/glossary.en.html#term-stale"><span class="xref std std-term">stale</span></a> it can be overwritten
+as the cache cycles through its volume. Marking an object as <em>pinned</em> preserves
+the object through the passage of the write cursor but this is done by copying
+the object across the gap, in effect re-storing it in the cache. Pinning large
+objects or a large number objects can lead to excessive disk activity. The
+original purpose of pinning was for small, frequently used objects explicitly
+marked by the administrator.</p>
+<p>This means the purpose of expiration data on objects is simply to prevent them
+from being served to clients. They are not in the standard sense deleted or
+cleaned up. The space can’t be immediately reclaimed in any event, because
+writing only happens at the write cursor. Deleting an object consists only of
+removing the directory entries in the volume directory which suffices to
+(eventually) free the space and render the document inaccessible.</p>
+<p>Historically, the cache was designed this way because web content was relatively
+small and not particularly consistent. The design also provided high performance
+and low consistency requirements. There are no fragmentation issues for the
+storage, and both cache misses and object deletions require no disk I/O. It does
+not deal particularly well with long term storage of large objects. See the
+<a class="reference internal" href="consistency.en.html#volume-tagging"><span class="std std-ref">Volume Tagging</span></a> appendix for details on some work in this area.</p>
+</div>
+<div class="section" id="disk-failure">
+<h3>Disk Failure<a class="headerlink" href="#disk-failure" title="Permalink to this headline">¶</a></h3>
+<p>The cache is designed to be relatively resistant to disk failures. Because each
+<a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage unit</span></a> in each <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">cache volume</span></a> is mostly independent, the
+loss of a disk simply means that the corresponding <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances
+(one per cache volume that uses the storage unit) becomes unusable. The primary
+issue is updating the volume assignment table to both preserve assignments for
+objects on still operational volumes while distributing the assignments from the
+failed disk to those operational volumes. This mostly done in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">AIO_Callback_handler</span><span class="p">::</span><span class="n">handle_disk_failure</span>
+</pre></div>
+</div>
+<p>Restoring a disk to active duty is a more difficult task. Changing the volume
+assignment of a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> renders any currently cached data
+inaccessible. This is not a problem when a disk has failed, but is a bit
+trickier to decide which cached objects are to be de facto evicted if a new
+storage unit is added to a running system. The mechanism for this, if any, is
+still under investigation.</p>
+</div>
+<div class="section" id="implementation-details">
+<h3>Implementation Details<a class="headerlink" href="#implementation-details" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="stripe-directory">
+<h3>Stripe Directory<a class="headerlink" href="#stripe-directory" title="Permalink to this headline">¶</a></h3>
+<p id="directory-entry">The in memory volume directory entries are described below.</p>
+<dl class="class">
+<dt id="_CPPv43Dir">
+<span id="_CPPv33Dir"></span><span id="_CPPv23Dir"></span><span id="Dir"></span><em class="property">class </em><code class="descname">Dir</code><a class="headerlink" href="#_CPPv43Dir" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defined in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/iocore/cache/P_CacheDir.h">iocore/cache/P_CacheDir.h</a>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="23%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Use</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>offset</td>
+<td>unsigned int:24</td>
+<td>Offset of first byte of metadata (volume relative)</td>
+</tr>
+<tr class="row-odd"><td>big</td>
+<td>unsigned in:2</td>
+<td>Size multiplier</td>
+</tr>
+<tr class="row-even"><td>size</td>
+<td>unsigned int:6</td>
+<td>Size</td>
+</tr>
+<tr class="row-odd"><td>tag</td>
+<td>unsigned int:12</td>
+<td>Partial key (fast collision check)</td>
+</tr>
+<tr class="row-even"><td>phase</td>
+<td>unsigned int:1</td>
+<td>Phase of the <code class="docutils literal notranslate"><span class="pre">Doc</span></code> (for dir valid check)</td>
+</tr>
+<tr class="row-odd"><td>head</td>
+<td>unsigned int:1</td>
+<td>Flag: first fragment in an object</td>
+</tr>
+<tr class="row-even"><td>pinned</td>
+<td>unsigned int:1</td>
+<td>Flag: document is pinned</td>
+</tr>
+<tr class="row-odd"><td>token</td>
+<td>unsigned int:1</td>
+<td>Flag: Unknown</td>
+</tr>
+<tr class="row-even"><td>next</td>
+<td>unsigned int:16</td>
+<td>Segment local index of next entry.</td>
+</tr>
+<tr class="row-odd"><td>offset_high</td>
+<td>unsigned int:16</td>
+<td>High order offset bits</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The stripe directory is an array of <code class="docutils literal notranslate"><span class="pre">Dir</span></code> instances. Each entry refers to
+a span in the volume which contains a cached object. Because every object in
+the cache has at least one directory entry this data has been made as small
+as possible.</p>
+<p>The offset value is the starting byte of the object in the volume. It is 40
+bits long, split between the <em>offset</em> (lower 24 bits) and <em>offset_high</em>
+(upper 16 bits) members. Note that since there is a directory for every
+storage unit in a cache volume, this is the offset in to the slice of a
+storage unit attached to that volume.</p>
+<p id="dir-size">The <em>size</em> and <em>big</em> values are used to calculate the approximate size of
+the fragment which contains the object. This value is used as the number of
+bytes to read from storage at the offset value. The exact size is contained
+in the object metadata in <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a> which is consulted once the read
+has completed. For this reason, the approximate size needs to be at least as
+large as the actual size but can be larger, at the cost of reading the
+extraneous bytes.</p>
+<p>The computation of the approximate size of the fragment is defined as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span> <span class="o">*</span><span class="n">size</span><span class="o">*</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">^</span> <span class="p">(</span> <span class="n">CACHE_BLOCK_SHIFT</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="o">*</span><span class="n">big</span><span class="o">*</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">CACHE_BLOCK_SHIFT</span></code> is the bit width of the size of a basic cache
+block (9, corresponding to a sector size of 512). Therefore the value with
+current defines is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span> <span class="o">*</span><span class="n">size</span><span class="o">*</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">^</span> <span class="p">(</span><span class="mi">9</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="o">*</span><span class="n">big</span><span class="o">*</span><span class="p">)</span>
+</pre></div>
+</div>
+<p id="big-mult">Because <em>big</em> is 2 bits, the values for the multiplier of <em>size</em> are:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="34%" />
+<col width="55%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><em>big</em></th>
+<th class="head">Multiplier</th>
+<th class="head">Maximum Size</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>512 (2^9)</td>
+<td>32768 (2^15)</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>4096 (2^12)</td>
+<td>262144 (2^18)</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>32768 (2^15)</td>
+<td>2097152 (2^21)</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>262144 (2^18)</td>
+<td>16777216 (2^24)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>Note also that <em>size</em> is effectively offset by one, so a value of 0 indicates
+a single unit of the multiplier.</p>
+<p id="target-fragment-size">The target fragment size can set with the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> value
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-target-fragment-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.target_fragment_size</span></code></a>.</p>
+<p>This value should be chosen so that it is a multiple of a
+<a class="reference internal" href="#big-mult"><span class="std std-ref">cache entry multiplier</span></a>. It is not necessary to make it a
+power of two <a class="footnote-reference" href="#cache-mult-value" id="id2">[2]</a>. Larger fragments increase I/O efficiency but
+lead to more wasted space. The default size (1M, 2^20) is a reasonable choice
+in most circumstances, although in very specific cases there can be benefit from
+tuning this parameter. Traffic Server imposes an internal maximum of a 4,194,232 bytes,
+which is 4M (2^22), less the size of a struct <a class="reference internal" href="data-structures.en.html#_CPPv43Doc" title="Doc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Doc</span></code></a>. In practice,
+the largest reasonable target fragment size is 4M - 262,144 = 3,932,160.</p>
+<p>When a fragment is stored to disk, the size data in the cache index entry is
+set to the finest granularity permitted by the size of the fragment. To
+determine this, consult the <a class="reference internal" href="#big-mult"><span class="std std-ref">cache entry multiplier</span></a> table and
+find the smallest maximum size that is at least as large as the fragment. That
+will indicate the value of <em>big</em> selected and therefore the granularity of the
+approximate size. That represents the largest possible amount of wasted disk I/O
+when the fragment is read from disk.</p>
+<p id="index-6">The set of index entries for a volume are grouped in to <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-segment"><span class="xref std std-term">segments</span></a>.
+The number of segments for an index is selected so that there are as few
+segments as possible such that no segment has more than 2^16 entries.
+Intra-segment references can therefore use a 16 bit value to refer to any other
+entry in the segment.</p>
+<p>Index entries in a segment are grouped <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-bucket"><span class="xref std std-term">buckets</span></a>, each
+of <code class="docutils literal notranslate"><span class="pre">DIR_DEPTH</span></code> (currently 4) entries. These are handled in the standard hash
+table manner, giving somewhat less than 2^14 buckets per segment.</p>
+</div>
+<div class="section" id="directory-probing">
+<span id="cache-directory-probe"></span><h3>Directory Probing<a class="headerlink" href="#directory-probing" title="Permalink to this headline">¶</a></h3>
+<p>Directory probing is the locating of a specific <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-entry"><span class="xref std std-term">directory entry</span></a> in the
+stripe directory based on a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a>. This is handled primarily by the
+function <a class="reference internal" href="core-cache-functions.en.html#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>. This is passed the cache ID (<em>key</em>), a
+stripe (<em>d</em>), and a last collision (<em>last_collision</em>). The last of
+these is an in and out parameter, updated as useful during the probe.</p>
+<p>Given an ID, the top half (64 bits) is used as a <a class="reference internal" href="#dir-segment"><span class="std std-ref">segment</span></a>
+index, taken modulo the number of segments in the directory. The bottom half is
+used as a <a class="reference internal" href="#dir-bucket"><span class="std std-ref">bucket</span></a> index, taken modulo the number of buckets
+per segment. The <em>last_collision</em> value is used to mark the last matching
+entry returned by <a class="reference internal" href="core-cache-functions.en.html#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="dir_probe"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">dir_probe()</span></code></a>.</p>
+<p>After computing the appropriate bucket, the entries in that bucket are searched
+to find a match. In this case a match is detected by comparison of the bottom
+12 bits of the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> (the <em>cache tag</em>). The search starts at the base
+entry for the bucket and then proceeds via the linked list of entries from that
+first entry. If a tag match is found and there is no <em>collision</em> then that
+entry is returned and <em>last_collision</em> is updated to that entry. If
+<em>collision</em> is set and if it isn’t the current match, the search continues
+down the linked list, otherwise <em>collision</em> is cleared and the search
+continues.</p>
+<p>The effect of this is that matches are skipped until the last returned match
+(<em>last_collision</em>) is found, after which the next match (if any) is
+returned. If the search falls off the end of the linked list, then a miss result
+is returned (if no last collision), otherwise the probe is restarted after
+clearing the collision on the presumption that the entry for the collision has
+been removed from the bucket. This can lead to repeats among the returned
+values but guarantees that no valid entry will be skipped.</p>
+<p>Last collision can therefore be used to restart a probe at a later time. This
+is important because the match returned may not be the actual object. Although
+the hashing of the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-id"><span class="xref std std-term">cache ID</span></a> to a <a class="reference internal" href="../../appendices/glossary.en.html#term-directory-bucket"><span class="xref std std-term">bucket</span></a> and
+the tag matching is unlikely to create false positives, it is possible. When a
+fragment is read the full cache ID is available and checked and if wrong, that
+read can be discarded and the next possible match from the directory found
+because the cache virtual connection tracks the last collision value.</p>
+<div class="section" id="cache-operations">
+<h4>Cache Operations<a class="headerlink" href="#cache-operations" title="Permalink to this headline">¶</a></h4>
+<p>Cache activity starts after the HTTP request header has been parsed and
+remapped. Tunneled transactions do not interact with the cache because the
+headers are never parsed.</p>
+<p>To understand the logic we must introduce the term <em>cache valid</em> which means
+something that is directly related to an object that is valid to be put in the
+cache (e.g. a <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> which refers to a URL that is cache valid but cannot
+be cached itself). This is important because Traffic Server computes cache validity
+several times during a transaction and only performs cache operations for cache
+valid results. The criteria used changes during the course of the transaction
+as well. This is done to avoid the cost of cache activity for objects that
+cannot be in the cache.</p>
+<p>The three basic cache operations are: lookup, read, and write. We will take
+deleting entries as a special case of writing where only the volume directory
+is updated.</p>
+<p>After the client request header is parsed and is determined to be potentially
+cacheable, a <a class="reference internal" href="#id3">cache lookup</a> is done. If successful, a <a class="reference internal" href="#cache-read">cache read</a> is
+attempted. If either the lookup or the read fails and the content is considered
+cacheable then a <a class="reference internal" href="#cache-write">cache write</a> is attempted.</p>
+</div>
+</div>
+<div class="section" id="cacheability">
+<h3>Cacheability<a class="headerlink" href="#cacheability" title="Permalink to this headline">¶</a></h3>
+<p>The first thing done with a request with respect to cache is to determine
+whether it is potentially a valid object for the cache. After initial parsing
+and remapping, this check is done primarily to detect a negative result, as it
+allows further cache processing to be skipped. It will not be put in to the
+cache, nor will a cache lookup be performed. There are a number of prerequisites
+along with configuration options to change them. Additional cacheability checks
+are done later in the process, when more is known about the transaction (such
+as plugin operations and the origin server response). Those checks are described
+as appropriate in the sections on the relevant operations.</p>
+<p>The set of things which can affect cacheability are:</p>
+<ul class="simple">
+<li>Built in constraints.</li>
+<li>Settings in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
+<li>Settings in <a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</li>
+<li>Plugin operations.</li>
+</ul>
+<p>The initial internal checks, along with their <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+overrides[#cacheability-overrides]_, are done in <code class="docutils literal notranslate"><span class="pre">HttpTransact::is_request_cache_lookupable</span></code>.</p>
+<p>The checks that are done are:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Cacheable Method</dt>
+<dd><p class="first">The request must be one of <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, <code class="docutils literal notranslate"><span class="pre">DELETE</span></code>, <code class="docutils literal notranslate"><span class="pre">PUT</span></code>.</p>
+<p class="last">See <code class="docutils literal notranslate"><span class="pre">HttpTransact::is_method_cache_lookupable()</span></code>.</p>
+</dd>
+<dt>Dynamic URL</dt>
+<dd><p class="first">Traffic Server tries to avoid caching dynamic content because it’s dynamic. A URL is
+considered dynamic if:</p>
+<ul class="simple">
+<li>It is not <code class="docutils literal notranslate"><span class="pre">HTTP</span></code> or <code class="docutils literal notranslate"><span class="pre">HTTPS</span></code>,</li>
+<li>Has query parameters,</li>
+<li>Ends in <code class="docutils literal notranslate"><span class="pre">asp</span></code>,</li>
+<li>Has <code class="docutils literal notranslate"><span class="pre">cgi</span></code> in the path.</li>
+</ul>
+<p>This check can be disabled by setting a non-zero value for
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-http-cache-cache-urls-that-look-dynamic" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_urls_that_look_dynamic</span></code></a>.</p>
+<p class="last">In addition if a TTL is set for rule that matches in <a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>
+then this check is not done.</p>
+</dd>
+<dt>Range Request</dt>
+<dd>Cache valid only if <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-http-cache-range-lookup" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.range.lookup</span></code></a> in
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> is non-zero. This does not mean the range request
+can be cached, only that it might be satisfiable from the cache. In
+addition, <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-http-cache-range-write" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.range.write</span></code></a>
+can be set to try to force a write on a range request. This
+probably has little value at the moment, but if for example the
+origin server ignores the <code class="docutils literal notranslate"><span class="pre">Range:</span></code> header, this option can allow
+for the response to be cached. It is disabled by default, for
+best performance.</dd>
+</dl>
+</div></blockquote>
+<p>A plugin can call <a class="reference internal" href="api-functions.en.html#c.TSHttpTxnReqCacheableSet" title="TSHttpTxnReqCacheableSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnReqCacheableSet()</span></code></a> to force the request to
+be viewed as cache valid.</p>
+</div>
+<div class="section" id="cache-lookup">
+<span id="id3"></span><h3>Cache Lookup<a class="headerlink" href="#cache-lookup" title="Permalink to this headline">¶</a></h3>
+<p>If the initial request is not determined to be cache invalid then a lookup is
+done. Cache lookup determines if an object is in the cache and if so, where it
+is located. In some cases the lookup proceeds to read the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> from
+disk to verify the object is still present in the cache.</p>
+<p>The basic steps to a cache lookup are:</p>
+<ol class="arabic">
+<li><p class="first">The cache key is computed.</p>
+<p>This is normally computed using the request URL but it can be overridden
+<a class="reference internal" href="consistency.en.html#cache-key"><span class="std std-ref">by a plugin</span></a> . The cache index string is not stored, as it
+is presumed computable from the client request headers.</p>
+</li>
+<li><p class="first">The cache stripe is determined (based on the cache key).</p>
+<p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> is used as a hash key in to an array of <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instances by
+<a class="reference internal" href="data-structures.en.html#_CPPv4N5Cache10key_to_volEPKcPKci" title="Cache::key_to_vol"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Cache::key_to_vol()</span></code></a>. The construction and arrangement of this array is the essence of how
+volumes are assigned.</p>
+</li>
+<li><p class="first">The cache stripe directory <a class="reference internal" href="#cache-directory-probe"><span class="std std-ref">is probed</span></a> using the
+index key computed from the cache key.</p>
+<p>Various other lookaside directories are checked as well, such as the
+<a class="reference internal" href="#aggregation-buffer"><span class="std std-ref">aggregation buffer</span></a>.</p>
+</li>
+<li><p class="first">If the directory entry is found the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> is read from disk and
+checked for validity.</p>
+<p>This is done in <a class="reference internal" href="data-structures.en.html#_CPPv4N7CacheVC17openReadStartHeadEiP5Event" title="CacheVC::openReadStartHead"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartHead()</span></code></a> or
+<a class="reference internal" href="data-structures.en.html#_CPPv4N7CacheVC21openReadStartEarliestEiP5Event" title="CacheVC::openReadStartEarliest"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CacheVC::openReadStartEarliest()</span></code></a> which are tightly coupled
+methods.</p>
+</li>
+</ol>
+<p>If the lookup succeeds, then a more detailed directory entry (struct
+<a class="reference internal" href="data-structures.en.html#_CPPv47OpenDir" title="OpenDir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">OpenDir</span></code></a>) is created. Note that the directory probe includes a check
+for an already extant <code class="docutils literal notranslate"><span class="pre">OpenDir</span></code> which, if found, is returned without
+additional work.</p>
+</div>
+<div class="section" id="cache-read">
+<h3>Cache Read<a class="headerlink" href="#cache-read" title="Permalink to this headline">¶</a></h3>
+<p>Cache read starts after a successful <a class="reference internal" href="#id3">cache lookup</a>. At this point the first
+<code class="docutils literal notranslate"><span class="pre">Doc</span></code> has been loaded in to memory and can be consulted for additional
+information. This will always contain the HTTP headers for all
+<a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a> of the object.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Read while write</p>
+<p class="last">There is provision in the code to support <em>read while write</em>, that is,
+serving an object from cache in one transaction while it is being written in
+another. Several settings are needed for it to be used. See
+<a class="reference internal" href="../../admin-guide/configuration/cache-basics.en.html#admin-configuration-reducing-origin-requests"><span class="std std-ref">Reducing Origin Server Requests (Avoiding the Thundering Herd)</span></a>. It must
+specifically enabled in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> and if not, a cache read will
+fail if the object is currently be written or updated.</p>
+</div>
+<p>At this point an alternate for the object is selected. This is done by comparing
+the client request to the stored response headers, but it can be controlled by a
+plugin using <code class="docutils literal notranslate"><span class="pre">TS_HTTP_ALT_SELECT_HOOK</span></code>.</p>
+<p>The content can now be checked to see if it is <a class="reference internal" href="../../appendices/glossary.en.html#term-stale"><span class="xref std std-term">stale</span></a> by calculating the
+<em>freshness</em> of the object. This is essentially checking how old the object is
+by looking at the headers and possibly other metadata (note that the headers
+can’t be checked until we’ve selected an alternate).</p>
+<p>Most of this work is done in <code class="docutils literal notranslate"><span class="pre">HttpTransact::what_is_document_freshness</span></code>.</p>
+<p>First, the TTL (time to live) value, which can be set in <a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>,
+is checked if the request matches the configuration file line. This is done
+based on when the object was placed in the cache, not on any data in the
+headers.</p>
+<p>Next, an internal flag (<code class="docutils literal notranslate"><span class="pre">needs-revalidate-once</span></code>) is checked if the
+<a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> value <code class="docutils literal notranslate"><span class="pre">revalidate-after</span></code> is not set, and if set the
+object is marked <em>stale</em>.</p>
+<p>After these checks the object age is calculated by <code class="docutils literal notranslate"><span class="pre">HttpTransactHeaders::calculate_document_age</span></code>.
+and then any configured fuzzing is applied. The limits to this age based on
+available data is calculated by <code class="docutils literal notranslate"><span class="pre">HttpTransact::calculate_document_freshness_limit</span></code>.</p>
+<p>How this age is used is determined by the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> setting for
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-http-cache-when-to-revalidate" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.when_to_revalidate</span></code></a>. If this is <code class="docutils literal notranslate"><span class="pre">0</span></code> then the
+built calculations are used which compare the freshness limits with document
+age, modified by any of the client supplied cache control values (<code class="docutils literal notranslate"><span class="pre">max-age</span></code>,
+<code class="docutils literal notranslate"><span class="pre">min-fresh</span></code>, <code class="docutils literal notranslate"><span class="pre">max-stale</span></code>) unless explicitly overridden in
+<a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p>
+<p>If the object is not stale then it is served to the client. If it is stale, the
+client request may be changed to an <code class="docutils literal notranslate"><span class="pre">If</span> <span class="pre">Modified</span> <span class="pre">Since</span></code> request to
+<a class="reference internal" href="../../appendices/glossary.en.html#term-revalidation"><span class="xref std std-term">revalidate</span></a>.</p>
+<p>The request is served using a standard virtual connection tunnel (<code class="docutils literal notranslate"><span class="pre">HttpTunnel</span></code>)
+with the <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a> acting as the producer and the client <code class="docutils literal notranslate"><span class="pre">NetVC</span></code>
+acting as the sink. If the request is a range request this can be modified with
+a transform to select the appropriate parts of the object or, if the request
+contains a single range, it can use the range acceleration.</p>
+<p>Range acceleration is done by consulting a fragment offset table attached to
+the earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code> which contains offsets for all fragments past the first.
+This allows loading the fragment containing the first requested byte immediately
+rather than performing reads on the intermediate fragments.</p>
+</div>
+<div class="section" id="cache-write">
+<h3>Cache Write<a class="headerlink" href="#cache-write" title="Permalink to this headline">¶</a></h3>
+<p>Writing to the cache is handled by an instance of the class <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a>.
+This is a virtual connection which receives data and writes it to cache, acting
+as a sink. For a standard transaction data transfers between virtual connections
+(<em>VConns</em>) are handled by <a class="reference internal" href="data-structures.en.html#_CPPv410HttpTunnel" title="HttpTunnel"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HttpTunnel</span></code></a>. Writing to the cache is done
+by attaching a <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> instance as a tunnel consumer. It therefore operates
+in parallel with the virtual connection that transfers data to the client. The
+data does not flow to the cache and then to the client, it is split and goes
+both directions in parallel. This avoids any data synchronization issues between
+the two.</p>
+<div class="sidebar">
+<p class="first sidebar-title">Writing to disk</p>
+<p class="last">The actual write to disk is handled in a separate thread dedicated to I/O
+operations, the AIO threads. The cache logic marshals the data and then hands
+the operation off to the AIO thread which signals back once the operation
+completes.</p>
+</div>
+<p>While each <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> handles its transactions independently, they do interact
+at the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">volume</span></a> level as each <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> makes calls to
+the volume object to write its data to the volume content. The <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code>
+accumulates data internally until either the transaction is complete or the
+amount of data to write exceeds the target fragment size. In the former
+case the entire object is submitted to the volume to be written. In the latter
+case, a target fragment size amount of data is submitted and the <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code>
+continues to operate on subsequent data. The volume in turn places these write
+requests in an holding area called the <a class="reference internal" href="#id4">aggregation buffer</a>.</p>
+<p>For objects under the target fragment size, there is no consideration of order,
+the object is simply written to the volume content. For larger objects, the
+earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code> is written first and the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> written last. This
+provides some detection ability should the object be overwritten. Because of
+the nature of the write cursor no fragment after the first fragment (in the
+earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code>) can be overwritten without also overwriting that first
+fragment (since we know at the time the object was finalized in the cache the
+write cursor was at the position of the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is the responsibility of the <code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> to not submit writes that exceed
+the target fragment size.</p>
+</div>
+</div>
+<div class="section" id="update">
+<h3>Update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h3>
+<p>Cache write also covers the case where an existing object in the cache is
+modified. This occurs when:</p>
+<ul class="simple">
+<li>A conditional request is made to the origin server and a <code class="docutils literal notranslate"><span class="pre">304</span> <span class="pre">-</span> <span class="pre">Not</span> <span class="pre">Modified</span></code>
+response is received.</li>
+<li>An alternate of the object is retrieved from an <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin server</span></a> and
+added to the object.</li>
+<li>An alternate of the object is removed (e.g., due to a <code class="docutils literal notranslate"><span class="pre">DELETE</span></code> request).</li>
+</ul>
+<p>In every case the metadata for the object must be modified. Because Traffic Server never
+updates data already in the cache this means the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> will be written
+to the cache again and the volume directory entry updated. Because a client
+request has already been processed the first <code class="docutils literal notranslate"><span class="pre">Doc</span></code> has been read from cache
+and is in memory. The alternate vector is updated as appropriate (an entry
+added or removed, or changed to contain the new HTTP headers), and then written
+to disk. It is possible for multiple alternates to be updated by different
+<code class="docutils literal notranslate"><span class="pre">CacheVC</span></code> instances at the same time. The only contention is the first
+<code class="docutils literal notranslate"><span class="pre">Doc</span></code>; the rest of the data for each alternate is completely independent.</p>
+</div>
+<div class="section" id="aggregation-buffer">
+<span id="id4"></span><h3>Aggregation Buffer<a class="headerlink" href="#aggregation-buffer" title="Permalink to this headline">¶</a></h3>
+<p>Disk writes to cache are handled through an <em>aggregation buffer</em>. There is one
+for each <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance. To minimize the number of system calls data
+is written to disk in units of roughly <a class="reference internal" href="#target-fragment-size"><span class="std std-ref">target fragment size</span></a>
+bytes. The algorithm used is simple: data is piled up in the aggregation buffer
+until no more will fit without going over the target fragment size, at which
+point the buffer is written to disk and the volume directory entries for objects
+with data in the buffer are updated with the actual disk locations for those
+objects (which are determined by the write to disk action). After the buffer is
+written it is cleared and process repeats. There is a special lookup table for
+the aggregation buffer so that object lookup can find cache data in that memory.</p>
+<p>Because data in the aggregation buffer is visible to other parts of the cache,
+particularly <a class="reference internal" href="#id3">cache lookup</a>, there is no need to push a partially filled
+aggregation buffer to disk. In effect, any such data is memory cached until
+enough additional cache content arrives to fill the buffer.</p>
+<p>The target fragment size has little effect on small objects because the fragment
+size is used only to parcel out disk write operations. For larger objects the
+effect very significant as it causes those objects to be broken up in to
+fragments at different locations on in the volume. Each fragment write has its
+own entry in the volume directory which are computationally chained (each
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> is computed from the previous one). If possible, a fragment
+table is accumulated in the earliest <code class="docutils literal notranslate"><span class="pre">Doc</span></code> which has the offsets of the first
+byte for each fragment.</p>
+</div>
+<div class="section" id="evacuation-mechanics">
+<span id="id5"></span><h3>Evacuation Mechanics<a class="headerlink" href="#evacuation-mechanics" title="Permalink to this headline">¶</a></h3>
+<p>By default, the write cursor will overwrite (de facto evict from cache) objects
+as it proceeds once it has gone around the <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">cache stripe</span></a> at least once.
+In some cases this is not acceptable and the object is <em>evacuated</em> by reading
+it from the cache and then writing it back to cache which moves the physical
+storage of the object from in front of the write cursor to behind the write
+cursor. Objects that are evacuated are handled in this way based on data in
+stripe data structures (attached to the <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Vol</span></code></a> instance).</p>
+<p>Evacuation data structures are defined by dividing up the volume content into
+a disjoint and contiguous set of regions of <code class="docutils literal notranslate"><span class="pre">EVACUATION_BUCKET_SIZE</span></code> bytes.
+The <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol8evacuateE" title="Vol::evacuate"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evacuate</span></code></a> member is an array with an element for each
+evacuation region. Each element is a doubly linked list of <a class="reference internal" href="core-cache-functions.en.html#_CPPv415EvacuationBlock" title="EvacuationBlock"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EvacuationBlock</span></code></a>
+instances. Each instance contains a <a class="reference internal" href="#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a> that specifies the fragment
+to evacuate. It is assumed that an evacuation block is placed in the evacuation
+bucket (array element) that corresponds to the evacuation region in which the
+fragment is located although no ordering per bucket is enforced in the linked
+list (this sorting is handled during evacuation). Objects are evacuated by
+specifying the first or earliest fragment in the evacuation block. The
+evacuation operation will then continue the evacuation for subsequent fragments
+in the object by adding those fragments in evacuation blocks. Note that the
+actual evacuation of those fragments is delayed until the write cursor reaches
+the fragments, it is not necessarily done at the time the earliest fragment is
+evacuated.</p>
+<p>There are two types of evacuations: <em>reader based</em> and <em>forced</em>. The
+<code class="docutils literal notranslate"><span class="pre">EvacuationBlock</span></code> has a reader count to track this. If the reader count is
+zero, then it is a forced evacuation and the target, if it exists, will be
+evacuated when the write cursor gets close. If the reader value is non-zero
+then it is a count of entities that are currently expecting to be able to read
+the object. Readers increment the count when they require read access to the
+object, or create the <code class="docutils literal notranslate"><span class="pre">EvacuationBlock</span></code> with a count of 1. When a reader is
+finished with the object it decrements the count and removes the <code class="docutils literal notranslate"><span class="pre">EvacuationBlock</span></code>
+if the count goes to zero. If the <code class="docutils literal notranslate"><span class="pre">EvacuationBlock</span></code> already exists with a
+count of zero, the count is not modified and the number of readers is not
+tracked, so the evacuation is valid as long as the object exists.</p>
+<p>Evacuation is driven by cache writes, essentially in <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol8aggWriteE" title="Vol::aggWrite"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::aggWrite</span></code></a>.
+This method processes the pending cache virtual connections that are trying to
+write to the stripe. Some of these may be evacuation virtual connections. If so
+then the completion callback for that virtual connection is called as the data
+is put in to the aggregation buffer.</p>
+<p>When no more cache virtual connections can be processed (due to an empty queue
+or the aggregation buffer filling) then <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range</span></code></a> is called
+to clear the range to be overwritten plus an additional <a class="reference internal" href="core-cache-functions.en.html#c.EVACUATION_SIZE" title="EVACUATION_SIZE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">EVACUATION_SIZE</span></code></a>
+range. The buckets covering that range are checked. If there are any items in
+the buckets a new cache virtual connection (a <em>doc evacuator</em>) is created and
+used to read the evacuation item closest to the write cursor (i.e. with the
+smallest offset in the stripe) instead of the aggregation write proceeding. When
+the read completes it is checked for validity and if valid, the cache virtual
+connection for it is placed at the front of the write queue for the stripe and
+the write aggregation resumed.</p>
+<p>Before doing a write, the method <a class="reference internal" href="data-structures.en.html#_CPPv4N3Vol10evac_rangeE" title="Vol::evac_range"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Vol::evac_range()</span></code></a> is called to
+start an evacuation. If any fragments are found in the buckets in the range the
+earliest such fragment (smallest offset, closest to the write cursor) is
+selected and read from disk and the aggregation buffer write is suspended. The
+read is done via a cache virtual connection which also effectively serves as the
+read buffer. Once the read is complete, that cache virtual connection instance
+(the <em>doc evacuator</em>) is placed at the front of the stripe write queue and
+written out in turn. Because the fragment data is now in memory it is acceptable
+to overwrite the disk image.</p>
+<p>Note that when normal stripe writing is resumed, this same check is done again,
+each time evaluating (if needed) a fragment and queuing them for writing in turn.</p>
+<p>Updates to the directory are done when the write for the evacuated fragment
+completes. Multi-fragment objects are detected after the read completes for a
+fragment. If it is not the first fragment then the next fragment is marked for
+evacuation (which in turn, when it is read, will pull the subsequent fragment).
+The logic presumes that the end of the <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternate</span></a> is when the next key
+is not in the directory.</p>
+<p>This interacts with the <em>one at a time</em> strategy of the aggregation write logic.
+If a fragment is close to the fragment being evacuated, it may end up in the
+same evacuation bucket. Because the aggregation write checks every time for the
+next fragment to evacuate it will find that next fragment and evacuate it before
+it is overwritten.</p>
+</div>
+<div class="section" id="evacuation-operation">
+<span id="id6"></span><h3>Evacuation Operation<a class="headerlink" href="#evacuation-operation" title="Permalink to this headline">¶</a></h3>
+<p>The primary source of fragments to be evacuated are active fragments. That is,
+fragments which are currently open for reading or writing. This is tracked by
+the reader value in the evacuation blocks noted above.</p>
+<p>If object pinning is enabled, then a scan is done on a regular basis as the
+write cursor moves to detect pinned objects and mark them for evacuation.</p>
+<p>Fragments can also be evacuated through <em>hit evacuation</em>. This is configured by
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-hit-evacuate-percent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.hit_evacuate_percent</span></code></a> and
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-cache-hit-evacuate-size-limit" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.hit_evacuate_size_limit</span></code></a>. When a fragment is read it
+is checked to see if it is close and in front of the write cursor, close being
+less than the specified percent of the size of the stripe. If set at the default
+value of 10, then if the fragment is withing 10% of the size of the stripe, it
+is marked for evacuation. This is cleared if the write cursor passes through the
+fragment while it remains open (as all open objects are evacuated). If, when the
+object is closed, the fragment is still marked then it is placed in the
+appropriate evacuation bucket.</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="multiple-alternates" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>It could, under certain circumstances, be accurate for none of the alternates.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="cache-mult-value" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>The comment in earlier versions of the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> documentation
+which indicated that this value must be a power of two were, unfortunately,
+mistaken and have been corrected.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="cacheability-overrides" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td>The code appears to check <a class="reference internal" href="../../admin-guide/files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> in this logic by setting the
+<code class="docutils literal notranslate"><span class="pre">does_config_permit_lookup</span></code> in the <code class="docutils literal notranslate"><span class="pre">cache_info.directives</span></code> of the state
+machine instance but I can find no place where the value is used. The
+directive <code class="docutils literal notranslate"><span class="pre">does_config_permit_storing</span></code> is set and later checked so the
+directive (from the administrator point of view) is effective in preventing
+caching of the object.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cache-initialization.en.html" class="btn btn-neutral float-right" title="Cache Initialization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Cache Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

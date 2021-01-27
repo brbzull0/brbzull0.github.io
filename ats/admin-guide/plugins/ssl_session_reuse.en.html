@@ -1,0 +1,437 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SSL Session Reuse Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="System Stats Plugin" href="system_stats.en.html" />
+    <link rel="prev" title="SSL Headers Plugin" href="sslheaders.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>SSL Session Reuse Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/ssl_session_reuse.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ssl-session-reuse-plugin">
+<span id="admin-plugins-ssl-session-reuse"></span><h1>SSL Session Reuse Plugin<a class="headerlink" href="#ssl-session-reuse-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin coordinates session state data between ATS instances running in a group.  This should
+improve TLS session reuse (both ticket and ID based) for a set of machines fronted by some form of
+layer 4 connection load balancer.</p>
+<div class="section" id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>The plugin coordinates TLS session reuse for both Session ID based resumption and ticket based resumption.
+For Session ID base resumption in uses the ATS SSL Session Cache for the local store of TLS sessions.  It uses
+Redis to communication new sessions with its peers.  When a new session is seen by an ATS instances it
+publishes an encrypted copy of the session state to the local Redis channel.  When a new session is received
+on the Redis channel, the plugin stores that session state into its local ATS SSL session cache.  Once the
+session state is in the local ATS SSL session cache it is available to the openssl library for future TLS
+handshakes.</p>
+<p>For the ticket based session resumption, the plugin implements logic to decide on a Session Ticket Encryption Key (STEK)
+master.  The master will periodically create a new STEK key and use the Redis channel to publish the new STEK key
+to the other ATS boxes in the group.  When the plugin starts up, it will publish a Redis message requesting the master to
+resend the STEK key.  The plugin uses the TSSslTicketKeyUpdate call to update ATS with the last two STEK’s it has received.</p>
+<p>All communication over the Redis channel is encrypted with a preshared key.  All the ATS boxes participating in the session
+reuse must have access to that preshared key.</p>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<p>This plugin uses Redis for communication.  The hiredis client development library must be installed
+for this plugin to build.  It can be installed in the standard system location or the install location
+can be specified by the –with-hiredis argument to configure.</p>
+<p>As part of the experimental plugs, the –enable-experimental-plugins option must also be given to configure
+to build this plugin.</p>
+</div>
+<div class="section" id="deploying">
+<h2>Deploying<a class="headerlink" href="#deploying" title="Permalink to this headline">¶</a></h2>
+<p>The SSL Session Reuse plugin relies on Redis for communication.  To deploy build your own redis server or use a standard rpm
+package.  It must be installed on at least one box in the ATS group.  We have it installed on two boxes in a failover
+scenario.  The SSL Session Reuse configuration file describes how to communicate with the redis servers.</p>
+<ul class="simple">
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache</span></code></a> should be set to 2 to enable the ATS implementation of session cache</li>
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.size</span></code></a> and <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-num-buckets" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.num_buckets</span></code></a> may need to be adjusted to ensure good hash table performance for your workload.  For example, we needed to increase the number of buckets to avoid long hash chains.</li>
+<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-server-session-ticket-enable" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.session_ticket.enable</span></code></a> should be set to 1 to enable session ticket support.</li>
+</ul>
+</div>
+<div class="section" id="config-file">
+<h2>Config File<a class="headerlink" href="#config-file" title="Permalink to this headline">¶</a></h2>
+<p>SSL Session Reuse is a global plugin.  Its configuration file is given as a argument to the plugin.</p>
+<ul class="simple">
+<li>redis.RedisEndpoints - This is a comma separated list of Redis servers to connect to.  The description of the redis server may include a port</li>
+<li>redis.RedisConnectTimeout - Timeout on the redis connect attempt in milliseconds.</li>
+<li>redis.RedisRetryDelay - Timeout on retrying redis operations in milliseconds.</li>
+<li>pubconfig.PubNumWorkers - Number of worker threads.  Must be at least as many as the number of redis servers.</li>
+<li>pubconfig.PubRedisPublishTries - Number of times to attempt publishing data</li>
+<li>pubconfig.PubRedisConnectTries - Number of times to retry a redis connection attempt</li>
+<li>pubconfig.PubMaxQueuedMessages - Maximum number of undelivered messages to leave in the queue</li>
+<li>ssl_session.ClusterName - Name associated with the group of machines.  Used to form basis of the redis channel name, e.g. Pool1</li>
+<li>ssl_session.KeyUpdateInterval - How often to update the STEK key in seconds.</li>
+<li>ssl_session.STEKMaster - If set to 1, the machine will assume it is the STEK master on startup</li>
+<li>ssl_session.redis_auth_key_file - The location of the file containing the redis preshared secret.</li>
+<li>subconfig.SubColoChannel - The redis channels to subscribe to, e.g. Pool1.*</li>
+</ul>
+</div>
+<div class="section" id="example-config-file">
+<h2>Example Config File<a class="headerlink" href="#example-config-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#  Licensed to the Apache Software Foundation (ASF) under one</span>
+<span class="c1">#  or more contributor license agreements.  See the NOTICE file</span>
+<span class="c1">#  distributed with this work for additional information</span>
+<span class="c1">#  regarding copyright ownership.  The ASF licenses this file</span>
+<span class="c1">#  to you under the Apache License, Version 2.0 (the</span>
+<span class="c1">#  &quot;License&quot;); you may not use this file except in compliance</span>
+<span class="c1">#  with the License.  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#      http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+
+<span class="c1">#</span>
+<span class="c1">## start generic redis config parameters</span>
+<span class="c1"># endpoints</span>
+<span class="n">redis</span><span class="o">.</span><span class="n">RedisEndpoints</span><span class="o">=</span><span class="n">host1</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">6379</span><span class="p">,</span><span class="n">host2</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">6379</span>
+<span class="c1"># in milliseconds</span>
+<span class="n">redis</span><span class="o">.</span><span class="n">RedisConnectTimeout</span><span class="o">=</span><span class="mi">20000</span>
+<span class="c1"># in milliseconds</span>
+<span class="n">redis</span><span class="o">.</span><span class="n">RedisRetryDelay</span><span class="o">=</span><span class="mi">5000000</span>
+<span class="c1">## end generic redis config parameters</span>
+
+<span class="c1">## start pub config settings</span>
+<span class="n">pubconfig</span><span class="o">.</span><span class="n">PubNumWorkers</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">pubconfig</span><span class="o">.</span><span class="n">PubRedisPublishTries</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">pubconfig</span><span class="o">.</span><span class="n">PubRedisConnectTries</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">pubconfig</span><span class="o">.</span><span class="n">PubMaxQueuedMessages</span><span class="o">=</span><span class="mi">10000</span>
+<span class="n">pubconfig</span><span class="o">.</span><span class="n">PubColoChannelId</span><span class="o">=</span><span class="n">sja</span>
+<span class="c1">## end pub config settings</span>
+
+<span class="c1">## start subconfig settings</span>
+<span class="n">subconfig</span><span class="o">.</span><span class="n">SubColoChannel</span><span class="o">=</span><span class="n">sja</span><span class="o">.*</span>
+<span class="c1">## end subconfig settings</span>
+
+<span class="c1">#############################################################</span>
+<span class="c1"># This config file contains the starting values for the</span>
+<span class="c1">#  ATS plugin ats_ssl_session_reuse.</span>
+<span class="c1">#  Upon pkg install, settings may have been derived from yinst settings</span>
+<span class="c1">#############################################################</span>
+<span class="c1">## start ssl_session settings</span>
+<span class="n">ssl_session</span><span class="o">.</span><span class="n">ClusterName</span><span class="o">=</span><span class="n">sja</span>
+
+<span class="c1">#############################################################</span>
+<span class="c1"># session-ticket-encryption-key (STEK) configs</span>
+<span class="c1"># KeyUpdateInterval (in seconds)</span>
+<span class="c1">#  Specifies frequency of STEK rotation in POD, if I am STEK Master</span>
+<span class="c1">#  maximum is 86400 (24 hours),  default is 25200 (7 hours)</span>
+
+<span class="n">ssl_session</span><span class="o">.</span><span class="n">KeyUpdateInterval</span><span class="o">=</span><span class="mi">25200</span>
+
+<span class="c1"># STEKMaster= 1 (This instance will start as the STEK Master, initiating rotation)</span>
+<span class="c1">#          or 0 (start as STEK slave)</span>
+<span class="n">ssl_session</span><span class="o">.</span><span class="n">STEKMaster</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">ssl_session</span><span class="o">.</span><span class="n">redis_auth_key_file</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">key</span><span class="o">/</span><span class="n">file</span>
+
+<span class="c1">## end ssl_session settings</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="system_stats.en.html" class="btn btn-neutral float-right" title="System Stats Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sslheaders.en.html" class="btn btn-neutral float-left" title="SSL Headers Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -1,0 +1,821 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TSEvent &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSFetchWakeUpOptions" href="TSFetchWakeUpOptions.en.html" />
+    <link rel="prev" title="TSCacheScanResult" href="TSCacheScanResult.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">API Types</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="CoreTypes.en.html">System Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="SystemTypes.en.html">System Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheDataType.en.html">TSCacheDataType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheError.en.html">TSCacheError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheLookupResult.en.html">TSCacheLookupResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheScanResult.en.html">TSCacheScanResult</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TSEvent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSFetchWakeUpOptions.en.html">TSFetchWakeUpOptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHookID.en.html">TSHttpHookID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpStatus.en.html">TSHttpStatus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpType.en.html">TSHttpType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBuffersSizeIndex.en.html">TSIOBuffersSizeIndex</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSLookingUpType.en.html">TSLookingUpType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtTypes.en.html">TSMgmt</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSOverridableConfigKey.en.html">TSOverridableConfigKey</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSParseResult.en.html">TSParseResult</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordAccessType.en.html">TSRecordAccessType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordCheckType.en.html">TSRecordCheckType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordDataType.en.html">TSRecordDataType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordModeType.en.html">TSRecordModeType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordPersistType.en.html">TSRecordPersistType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordType.en.html">TSRecordType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecordUpdateType.en.html">TSRecordUpdateType</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSReturnCode.en.html">TSReturnCode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSServerState.en.html">TSServerState</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSStatPeristence.en.html">TSStatPersistence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSStatSync.en.html">TSStatSync</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadPool.en.html">TSThreadPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUuid.en.html">TSUuid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnCloseFlags.en.html">TSVConnCloseFlags</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../functions/index.en.html">API Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.en.html">API Types</a> &raquo;</li>
+        
+      <li>TSEvent</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/api/types/TSEvent.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tsevent">
+<h1>TSEvent<a class="headerlink" href="#tsevent" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/apidefs.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="type">
+<dt id="c.TSEvent">
+<code class="descname">TSEvent</code><a class="headerlink" href="#c.TSEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Enum typedef defining the possible events which may be passed to a continuation
+callback.</p>
+</div>
+<div class="section" id="enumeration-members">
+<h2>Enumeration Members<a class="headerlink" href="#enumeration-members" title="Permalink to this headline">¶</a></h2>
+<dl class="macro">
+<dt id="c.TS_EVENT_NONE">
+<code class="descname">TS_EVENT_NONE</code><a class="headerlink" href="#c.TS_EVENT_NONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_IMMEDIATE">
+<code class="descname">TS_EVENT_IMMEDIATE</code><a class="headerlink" href="#c.TS_EVENT_IMMEDIATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_TIMEOUT">
+<code class="descname">TS_EVENT_TIMEOUT</code><a class="headerlink" href="#c.TS_EVENT_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_ERROR">
+<code class="descname">TS_EVENT_ERROR</code><a class="headerlink" href="#c.TS_EVENT_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CONTINUE">
+<code class="descname">TS_EVENT_CONTINUE</code><a class="headerlink" href="#c.TS_EVENT_CONTINUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_READ_READY">
+<code class="descname">TS_EVENT_VCONN_READ_READY</code><a class="headerlink" href="#c.TS_EVENT_VCONN_READ_READY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_WRITE_READY">
+<code class="descname">TS_EVENT_VCONN_WRITE_READY</code><a class="headerlink" href="#c.TS_EVENT_VCONN_WRITE_READY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_READ_COMPLETE">
+<code class="descname">TS_EVENT_VCONN_READ_COMPLETE</code><a class="headerlink" href="#c.TS_EVENT_VCONN_READ_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_WRITE_COMPLETE">
+<code class="descname">TS_EVENT_VCONN_WRITE_COMPLETE</code><a class="headerlink" href="#c.TS_EVENT_VCONN_WRITE_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_EOS">
+<code class="descname">TS_EVENT_VCONN_EOS</code><a class="headerlink" href="#c.TS_EVENT_VCONN_EOS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_INACTIVITY_TIMEOUT">
+<code class="descname">TS_EVENT_VCONN_INACTIVITY_TIMEOUT</code><a class="headerlink" href="#c.TS_EVENT_VCONN_INACTIVITY_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_ACTIVE_TIMEOUT">
+<code class="descname">TS_EVENT_VCONN_ACTIVE_TIMEOUT</code><a class="headerlink" href="#c.TS_EVENT_VCONN_ACTIVE_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_START">
+<code class="descname">TS_EVENT_VCONN_START</code><a class="headerlink" href="#c.TS_EVENT_VCONN_START" title="Permalink to this definition">¶</a></dt>
+<dd><p>An inbound connection has started.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_VCONN_CLOSE">
+<code class="descname">TS_EVENT_VCONN_CLOSE</code><a class="headerlink" href="#c.TS_EVENT_VCONN_CLOSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>An inbound connection has closed.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_OUTBOUND_START">
+<code class="descname">TS_EVENT_OUTBOUND_START</code><a class="headerlink" href="#c.TS_EVENT_OUTBOUND_START" title="Permalink to this definition">¶</a></dt>
+<dd><p>An outbound connection has started.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_OUTBOUND_CLOSE">
+<code class="descname">TS_EVENT_OUTBOUND_CLOSE</code><a class="headerlink" href="#c.TS_EVENT_OUTBOUND_CLOSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>An outbound connection has closed.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_NET_CONNECT">
+<code class="descname">TS_EVENT_NET_CONNECT</code><a class="headerlink" href="#c.TS_EVENT_NET_CONNECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_NET_CONNECT_FAILED">
+<code class="descname">TS_EVENT_NET_CONNECT_FAILED</code><a class="headerlink" href="#c.TS_EVENT_NET_CONNECT_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_NET_ACCEPT">
+<code class="descname">TS_EVENT_NET_ACCEPT</code><a class="headerlink" href="#c.TS_EVENT_NET_ACCEPT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_NET_ACCEPT_FAILED">
+<code class="descname">TS_EVENT_NET_ACCEPT_FAILED</code><a class="headerlink" href="#c.TS_EVENT_NET_ACCEPT_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_206">
+<code class="descname">TS_EVENT_INTERNAL_206</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_206" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_207">
+<code class="descname">TS_EVENT_INTERNAL_207</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_207" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_208">
+<code class="descname">TS_EVENT_INTERNAL_208</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_208" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_209">
+<code class="descname">TS_EVENT_INTERNAL_209</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_209" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_210">
+<code class="descname">TS_EVENT_INTERNAL_210</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_210" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_211">
+<code class="descname">TS_EVENT_INTERNAL_211</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_211" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_212">
+<code class="descname">TS_EVENT_INTERNAL_212</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_212" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HOST_LOOKUP">
+<code class="descname">TS_EVENT_HOST_LOOKUP</code><a class="headerlink" href="#c.TS_EVENT_HOST_LOOKUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_OPEN_READ">
+<code class="descname">TS_EVENT_CACHE_OPEN_READ</code><a class="headerlink" href="#c.TS_EVENT_CACHE_OPEN_READ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_OPEN_READ_FAILED">
+<code class="descname">TS_EVENT_CACHE_OPEN_READ_FAILED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_OPEN_READ_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_OPEN_WRITE">
+<code class="descname">TS_EVENT_CACHE_OPEN_WRITE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_OPEN_WRITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_OPEN_WRITE_FAILED">
+<code class="descname">TS_EVENT_CACHE_OPEN_WRITE_FAILED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_OPEN_WRITE_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_REMOVE">
+<code class="descname">TS_EVENT_CACHE_REMOVE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_REMOVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_REMOVE_FAILED">
+<code class="descname">TS_EVENT_CACHE_REMOVE_FAILED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_REMOVE_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN">
+<code class="descname">TS_EVENT_CACHE_SCAN</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN_FAILED">
+<code class="descname">TS_EVENT_CACHE_SCAN_FAILED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN_OBJECT">
+<code class="descname">TS_EVENT_CACHE_SCAN_OBJECT</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN_OBJECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN_OPERATION_BLOCKED">
+<code class="descname">TS_EVENT_CACHE_SCAN_OPERATION_BLOCKED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN_OPERATION_BLOCKED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN_OPERATION_FAILED">
+<code class="descname">TS_EVENT_CACHE_SCAN_OPERATION_FAILED</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN_OPERATION_FAILED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_SCAN_DONE">
+<code class="descname">TS_EVENT_CACHE_SCAN_DONE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_SCAN_DONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_LOOKUP">
+<code class="descname">TS_EVENT_CACHE_LOOKUP</code><a class="headerlink" href="#c.TS_EVENT_CACHE_LOOKUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_READ">
+<code class="descname">TS_EVENT_CACHE_READ</code><a class="headerlink" href="#c.TS_EVENT_CACHE_READ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_DELETE">
+<code class="descname">TS_EVENT_CACHE_DELETE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_DELETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_WRITE">
+<code class="descname">TS_EVENT_CACHE_WRITE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_WRITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_WRITE_HEADER">
+<code class="descname">TS_EVENT_CACHE_WRITE_HEADER</code><a class="headerlink" href="#c.TS_EVENT_CACHE_WRITE_HEADER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_CLOSE">
+<code class="descname">TS_EVENT_CACHE_CLOSE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_CLOSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_LOOKUP_READY">
+<code class="descname">TS_EVENT_CACHE_LOOKUP_READY</code><a class="headerlink" href="#c.TS_EVENT_CACHE_LOOKUP_READY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_LOOKUP_COMPLETE">
+<code class="descname">TS_EVENT_CACHE_LOOKUP_COMPLETE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_LOOKUP_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_READ_READY">
+<code class="descname">TS_EVENT_CACHE_READ_READY</code><a class="headerlink" href="#c.TS_EVENT_CACHE_READ_READY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_CACHE_READ_COMPLETE">
+<code class="descname">TS_EVENT_CACHE_READ_COMPLETE</code><a class="headerlink" href="#c.TS_EVENT_CACHE_READ_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_1200">
+<code class="descname">TS_EVENT_INTERNAL_1200</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_1200" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_AIO_EVENT_DONE">
+<code class="descname">TS_AIO_EVENT_DONE</code><a class="headerlink" href="#c.TS_AIO_EVENT_DONE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_CONTINUE">
+<code class="descname">TS_EVENT_HTTP_CONTINUE</code><a class="headerlink" href="#c.TS_EVENT_HTTP_CONTINUE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_ERROR">
+<code class="descname">TS_EVENT_HTTP_ERROR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_ERROR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_READ_REQUEST_HDR">
+<code class="descname">TS_EVENT_HTTP_READ_REQUEST_HDR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_READ_REQUEST_HDR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_OS_DNS">
+<code class="descname">TS_EVENT_HTTP_OS_DNS</code><a class="headerlink" href="#c.TS_EVENT_HTTP_OS_DNS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_SEND_REQUEST_HDR">
+<code class="descname">TS_EVENT_HTTP_SEND_REQUEST_HDR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_SEND_REQUEST_HDR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_READ_CACHE_HDR">
+<code class="descname">TS_EVENT_HTTP_READ_CACHE_HDR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_READ_CACHE_HDR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_READ_RESPONSE_HDR">
+<code class="descname">TS_EVENT_HTTP_READ_RESPONSE_HDR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_READ_RESPONSE_HDR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_SEND_RESPONSE_HDR">
+<code class="descname">TS_EVENT_HTTP_SEND_RESPONSE_HDR</code><a class="headerlink" href="#c.TS_EVENT_HTTP_SEND_RESPONSE_HDR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_REQUEST_TRANSFORM">
+<code class="descname">TS_EVENT_HTTP_REQUEST_TRANSFORM</code><a class="headerlink" href="#c.TS_EVENT_HTTP_REQUEST_TRANSFORM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_RESPONSE_TRANSFORM">
+<code class="descname">TS_EVENT_HTTP_RESPONSE_TRANSFORM</code><a class="headerlink" href="#c.TS_EVENT_HTTP_RESPONSE_TRANSFORM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_SELECT_ALT">
+<code class="descname">TS_EVENT_HTTP_SELECT_ALT</code><a class="headerlink" href="#c.TS_EVENT_HTTP_SELECT_ALT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_TXN_START">
+<code class="descname">TS_EVENT_HTTP_TXN_START</code><a class="headerlink" href="#c.TS_EVENT_HTTP_TXN_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_TXN_CLOSE">
+<code class="descname">TS_EVENT_HTTP_TXN_CLOSE</code><a class="headerlink" href="#c.TS_EVENT_HTTP_TXN_CLOSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_SSN_START">
+<code class="descname">TS_EVENT_HTTP_SSN_START</code><a class="headerlink" href="#c.TS_EVENT_HTTP_SSN_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_SSN_CLOSE">
+<code class="descname">TS_EVENT_HTTP_SSN_CLOSE</code><a class="headerlink" href="#c.TS_EVENT_HTTP_SSN_CLOSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_CACHE_LOOKUP_COMPLETE">
+<code class="descname">TS_EVENT_HTTP_CACHE_LOOKUP_COMPLETE</code><a class="headerlink" href="#c.TS_EVENT_HTTP_CACHE_LOOKUP_COMPLETE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_PRE_REMAP">
+<code class="descname">TS_EVENT_HTTP_PRE_REMAP</code><a class="headerlink" href="#c.TS_EVENT_HTTP_PRE_REMAP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_HTTP_POST_REMAP">
+<code class="descname">TS_EVENT_HTTP_POST_REMAP</code><a class="headerlink" href="#c.TS_EVENT_HTTP_POST_REMAP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_PORTS_INITIALIZED">
+<code class="descname">TS_EVENT_LIFECYCLE_PORTS_INITIALIZED</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_PORTS_INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd><p>The internal data structures for the proxy ports have been initialized.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_PORTS_READY">
+<code class="descname">TS_EVENT_LIFECYCLE_PORTS_READY</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_PORTS_READY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The proxy ports are now open for inbound connections.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_CACHE_READY">
+<code class="descname">TS_EVENT_LIFECYCLE_CACHE_READY</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_CACHE_READY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cache is ready.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_SERVER_SSL_CTX_INITIALIZED">
+<code class="descname">TS_EVENT_LIFECYCLE_SERVER_SSL_CTX_INITIALIZED</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_SERVER_SSL_CTX_INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_CLIENT_SSL_CTX_INITIALIZED">
+<code class="descname">TS_EVENT_LIFECYCLE_CLIENT_SSL_CTX_INITIALIZED</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_CLIENT_SSL_CTX_INITIALIZED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_MSG">
+<code class="descname">TS_EVENT_LIFECYCLE_MSG</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_MSG" title="Permalink to this definition">¶</a></dt>
+<dd><p>A message from an external source has arrived.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_TASK_THREADS_READY">
+<code class="descname">TS_EVENT_LIFECYCLE_TASK_THREADS_READY</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_TASK_THREADS_READY" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">ET_TASK</span></code> threads are running.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_LIFECYCLE_SHUTDOWN">
+<code class="descname">TS_EVENT_LIFECYCLE_SHUTDOWN</code><a class="headerlink" href="#c.TS_EVENT_LIFECYCLE_SHUTDOWN" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Traffic Server process has is shutting down.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_60200">
+<code class="descname">TS_EVENT_INTERNAL_60200</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_60200" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_60201">
+<code class="descname">TS_EVENT_INTERNAL_60201</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_60201" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_INTERNAL_60202">
+<code class="descname">TS_EVENT_INTERNAL_60202</code><a class="headerlink" href="#c.TS_EVENT_INTERNAL_60202" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_SSL_CERT">
+<code class="descname">TS_EVENT_SSL_CERT</code><a class="headerlink" href="#c.TS_EVENT_SSL_CERT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Preparing to present a server certificate to an inbound TLS connection.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_SSL_SERVERNAME">
+<code class="descname">TS_EVENT_SSL_SERVERNAME</code><a class="headerlink" href="#c.TS_EVENT_SSL_SERVERNAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>The SNI name for an Inbound TLS connection has become available.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_SSL_VERIFY_SERVER">
+<code class="descname">TS_EVENT_SSL_VERIFY_SERVER</code><a class="headerlink" href="#c.TS_EVENT_SSL_VERIFY_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outbound TLS connection certificate verification (verifying the server certificate).</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_SSL_VERIFY_CLIENT">
+<code class="descname">TS_EVENT_SSL_VERIFY_CLIENT</code><a class="headerlink" href="#c.TS_EVENT_SSL_VERIFY_CLIENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inbound TLS connection certificate verification (verifying the client certificate).</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.TS_EVENT_MGMT_UPDATE">
+<code class="descname">TS_EVENT_MGMT_UPDATE</code><a class="headerlink" href="#c.TS_EVENT_MGMT_UPDATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>These are the event types used to drive continuations in the event system.</p>
+<dl class="type">
+<dt id="c.EventType">
+<code class="descname">EventType</code><a class="headerlink" href="#c.EventType" title="Permalink to this definition">¶</a></dt>
+<dd><p>The basic category of an event.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.EVENT_NONE">
+<code class="descname">EVENT_NONE</code><a class="headerlink" href="#c.EVENT_NONE" title="Permalink to this definition">¶</a></dt>
+<dd><p>A non-specific event.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.EVENT_IMMEDIATE">
+<code class="descname">EVENT_IMMEDIATE</code><a class="headerlink" href="#c.EVENT_IMMEDIATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>A direct event that is not based on an external event.</p>
+</dd></dl>
+
+<dl class="macro">
+<dt id="c.EVENT_INTERVAL">
+<code class="descname">EVENT_INTERVAL</code><a class="headerlink" href="#c.EVENT_INTERVAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>An event generated by a time based event.</p>
+</dd></dl>
+
+<dl class="var">
+<dt id="_CPPv415EVENT_IMMEDIATE">
+<span id="_CPPv315EVENT_IMMEDIATE"></span><span id="_CPPv215EVENT_IMMEDIATE"></span><span id="EVENT_IMMEDIATE__EventType"></span><a class="reference internal" href="../../threads-and-events.en.html#_CPPv49EventType" title="EventType">EventType</a> <code class="descname">EVENT_IMMEDIATE</code><a class="headerlink" href="#_CPPv415EVENT_IMMEDIATE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference internal" href="#c.EVENT_IMMEDIATE" title="EVENT_IMMEDIATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">EVENT_IMMEDIATE</span></code></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="TSFetchWakeUpOptions.en.html" class="btn btn-neutral float-right" title="TSFetchWakeUpOptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSCacheScanResult.en.html" class="btn btn-neutral float-left" title="TSCacheScanResult" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

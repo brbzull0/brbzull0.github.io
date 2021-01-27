@@ -1,0 +1,429 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Host Resolution Proposal &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="An Overview Client Sessions and Transactions" href="client-session-architecture.en.html" />
+    <link rel="prev" title="Documenting Plugins" href="documentation/plugins.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Host Resolution Proposal</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#goals">Goals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#basics">Basics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#required-resolvers">Required Resolvers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#issues">Issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#request-object-allocation">Request object allocation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#plugin-resolvers">Plugin resolvers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feedback">Feedback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+      <li>Host Resolution Proposal</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/developer-guide/host-resolution-proposal.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="host-resolution-proposal">
+<h1>Host Resolution Proposal<a class="headerlink" href="#host-resolution-proposal" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The current mechanism for resolving host names to IP addresses for Traffic Server is contained the HostDB and DNS
+libraries. These take hostnames and provide IP addresses for them.</p>
+<p>The current implementation is generally considered inadequate, both from a functionality point of view and difficulty in
+working with it in other parts of Traffic Server. As Traffic Server is used in more complex situations this inadequacy
+presents increasing problems.</p>
+</div>
+<div class="section" id="goals">
+<h2>Goals<a class="headerlink" href="#goals" title="Permalink to this headline">¶</a></h2>
+<p>Updating the host name resolution (currently referred to as “HostDB”) has several functions goals</p>
+<ul class="simple">
+<li>Enable additional processing layers to be easily added.</li>
+<li>Enable plugins to directly access the name resolution logic</li>
+<li>Enable plugins to provide name resolution</li>
+<li>Asynchronous (immediate resolve or callback on block)</li>
+<li>Minimize allocations – in particular no allocations for cached resolutions</li>
+<li>Simplify interactions with the resolution, particularly with regard to nameservers, origin server failover, and
+address family handling.</li>
+</ul>
+<p>It is also necessary to support a number of specific features that are either currently available or strongly desired.</p>
+<ul class="simple">
+<li>SplitDNS or its equivalent</li>
+<li>Use of a hosts file (e.g. <code class="docutils literal notranslate"><span class="pre">/etc/hosts</span></code>)</li>
+<li>Simultaneous IPv4 and IPv6 queries</li>
+<li>IP family control</li>
+<li>Negative caching
+*  Server connection failures
+*  Query failures
+*  Nameserver failures.</li>
+<li>Address validity time out control</li>
+<li>Address round robin support</li>
+<li>SRV record support (weighted records)</li>
+<li>Nameserver round robin</li>
+<li>Plugin access to nameserver data (add, remove, enumerate)</li>
+<li>Plugin provision of resolvers.</li>
+<li>Hooks for plugin detection / recovery from resolution events.</li>
+</ul>
+<p>One issue is persistence of the cached resolutions. This creates problems for the current implementation (because of
+size limits it imposes on the cached data) but also allows for quicker restarts in a busy environment.</p>
+</div>
+<div class="section" id="basics">
+<h2>Basics<a class="headerlink" href="#basics" title="Permalink to this headline">¶</a></h2>
+<p>The basic design is to separate the functionality into chainable layers so that a resolver with the desired attributes
+can be assembled from those layers. The core interface is that of a lazy iterator. This object returns one of four
+results when asked for an address</p>
+<ul class="simple">
+<li>An IP address</li>
+<li>Done(no more addresses are available)</li>
+<li>Wait(an address may be available in the future)</li>
+<li>Fail (no address is available and none will be so in the future)</li>
+</ul>
+<p>Each layer (except the bottom) uses this API and also provides it. This enables higher level logic such as the state
+machine to simply use the resolver as a list without having to backtrack states in the case of failures, or have special
+cases for different resolution sources.</p>
+<p>To perform a resolution, a client creates a query object (potentially on the stack), initializes it with the required
+data (at least the hostname) and then starts the resolution. Methods on the query object allow its state and IP address
+data to be accessed.</p>
+</div>
+<div class="section" id="required-resolvers">
+<h2>Required Resolvers<a class="headerlink" href="#required-resolvers" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Nameserver</dt>
+<dd>A bottom level resolver that directly queries a nameserver for DNS data. This contains much of the functionality
+currently in the <code class="docutils literal notranslate"><span class="pre">iocore/dns</span></code> directory.</dd>
+<dt>SplitDNS</dt>
+<dd>A resolver that directs requests to one of several resolvers. To emulate current behavior these would be Nameserver
+instances.</dd>
+<dt>NameserverGroup</dt>
+<dd>A grouping mechanism for Nameserver instances that provides failover, round robin, and ordering capabilities. It may be
+reasonable to merge this with the SplitDNS resolver.</dd>
+<dt>HostFile</dt>
+<dd>A resolver that uses a local file to resolve names.</dd>
+<dt>AddressCache</dt>
+<dd>A resolver that also has a cache for resolution results. It requires another resolver instance to perform the actual
+resolution.</dd>
+<dt>Preloaded</dt>
+<dd>A resolver that can contain one or more explicitly set IP addresses which are returned. When those are exhausted it
+falls back to another resolver.</dd>
+</dl>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>To configuration the resolution, each resolver would be assigned a tag. It is not, however, sufficient to simply provide
+the list of resolver tags because some resolvers require additional configuration. Unfortunately this will likely
+require a separate configuration file outside of <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, although we would be able to remove
+<a class="reference internal" href="../admin-guide/files/splitdns.config.en.html#std:configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a>. In this case we would need chain start / end markers around a list of resolver tags. Each tag
+would the be able to take additional resolver configuration data. For instance, for a SplitDNS resolver the nameservers.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Transparent operations would benefit from the <em>Preloaded</em> resolver. This would be loaded with the origin host address
+provided by the client connection. This could be done early in processing and then no more logic would be required to
+skip DNS processing as it would happen without additional action by the state machine. It would handle the problem of de
+facto denial of service if an origin server becomes unavailable in that configuration, as <em>Preloaded</em> would switch to
+alternate addresses automatically.</p>
+<p>Adding host file access would be easier as well, as it could be done in a much more modular fashion and then added to
+the stack at configuration time. Whether such addresses were cached would be controlled by chain arrangement rather yet
+more configuration knobs.</p>
+<p>The default configuration would be <em>Preloaded</em> : <em>AddressCache</em> : <em>Nameserver</em>.</p>
+<p>In all cases the state machine makes requests against the request object to get IP addresses as needed.</p>
+</div>
+<div class="section" id="issues">
+<h2>Issues<a class="headerlink" href="#issues" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="request-object-allocation">
+<h3>Request object allocation<a class="headerlink" href="#request-object-allocation" title="Permalink to this headline">¶</a></h3>
+<p>The biggest hurdle is being able to unwind a resolver chain when a block is encountered. There are some ways to deal with this.</p>
+<p>1) Set a maximum resolver chain length and declare the request instance so that there is storage for state for that many
+resolvers. If needed and additional value of maximum storage per chain could be set as well. The expected number of
+elements in a chain is expected to be limited, 10 would likely be a reasonable limit. If settable at source
+configuration time this should be sufficient.</p>
+<p>2) Embed class allocators in resolver chains and mark the top / outermost / first resolver. The maximum state size for a
+resolution can be calculated when the chain is created and then the top level resolver can use an allocation pool to
+efficiently allocate request objects. This has an advantage that with a wrapper class the request object can be passed
+along cheaply. Whether that’s an advantage in practice is unclear.</p>
+</div>
+<div class="section" id="plugin-resolvers">
+<h3>Plugin resolvers<a class="headerlink" href="#plugin-resolvers" title="Permalink to this headline">¶</a></h3>
+<p>If plugins can provide resolvers, how can these can integrated in to existing resolver chains for use by the HTTP SM for
+instance?</p>
+</div>
+<div class="section" id="feedback">
+<h3>Feedback<a class="headerlink" href="#feedback" title="Permalink to this headline">¶</a></h3>
+<p>It should be possible for a client to provide feedback about addresses (e.g., the origin server at this address is not
+available). Not all resolvers will handle feedback but some will and that must be possible.</p>
+<p>Related to this is that caching resolvers (such as <em>AddressCache</em>) must be able to iterator over all resolved addresses
+even if their client does not ask for them. In effect they must background fill the address data.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="client-session-architecture.en.html" class="btn btn-neutral float-right" title="An Overview Client Sessions and Transactions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="documentation/plugins.en.html" class="btn btn-neutral float-left" title="Documenting Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

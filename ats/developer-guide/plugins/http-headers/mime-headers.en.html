@@ -1,0 +1,1277 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MIME Headers &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Marshal Buffers" href="marshal-buffers.en.html" />
+    <link rel="prev" title="Header Functions" href="header-functions.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.en.html">IO</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">HTTP Headers</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="trafficserver-http-header-system.en.html">Traffic Server HTTP Header System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header-functions.en.html">Header Functions</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">MIME Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="marshal-buffers.en.html">Marshal Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="urls.en.html">URLs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Plugin Development</a> &raquo;</li>
+        
+          <li><a href="index.en.html">HTTP Headers</a> &raquo;</li>
+        
+      <li>MIME Headers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/plugins/http-headers/mime-headers.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mime-headers">
+<span id="developer-plugins-http-headers-mime-headers"></span><h1>MIME Headers<a class="headerlink" href="#mime-headers" title="Permalink to this headline">¶</a></h1>
+<p>The Traffic Server **MIME header functions ** enable you to retrieve
+and modify information about HTTP MIME fields.</p>
+<p>An HTTP request or response consists of a header, body, and trailer. The
+<strong>HTTP</strong> <strong>header</strong> contains a request (or response) line and a MIME
+header. A <strong>MIME</strong> <strong>header</strong> is composed of zero or more MIME fields. A
+<strong>MIME</strong> <strong>field</strong> is composed of a field name, a colon, and zero or
+more field values (values in a field are separated by commas).</p>
+<p>In the example below: <code class="docutils literal notranslate"><span class="pre">Foo</span></code> is the MIME field name, <code class="docutils literal notranslate"><span class="pre">bar</span></code> is the
+first MIME field value, and <code class="docutils literal notranslate"><span class="pre">car</span></code> is the second MIME field value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Foo</span><span class="p">:</span> <span class="n">bar</span><span class="p">,</span> <span class="n">car</span>
+</pre></div>
+</div>
+<p>The following example is an augmented <strong>Backus-Naur Form</strong> (BNF) for the
+form of a MIME header - it specifies exactly what was described above. A
+<strong>header</strong> consists of zero or more <strong>fields</strong> that contain a name,
+separating colon, and zero or more values. A <strong>name</strong> or <strong>value</strong> is
+simply a string of tokens that is potentially zero length; a <strong>token</strong>
+is any character except certain control characters and separators (such
+as colons). For the purpose of retrieving a field, field names are not
+case-sensitive; therefore, the field names <code class="docutils literal notranslate"><span class="pre">Foo</span></code>, <code class="docutils literal notranslate"><span class="pre">foo</span></code> and <code class="docutils literal notranslate"><span class="pre">fOO</span></code>
+are all equivalent.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MIME</span><span class="o">-</span><span class="n">header</span> <span class="o">=</span> <span class="o">*</span><span class="n">MIME</span><span class="o">-</span><span class="n">field</span>
+<span class="n">MIME</span><span class="o">-</span><span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">-</span><span class="n">name</span> <span class="s2">&quot;:&quot;</span> <span class="c1">#field-value</span>
+<span class="n">field</span><span class="o">-</span><span class="n">name</span> <span class="o">=</span> <span class="o">*</span><span class="n">token</span>
+<span class="n">field</span><span class="o">-</span><span class="n">value</span> <span class="o">=</span> <span class="o">*</span><span class="n">token</span>
+</pre></div>
+</div>
+<p>The MIME header data structure is a parsed version of a standard
+Internet MIME header. The MIME header data structure is similar to the
+URL data structure (see <a class="reference internal" href="urls.en.html"><span class="doc">URLs</span></a>). The actual data is stored in a
+marshal buffer; the MIME header functions operate on a marshal buffer
+and a location (<code class="docutils literal notranslate"><span class="pre">TSMLoc</span></code>) within the buffer.</p>
+<p>After a call to <code class="docutils literal notranslate"><span class="pre">TSMimeHdrFieldDestroy</span></code> or <code class="docutils literal notranslate"><span class="pre">TSMimeHdrFieldRemove</span></code> is
+made, you must deallocate the <code class="docutils literal notranslate"><span class="pre">TSMLoc</span></code> handle with a call to
+<code class="docutils literal notranslate"><span class="pre">TSHandleMLocRelease</span></code>. You do not need to deallocate a <code class="docutils literal notranslate"><span class="pre">NULL</span></code> handles.
+For example: if you call <code class="docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueStringGet</span></code> to get the value of
+the content type field and the field does not exist, then it returns
+<code class="docutils literal notranslate"><span class="pre">TS_NULL_MLOC</span></code>. In such a case, you wouldn’t need to deallocate the handle
+with a call to <code class="docutils literal notranslate"><span class="pre">TSHandleMLocRelease</span></code>.</p>
+<p>The location (<code class="docutils literal notranslate"><span class="pre">TSMLoc</span></code>) in the <a class="reference internal" href="#mimeheaderfxns"><span class="std std-ref">MIME header
+functions</span></a> can be either an HTTP header location or
+a MIME header location. If an HTTP header location is passed to these
+functions, then the system locates the MIME header associated with that
+HTTP header and executes the corresponding MIME header operations
+specified by the functions (see the example in the description of
+<a class="reference internal" href="../../api/functions/TSMimeHdrCopy.en.html#c.TSMimeHdrCopy" title="TSMimeHdrCopy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrCopy()</span></code></a>).</p>
+<p><strong>Note:</strong> MIME headers may contain more than one MIME field with the
+same name. Previous versions of Traffic Server joined multiple fields
+with the same name into one field with composite values, but this
+behavior came at a performance cost and caused compatibility issues with
+older clients and servers. Hence, the current version of Traffic Server
+does not coalesce duplicate fields. Correctly-behaving plugins should
+check for the presence of duplicate fields and iterate over the
+duplicate fields by using <code class="docutils literal notranslate"><span class="pre">TSMimeHdrFieldNextDup</span></code>.</p>
+<p>To facilitate fast comparisons and reduce storage size, Traffic Server
+defines several pre-allocated field names. These field names correspond
+to the field names in HTTP and NNTP headers.</p>
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_ACCEPT">
+const char* <code class="descname">TS_MIME_FIELD_ACCEPT</code><a class="headerlink" href="#c.TS_MIME_FIELD_ACCEPT" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Accept&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ACCEPT">
+int <code class="descname">TS_MIME_LEN_ACCEPT</code><a class="headerlink" href="#c.TS_MIME_LEN_ACCEPT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_ACCEPT_CHARSET">
+const char* <code class="descname">TS_MIME_FIELD_ACCEPT_CHARSET</code><a class="headerlink" href="#c.TS_MIME_FIELD_ACCEPT_CHARSET" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Accept-Charset&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ACCEPT_CHARSET">
+int <code class="descname">TS_MIME_LEN_ACCEPT_CHARSET</code><a class="headerlink" href="#c.TS_MIME_LEN_ACCEPT_CHARSET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_ACCEPT_ENCODING">
+const char* <code class="descname">TS_MIME_FIELD_ACCEPT_ENCODING</code><a class="headerlink" href="#c.TS_MIME_FIELD_ACCEPT_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Accept-Encoding&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ACCEPT_ENCODING">
+int <code class="descname">TS_MIME_LEN_ACCEPT_ENCODING</code><a class="headerlink" href="#c.TS_MIME_LEN_ACCEPT_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_ACCEPT_LANGUAGE">
+const char* <code class="descname">TS_MIME_FIELD_ACCEPT_LANGUAGE</code><a class="headerlink" href="#c.TS_MIME_FIELD_ACCEPT_LANGUAGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Accept-Language&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ACCEPT_LANGUAGE">
+int <code class="descname">TS_MIME_LEN_ACCEPT_LANGUAGE</code><a class="headerlink" href="#c.TS_MIME_LEN_ACCEPT_LANGUAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_ACCEPT_RANGES">
+const char* <code class="descname">TS_MIME_FIELD_ACCEPT_RANGES</code><a class="headerlink" href="#c.TS_MIME_FIELD_ACCEPT_RANGES" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Accept-Ranges&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ACCEPT_RANGES">
+int <code class="descname">TS_MIME_LEN_ACCEPT_RANGES</code><a class="headerlink" href="#c.TS_MIME_LEN_ACCEPT_RANGES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELD_AGE">
+const char* <code class="descname">TS_MIME_FIELD_AGE</code><a class="headerlink" href="#c.TS_MIME_FIELD_AGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Age&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_AGE">
+int <code class="descname">TS_MIME_LEN_AGE</code><a class="headerlink" href="#c.TS_MIME_LEN_AGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDALLOW">
+const char* <code class="descname">TS_MIME_FIELDALLOW</code><a class="headerlink" href="#c.TS_MIME_FIELDALLOW" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Allow&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ALLOW">
+int <code class="descname">TS_MIME_LEN_ALLOW</code><a class="headerlink" href="#c.TS_MIME_LEN_ALLOW" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDAPPROVED">
+const char* <code class="descname">TS_MIME_FIELDAPPROVED</code><a class="headerlink" href="#c.TS_MIME_FIELDAPPROVED" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Approved&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_APPROVED">
+int <code class="descname">TS_MIME_LEN_APPROVED</code><a class="headerlink" href="#c.TS_MIME_LEN_APPROVED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDAUTHORIZATION">
+const char* <code class="descname">TS_MIME_FIELDAUTHORIZATION</code><a class="headerlink" href="#c.TS_MIME_FIELDAUTHORIZATION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Authorization&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_AUTHORIZATION">
+int <code class="descname">TS_MIME_LEN_AUTHORIZATION</code><a class="headerlink" href="#c.TS_MIME_LEN_AUTHORIZATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDBYTES">
+const char* <code class="descname">TS_MIME_FIELDBYTES</code><a class="headerlink" href="#c.TS_MIME_FIELDBYTES" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Bytes&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_BYTES">
+int <code class="descname">TS_MIME_LEN_BYTES</code><a class="headerlink" href="#c.TS_MIME_LEN_BYTES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCACHE_CONTROL">
+const char* <code class="descname">TS_MIME_FIELDCACHE_CONTROL</code><a class="headerlink" href="#c.TS_MIME_FIELDCACHE_CONTROL" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Cache-Control&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CACHE_CONTROL">
+int <code class="descname">TS_MIME_LEN_CACHE_CONTROL</code><a class="headerlink" href="#c.TS_MIME_LEN_CACHE_CONTROL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCLIENT_IP">
+const char* <code class="descname">TS_MIME_FIELDCLIENT_IP</code><a class="headerlink" href="#c.TS_MIME_FIELDCLIENT_IP" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Client-ip&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CLIENT_IP">
+int <code class="descname">TS_MIME_LEN_CLIENT_IP</code><a class="headerlink" href="#c.TS_MIME_LEN_CLIENT_IP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONNECTION">
+const char* <code class="descname">TS_MIME_FIELDCONNECTION</code><a class="headerlink" href="#c.TS_MIME_FIELDCONNECTION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Connection&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONNECTION">
+int <code class="descname">TS_MIME_LEN_CONNECTION</code><a class="headerlink" href="#c.TS_MIME_LEN_CONNECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_BASE">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_BASE</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_BASE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Base&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_BASE">
+int <code class="descname">TS_MIME_LEN_CONTENT_BASE</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_BASE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_ENCODING">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_ENCODING</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Encoding&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_ENCODING">
+int <code class="descname">TS_MIME_LEN_CONTENT_ENCODING</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_LANGUAGE">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_LANGUAGE</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_LANGUAGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Language&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_LANGUAGE">
+int <code class="descname">TS_MIME_LEN_CONTENT_LANGUAGE</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_LANGUAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_LENGTH">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_LENGTH</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Length&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_LENGTH">
+int <code class="descname">TS_MIME_LEN_CONTENT_LENGTH</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_LOCATION">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_LOCATION</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_LOCATION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Location&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_LOCATION">
+int <code class="descname">TS_MIME_LEN_CONTENT_LOCATION</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_LOCATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_MD5">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_MD5</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_MD5" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-MD5&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_MD5">
+int <code class="descname">TS_MIME_LEN_CONTENT_MD5</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_MD5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_RANGE">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_RANGE</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_RANGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Range&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_RANGE">
+int <code class="descname">TS_MIME_LEN_CONTENT_RANGE</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_RANGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTENT_TYPE">
+const char* <code class="descname">TS_MIME_FIELDCONTENT_TYPE</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTENT_TYPE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Content-Type&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTENT_TYPE">
+int <code class="descname">TS_MIME_LEN_CONTENT_TYPE</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTENT_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCONTROL">
+const char* <code class="descname">TS_MIME_FIELDCONTROL</code><a class="headerlink" href="#c.TS_MIME_FIELDCONTROL" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Control&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_CONTROL">
+int <code class="descname">TS_MIME_LEN_CONTROL</code><a class="headerlink" href="#c.TS_MIME_LEN_CONTROL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDCOOKIE">
+const char* <code class="descname">TS_MIME_FIELDCOOKIE</code><a class="headerlink" href="#c.TS_MIME_FIELDCOOKIE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Cookie&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_COOKIE">
+int <code class="descname">TS_MIME_LEN_COOKIE</code><a class="headerlink" href="#c.TS_MIME_LEN_COOKIE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDDATE">
+const char* <code class="descname">TS_MIME_FIELDDATE</code><a class="headerlink" href="#c.TS_MIME_FIELDDATE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Date&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_DATE">
+int <code class="descname">TS_MIME_LEN_DATE</code><a class="headerlink" href="#c.TS_MIME_LEN_DATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDDISTRIBUTION">
+const char* <code class="descname">TS_MIME_FIELDDISTRIBUTION</code><a class="headerlink" href="#c.TS_MIME_FIELDDISTRIBUTION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Distribution&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_DISTRIBUTION">
+int <code class="descname">TS_MIME_LEN_DISTRIBUTION</code><a class="headerlink" href="#c.TS_MIME_LEN_DISTRIBUTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDETAG">
+const char* <code class="descname">TS_MIME_FIELDETAG</code><a class="headerlink" href="#c.TS_MIME_FIELDETAG" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Etag&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ETAG">
+int <code class="descname">TS_MIME_LEN_ETAG</code><a class="headerlink" href="#c.TS_MIME_LEN_ETAG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDEXPECT">
+const char* <code class="descname">TS_MIME_FIELDEXPECT</code><a class="headerlink" href="#c.TS_MIME_FIELDEXPECT" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Expect&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_EXPECT">
+int <code class="descname">TS_MIME_LEN_EXPECT</code><a class="headerlink" href="#c.TS_MIME_LEN_EXPECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDEXPIRES">
+const char* <code class="descname">TS_MIME_FIELDEXPIRES</code><a class="headerlink" href="#c.TS_MIME_FIELDEXPIRES" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Expires&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_EXPIRES">
+int <code class="descname">TS_MIME_LEN_EXPIRES</code><a class="headerlink" href="#c.TS_MIME_LEN_EXPIRES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDFOLLOWUP_TO">
+const char* <code class="descname">TS_MIME_FIELDFOLLOWUP_TO</code><a class="headerlink" href="#c.TS_MIME_FIELDFOLLOWUP_TO" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Followup-To&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_FOLLOWUP_TO">
+int <code class="descname">TS_MIME_LEN_FOLLOWUP_TO</code><a class="headerlink" href="#c.TS_MIME_LEN_FOLLOWUP_TO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDFROM">
+const char* <code class="descname">TS_MIME_FIELDFROM</code><a class="headerlink" href="#c.TS_MIME_FIELDFROM" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;From&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_FROM">
+int <code class="descname">TS_MIME_LEN_FROM</code><a class="headerlink" href="#c.TS_MIME_LEN_FROM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDHOST">
+const char* <code class="descname">TS_MIME_FIELDHOST</code><a class="headerlink" href="#c.TS_MIME_FIELDHOST" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Host&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_HOST">
+int <code class="descname">TS_MIME_LEN_HOST</code><a class="headerlink" href="#c.TS_MIME_LEN_HOST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDIF_MATCH">
+const char* <code class="descname">TS_MIME_FIELDIF_MATCH</code><a class="headerlink" href="#c.TS_MIME_FIELDIF_MATCH" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;If-Match&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_IF_MATCH">
+int <code class="descname">TS_MIME_LEN_IF_MATCH</code><a class="headerlink" href="#c.TS_MIME_LEN_IF_MATCH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDIF_MODIFIED_SINCE">
+const char* <code class="descname">TS_MIME_FIELDIF_MODIFIED_SINCE</code><a class="headerlink" href="#c.TS_MIME_FIELDIF_MODIFIED_SINCE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;If-Modified-Since&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_IF_MODIFIED_SINCE">
+int <code class="descname">TS_MIME_LEN_IF_MODIFIED_SINCE</code><a class="headerlink" href="#c.TS_MIME_LEN_IF_MODIFIED_SINCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDIF_NONE_MATCH">
+const char* <code class="descname">TS_MIME_FIELDIF_NONE_MATCH</code><a class="headerlink" href="#c.TS_MIME_FIELDIF_NONE_MATCH" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;If-None-Match&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_IF_NONE_MATCH">
+int <code class="descname">TS_MIME_LEN_IF_NONE_MATCH</code><a class="headerlink" href="#c.TS_MIME_LEN_IF_NONE_MATCH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDIF_RANGE">
+const char* <code class="descname">TS_MIME_FIELDIF_RANGE</code><a class="headerlink" href="#c.TS_MIME_FIELDIF_RANGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;If-Range&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_IF_RANGE">
+int <code class="descname">TS_MIME_LEN_IF_RANGE</code><a class="headerlink" href="#c.TS_MIME_LEN_IF_RANGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDIF_UNMODIFIED_SINCE">
+const char* <code class="descname">TS_MIME_FIELDIF_UNMODIFIED_SINCE</code><a class="headerlink" href="#c.TS_MIME_FIELDIF_UNMODIFIED_SINCE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;If-Unmodified-Since&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_IF_UNMODIFIED_SINCE">
+int <code class="descname">TS_MIME_LEN_IF_UNMODIFIED_SINCE</code><a class="headerlink" href="#c.TS_MIME_LEN_IF_UNMODIFIED_SINCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDKEEP_ALIVE">
+const char* <code class="descname">TS_MIME_FIELDKEEP_ALIVE</code><a class="headerlink" href="#c.TS_MIME_FIELDKEEP_ALIVE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Keep-Alive&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_KEEP_ALIVE">
+int <code class="descname">TS_MIME_LEN_KEEP_ALIVE</code><a class="headerlink" href="#c.TS_MIME_LEN_KEEP_ALIVE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDKEYWORDS">
+const char* <code class="descname">TS_MIME_FIELDKEYWORDS</code><a class="headerlink" href="#c.TS_MIME_FIELDKEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Keywords&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_KEYWORDS">
+int <code class="descname">TS_MIME_LEN_KEYWORDS</code><a class="headerlink" href="#c.TS_MIME_LEN_KEYWORDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDLAST_MODIFIED">
+const char* <code class="descname">TS_MIME_FIELDLAST_MODIFIED</code><a class="headerlink" href="#c.TS_MIME_FIELDLAST_MODIFIED" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Last-Modified&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_LAST_MODIFIED">
+int <code class="descname">TS_MIME_LEN_LAST_MODIFIED</code><a class="headerlink" href="#c.TS_MIME_LEN_LAST_MODIFIED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDLINES">
+const char* <code class="descname">TS_MIME_FIELDLINES</code><a class="headerlink" href="#c.TS_MIME_FIELDLINES" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Lines&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_LINES">
+int <code class="descname">TS_MIME_LEN_LINES</code><a class="headerlink" href="#c.TS_MIME_LEN_LINES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDLOCATION">
+const char* <code class="descname">TS_MIME_FIELDLOCATION</code><a class="headerlink" href="#c.TS_MIME_FIELDLOCATION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Location&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_LOCATION">
+int <code class="descname">TS_MIME_LEN_LOCATION</code><a class="headerlink" href="#c.TS_MIME_LEN_LOCATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDMAX_FORWARDS">
+const char* <code class="descname">TS_MIME_FIELDMAX_FORWARDS</code><a class="headerlink" href="#c.TS_MIME_FIELDMAX_FORWARDS" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Max-Forwards&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_MAX_FORWARDS">
+int <code class="descname">TS_MIME_LEN_MAX_FORWARDS</code><a class="headerlink" href="#c.TS_MIME_LEN_MAX_FORWARDS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDMESSAGE_ID">
+const char* <code class="descname">TS_MIME_FIELDMESSAGE_ID</code><a class="headerlink" href="#c.TS_MIME_FIELDMESSAGE_ID" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Message-ID&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_MESSAGE_ID">
+int <code class="descname">TS_MIME_LEN_MESSAGE_ID</code><a class="headerlink" href="#c.TS_MIME_LEN_MESSAGE_ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDNEWSGROUPS">
+const char* <code class="descname">TS_MIME_FIELDNEWSGROUPS</code><a class="headerlink" href="#c.TS_MIME_FIELDNEWSGROUPS" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Newsgroups&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_NEWSGROUPS">
+int <code class="descname">TS_MIME_LEN_NEWSGROUPS</code><a class="headerlink" href="#c.TS_MIME_LEN_NEWSGROUPS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDORGANIZATION">
+const char* <code class="descname">TS_MIME_FIELDORGANIZATION</code><a class="headerlink" href="#c.TS_MIME_FIELDORGANIZATION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Organization&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_ORGANIZATION">
+int <code class="descname">TS_MIME_LEN_ORGANIZATION</code><a class="headerlink" href="#c.TS_MIME_LEN_ORGANIZATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPATH">
+const char* <code class="descname">TS_MIME_FIELDPATH</code><a class="headerlink" href="#c.TS_MIME_FIELDPATH" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Path&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PATH">
+int <code class="descname">TS_MIME_LEN_PATH</code><a class="headerlink" href="#c.TS_MIME_LEN_PATH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPRAGMA">
+const char* <code class="descname">TS_MIME_FIELDPRAGMA</code><a class="headerlink" href="#c.TS_MIME_FIELDPRAGMA" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Pragma&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PRAGMA">
+int <code class="descname">TS_MIME_LEN_PRAGMA</code><a class="headerlink" href="#c.TS_MIME_LEN_PRAGMA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPROXY_AUTHENTICATE">
+const char* <code class="descname">TS_MIME_FIELDPROXY_AUTHENTICATE</code><a class="headerlink" href="#c.TS_MIME_FIELDPROXY_AUTHENTICATE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Proxy-Authenticate&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PROXY_AUTHENTICATE">
+int <code class="descname">TS_MIME_LEN_PROXY_AUTHENTICATE</code><a class="headerlink" href="#c.TS_MIME_LEN_PROXY_AUTHENTICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPROXY_AUTHORIZATION">
+const char* <code class="descname">TS_MIME_FIELDPROXY_AUTHORIZATION</code><a class="headerlink" href="#c.TS_MIME_FIELDPROXY_AUTHORIZATION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Proxy-Authorization&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PROXY_AUTHORIZATION">
+int <code class="descname">TS_MIME_LEN_PROXY_AUTHORIZATION</code><a class="headerlink" href="#c.TS_MIME_LEN_PROXY_AUTHORIZATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPROXY_CONNECTION">
+const char* <code class="descname">TS_MIME_FIELDPROXY_CONNECTION</code><a class="headerlink" href="#c.TS_MIME_FIELDPROXY_CONNECTION" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Proxy-Connection&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PROXY_CONNECTION">
+int <code class="descname">TS_MIME_LEN_PROXY_CONNECTION</code><a class="headerlink" href="#c.TS_MIME_LEN_PROXY_CONNECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDPUBLIC">
+const char* <code class="descname">TS_MIME_FIELDPUBLIC</code><a class="headerlink" href="#c.TS_MIME_FIELDPUBLIC" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Public&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_PUBLIC">
+int <code class="descname">TS_MIME_LEN_PUBLIC</code><a class="headerlink" href="#c.TS_MIME_LEN_PUBLIC" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDRANGE">
+const char* <code class="descname">TS_MIME_FIELDRANGE</code><a class="headerlink" href="#c.TS_MIME_FIELDRANGE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Range&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_RANGE">
+int <code class="descname">TS_MIME_LEN_RANGE</code><a class="headerlink" href="#c.TS_MIME_LEN_RANGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDREFERENCES">
+const char* <code class="descname">TS_MIME_FIELDREFERENCES</code><a class="headerlink" href="#c.TS_MIME_FIELDREFERENCES" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;References&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_REFERENCES">
+int <code class="descname">TS_MIME_LEN_REFERENCES</code><a class="headerlink" href="#c.TS_MIME_LEN_REFERENCES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDREFERER">
+const char* <code class="descname">TS_MIME_FIELDREFERER</code><a class="headerlink" href="#c.TS_MIME_FIELDREFERER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Referer&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_REFERER">
+int <code class="descname">TS_MIME_LEN_REFERER</code><a class="headerlink" href="#c.TS_MIME_LEN_REFERER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDREPLY_TO">
+const char* <code class="descname">TS_MIME_FIELDREPLY_TO</code><a class="headerlink" href="#c.TS_MIME_FIELDREPLY_TO" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Reply-To&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_REPLY_TO">
+int <code class="descname">TS_MIME_LEN_REPLY_TO</code><a class="headerlink" href="#c.TS_MIME_LEN_REPLY_TO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDRETRY_AFTER">
+const char* <code class="descname">TS_MIME_FIELDRETRY_AFTER</code><a class="headerlink" href="#c.TS_MIME_FIELDRETRY_AFTER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Retry-After&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_RETRY_AFTER">
+int <code class="descname">TS_MIME_LEN_RETRY_AFTER</code><a class="headerlink" href="#c.TS_MIME_LEN_RETRY_AFTER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDSENDER">
+const char* <code class="descname">TS_MIME_FIELDSENDER</code><a class="headerlink" href="#c.TS_MIME_FIELDSENDER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Sender&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_SENDER">
+int <code class="descname">TS_MIME_LEN_SENDER</code><a class="headerlink" href="#c.TS_MIME_LEN_SENDER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDSERVER">
+const char* <code class="descname">TS_MIME_FIELDSERVER</code><a class="headerlink" href="#c.TS_MIME_FIELDSERVER" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Server&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_SERVER">
+int <code class="descname">TS_MIME_LEN_SERVER</code><a class="headerlink" href="#c.TS_MIME_LEN_SERVER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDSET_COOKIE">
+const char* <code class="descname">TS_MIME_FIELDSET_COOKIE</code><a class="headerlink" href="#c.TS_MIME_FIELDSET_COOKIE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Set-Cookie&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_SET_COOKIE">
+int <code class="descname">TS_MIME_LEN_SET_COOKIE</code><a class="headerlink" href="#c.TS_MIME_LEN_SET_COOKIE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDSUBJECT">
+const char* <code class="descname">TS_MIME_FIELDSUBJECT</code><a class="headerlink" href="#c.TS_MIME_FIELDSUBJECT" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Subject&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_SUBJECTTS_MIME_LEN_SUBJECT">
+int <code class="descname">TS_MIME_LEN_SUBJECTTS_MIME_LEN_SUBJECT</code><a class="headerlink" href="#c.TS_MIME_LEN_SUBJECTTS_MIME_LEN_SUBJECT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDSUMMARY">
+const char* <code class="descname">TS_MIME_FIELDSUMMARY</code><a class="headerlink" href="#c.TS_MIME_FIELDSUMMARY" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Summary&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_SUMMARY">
+int <code class="descname">TS_MIME_LEN_SUMMARY</code><a class="headerlink" href="#c.TS_MIME_LEN_SUMMARY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDTE">
+const char* <code class="descname">TS_MIME_FIELDTE</code><a class="headerlink" href="#c.TS_MIME_FIELDTE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;TE&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_TE">
+int <code class="descname">TS_MIME_LEN_TE</code><a class="headerlink" href="#c.TS_MIME_LEN_TE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDTRANSFER_ENCODING">
+const char* <code class="descname">TS_MIME_FIELDTRANSFER_ENCODING</code><a class="headerlink" href="#c.TS_MIME_FIELDTRANSFER_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Transfer-Encoding&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_TRANSFER_ENCODING">
+int <code class="descname">TS_MIME_LEN_TRANSFER_ENCODING</code><a class="headerlink" href="#c.TS_MIME_LEN_TRANSFER_ENCODING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDUPGRADE">
+const char* <code class="descname">TS_MIME_FIELDUPGRADE</code><a class="headerlink" href="#c.TS_MIME_FIELDUPGRADE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Upgrade&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_UPGRADE">
+int <code class="descname">TS_MIME_LEN_UPGRADE</code><a class="headerlink" href="#c.TS_MIME_LEN_UPGRADE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDUSER_AGENT">
+const char* <code class="descname">TS_MIME_FIELDUSER_AGENT</code><a class="headerlink" href="#c.TS_MIME_FIELDUSER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;User-Agent&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_USER_AGENT">
+int <code class="descname">TS_MIME_LEN_USER_AGENT</code><a class="headerlink" href="#c.TS_MIME_LEN_USER_AGENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDVARY">
+const char* <code class="descname">TS_MIME_FIELDVARY</code><a class="headerlink" href="#c.TS_MIME_FIELDVARY" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Vary&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_VARY">
+int <code class="descname">TS_MIME_LEN_VARY</code><a class="headerlink" href="#c.TS_MIME_LEN_VARY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDVIA">
+const char* <code class="descname">TS_MIME_FIELDVIA</code><a class="headerlink" href="#c.TS_MIME_FIELDVIA" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Via&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_VIA">
+int <code class="descname">TS_MIME_LEN_VIA</code><a class="headerlink" href="#c.TS_MIME_LEN_VIA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDWARNING">
+const char* <code class="descname">TS_MIME_FIELDWARNING</code><a class="headerlink" href="#c.TS_MIME_FIELDWARNING" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Warning&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_WARNING">
+int <code class="descname">TS_MIME_LEN_WARNING</code><a class="headerlink" href="#c.TS_MIME_LEN_WARNING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDWWW_AUTHENTICATE">
+const char* <code class="descname">TS_MIME_FIELDWWW_AUTHENTICATE</code><a class="headerlink" href="#c.TS_MIME_FIELDWWW_AUTHENTICATE" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Www-Authenticate&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_WWW_AUTHENTICATE">
+int <code class="descname">TS_MIME_LEN_WWW_AUTHENTICATE</code><a class="headerlink" href="#c.TS_MIME_LEN_WWW_AUTHENTICATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_FIELDXREF">
+const char* <code class="descname">TS_MIME_FIELDXREF</code><a class="headerlink" href="#c.TS_MIME_FIELDXREF" title="Permalink to this definition">¶</a></dt>
+<dt>
+<code class="descname">&quot;Xref&quot;</code></dt>
+<dd></dd></dl>
+
+<dl class="var">
+<dt id="c.TS_MIME_LEN_XREF">
+int <code class="descname">TS_MIME_LEN_XREF</code><a class="headerlink" href="#c.TS_MIME_LEN_XREF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The header field names above are defined in <code class="docutils literal notranslate"><span class="pre">ts.h</span></code> as <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">char*</span></code>
+strings. When Traffic Server sets the name portion of a header field (or
+any portion for that matter), it quickly checks to see if the new value
+is one of the known values. If it is, then Traffic Server stores a
+pointer into a global table instead of storing the known value in the
+marshal buffer. The header field names listed above are also pointers
+into this table, which enables simple pointer comparison of the value
+returned from <code class="docutils literal notranslate"><span class="pre">TSMimeHdrFieldNameGet</span></code> with one of the values listed
+above. It is recommended that you use the above values when referring to
+one of the known header field names to avoid the possibility of a
+spelling error.</p>
+<p>Traffic Server adds one important feature to MIME fields that you may
+not know about: Traffic Server does not print a MIME field if the field
+name begins with the ‘<code class="docutils literal notranslate"><span class="pre">&#64;</span></code>’ symbol. For example: a plugin can add the
+field “<code class="docutils literal notranslate"><span class="pre">&#64;My-Field</span></code>” to a header. Even though Traffic Server never
+sends that field out in a request to an origin server or in a response
+to a client, it can be printed to Traffic Server logs by defining a
+custom log configuration file that explicitly logs such fields. This
+provides a useful mechanism for plugins to store information about an
+object in one of the MIME headers associated with the object.</p>
+<p id="mimeheaderfxns">The MIME header functions are listed below:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldAppend.en.html#c.TSMimeHdrFieldAppend" title="TSMimeHdrFieldAppend"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldAppend()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldClone.en.html#c.TSMimeHdrFieldClone" title="TSMimeHdrFieldClone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldClone()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldCopy.en.html#c.TSMimeHdrFieldCopy" title="TSMimeHdrFieldCopy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldCopy()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldCopyValues.en.html#c.TSMimeHdrFieldCopyValues" title="TSMimeHdrFieldCopyValues"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldCopyValues()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldCreate.en.html#c.TSMimeHdrFieldCreate" title="TSMimeHdrFieldCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldCreate()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldDestroy.en.html#c.TSMimeHdrFieldDestroy" title="TSMimeHdrFieldDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldDestroy()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldLengthGet.en.html#c.TSMimeHdrFieldLengthGet" title="TSMimeHdrFieldLengthGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldLengthGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldNameGet.en.html#c.TSMimeHdrFieldNameGet" title="TSMimeHdrFieldNameGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldNameGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldNameSet.en.html#c.TSMimeHdrFieldNameSet" title="TSMimeHdrFieldNameSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldNameSet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldNext.en.html#c.TSMimeHdrFieldNext" title="TSMimeHdrFieldNext"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldNext()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldNextDup.en.html#c.TSMimeHdrFieldNextDup" title="TSMimeHdrFieldNextDup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldNextDup()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueAppend.en.html#c.TSMimeHdrFieldValueAppend" title="TSMimeHdrFieldValueAppend"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueAppend()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueAppend.en.html#c.TSMimeHdrFieldValueAppend" title="TSMimeHdrFieldValueAppend"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueAppend()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringGet.en.html#c.TSMimeHdrFieldValueDateGet" title="TSMimeHdrFieldValueDateGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueDateGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueDateInsert.en.html#c.TSMimeHdrFieldValueDateInsert" title="TSMimeHdrFieldValueDateInsert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueDateInsert()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueDateSet.en.html#c.TSMimeHdrFieldValueDateSet" title="TSMimeHdrFieldValueDateSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueDateSet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringGet.en.html#c.TSMimeHdrFieldValueIntGet" title="TSMimeHdrFieldValueIntGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueIntGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueIntSet.en.html#c.TSMimeHdrFieldValueIntSet" title="TSMimeHdrFieldValueIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueIntSet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringGet.en.html#c.TSMimeHdrFieldValueStringGet" title="TSMimeHdrFieldValueStringGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueStringGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringInsert.en.html#c.TSMimeHdrFieldValueStringInsert" title="TSMimeHdrFieldValueStringInsert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueStringInsert()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringSet.en.html#c.TSMimeHdrFieldValueStringSet" title="TSMimeHdrFieldValueStringSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueStringSet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueStringGet.en.html#c.TSMimeHdrFieldValueUintGet" title="TSMimeHdrFieldValueUintGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueUintGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueUintInsert.en.html#c.TSMimeHdrFieldValueUintInsert" title="TSMimeHdrFieldValueUintInsert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueUintInsert()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValueUintSet.en.html#c.TSMimeHdrFieldValueUintSet" title="TSMimeHdrFieldValueUintSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValueUintSet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValuesClear.en.html#c.TSMimeHdrFieldValuesClear" title="TSMimeHdrFieldValuesClear"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValuesClear()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldValuesCount.en.html#c.TSMimeHdrFieldValuesCount" title="TSMimeHdrFieldValuesCount"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldValuesCount()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrClone.en.html#c.TSMimeHdrClone" title="TSMimeHdrClone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrClone()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrCopy.en.html#c.TSMimeHdrCopy" title="TSMimeHdrCopy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrCopy()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrCreate.en.html#c.TSMimeHdrCreate" title="TSMimeHdrCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrCreate()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrDestroy.en.html#c.TSMimeHdrDestroy" title="TSMimeHdrDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrDestroy()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldFind.en.html#c.TSMimeHdrFieldFind" title="TSMimeHdrFieldFind"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldFind()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldGet.en.html#c.TSMimeHdrFieldGet" title="TSMimeHdrFieldGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldRemove.en.html#c.TSMimeHdrFieldRemove" title="TSMimeHdrFieldRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldRemove()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldsClear.en.html#c.TSMimeHdrFieldsClear" title="TSMimeHdrFieldsClear"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldsClear()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrFieldsCount.en.html#c.TSMimeHdrFieldsCount" title="TSMimeHdrFieldsCount"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrFieldsCount()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrLengthGet.en.html#c.TSMimeHdrLengthGet" title="TSMimeHdrLengthGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrLengthGet()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrParse.en.html#c.TSMimeHdrParse" title="TSMimeHdrParse"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrParse()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeParserClear.en.html#c.TSMimeParserClear" title="TSMimeParserClear"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeParserClear()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeParserCreate.en.html#c.TSMimeParserCreate" title="TSMimeParserCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeParserCreate()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeParserDestroy.en.html#c.TSMimeParserDestroy" title="TSMimeParserDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeParserDestroy()</span></code></a></li>
+<li><a class="reference internal" href="../../api/functions/TSMimeHdrPrint.en.html#c.TSMimeHdrPrint" title="TSMimeHdrPrint"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMimeHdrPrint()</span></code></a></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="marshal-buffers.en.html" class="btn btn-neutral float-right" title="Marshal Buffers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="header-functions.en.html" class="btn btn-neutral float-left" title="Header Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

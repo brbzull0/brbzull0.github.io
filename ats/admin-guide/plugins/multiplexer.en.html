@@ -1,0 +1,410 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Multiplexer &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MySQL Remap Plugin" href="mysql_remap.en.html" />
+    <link rel="prev" title="MP4 Plugin" href="mp4.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Multiplexer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/multiplexer.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="name">
+<h1>Multiplexer<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h1>
+<p>Multiplexer is a remap plug-in that allows a request to be multiplexed one or more times and sent to
+different remap entries. Both headers and body (in case of POST or PUT methods, only) are copied
+into the new requests. Optionally POST/PUT requests can be skipped via
+<code class="docutils literal notranslate"><span class="pre">pparam=proxy.config.multiplexer.skip_post_put=1</span></code>.</p>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Actions:</p>
+<ol class="arabic simple">
+<li>Adds <code class="docutils literal notranslate"><span class="pre">X-Multiplexer:</span> <span class="pre">original</span></code> header into client’s request.</li>
+<li>Copies client’s request (bodies are copied by transforming the request)</li>
+<li>Changes <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</li>
+<li>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span> <span class="pre">header</span></code> to “copy”.</li>
+<li>Sends the copied request with <code class="code docutils literal notranslate"><span class="pre">TSHttpConnect</span></code>.</li>
+</ol>
+<p>Multiplexer dispatches the request in background without blocking the original request. Multiplexed
+responses are drained and discarded.</p>
+<p>A global timeout can be overwritten through <code class="docutils literal notranslate"><span class="pre">multiplexer__timeout</span></code> environment variable representing how many nanoseconds to wait. A default 1s timeout is hard-coded.</p>
+<p>Please use <code class="docutils literal notranslate"><span class="pre">multiplexer</span></code> tag for debugging purposes. While debugging, multiplexed requests and
+responses are printed into the logs.</p>
+<p>Multiplexer produces the following statistics consumed with <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>:</p>
+<ul class="simple">
+<li>failures: number of failed multiplexed requests</li>
+<li>hits: number of successful multiplexed requests</li>
+<li>requests: total number of multiplexed requests</li>
+<li>time(avg): average time taken between multiplexed requests and their responses</li>
+<li>timeouts: number of multiplexed requests which timed-out</li>
+<li>size(avg): average size of multiplexed responses</li>
+</ul>
+<p>Example remap.config:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/a http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com</span>
+<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/b http://www.example.com/ @plugin=multiplexer.so @pparam=host2.example.com</span>
+<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/c http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com</span>
+<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/d http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com @pparam=proxy.config.multiplexer.skip_post_put=1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implementation">
+<h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parsing-chunk-encoded-data">
+<h3>Parsing Chunk Encoded Data<a class="headerlink" href="#parsing-chunk-encoded-data" title="Permalink to this headline">¶</a></h3>
+<p>Multiplexer parses chunked data with its own home brew parser. In the parser <code class="code docutils literal notranslate"><span class="pre">size_</span></code> is the size of
+a chunk to be consumed. The local variable / parameter <code class="code docutils literal notranslate"><span class="pre">size</span></code> is raw input size as read from an
+<code class="code docutils literal notranslate"><span class="pre">TSIOBufferBlock</span></code>. The “size states” are marked blue.</p>
+<div class="figure align-center">
+<p class="plantuml">
+<object data="../../_images/plantuml-08ec8535777d4fae9165dd7b50dabbfe04596a83.svg" type="image/svg+xml" style="width:497px;height:894px;">
+<img src="../../_images/plantuml-08ec8535777d4fae9165dd7b50dabbfe04596a83.png" alt="&#64;startuml
+
+skinparam state {
+   backgroundColor&lt;&lt;SIZE_STATE&gt;&gt; SkyBlue
+}
+
+state kSize &lt;&lt;SIZE_STATE&gt;&gt;
+kSize : Accumulate size_\nfrom hex input.
+[*] --&gt; kSize
+kSize --&gt; kSize : hex digit
+kSize --&gt; kDataN : CR,size_ &gt; 0
+kSize --&gt; kEndN : CR, size_ == 0
+kSize --&gt; kInvalid : *
+
+state kDataN &lt;&lt;SIZE_STATE&gt;&gt;
+kDataN --&gt; kData : LF
+kDataN --&gt; kInvalid : *
+kDataN : ASSERT(size_ &gt; 0)
+
+state kEndN &lt;&lt;SIZE_STATE&gt;&gt;
+kEndN --&gt; kEnd : LF
+kEndN --&gt; kInvalid : *
+
+kData : Consume size_\nbytes of input.
+kData --&gt; kSizeR : Input consumed
+
+state kSizeR &lt;&lt;SIZE_STATE&gt;&gt;
+kSizeR --&gt; kSizeN : CR
+kSizeR --&gt; kInvalid : *
+
+state kSizeN &lt;&lt;SIZE_STATE&gt;&gt;
+kSizeN --&gt; kSize : LF
+kSizeN --&gt; kInvalid : *
+
+kInvalid --&gt; [*]
+kEnd --&gt; [*]
+&#64;enduml"/>
+
+</object></p>
+</div>
+</div>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This should be moved to the Traffic Server documentation.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="mysql_remap.en.html" class="btn btn-neutral float-right" title="MySQL Remap Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mp4.en.html" class="btn btn-neutral float-left" title="MP4 Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -1,0 +1,720 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Signed URL Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Slice Plugin" href="slice.en.html" />
+    <link rel="prev" title="MySQL Remap Plugin" href="mysql_remap.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Signed URL Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/url_sig.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="signed-url-plugin">
+<span id="admin-plugins-url-sig"></span><h1>Signed URL Plugin<a class="headerlink" href="#signed-url-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin checks a signature query string on a URL and rejects (HTTP <code class="docutils literal notranslate"><span class="pre">403</span></code>)
+or redirects (HTTP <code class="docutils literal notranslate"><span class="pre">302</span></code>) when the check fails. The signature is based on a
+secret key that both a signing portal and the Traffic Server cache share. The algorithm
+for the signature may be either <code class="docutils literal notranslate"><span class="pre">MD5</span></code> or <code class="docutils literal notranslate"><span class="pre">SHA1</span></code>. When the signature check
+passes, the query string of the request is stripped and continues to process as
+if there were no query string at all.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To make this plugin available, you must either enable experimental plugins
+when building Traffic Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">experimental</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+<p>Or use <strong class="program">tsxs</strong> to compile the plugin against your current Traffic Server build.
+To do this, you must ensure that:</p>
+<ol class="arabic simple">
+<li>Development packages for Traffic Server are installed.</li>
+<li>The <strong class="program">tsxs</strong> binary is in your path.</li>
+<li>The version of this plugin you are building, and the version of Traffic Server against
+which you are building it are compatible.</li>
+</ol>
+<p>Once those conditions are satisfied, enter the source directory for the plugin
+and perform the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="n">Makefile</span><span class="o">.</span><span class="n">tsxs</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="n">Makefile</span><span class="o">.</span><span class="n">tsxs</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Configuring URL signature verification within Traffic Server using this plugin is a two
+step process. First, you must generate a configuration file containing the list
+of valid signing keys. Secondly, you must indicate to Traffic Server which URLs require
+valid signatures.</p>
+<div class="section" id="generating-keys">
+<h3>Generating Keys<a class="headerlink" href="#generating-keys" title="Permalink to this headline">¶</a></h3>
+<p>This plugin comes with two Perl scripts which assist in generating signatures.
+For Traffic Server to verify URL signatures, it must have the relevant keys. Using the
+provided <em>genkeys</em> script, you can generate a suitable configuration file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">genkeys</span><span class="o">.</span><span class="n">pl</span> <span class="o">&gt;</span> <span class="n">url_sig</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>The resulting file will look something like the following, with the actual keys
+differing (as they are generated randomly each time the script is run):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">key0</span> <span class="o">=</span> <span class="n">YwG7iAxDo6Gaa38KJOceV4nsxiAJZ3DS</span>
+<span class="n">key1</span> <span class="o">=</span> <span class="n">nLE3SZKRgaNM9hLz_HnIvrCw_GtTUJT1</span>
+<span class="n">key2</span> <span class="o">=</span> <span class="n">YicZbmr6KlxfxPTJ3p9vYhARdPQ9WJYZ</span>
+<span class="n">key3</span> <span class="o">=</span> <span class="n">DTV4Tcn046eM9BzJMeYrYpm3kbqOtBs7</span>
+<span class="n">key4</span> <span class="o">=</span> <span class="n">C1r6R6MINoQd5YSH25fU66tuRhhz3fs_</span>
+<span class="n">key5</span> <span class="o">=</span> <span class="n">l4dxe6YEpYbJtyiOmX5mafhwKImC5kej</span>
+<span class="n">key6</span> <span class="o">=</span> <span class="n">ekKNHXu9_oOC5eqIGJVxV0vI9FYvKVya</span>
+<span class="n">key7</span> <span class="o">=</span> <span class="n">BrjibTmpTTuhMHqphkQAuCWA0Zg97WQB</span>
+<span class="n">key8</span> <span class="o">=</span> <span class="n">rEtWLb1jcYoq9VG8Z8TKgX4GxBuro20J</span>
+<span class="n">key9</span> <span class="o">=</span> <span class="n">mrP_6ibDBG4iYpfDB6W8yn3ZyGmdwc6M</span>
+<span class="n">key10</span> <span class="o">=</span> <span class="n">tbzoTTGZXPLcvpswCQCYz1DAIZcAOGyX</span>
+<span class="n">key11</span> <span class="o">=</span> <span class="n">lWsn6gUeSEW79Fk2kwKVfzhVG87EXLna</span>
+<span class="n">key12</span> <span class="o">=</span> <span class="n">Riox0SmGtBWsrieLUHVWtpj18STM4MP1</span>
+<span class="n">key13</span> <span class="o">=</span> <span class="n">kBsn332B7yG3HdcV7Tw51pkvHod7_84l</span>
+<span class="n">key14</span> <span class="o">=</span> <span class="n">hYI4GUoIlZRf0AyuXkT3QLvBMEoFxkma</span>
+<span class="n">key15</span> <span class="o">=</span> <span class="n">EIgJKwIR0LU9CUeTUdVtjMgGmxeCIbdg</span>
+<span class="n">error_url</span> <span class="o">=</span> <span class="mi">403</span>
+</pre></div>
+</div>
+<p>This file should be placed in your Traffic Server <code class="docutils literal notranslate"><span class="pre">etc</span></code> directory, with permissions and
+ownership set such that only the Traffic Server processes may read it.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">The configuration file contains the full set of secret keys which Traffic Server will
+be using to verify incoming requests, and as such should be treated with as
+much care as any other file in your infrastructure containing keys, pass
+phrases, and other sensitive data. Unauthorized access to the contents of
+this file will allow others to spoof requests from your signing portal, thus
+defeating the entire purpose of using a signing portal in the first place.</p>
+</div>
+</div>
+<div class="section" id="requiring-signatures-on-urls">
+<h3>Requiring Signatures on URLs<a class="headerlink" href="#requiring-signatures-on-urls" title="Permalink to this headline">¶</a></h3>
+<p>To require a valid signature, verified by a key from the list you generated
+earlier, modify your <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> configuration to include this plugin
+for any rules you wish it to affect.</p>
+<p>Two parameters for each remap rule are required, and a third one is optional:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">url_sig</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=&lt;</span><span class="n">config</span> <span class="n">file</span><span class="o">&gt;</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">pristineurl</span>
+</pre></div>
+</div>
+<p>The first simply enables this plugin for the rule. The second specifies the
+location of the configuration file containing your signing keys.  The third one,
+if present, causes authentication to be performed on the original (pristine) URL
+as received from the client. (The value of the parameter is not case sensitive.)</p>
+<p>For example, if we wanted to restrict all paths under a <code class="docutils literal notranslate"><span class="pre">/download</span></code> directory
+on our website <code class="docutils literal notranslate"><span class="pre">foo.com</span></code> we might have a remap line like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">download</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">tld</span><span class="o">/</span><span class="n">download</span><span class="o">/</span> \
+    <span class="nd">@plugin</span><span class="o">=</span><span class="n">url_sig</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">url_sig</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="signing-a-url">
+<h2>Signing a URL<a class="headerlink" href="#signing-a-url" title="Permalink to this headline">¶</a></h2>
+<p>Signing a URL is solely the responsibility of your signing portal service. This
+requires that whatever application runs that service must also have a list of
+your signing keys (generated earlier in <a class="reference internal" href="#configuration">Configuration</a> and stored in the
+<code class="docutils literal notranslate"><span class="pre">url_sig.config</span></code> file in your Traffic Server configuration directory). How your signing
+portal application is informed about, or stores, these keys is up to you, but
+it is critical that the <code class="docutils literal notranslate"><span class="pre">keyN</span></code> index numbers are matched to the same keys.</p>
+<p>Signing is performed by adding several query parameters to a URL, before
+redirecting the client. The parameters’ values are all generated by your
+signing portal application, and then a hash is calculated by your portal, using
+the entire URL just constructed, and attached as the final query parameter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ordering is important when adding the query parameters and generating the
+signature. The signature itself is a hash, using your chosen algorithm, of
+the entire URL to which you are about to redirect the client, up to and
+including the <code class="docutils literal notranslate"><span class="pre">S=</span></code> substring indicating the signature parameter.</p>
+</div>
+<p>The following list details all the query parameters you must add to the URL you
+will hand back to the client for redirection.</p>
+<dl class="docutils">
+<dt>Client IP</dt>
+<dd><p class="first">The IP address of the client being redirected. This must be their IP as it
+will appear to your Traffic Server cache.  Both IP v4 and v6 addresses are supported:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">C</span><span class="o">=&lt;</span><span class="n">ip</span> <span class="n">address</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</dd>
+<dt>Expiration</dt>
+<dd><p class="first">The time at which this signature will no longer be valid, expressed in
+seconds since epoch (and thus in UTC):</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">E</span><span class="o">=&lt;</span><span class="n">seconds</span> <span class="n">since</span> <span class="n">epoch</span> <span class="n">expiration</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</dd>
+<dt>Algorithm</dt>
+<dd><p class="first">The hash algorithm which your signing portal application has elected to use
+for this signature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span><span class="o">=&lt;</span><span class="n">algorithm</span> <span class="n">number</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The only supported values at this time are:</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="36%" />
+<col width="64%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Algorithm</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">1</span></code></td>
+<td>HMAC_SHA1</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">2</span></code></td>
+<td>HMAC_MD5</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Key Index</dt>
+<dd><p class="first">The key number, from your plugin configuration, which was used for this
+signature. See <a class="reference internal" href="#configuration">Configuration</a> for generating these keys and determining the
+index number of each:</p>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">K</span><span class="o">=&lt;</span><span class="n">key</span> <span class="n">number</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</dd>
+<dt>Parts</dt>
+<dd><p class="first">Configures which components of the URL to use for signature verification.
+The value of this parameter is a string of ones and zeros, each enabling
+or disabling the use of a URL part for signatures. The URL scheme (e.g.
+<code class="docutils literal notranslate"><span class="pre">http://</span></code>) is never part of the signature. The first number of this
+parameter’s value indicates whether to include the FQDN, and all remaining
+numbers determine whether to use the directory parts of the URL. If there
+are more directories in the URL than there are numbers in this parameter,
+the last number is repeated as many times as necessary:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">=&lt;</span><span class="n">parts</span> <span class="n">specification</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Examples include:</p>
+<table border="1" class="last docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Effect</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">1</span></code></td>
+<td>Use the FQDN and all directory parts for signature verification.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">01</span></code></td>
+<td>Ignore the FQDN, but verify using all directory parts.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">0110</span></code></td>
+<td>Ignore the FQDN, and use only the first two directory parts,
+skipping the remainder, for signatures.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">110</span></code></td>
+<td>Use the FQDN and first directory for signature verification, but
+ignore the remainder of the path.</td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt>Signature</dt>
+<dd><p class="first">The actual signature hash:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">=&lt;</span><span class="n">signature</span> <span class="nb">hash</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The hash should be calculated in accordance with the parts specification
+you have declared in the <code class="docutils literal notranslate"><span class="pre">P=</span></code> query parameter, which if you have chosen
+any value other than <code class="docutils literal notranslate"><span class="pre">1</span></code> may require additional URL parsing be performed
+by your signing portal.</p>
+<p>Additionally, all query parameters up to and including the <code class="docutils literal notranslate"><span class="pre">S=</span></code> substring
+for this parameter must be included, and must be in the same order as they
+are returned to the client for redirection. For obvious reasons, the value
+of this parameter is not included in the source string being hashed.</p>
+<p>As a simple example, if we are about to redirect a client to the URL
+<code class="docutils literal notranslate"><span class="pre">https://foo.com/downloads/expensive-app.exe</span></code> with signature verification
+enabled, then we will compute a signature on the following string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>foo.com/downloads/expensive-app.exe?C=1.2.3.4&amp;E=1453846938&amp;A=1&amp;K=2&amp;P=1&amp;S=
+</pre></div>
+</div>
+<p>And, assuming that <em>key2</em> from our secrets file matches our example in
+<a class="reference internal" href="#configuration">Configuration</a>, then our signature becomes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">8</span><span class="n">c5cfa440458233452ee9b5b570063a0e71827f2</span>
+</pre></div>
+</div>
+<p>Which is then appended to the URL for redirection as the value of the <code class="docutils literal notranslate"><span class="pre">S</span></code>
+parameter.</p>
+<p class="last">For an example implementation of signing which may be adapted for your own
+portal, refer to the file <code class="docutils literal notranslate"><span class="pre">sign.pl</span></code> included with the source code of this
+plugin.</p>
+</dd>
+</dl>
+<p>Signature query parameters embedded in the URL path.</p>
+<blockquote>
+<div><p>Optionally signature query parameters may be embedded in an opaque base64 encoded container
+embedded in the URL path.  The format is  a semicolon, siganchor string, base64 encoded
+string.  <code class="docutils literal notranslate"><span class="pre">url_sig</span></code> automatically detects the use of embedded path parameters. The
+following example shows how to generate an embedded path parameters with <code class="docutils literal notranslate"><span class="pre">sign.pl</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">sign</span><span class="o">.</span><span class="n">pl</span> <span class="o">--</span><span class="n">url</span> <span class="s2">&quot;http://test-remap.domain.com/vod/t/prog_index.m3u8?appid=2&amp;t=1&quot;</span> <span class="o">--</span><span class="n">useparts</span> <span class="mi">1</span> \
+<span class="o">--</span><span class="n">algorithm</span> <span class="mi">1</span> <span class="o">--</span><span class="n">duration</span> <span class="mi">86400</span> <span class="o">--</span><span class="n">key</span> <span class="n">kSCE1_uBREdGI3TPnr_dXKc9f_J4ZV2f</span> <span class="o">--</span><span class="n">pathparams</span> <span class="o">--</span><span class="n">siganchor</span> <span class="n">urlsig</span>
+
+<span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="n">o</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">null</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="nb">max</span><span class="o">-</span><span class="n">redirs</span> <span class="mi">0</span> <span class="s1">&#39;http://test-remap.domain.com/vod/t;urlsig=O0U9MTQ2MzkyOTM4NTtBPTE7Sz0zO1A9MTtTPTIxYzk2YWRiZWZk&#39;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="edge-cache-debugging">
+<h2>Edge Cache Debugging<a class="headerlink" href="#edge-cache-debugging" title="Permalink to this headline">¶</a></h2>
+<p>To include debugging output for this plugin in your Traffic Server logs, adjust the values
+for <a class="reference internal" href="../files/records.config.en.html#proxy-config-diags-debug-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.debug.enabled</span></code></a> and
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-diags-debug-tags" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.debug.tags</span></code></a> in your <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">1</span>
+<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">tags</span> <span class="n">STRING</span> <span class="n">url_sig</span>
+</pre></div>
+</div>
+<p>Once updated, issue a <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to make the settings
+active.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Enable experimental plugins when building Traffic Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">experimental</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate a secrets configuration for Traffic Server (replacing the output location
+with something appropriate to your Traffic Server installation):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">genkeys</span><span class="o">.</span><span class="n">pl</span>  <span class="o">&gt;</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">url_sig</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Verify that your configuration looks like the following, with actual key
+values altered:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">key0</span> <span class="o">=</span> <span class="n">YwG7iAxDo6Gaa38KJOceV4nsxiAJZ3DS</span>
+<span class="n">key1</span> <span class="o">=</span> <span class="n">nLE3SZKRgaNM9hLz_HnIvrCw_GtTUJT1</span>
+<span class="n">key2</span> <span class="o">=</span> <span class="n">YicZbmr6KlxfxPTJ3p9vYhARdPQ9WJYZ</span>
+<span class="n">key3</span> <span class="o">=</span> <span class="n">DTV4Tcn046eM9BzJMeYrYpm3kbqOtBs7</span>
+<span class="n">key4</span> <span class="o">=</span> <span class="n">C1r6R6MINoQd5YSH25fU66tuRhhz3fs_</span>
+<span class="n">key5</span> <span class="o">=</span> <span class="n">l4dxe6YEpYbJtyiOmX5mafhwKImC5kej</span>
+<span class="n">key6</span> <span class="o">=</span> <span class="n">ekKNHXu9_oOC5eqIGJVxV0vI9FYvKVya</span>
+<span class="n">key7</span> <span class="o">=</span> <span class="n">BrjibTmpTTuhMHqphkQAuCWA0Zg97WQB</span>
+<span class="n">key8</span> <span class="o">=</span> <span class="n">rEtWLb1jcYoq9VG8Z8TKgX4GxBuro20J</span>
+<span class="n">key9</span> <span class="o">=</span> <span class="n">mrP_6ibDBG4iYpfDB6W8yn3ZyGmdwc6M</span>
+<span class="n">key10</span> <span class="o">=</span> <span class="n">tbzoTTGZXPLcvpswCQCYz1DAIZcAOGyX</span>
+<span class="n">key11</span> <span class="o">=</span> <span class="n">lWsn6gUeSEW79Fk2kwKVfzhVG87EXLna</span>
+<span class="n">key12</span> <span class="o">=</span> <span class="n">Riox0SmGtBWsrieLUHVWtpj18STM4MP1</span>
+<span class="n">key13</span> <span class="o">=</span> <span class="n">kBsn332B7yG3HdcV7Tw51pkvHod7_84l</span>
+<span class="n">key14</span> <span class="o">=</span> <span class="n">hYI4GUoIlZRf0AyuXkT3QLvBMEoFxkma</span>
+<span class="n">key15</span> <span class="o">=</span> <span class="n">EIgJKwIR0LU9CUeTUdVtjMgGmxeCIbdg</span>
+<span class="n">error_url</span> <span class="o">=</span> <span class="mi">403</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Enable signature verification for a remap rule in Traffic Server by modifying
+<a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> (here we will just remap to Google’s homepage for
+demonstrative purposes):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">-</span><span class="n">remap</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">foo</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">google</span><span class="o">.</span><span class="n">com</span> \
+    <span class="nd">@plugin</span><span class="o">=</span><span class="n">url_sig</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">url_sig</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Reload your Traffic Server configuration to ensure the changes are active:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">config</span> <span class="n">reload</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Attempt to access the now-protected URL without a valid signature. This will
+fail, and that is a good thing, as it demonstrates that Traffic Server now rejects any
+requests to paths matching that rule which do not include a valid signature.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -vs -H&#39;Host: test-remap.domain.com&#39; http://localhost:8080/download/foo
+* Adding handle: conn: 0x200f8a0
+* Adding handle: send: 0
+* Adding handle: recv: 0
+* Curl_addHandleToPipeline: length: 1
+* - Conn 0 (0x200f8a0) send_pipe: 1, recv_pipe: 0
+* About to connect() to localhost port 8080 (#0)
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /download/foo HTTP/1.1
+&gt; User-Agent: curl/7.32.0
+&gt; Accept: */*
+&gt; Host: test-remap.domain.com
+&gt;
+&lt; HTTP/1.1 403 Forbidden
+&lt; Date: Tue, 15 Apr 2014 22:57:32 GMT
+&lt; Connection: close
+* Server ATS/5.0.0 is not blacklisted
+&lt; Server: ATS/5.0.0
+&lt; Cache-Control: no-store
+&lt; Content-Type: text/plain
+&lt; Content-Language: en
+&lt; Content-Length: 21
+&lt;
+* Closing connection 0
+Authorization Denied$
+</pre></div>
+</div>
+</li>
+<li><p class="first">Generate a signed URL using the included <code class="docutils literal notranslate"><span class="pre">sign.pl</span></code> script:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sign</span><span class="o">.</span><span class="n">pl</span> <span class="o">--</span><span class="n">url</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">test</span><span class="o">-</span><span class="n">remap</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">download</span><span class="o">/</span><span class="n">foo</span> \
+    <span class="o">--</span><span class="n">useparts</span> <span class="mi">1</span> <span class="o">--</span><span class="n">algorithm</span> <span class="mi">1</span> <span class="o">--</span><span class="n">duration</span> <span class="mi">60</span> <span class="o">--</span><span class="n">keyindex</span> <span class="mi">3</span> \
+    <span class="o">--</span><span class="n">key</span> <span class="n">DTV4Tcn046eM9BzJMeYrYpm3kbqOtBs7</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Now access the protected URL with a valid signature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -s -o /dev/null -v --max-redirs 0 -H &#39;Host: test-remap.domain.com&#39; \
+    &#39;http://test-remap.domain.com/download/foo?E=1453848506&amp;A=1&amp;K=3&amp;P=1&amp;S=7aea86592de3e9c1b05771b2538a30956c6f10a3&#39;
+* Adding handle: conn: 0xef0a90
+* Adding handle: send: 0
+* Adding handle: recv: 0
+* Curl_addHandleToPipeline: length: 1
+* - Conn 0 (0xef0a90) send_pipe: 1, recv_pipe: 0
+* About to connect() to localhost port 8080 (#0)
+*   Trying 127.0.0.1...
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET /download/foo?E=1397603088&amp;A=1&amp;K=3&amp;P=1&amp;S=28d822f68ac7265db61a8441e0877a98fe1007cc HTTP/1.1
+&gt; User-Agent: curl/7.32.0
+&gt; Accept: */*
+&gt; Host: test-remap.domain.com
+&gt;
+&lt; HTTP/1.1 200 OK
+&lt; Location: http://www.google.com/
+&lt; Content-Type: text/html; charset=UTF-8
+&lt; Date: Tue, 15 Apr 2014 23:04:36 GMT
+&lt; Expires: Thu, 15 May 2014 23:04:36 GMT
+&lt; Cache-Control: public, max-age=2592000
+* Server ATS/5.0.0 is not blacklisted
+&lt; Server: ATS/5.0.0
+&lt; Content-Length: 219
+&lt; X-XSS-Protection: 1; mode=block
+&lt; X-Frame-Options: SAMEORIGIN
+&lt; Alternate-Protocol: 80:quic
+&lt; Age: 0
+&lt; Connection: keep-alive
+&lt;
+{ [data not shown]
+* Connection #0 to host localhost left intact
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="replay-test-support">
+<h2>Replay test support<a class="headerlink" href="#replay-test-support" title="Permalink to this headline">¶</a></h2>
+<p>To assist in log replay an option is available in the config file which
+will ignore the expiration date.  This allows all url_sig tests to
+pass the expiration date.</p>
+<p>The config file option to enable this is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ignore_expiry</span> <span class="o">=</span> <span class="n">true</span>
+</pre></div>
+</div>
+<p>Once updated, touch <cite>remap.config</cite> then issue a
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to make the settings active.</p>
+<p>Do NOT deploy this to production as it will disable valid checks
+on signed urls!</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="slice.en.html" class="btn btn-neutral float-right" title="Slice Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mysql_remap.en.html" class="btn btn-neutral float-left" title="MySQL Remap Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

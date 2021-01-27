@@ -1,0 +1,554 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>IntrusiveHashMap &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="MemArena" href="MemArena.en.html" />
+    <link rel="prev" title="IntrusiveDList" href="intrusive-list.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Internal libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="TextView.en.html">TextView</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemSpan.en.html">MemSpan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html">TS.Scalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer-writer.en.html">BufferWriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html">IntrusiveDList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">IntrusiveHashMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#details">Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#design-notes">Design Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#notes-on-intrusivehashmap-apply">Notes on <code class="docutils literal notranslate"><span class="pre">IntrusiveHashMap::apply()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MemArena.en.html">MemArena</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AcidPtr.en.html">AcidPtr &amp; AcidCommitPtr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extendible.en.html">Extendible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ArgParser.en.html">ArgParser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Internal libraries</a> &raquo;</li>
+        
+      <li>IntrusiveHashMap</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/internal-libraries/intrusive-hash-map.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="intrusivehashmap">
+<h1>IntrusiveHashMap<a class="headerlink" href="#intrusivehashmap" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IntrusiveHashMap</span></code></a> provides a “hashed” or “unordered” set, using intrusive links. It provides a
+container for elements, each of which has a <em>key</em>. A hash function is applied to a key to
+generate a <em>hash id</em> which is used to group the elements in to buckets for fast lookup. This
+container is a mix of <code class="code docutils literal notranslate"><span class="pre">std::unordered_set</span></code> and <code class="code docutils literal notranslate"><span class="pre">std::unordered_map</span></code>. There is no
+separation between elements and keys, but each element can contain non-key data.</p>
+<p>Iteration over elements is provided and is constant time.</p>
+<p>In order to optimize lookup, the container can increase the number of buckets used. This is called
+“expansion” and when it occurs is control by the “expansion policy” of the container. The policy can
+be to be automatic or only done explicitly.</p>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>To use an <a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IntrusiveHashMap</span></code></a> the element must provide support for the container. This is done
+through an associated descriptor class which provides the operations needed to manipulate the elements
+in the container.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="details">
+<h1>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="_CPPv4I0E16IntrusiveHashMap">
+<span id="_CPPv3I0E16IntrusiveHashMap"></span><span id="_CPPv2I0E16IntrusiveHashMap"></span>template&lt;typename <code class="descname">H</code>&gt;<br /><em class="property">class </em><code class="descname">IntrusiveHashMap</code><a class="headerlink" href="#_CPPv4I0E16IntrusiveHashMap" title="Permalink to this definition">¶</a><br /></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>H</strong> – Element operations.</td>
+</tr>
+</tbody>
+</table>
+<p>An unordered map using a hash function. The properties of the map are determined by types and
+operations provided by the descriptor type <em>H</em>. The following types are derived from <em>H</em>
+and defined in the container type.</p>
+<dl class="type">
+<dt id="_CPPv4N16IntrusiveHashMap10value_typeE">
+<span id="_CPPv3N16IntrusiveHashMap10value_typeE"></span><span id="_CPPv2N16IntrusiveHashMap10value_typeE"></span><span id="IntrusiveHashMap::value_type"></span><em class="property">type </em><code class="descname">value_type</code><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The type of elements in the container, deduced from the return types of the link accessor methods
+in <em>H</em>.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4N16IntrusiveHashMap8key_typeE">
+<span id="_CPPv3N16IntrusiveHashMap8key_typeE"></span><span id="_CPPv2N16IntrusiveHashMap8key_typeE"></span><span id="IntrusiveHashMap::key_type"></span><em class="property">type </em><code class="descname">key_type</code><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The type of the key used for hash computations. Deduced from the return type of the key
+accessor. An instance of this type is never default constructed nor modified, therefore it can
+be a reference if the key type is expensive to copy.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4N16IntrusiveHashMap7hash_idE">
+<span id="_CPPv3N16IntrusiveHashMap7hash_idE"></span><span id="_CPPv2N16IntrusiveHashMap7hash_idE"></span><span id="IntrusiveHashMap::hash_id"></span><em class="property">type </em><code class="descname">hash_id</code><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap7hash_idE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The type of the hash of a <a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">key_type</span></code></a>. Deduced from the return type of the hash function.
+This must be a numeric type.</p>
+</dd></dl>
+
+<dl class="docutils">
+<dt><em>H</em></dt>
+<dd><p class="first">This describes the hash map, primarily via the operations required for the map. The related types are deduced
+from the function return types. This is designed to be compatible with <a class="reference internal" href="intrusive-list.en.html#_CPPv4I0E14IntrusiveDList" title="IntrusiveDList"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IntrusiveDList</span></code></a>.</p>
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap6key_ofEP10value_type">
+<span id="_CPPv3N16IntrusiveHashMap6key_ofEP10value_type"></span><span id="_CPPv2N16IntrusiveHashMap6key_ofEP10value_type"></span><span id="IntrusiveHashMap::key_of__value_typeP"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type">key_type</a> <code class="descname">key_of</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap6key_ofEP10value_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Key accessor - return the key of the element <em>v</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap7hash_ofE8key_type">
+<span id="_CPPv3N16IntrusiveHashMap7hash_ofE8key_type"></span><span id="_CPPv2N16IntrusiveHashMap7hash_ofE8key_type"></span><span id="IntrusiveHashMap::hash_of__key_type"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv4N16IntrusiveHashMap7hash_idE" title="IntrusiveHashMap::hash_id">hash_id</a> <code class="descname">hash_of</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type">key_type</a> <em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap7hash_ofE8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Hash function - compute the hash value of the <em>key</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap5equalE8key_type8key_type">
+<span id="_CPPv3N16IntrusiveHashMap5equalE8key_type8key_type"></span><span id="_CPPv2N16IntrusiveHashMap5equalE8key_type8key_type"></span><span id="IntrusiveHashMap::equal__key_type.key_type"></span><em class="property">static</em> bool <code class="descname">equal</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type">key_type</a> <em>lhs</em>, <a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type">key_type</a> <em>rhs</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap5equalE8key_type8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Key comparison - two keys are equal if this function returns <code class="code docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap8next_ptrEPN16IntrusiveHashMap10value_typeE">
+<span id="_CPPv3N16IntrusiveHashMap8next_ptrEPN16IntrusiveHashMap10value_typeE"></span><span id="_CPPv2N16IntrusiveHashMap8next_ptrEPN16IntrusiveHashMap10value_typeE"></span><span id="IntrusiveHashMap::next_ptr__IntrusiveHashMap::value_typeP"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a>::<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *&amp;<code class="descname">next_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a>::<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap8next_ptrEPN16IntrusiveHashMap10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a reference to the next element pointer embedded in the element <em>v</em>.</p>
+</dd></dl>
+
+<dl class="last function">
+<dt id="_CPPv4N16IntrusiveHashMap8prev_ptrEPN16IntrusiveHashMap10value_typeE">
+<span id="_CPPv3N16IntrusiveHashMap8prev_ptrEPN16IntrusiveHashMap10value_typeE"></span><span id="_CPPv2N16IntrusiveHashMap8prev_ptrEPN16IntrusiveHashMap10value_typeE"></span><span id="IntrusiveHashMap::prev_ptr__IntrusiveHashMap::value_typeP"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a>::<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *&amp;<code class="descname">prev_ptr</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a>::<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap8prev_ptrEPN16IntrusiveHashMap10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a reference to the previous element pointer embedded in the element <em>v</em>.</p>
+</dd></dl>
+
+</dd>
+</dl>
+<dl class="type">
+<dt id="_CPPv4N16IntrusiveHashMap8iteratorE">
+<span id="_CPPv3N16IntrusiveHashMap8iteratorE"></span><span id="_CPPv2N16IntrusiveHashMap8iteratorE"></span><span id="IntrusiveHashMap::iterator"></span><em class="property">type </em><code class="descname">iterator</code><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An STL compliant iterator over elements in the container.</p>
+</dd></dl>
+
+<dl class="type">
+<dt id="_CPPv4N16IntrusiveHashMap5rangeE">
+<span id="_CPPv3N16IntrusiveHashMap5rangeE"></span><span id="_CPPv2N16IntrusiveHashMap5rangeE"></span><span id="IntrusiveHashMap::range"></span><em class="property">type </em><code class="descname">range</code><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap5rangeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>An STL compliant half open range of elements, represented by a pair of iterators.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap6insertEP10value_type">
+<span id="_CPPv3N16IntrusiveHashMap6insertEP10value_type"></span><span id="_CPPv2N16IntrusiveHashMap6insertEP10value_type"></span><span id="IntrusiveHashMap::insert__value_typeP"></span><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a> &amp;<code class="descname">insert</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap6insertEP10value_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Insert the element <em>v</em> into the container. If there are already elements with the same
+key, <em>v</em> is inserted after these elements.</p>
+<p>There is no <code class="code docutils literal notranslate"><span class="pre">emplace</span></code> because <em>v</em> is put in the container, not a copy of <em>v</em>.
+For the same reason <em>v</em> must be constructed before calling this method, the container
+will never create an element instance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap5beginEv">
+<span id="_CPPv3N16IntrusiveHashMap5beginEv"></span><span id="_CPPv2N16IntrusiveHashMap5beginEv"></span><span id="IntrusiveHashMap::begin"></span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="IntrusiveHashMap::iterator">iterator</a> <code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap5beginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return an iterator to the first element in the container.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap3endEv">
+<span id="_CPPv3N16IntrusiveHashMap3endEv"></span><span id="_CPPv2N16IntrusiveHashMap3endEv"></span><span id="IntrusiveHashMap::end"></span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="IntrusiveHashMap::iterator">iterator</a> <code class="descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap3endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return an iterator to past the last element in the container.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap4findEP10value_type">
+<span id="_CPPv3N16IntrusiveHashMap4findEP10value_type"></span><span id="_CPPv2N16IntrusiveHashMap4findEP10value_type"></span><span id="IntrusiveHashMap::find__value_typeP"></span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="IntrusiveHashMap::iterator">iterator</a> <code class="descname">find</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap4findEP10value_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Search for <em>v</em> in the container. If found, return an iterator referring to <em>v</em>. If not
+return the end iterator. This validates <em>v</em> is in the container.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap11equal_rangeE8key_type">
+<span id="_CPPv3N16IntrusiveHashMap11equal_rangeE8key_type"></span><span id="_CPPv2N16IntrusiveHashMap11equal_rangeE8key_type"></span><span id="IntrusiveHashMap::equal_range__key_type"></span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap5rangeE" title="IntrusiveHashMap::range">range</a> <code class="descname">equal_range</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8key_typeE" title="IntrusiveHashMap::key_type">key_type</a> <em>key</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap11equal_rangeE8key_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Find all elements with a key that is equal to <em>key</em>. The returned value is a half open
+range starting with the first matching element to one past the last matching element. All
+element in the range will have a key that is equal to <em>key</em>. If no element has a matching
+key the range will be empty.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap5eraseE8iterator">
+<span id="_CPPv3N16IntrusiveHashMap5eraseE8iterator"></span><span id="_CPPv2N16IntrusiveHashMap5eraseE8iterator"></span><span id="IntrusiveHashMap::erase__iterator"></span><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a> &amp;<code class="descname">erase</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="IntrusiveHashMap::iterator">iterator</a> <em>spot</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap5eraseE8iterator" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Remove the element referred to by <em>spot</em> from the container.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N16IntrusiveHashMap12iterator_forEP10value_type">
+<span id="_CPPv3N16IntrusiveHashMap12iterator_forEP10value_type"></span><span id="_CPPv2N16IntrusiveHashMap12iterator_forEP10value_type"></span><span id="IntrusiveHashMap::iterator_for__value_typeP"></span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap8iteratorE" title="IntrusiveHashMap::iterator">iterator</a> <code class="descname">iterator_for</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4N16IntrusiveHashMap10value_typeE" title="IntrusiveHashMap::value_type">value_type</a> *<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16IntrusiveHashMap12iterator_forEP10value_type" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return an iterator for <em>v</em>. This is very fast, faster than <a class="reference internal" href="#_CPPv4N16IntrusiveHashMap4findEP10value_type" title="IntrusiveHashMap::find"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::find()</span></code></a>
+but less safe because no validation done on <em>v</em>. If it not in the container (either in no
+container or a different one) further iteration on the returned iterator will go badly. It is
+useful inside range <code class="code docutils literal notranslate"><span class="pre">for</span></code> loops when it is guaranteed the element is in the container.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F">
+<span id="_CPPv3I0EN16IntrusiveHashMap5applyERR1F"></span><span id="_CPPv2I0EN16IntrusiveHashMap5applyERR1F"></span>template&lt;typename <code class="descname">F</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0E16IntrusiveHashMap" title="IntrusiveHashMap">IntrusiveHashMap</a> &amp;<code class="descname">apply</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F" title="IntrusiveHashMap::apply::F">F</a> &amp;&amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F" title="Permalink to this definition">¶</a><br /></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>F</strong> – A functional type with the signature <code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">(value_type*)</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p>This applies the function <em>f</em> to every element in the container in such a way that
+modification of the element does not interfere with the iteration. The most common use is to
+<code class="code docutils literal notranslate"><span class="pre">delete</span></code> the elements during cleanup. The common idiom</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="o">&amp;</span> <span class="nl">elt</span> <span class="p">:</span> <span class="n">container</span><span class="p">)</span> <span class="k">delete</span> <span class="o">&amp;</span><span class="n">elt</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>is problematic because the iteration links are in the deleted element causing the computation
+of the next element to be a use after free. Using <a class="reference internal" href="#_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F" title="IntrusiveHashMap::apply"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::apply()</span></code></a> enables safe
+cleanup.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">container</span><span class="p">.</span><span class="n">apply</span><span class="p">([](</span><span class="n">value_type</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="o">&amp;</span> <span class="n">v</span><span class="p">;</span> <span class="p">});</span>
+</pre></div>
+</div>
+<p>Because the links are intrusive it is possible for other classes or the element class to
+modify them. In such cases this method provides a safe way to invoke such mechanisms.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="design-notes">
+<h1>Design Notes<a class="headerlink" href="#design-notes" title="Permalink to this headline">¶</a></h1>
+<p>This is a refresh of an previously existing class, <code class="code docutils literal notranslate"><span class="pre">TSHahTable</span></code>. The switch to C++ 11 and then
+C++ 17 made it possible to do much better in terms of the internal implementation and API. The
+overall functionality is the roughly the same but with an easier API, compatibility with
+<a class="reference internal" href="intrusive-list.en.html#_CPPv4I0E14IntrusiveDList" title="IntrusiveDList"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IntrusiveDList</span></code></a>, improved compliance with STL container standards, and better internal
+implementation.</p>
+<p>The biggest change is that elements are stored in a single global list rather than per hash bucket.
+The buckets serve only as entry points in to the global list and to count the number of elements
+per bucket. This simplifies the implementation of iteration, so that the old <code class="code docutils literal notranslate"><span class="pre">Location</span></code> nested
+class can be removed. Elements with equal keys can be handled in the same way as with STL
+containers, via iterator ranges, instead of a custom pseudo-iterator class.</p>
+<div class="section" id="notes-on-intrusivehashmap-apply">
+<h2>Notes on <a class="reference internal" href="#_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F" title="IntrusiveHashMap::apply"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::apply()</span></code></a><a class="headerlink" href="#notes-on-intrusivehashmap-apply" title="Permalink to this headline">¶</a></h2>
+<p>This was added after some experience with use of the container. Initially it was added to make
+cleaning up the container easier. Without it, cleanup looks like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span> <span class="k">auto</span> <span class="n">spot</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">limit</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="p">;</span> <span class="n">spot</span> <span class="o">!=</span> <span class="n">limit</span> <span class="p">;</span> <span class="k">delete</span> <span class="o">&amp;</span><span class="p">(</span> <span class="o">*</span> <span class="n">spot</span><span class="o">++</span><span class="p">))</span> <span class="p">{</span>
+   <span class="p">;</span> <span class="c1">// empty</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Instead one can do</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span><span class="p">.</span><span class="n">apply</span><span class="p">([](</span><span class="n">value_type</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">delete</span> <span class="o">&amp;</span><span class="n">v</span><span class="p">;</span> <span class="p">});</span>
+</pre></div>
+</div>
+<p>The post increment operator guarantees that <em>spot</em> has been updated before the current element is destroyed.
+However, it turns out to be handy in other map modifying operations. In the unit tests there is
+this code</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span>  <span class="c1">// Erase all the non-&quot;dup&quot; and see if the range is still correct.</span>
+  <span class="n">map</span><span class="p">.</span><span class="n">apply</span><span class="p">([</span><span class="o">&amp;</span><span class="n">map</span><span class="p">](</span><span class="n">Thing</span> <span class="o">*</span><span class="n">thing</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">thing</span><span class="o">-&gt;</span><span class="n">_payload</span> <span class="o">!=</span> <span class="s">&quot;dup&quot;</span><span class="n">sv</span><span class="p">)</span> <span class="p">{</span>
+</pre></div>
+</div>
+<p>This removes all elements that do not have the payload “dup”. As another design note,
+<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap12iterator_forEP10value_type" title="IntrusiveHashMap::iterator_for"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::iterator_for()</span></code></a> here serves to bypass validation checking on the target for
+<a class="reference internal" href="#_CPPv4N16IntrusiveHashMap5eraseE8iterator" title="IntrusiveHashMap::erase"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::erase()</span></code></a>, which is proper because <a class="reference internal" href="#_CPPv4I0EN16IntrusiveHashMap5applyER16IntrusiveHashMapRR1F" title="IntrusiveHashMap::apply"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">IntrusiveHashMap::apply()</span></code></a> guarantees
+<em>thing</em> is in the map.</p>
+<p>Without <code class="code docutils literal notranslate"><span class="pre">apply</span></code> this is needed</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">idx</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">idx</span> <span class="o">!=</span> <span class="n">map</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">x</span><span class="p">{</span><span class="n">idx</span><span class="o">++</span><span class="p">};</span>
+  <span class="k">if</span> <span class="p">(</span><span class="s">&quot;dup&quot;</span><span class="n">sv</span> <span class="o">!=</span> <span class="n">x</span><span class="o">-&gt;</span><span class="n">_payload</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">map</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The latter is more verbose and more importantly less obvious, depending on a subtle interaction with
+post increment.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="MemArena.en.html" class="btn btn-neutral float-right" title="MemArena" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="intrusive-list.en.html" class="btn btn-neutral float-left" title="IntrusiveDList" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

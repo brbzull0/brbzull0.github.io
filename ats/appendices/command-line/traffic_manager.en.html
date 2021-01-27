@@ -1,0 +1,407 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>traffic_manager &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_server" href="traffic_server.en.html" />
+    <link rel="prev" title="traffic_logstats" href="traffic_logstats.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="traffic_cache_tool.en.html">traffic_cache_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_cli.en.html">traffic_cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_crashlog.en.html">traffic_crashlog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_layout.en.html">traffic_layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logcat.en.html">traffic_logcat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logstats.en.html">traffic_logstats</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">traffic_manager</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exponential-back-off-delay">Exponential Back-off Delay</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_server.en.html">traffic_server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_top.en.html">traffic_top</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_via.en.html">traffic_via</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_wccp.en.html">traffic_wccp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tspush.en.html">tspush</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsxs.en.html">tsxs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Appendices</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Command Line Utilities</a> &raquo;</li>
+        
+      <li>traffic_manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/appendices/command-line/traffic_manager.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-manager">
+<span id="id1"></span><h1>traffic_manager<a class="headerlink" href="#traffic-manager" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-traffic-manager-aconfport">
+<code class="descname">--aconfPort</code><code class="descclassname"> PORT</code><a class="headerlink" href="#cmdoption-traffic-manager-aconfport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-action">
+<code class="descname">--action</code><code class="descclassname"> TAGS</code><a class="headerlink" href="#cmdoption-traffic-manager-action" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-debug">
+<code class="descname">--debug</code><code class="descclassname"> TAGS</code><a class="headerlink" href="#cmdoption-traffic-manager-debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-groupaddr">
+<code class="descname">--groupAddr</code><code class="descclassname"> ADDRESS</code><a class="headerlink" href="#cmdoption-traffic-manager-groupaddr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-help">
+<code class="descname">--help</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-manager-help" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-nosyslog">
+<code class="descname">--nosyslog</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-manager-nosyslog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-path">
+<code class="descname">--path</code><code class="descclassname"> FILE</code><a class="headerlink" href="#cmdoption-traffic-manager-path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-proxybackdoor">
+<code class="descname">--proxyBackDoor</code><code class="descclassname"> PORT</code><a class="headerlink" href="#cmdoption-traffic-manager-proxybackdoor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-proxyoff">
+<code class="descname">--proxyOff</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-manager-proxyoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-listenoff">
+<code class="descname">--listenOff</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-manager-listenoff" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-proxyport">
+<code class="descname">--proxyPort</code><code class="descclassname"> PORT</code><a class="headerlink" href="#cmdoption-traffic-manager-proxyport" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-recordsconf">
+<code class="descname">--recordsConf</code><code class="descclassname"> FILE</code><a class="headerlink" href="#cmdoption-traffic-manager-recordsconf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-tsargs">
+<code class="descname">--tsArgs</code><code class="descclassname"> ARGUMENTS</code><a class="headerlink" href="#cmdoption-traffic-manager-tsargs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-maxrecords">
+<code class="descname">--maxRecords</code><code class="descclassname"> RECORDS</code><a class="headerlink" href="#cmdoption-traffic-manager-maxrecords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-manager-version">
+<code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-manager-version" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>SIGHUP</dt>
+<dd>This signal causes a reconfiguration event, equivalent to running <strong class="program">traffic_ctl config reload</strong>.</dd>
+<dt>SIGINT, SIGTERM</dt>
+<dd>These signals cause <strong class="program">traffic_manager</strong> to exit after also shutting down <strong class="program">traffic_server</strong>.</dd>
+<dt>SIGUSR2</dt>
+<dd>This signal causes the <strong class="program">traffic_manager</strong> and <strong class="program">traffic_server</strong> processes to close
+and reopen their file descriptors for all of their log files. This allows the use of external
+tools to handle log rotation and retention. For instance, logrotate(8) can be configured to rotate
+the various Apache Traffic Server™ logs and, via the logrotate postrotate script, send a <cite>-SIGUSR2</cite> to the
+<strong class="program">traffic_manager</strong> process. After the signal is received, Apache Traffic Server™ will stop logging to the
+now-rolled files and will reopen log files with the originally configured log names.</dd>
+</dl>
+</div>
+<div class="section" id="exponential-back-off-delay">
+<h2>Exponential Back-off Delay<a class="headerlink" href="#exponential-back-off-delay" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div>If <strong class="program">traffic_server</strong> has issues communicating with  <strong class="program">traffic_manager</strong> after a crash,
+<strong class="program">traffic_manager</strong> will retry to start  <strong class="program">traffic_server</strong> using an exponential back-off delay,
+which will make <strong class="program">traffic_manager</strong> to retry starting <strong class="program">traffic_server</strong> from <code class="docutils literal notranslate"><span class="pre">1s</span></code> until it
+reaches the max ceiling time. The ceiling time is configurable  as well as the number of times that
+<strong class="program">traffic_manager</strong> will keep trying to start <strong class="program">traffic_server</strong>. <em>A random variance will be
+added to the sleep time on every retry</em></div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information about this configuration please check <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
+</div>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">traffic_ctl(8)</em>,
+<em class="manpage">traffic_server(8)</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="traffic_server.en.html" class="btn btn-neutral float-right" title="traffic_server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="traffic_logstats.en.html" class="btn btn-neutral float-left" title="traffic_logstats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

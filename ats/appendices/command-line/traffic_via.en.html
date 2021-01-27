@@ -1,0 +1,359 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>traffic_via &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_wccp" href="traffic_wccp.en.html" />
+    <link rel="prev" title="traffic_top" href="traffic_top.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="traffic_cache_tool.en.html">traffic_cache_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_cli.en.html">traffic_cli</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_crashlog.en.html">traffic_crashlog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_layout.en.html">traffic_layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logcat.en.html">traffic_logcat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logstats.en.html">traffic_logstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_manager.en.html">traffic_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_server.en.html">traffic_server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_top.en.html">traffic_top</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">traffic_via</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_wccp.en.html">traffic_wccp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tspush.en.html">tspush</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsxs.en.html">tsxs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Appendices</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Command Line Utilities</a> &raquo;</li>
+        
+      <li>traffic_via</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/appendices/command-line/traffic_via.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-via">
+<span id="id1"></span><h1>traffic_via<a class="headerlink" href="#traffic-via" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_via</strong> [OPTIONS] [VIA …]</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_via</strong> decodes the Traffic Server Via header codes.
+Via header strings are passed as command-line options. The enclosing
+square brackets are optional.</p>
+<p>If the argument is ‘-‘, <strong class="program">traffic_via</strong> will filter standard
+input for Via headers. This modes supports only supports Via headers
+that are enclosed by square brackets.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-traffic-via-h">
+<code class="descname">-h</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--help</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-via-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print usage information and exit.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-via-v">
+<code class="descname">-V</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-via-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print version.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Decode the Via header from command-line arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_via &quot;[uScMsEf p eC:t cCMp sF]&quot;
+Via header is [uScMsEf p eC:t cCMp sF], Length is 22
+Via Header Details:
+Request headers received from client                   :simple request (not conditional)
+Result of Traffic Server cache lookup for URL          :miss (a cache &quot;MISS&quot;)
+Response information received from origin server       :error in response
+Result of document write-to-cache:                     :no cache write performed
+Proxy operation result                                 :unknown
+Error codes (if any)                                   :connection to server failed
+Tunnel info                                            :no tunneling
+Cache Type                                             :cache
+Cache Lookup Result                                    :cache miss (url not in cache)
+Parent proxy connection status                         :no parent proxy or unknown
+Origin server connection status                        :connection open failed
+</pre></div>
+</div>
+<p>Decode the Via header from a curl request, using the <a class="reference internal" href="../../admin-guide/plugins/xdebug.en.html#admin-plugins-xdebug"><span class="std std-ref">X-Debug</span></a> plugin:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -H  &quot;X-Debug: Via&quot; -I http://test.example.com | traffic_via -
+Via header is uScMsSf pSeN:t cCMi p sS, Length is 24
+Via Header Details:
+Request headers received from client                   :simple request (not conditional)
+Result of Traffic Server cache lookup for URL          :miss (a cache &quot;MISS&quot;)
+Response information received from origin server       :connection opened successfully
+Result of document write-to-cache:                     :no cache write performed
+Proxy operation result                                 :served or connection opened successfully
+Error codes (if any)                                   :no error
+Tunnel info                                            :no tunneling
+Cache Type                                             :cache
+Cache Lookup Result                                    :cache miss (url not in cache)
+Parent proxy connection status                         :no parent proxy or unknown
+Origin server connection status                        :connection opened successfully
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="traffic_wccp.en.html" class="btn btn-neutral float-right" title="traffic_wccp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="traffic_top.en.html" class="btn btn-neutral float-left" title="traffic_top" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

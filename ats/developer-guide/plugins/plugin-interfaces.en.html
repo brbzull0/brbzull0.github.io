@@ -1,0 +1,409 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Plugin Interfaces &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Adding Statistics" href="adding-statistics.en.html" />
+    <link rel="prev" title="New Protocol Plugins" href="new-protocol-plugins.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plugin Interfaces</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tsfopen-family">TSfopen Family</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-allocation">Memory Allocation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thread-functions">Thread Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-functions">Debugging Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>Plugin Interfaces</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/plugins/plugin-interfaces.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="plugin-interfaces">
+<span id="developer-plugins-interfaces"></span><h1>Plugin Interfaces<a class="headerlink" href="#plugin-interfaces" title="Permalink to this headline">¶</a></h1>
+<p>Most of the functions in the Traffic Server API provide an interface to
+specific code modules within Traffic Server. The miscellaneous functions
+described in this chapter provide some useful general capabilities. They
+are categorized as follows:</p>
+<div class="toctree-wrapper compound">
+</div>
+<p>The C library already provides functions such as <code class="docutils literal notranslate"><span class="pre">printf</span></code>, <code class="docutils literal notranslate"><span class="pre">malloc</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">fopen</span></code> to perform these tasks. The Traffic Server API versions,
+however, overcome various C library limitations (such as portability to
+all Traffic Server-support platforms).</p>
+<div class="section" id="tsfopen-family">
+<span id="developer-plugins-tsfopen-family"></span><h2>TSfopen Family<a class="headerlink" href="#tsfopen-family" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">fopen</span></code> family of functions in C is normally used for reading
+configuration files, since <code class="docutils literal notranslate"><span class="pre">fgets</span></code> is an easy way to parse files on a
+line-by-line basis. The <code class="docutils literal notranslate"><span class="pre">TSfopen</span></code> family of functions aims at solving
+the same problem of buffered IO and line at a time IO in a
+platform-independent manner. The <code class="docutils literal notranslate"><span class="pre">fopen</span></code> family of C library functions
+can only open a file if a file descriptor less than 256 is available.
+Since Traffic Server often has more than 2000 file descriptors open at
+once, however, the likelihood of an available file descriptor less than
+256 very small. To solve this problem, the <code class="docutils literal notranslate"><span class="pre">TSfopen</span></code> family can open
+files with descriptors greater than 256.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TSfopen</span></code> family of routines is not intended for high speed IO or
+flexibility - they are blocking APIs (not asynchronous). For performance
+reasons, you should not directly use these APIs on a Traffic Server
+thread (when being called back on an HTTP hook); it is better to use a
+separate thread for doing the blocking IO. The <code class="docutils literal notranslate"><span class="pre">TSfopen</span></code> family is
+intended for reading and writing configuration information when
+corresponding usage of the <code class="docutils literal notranslate"><span class="pre">fopen</span></code> family of functions is
+inappropriate due to file descriptor and portability limitations. The
+<code class="docutils literal notranslate"><span class="pre">TSfopen</span></code> family of functions consists of the following:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api/functions/TSfclose.en.html#c.TSfclose" title="TSfclose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfclose()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSfflush.en.html#c.TSfflush" title="TSfflush"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfflush()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSfgets.en.html#c.TSfgets" title="TSfgets"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfgets()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSfopen.en.html#c.TSfopen" title="TSfopen"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfopen()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSfread.en.html#c.TSfread" title="TSfread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfread()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSfwrite.en.html#c.TSfwrite" title="TSfwrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfwrite()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="memory-allocation">
+<h2>Memory Allocation<a class="headerlink" href="#memory-allocation" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides five routines for allocating and freeing memory.
+These routines correspond to similar routines in the C library. For
+example, <code class="docutils literal notranslate"><span class="pre">TSrealloc</span></code> behaves like the C library routine <code class="docutils literal notranslate"><span class="pre">realloc</span></code>.</p>
+<p>There are two main reasons for using the routines provided by Traffic
+Server. The first is portability: the Traffic Server API routines behave
+the same on all of Traffic Server’s supported platforms. For example,
+<code class="docutils literal notranslate"><span class="pre">realloc</span></code> does not accept an argument of <code class="docutils literal notranslate"><span class="pre">NULL</span></code> on some platforms.
+The second reason is that the Traffic Server routines actually track the
+memory allocations by file and line number. This tracking is very
+efficient, always turned on, and quite useful when tracking down memory
+leaks.</p>
+<p>The memory allocation functions are:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api/functions/TSmalloc.en.html#c.TSfree" title="TSfree"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSfree()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSmalloc.en.html#c.TSmalloc" title="TSmalloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSmalloc()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSmalloc.en.html#c.TSrealloc" title="TSrealloc"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSrealloc()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSmalloc.en.html#c.TSstrdup" title="TSstrdup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrdup()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSmalloc.en.html#c.TSstrndup" title="TSstrndup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSstrndup()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="thread-functions">
+<h2>Thread Functions<a class="headerlink" href="#thread-functions" title="Permalink to this headline">¶</a></h2>
+<p>The Traffic Server API thread functions enable you to create, destroy,
+and identify threads within Traffic Server. Multithreading enables a
+single program to have more than one stream of execution and to process
+more than one transaction at a time. Threads serialize their access to
+shared resources and data using the <code class="docutils literal notranslate"><span class="pre">TSMutex</span></code> type, as described in
+<a class="reference internal" href="mutexes.en.html#developer-plugins-mutexes"><span class="std std-ref">Mutexes</span></a>.</p>
+<p>The thread functions are listed below:</p>
+<ul class="simple">
+<li><a class="reference internal" href="../api/functions/TSThreadCreate.en.html#c.TSThreadCreate" title="TSThreadCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSThreadCreate()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSThreadDestroy.en.html#c.TSThreadDestroy" title="TSThreadDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSThreadDestroy()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSThreadInit.en.html#c.TSThreadInit" title="TSThreadInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSThreadInit()</span></code></a></li>
+<li><a class="reference internal" href="../api/functions/TSThreadSelf.en.html#c.TSThreadSelf" title="TSThreadSelf"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSThreadSelf()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="debugging-functions">
+<h2>Debugging Functions<a class="headerlink" href="#debugging-functions" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a>
+prints out a formatted statement if you are running Traffic Server in
+debug mode.</li>
+<li><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a>
+checks to see if a debug tag is set. If the debug tag is set, then
+Traffic Server prints out all debug statements associated with the
+tag.</li>
+<li><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSError" title="TSError"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSError()</span></code></a>
+prints error messages to Traffic Server’s error log</li>
+<li><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSAssert" title="TSAssert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSAssert()</span></code></a>
+enables the use of assertion in a plugin.</li>
+<li><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSReleaseAssert" title="TSReleaseAssert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSReleaseAssert()</span></code></a>
+enables the use of assertion in a plugin.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="adding-statistics.en.html" class="btn btn-neutral float-right" title="Adding Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="new-protocol-plugins.en.html" class="btn btn-neutral float-left" title="New Protocol Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>
