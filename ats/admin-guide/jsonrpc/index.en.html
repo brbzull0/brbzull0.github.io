@@ -202,10 +202,7 @@ It is easy for machines to parse and generate. It’s basically a  collection of
 <li><a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC 2.0</a> protocol. Stateless, light-weight remote procedure call (RPC) protocol.
 Primarily this specification defines several data structures and the rules around their processing.</li>
 </ul>
-<dl class="docutils">
-<dt>In order for programs to communicate with Traffic Server, the server exposes a public (local through IPC socket)</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">JSONRRPC</span> <span class="pre">2.0</span></code> API where programs can communicate with it.</dd>
-</dl>
+<p>In order for programs to communicate with Traffic Server, the server exposes a <code class="docutils literal notranslate"><span class="pre">JSONRRPC</span> <span class="pre">2.0</span></code> API where programs can communicate with it.</p>
 </div>
 <div class="section" id="configuration">
 <span id="admnin-jsonrpc-configuration"></span><h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
@@ -218,7 +215,7 @@ Primarily this specification defines several data structures and the rules aroun
 <p>File <cite>jsonrpc.yaml</cite> is a YAML format. The default configuration is:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#YAML</span>
 <span class="nl">comm_type</span><span class="p">:</span> <span class="mi">1</span>
-<span class="nl">ipcsocket_config</span><span class="p">:</span>
+<span class="nl">comm_config</span><span class="p">:</span>
    <span class="nl">backlog</span><span class="p">:</span> <span class="mi">5</span>
    <span class="nl">lock_path_name</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">conf_jsonrpc</span><span class="p">.</span><span class="n">lock</span>
    <span class="nl">max_retry_on_transient_errors</span><span class="p">:</span> <span class="mi">64</span>
@@ -256,12 +253,12 @@ Primarily this specification defines several data structures and the rules aroun
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">rpc_enabled</span></code></td>
 <td>Enable/disable toggle for the whole implementation, server will not start if this is false/no</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ipcsocket_config</span></code></td>
-<td>This section is specified by each communication implementation.</td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">comm_config</span></code></td>
+<td>Specific definitions as per transport.</td>
 </tr>
 </tbody>
 </table>
-<p>IPC Socket:</p>
+<p>IPC Socket (comm_config):</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="28%" />
@@ -287,6 +284,15 @@ Primarily this specification defines several data structures and the rules aroun
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As today, there is only 1 communication mechanism supported. IPC Sockets.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Traffic Control does support this RPC mechanism for comunication with Traffic Server . Please check <strong class="program">traffic_ctl</strong> documentation for
+more details.</p>
+</div>
 </div>
 <div class="section" id="api">
 <span id="admin-jsonrpc-api"></span><h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
@@ -1312,7 +1318,7 @@ records and `LOCAL` records.</em></p>
 </li>
 <li><p class="first">Response.</p>
 <blockquote>
-<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div></blockquote>
 </li>
 <li><p class="first">Validation</p>
@@ -1407,7 +1413,7 @@ Successfully metric update will not report back to the client. So it can be assu
 </div>
 <div class="section" id="id22">
 <h4>Result<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
-<p>This api will only inform for errors during the metric update. Errors will be tracked down in the <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a> field.</p>
+<p>This api will only inform for errors during the metric update. Errors will be tracked down in the <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a> field.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">As per our internal API if the metric could not be updated because there is no change in the value, ie: it’s already <code class="docutils literal notranslate"><span class="pre">0</span></code> this
@@ -1430,7 +1436,7 @@ will be reported back to the client as part of the  <a class="reference internal
 </li>
 <li><p class="first">Response.</p>
 <blockquote>
-<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -1440,9 +1446,9 @@ will be reported back to the client as part of the  <a class="reference internal
 </div>
 <div class="section" id="id24">
 <h4>Description<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h4>
-<p>A stat to track status is created for each host. The name is the host fqdn with a prefix of “proxy.process.host_status”. The value of
+<p>A stat to track status is created for each host. The name is the host fqdn with a prefix of <cite>proxy.process.host_status</cite>. The value of
 the stat is a string which is the serialized representation of the status. This contains the overall status and the status for each reason.
-The stats may be viewed using the <cite>admin_lookup_records</cite> rpc api or through the <code class="docutils literal notranslate"><span class="pre">stats_over_http</span></code> endpoint.</p>
+The stats may be viewed using the <a class="reference internal" href="#admin-lookup-records">admin_lookup_records</a> rpc api or through the <code class="docutils literal notranslate"><span class="pre">stats_over_http</span></code> endpoint.</p>
 </div>
 <div class="section" id="id25">
 <h4>Parameters<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h4>
@@ -1481,7 +1487,8 @@ and none is provided by this option.</td>
 </tbody>
 </table>
 </div></blockquote>
-<p># operation.</p>
+<ul>
+<li><p class="first">operation.</p>
 <blockquote>
 <div><table border="1" class="docutils">
 <colgroup>
@@ -1512,7 +1519,8 @@ are cleared by marking up the host for the specified reason code.</td>
 </tbody>
 </table>
 </div></blockquote>
-<p># reason.</p>
+</li>
+<li><p class="first">reason.</p>
 <blockquote>
 <div><table border="1" class="docutils">
 <colgroup>
@@ -1552,10 +1560,12 @@ marking this reason as “down” in that case.</p>
 all of the statuses are “up”.</p>
 </div>
 </div></blockquote>
+</li>
+</ul>
 </div>
 <div class="section" id="id26">
 <h4>Result<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id27">
 <h4>Examples<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
@@ -1593,7 +1603,7 @@ all of the statuses are “up”.</p>
 </ul>
 <p><em>Get the current status of the specified hosts with respect to their use as targets for parent selection. This returns the same
 information as the per host stat.</em></p>
-<p>Although there is no single API that you can call to get a status from a particular host you can work away by pulling the right records.
+<p>Although there is no a specialized API that you can call to get a status from a particular host you can work away by pulling the right records.
 For instance, the <code class="docutils literal notranslate"><span class="pre">host1</span></code>  that we just set up can be easily fetch for a status:</p>
 <ul>
 <li><p class="first">Request.</p>
@@ -1657,7 +1667,7 @@ For instance, the <code class="docutils literal notranslate"><span class="pre">h
 </div>
 <div class="section" id="id30">
 <h4>Result<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id31">
 <h4>Examples<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
@@ -1702,7 +1712,7 @@ For instance, the <code class="docutils literal notranslate"><span class="pre">h
 </div>
 <div class="section" id="id34">
 <h4>Result<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If the Server is already running a proper error will be sent back to the client.</p>
@@ -1785,7 +1795,7 @@ The <em>tag</em> and <em>data</em> will be available to the plugin hook processi
 </div>
 <div class="section" id="id38">
 <h4>Result<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RpcErrorCode" title="RpcErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RpcErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id39">
 <h4>Examples<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
