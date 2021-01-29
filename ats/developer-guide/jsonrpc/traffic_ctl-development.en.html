@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Core Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>Traffic Control &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Header Heap" href="heap.en.html" />
-    <link rel="prev" title="An Overview Client Sessions and Transactions" href="../client-session-architecture.en.html" /> 
+    <link rel="next" title="JSONRPC Record Errors" href="RecordError.en.html" />
+    <link rel="prev" title="JSONRPC handler implementation" href="jsonrpc-handler-development.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -113,16 +113,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Core Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="heap.en.html">Header Heap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rpc.en.html">RPC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="url_rewrite_architecture.en.html">URL Rewrite Architecture</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Traffic Control</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overall-structure">Overall structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#command-implementation">Command implementation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#printer-implementation">Printer implementation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -173,13 +179,15 @@
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
-      <li>Core Architecture</li>
+          <li><a href="index.en.html">JSONRPC</a> &raquo;</li>
+        
+      <li>Traffic Control</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/developer-guide/core-architecture/index.en.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/developer-guide/jsonrpc/traffic_ctl-development.en.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -192,14 +200,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="core-architecture">
-<span id="developer-core-architecture"></span><h1>Core Architecture<a class="headerlink" href="#core-architecture" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="heap.en.html">Header Heap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rpc.en.html">RPC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="url_rewrite_architecture.en.html">URL Rewrite Architecture</a></li>
-</ul>
+  <div class="section" id="traffic-control">
+<span id="developer-guide-traffic-ctl-development"></span><h1>Traffic Control<a class="headerlink" href="#traffic-control" title="Permalink to this headline">¶</a></h1>
+<p>Traffic Control interacts with Traffic Server through the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> enpoint. All interaction is done by following the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> protocol.</p>
+<div class="section" id="overall-structure">
+<h2>Overall structure<a class="headerlink" href="#overall-structure" title="Permalink to this headline">¶</a></h2>
+<div class="figure">
+<img alt="../../_images/traffic_ctl-class-diagram.svg" src="../../_images/traffic_ctl-class-diagram.svg" /></div>
+</div>
+<div class="section" id="command-implementation">
+<h2>Command implementation<a class="headerlink" href="#command-implementation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="printer-implementation">
+<h2>Printer implementation<a class="headerlink" href="#printer-implementation" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -211,10 +224,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="heap.en.html" class="btn btn-neutral float-right" title="Header Heap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="RecordError.en.html" class="btn btn-neutral float-right" title="JSONRPC Record Errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../client-session-architecture.en.html" class="btn btn-neutral float-left" title="An Overview Client Sessions and Transactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jsonrpc-handler-development.en.html" class="btn btn-neutral float-left" title="JSONRPC handler implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

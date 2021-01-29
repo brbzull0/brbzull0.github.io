@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Core Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>JSONRPC handler implementation &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Header Heap" href="heap.en.html" />
-    <link rel="prev" title="An Overview Client Sessions and Transactions" href="../client-session-architecture.en.html" /> 
+    <link rel="next" title="Traffic Control" href="traffic_ctl-development.en.html" />
+    <link rel="prev" title="JSONRPC" href="jsonrpc-architecture.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -113,16 +113,22 @@
 <li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Core Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="heap.en.html">Header Heap</a></li>
-<li class="toctree-l3"><a class="reference internal" href="rpc.en.html">RPC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="url_rewrite_architecture.en.html">URL Rewrite Architecture</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">JSONRPC handler implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-incoming-parameters">Parsing incoming parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#send-information-back">Send information back</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#registering-public-handlers">Registering public handlers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -173,13 +179,15 @@
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
-      <li>Core Architecture</li>
+          <li><a href="index.en.html">JSONRPC</a> &raquo;</li>
+        
+      <li>JSONRPC handler implementation</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/developer-guide/core-architecture/index.en.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/developer-guide/jsonrpc/jsonrpc-handler-development.en.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -192,14 +200,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="core-architecture">
-<span id="developer-core-architecture"></span><h1>Core Architecture<a class="headerlink" href="#core-architecture" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="heap.en.html">Header Heap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rpc.en.html">RPC</a></li>
-<li class="toctree-l1"><a class="reference internal" href="url_rewrite_architecture.en.html">URL Rewrite Architecture</a></li>
-</ul>
+  <div class="section" id="jsonrpc-handler-implementation">
+<span id="jsonrpc-development"></span><h1>JSONRPC handler implementation<a class="headerlink" href="#jsonrpc-handler-implementation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="parsing-incoming-parameters">
+<h2>Parsing incoming parameters<a class="headerlink" href="#parsing-incoming-parameters" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="send-information-back">
+<h2>Send information back<a class="headerlink" href="#send-information-back" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="registering-public-handlers">
+<h2>Registering public handlers<a class="headerlink" href="#registering-public-handlers" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 
@@ -211,10 +221,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="heap.en.html" class="btn btn-neutral float-right" title="Header Heap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="traffic_ctl-development.en.html" class="btn btn-neutral float-right" title="Traffic Control" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../client-session-architecture.en.html" class="btn btn-neutral float-left" title="An Overview Client Sessions and Transactions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jsonrpc-architecture.en.html" class="btn btn-neutral float-left" title="JSONRPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

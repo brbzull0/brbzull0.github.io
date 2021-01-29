@@ -1099,35 +1099,31 @@ The <code class="docutils literal notranslate"><span class="pre">record</span></
 </li>
 <li><p class="first">Request all config records</p>
 <p>Request:</p>
-<dl class="docutils">
-<dt>..code-block:: json</dt>
-<dd><table class="first docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">linenos:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name" colspan="2">emphasize-lines:</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body">7,8</td>
-</tr>
-</tbody>
-</table>
-<dl class="docutils">
-<dt>{</dt>
-<dd><p class="first">“id”: “ded7018e-0720-11eb-abe2-001fc69cc946”,
-“jsonrpc”: “2.0”,
-“method”: “admin_lookup_records”,
-“params”: [{</p>
-<blockquote>
-<div><p>“record_name_regex”: “.*”,
-“rec_types”: [1, 16]</p>
-</div></blockquote>
-<p class="last">}]</p>
-</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
+<div class="highlight-json notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;ded7018e-0720-11eb-abe2-001fc69cc946&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;method&quot;</span><span class="p">:</span> <span class="s2">&quot;admin_lookup_records&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;params&quot;</span><span class="p">:</span> <span class="p">[{</span>
+
+<span class="hll">      <span class="nt">&quot;record_name_regex&quot;</span><span class="p">:</span> <span class="s2">&quot;.*&quot;</span><span class="p">,</span>
+</span><span class="hll">      <span class="nt">&quot;rec_types&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+</span>
+   <span class="p">}]</span>
+
+<span class="p">}</span>
+</pre></div>
+</td></tr></table></div>
 <p><em>Note the `.*` regex we use to match them all. `rec_types` refer to ``RecT` , which in this case we are interested in `CONFIG`
 records and `LOCAL` records.</em></p>
 <p>Response:</p>
@@ -1318,7 +1314,7 @@ records and `LOCAL` records.</em></p>
 </li>
 <li><p class="first">Response.</p>
 <blockquote>
-<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div></blockquote>
 </li>
 <li><p class="first">Validation</p>
@@ -1413,7 +1409,7 @@ Successfully metric update will not report back to the client. So it can be assu
 </div>
 <div class="section" id="id22">
 <h4>Result<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h4>
-<p>This api will only inform for errors during the metric update. Errors will be tracked down in the <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a> field.</p>
+<p>This api will only inform for errors during the metric update. Errors will be tracked down in the <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a> field.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">As per our internal API if the metric could not be updated because there is no change in the value, ie: it’s already <code class="docutils literal notranslate"><span class="pre">0</span></code> this
@@ -1436,7 +1432,7 @@ will be reported back to the client as part of the  <a class="reference internal
 </li>
 <li><p class="first">Response.</p>
 <blockquote>
-<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<div><p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div></blockquote>
 </li>
 </ul>
@@ -1565,7 +1561,7 @@ all of the statuses are “up”.</p>
 </div>
 <div class="section" id="id26">
 <h4>Result<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id27">
 <h4>Examples<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h4>
@@ -1667,7 +1663,7 @@ For instance, the <code class="docutils literal notranslate"><span class="pre">h
 </div>
 <div class="section" id="id30">
 <h4>Result<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id31">
 <h4>Examples<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h4>
@@ -1712,7 +1708,7 @@ For instance, the <code class="docutils literal notranslate"><span class="pre">h
 </div>
 <div class="section" id="id34">
 <h4>Result<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If the Server is already running a proper error will be sent back to the client.</p>
@@ -1795,7 +1791,7 @@ The <em>tag</em> and <em>data</em> will be available to the plugin hook processi
 </div>
 <div class="section" id="id38">
 <h4>Result<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h4>
-<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/core-architecture/jsonrpc.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
+<p>The response will contain the default <cite>success_response</cite>  or an <a class="reference internal" href="../../developer-guide/jsonrpc/jsonrpc-architecture.en.html#_CPPv412RPCErrorCode" title="RPCErrorCode"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">RPCErrorCode</span></code></a>.</p>
 </div>
 <div class="section" id="id39">
 <h4>Examples<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h4>
