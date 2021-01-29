@@ -465,17 +465,17 @@ API list
 
 * `admin_clear_all_metrics_records`_
 
-*  `admin_host_set_status`_
+* `admin_host_set_status`_
 
-*  `admin_server_stop_drain`_
+* `admin_server_stop_drain`_
 
-*  `admin_server_start_drain`_
+* `admin_server_start_drain`_
 
-*  `admin_plugin_send_basic_msg`_
+* `admin_plugin_send_basic_msg`_
 
-*  `admin_storage_get_device_status`_
+* `admin_storage_get_device_status`_
 
-*  `admin_storage_set_device_offline`_
+* `admin_storage_set_device_offline`_
 
 
 show_registered_handlers
@@ -1180,7 +1180,7 @@ Parameters
    ``reason``          |str|         Reason for the operation.
    ``time``            |str|         Set the duration of an operation to ``count`` seconds. A value of ``0`` means no duration, the
                                      condition persists until explicitly changed. The default is ``0`` if an operation requires a time
-                                     and none is provided by this option.
+                                     and none is provided by this option. optional when ``op=up``
    =================== ============= =================================================================================================
 
 * operation.
@@ -1435,7 +1435,7 @@ admin_plugin_send_basic_msg
 Description
 ^^^^^^^^^^^
 
-Interact with plugins. Send a message to plugins. All plugins that have hooked the  :cpp:enumerator:`TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK` will receive a callback for that hook.
+Interact with plugins. Send a message to plugins. All plugins that have hooked the ``TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK`` will receive a callback for that hook.
 The :arg:`tag` and :arg:`data` will be available to the plugin hook processing. It is expected that plugins will use :arg:`tag` to select relevant messages and determine the format of the :arg:`data`.
 
 Parameters
@@ -1659,7 +1659,7 @@ Examples
 
 # Response.
 
-   .. code-block::json
+   .. code-block:: json
 
       {
          "id": "f4477ac4-0d44-11eb-958d-001fc69cc946",

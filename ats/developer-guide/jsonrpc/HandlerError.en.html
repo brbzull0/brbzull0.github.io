@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>JSONRPC &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>API Handler error codes &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="JSONRPC" href="jsonrpc-architecture.en.html" />
-    <link rel="prev" title="Traffic Server Blackbox Testing" href="../testing/blackbox-testing.en.html" /> 
+    <link rel="next" title="Appendices" href="../../appendices/index.en.html" />
+    <link rel="prev" title="JSONRPC Record Errors" href="RecordError.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -117,12 +117,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">JSONRPC</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
 <li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control Development Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
-<li class="toctree-l3"><a class="reference internal" href="HandlerError.en.html">API Handler error codes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">API Handler error codes</a></li>
 </ul>
 </li>
 </ul>
@@ -175,13 +175,15 @@
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
-      <li>JSONRPC</li>
+          <li><a href="index.en.html">JSONRPC</a> &raquo;</li>
+        
+      <li>API Handler error codes</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/developer-guide/jsonrpc/index.en.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/developer-guide/jsonrpc/HandlerError.en.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -194,60 +196,64 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="jsonrpc">
-<span id="developer-guide-jsonrpc"></span><h1>JSONRPC<a class="headerlink" href="#jsonrpc" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-2-0-protocol">JSONRPC 2.0 Protocol</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#overview">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#requests">Requests</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#responses">Responses</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#result">Result</a></li>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#errors">Errors</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#rpc-architecture">RPC Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#protocol">Protocol</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#server">Server</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#ipc">IPC</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#using-the-jsonrpc-mechanism">Using the JSONRPC mechanism</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#json-parsing">JSON Parsing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#development-guide">Development Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#see-also">See also</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#json-rpc-manager">Json RPC manager</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#distpatcher-class">Distpatcher class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpcmanager-class">JsonRPCManager class</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#implementing-new-handlers">Implementing new handlers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#design">Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#error-handling">Error Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#registration">Registration</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#important-notes">Important Notes</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control Development Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="traffic_ctl-development.en.html#overall-structure">Overall structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="traffic_ctl-development.en.html#command-implementation">Command implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="traffic_ctl-development.en.html#implementation-example">Implementation Example</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="HandlerError.en.html">API Handler error codes</a></li>
-</ul>
+  <div class="section" id="api-handler-error-codes">
+<span id="jsonrpc-handler-errors"></span><h1>API Handler error codes<a class="headerlink" href="#api-handler-error-codes" title="Permalink to this headline">¶</a></h1>
+<p>High level handler error codes, each particular handler can be fit into one of the following categories.
+A good approach could be to do the following. This required coordination among all the errors, for now seems
+ok.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">YourOwnHandlerEnum</span> <span class="p">{</span>
+    <span class="n">FOO_ERROR</span> <span class="o">=</span> <span class="n">Codes</span><span class="o">::</span><span class="n">SOME_CATEGORY</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
 </div>
+<dl class="class">
+<dt id="_CPPv45Codes">
+<span id="_CPPv35Codes"></span><span id="_CPPv25Codes"></span><span id="Codes"></span><em class="property">class </em><code class="descname">Codes</code><a class="headerlink" href="#_CPPv45Codes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATIONE">
+<span id="_CPPv3N5Codes13CONFIGURATIONE"></span><span id="_CPPv2N5Codes13CONFIGURATIONE"></span><em class="property">enumerator </em><code class="descname">CONFIGURATION</code> = 1<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATIONE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><blockquote>
+<div>Errors during configuration api handling.</div></blockquote>
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION6METRICE">
+<span id="_CPPv3N5Codes13CONFIGURATION6METRICE"></span><span id="_CPPv2N5Codes13CONFIGURATION6METRICE"></span><em class="property">enumerator </em><code class="descname">METRIC</code> = 1000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6METRICE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during metrics api handling.</p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION6RECORDE">
+<span id="_CPPv3N5Codes13CONFIGURATION6RECORDE"></span><span id="_CPPv2N5Codes13CONFIGURATION6RECORDE"></span><em class="property">enumerator </em><code class="descname">RECORD</code> = 2000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6RECORDE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during record api handling.</p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION6SERVERE">
+<span id="_CPPv3N5Codes13CONFIGURATION6SERVERE"></span><span id="_CPPv2N5Codes13CONFIGURATION6SERVERE"></span><em class="property">enumerator </em><code class="descname">SERVER</code> = 3000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6SERVERE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during server api handling.</p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION7STORAGEE">
+<span id="_CPPv3N5Codes13CONFIGURATION7STORAGEE"></span><span id="_CPPv2N5Codes13CONFIGURATION7STORAGEE"></span><em class="property">enumerator </em><code class="descname">STORAGE</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7STORAGEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during storage api handling.</p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION6PLUGINE">
+<span id="_CPPv3N5Codes13CONFIGURATION6PLUGINE"></span><span id="_CPPv2N5Codes13CONFIGURATION6PLUGINE"></span><em class="property">enumerator </em><code class="descname">PLUGIN</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6PLUGINE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during plugion api handling.</p>
+</dd></dl>
+
+<dl class="enumerator">
+<dt id="_CPPv4N5Codes13CONFIGURATION7GENERICE">
+<span id="_CPPv3N5Codes13CONFIGURATION7GENERICE"></span><span id="_CPPv2N5Codes13CONFIGURATION7GENERICE"></span><em class="property">enumerator </em><code class="descname">GENERIC</code> = 30000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7GENERICE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Errors during generic api handling, general errors.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 
@@ -258,10 +264,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="jsonrpc-architecture.en.html" class="btn btn-neutral float-right" title="JSONRPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../appendices/index.en.html" class="btn btn-neutral float-right" title="Appendices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../testing/blackbox-testing.en.html" class="btn btn-neutral float-left" title="Traffic Server Blackbox Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="RecordError.en.html" class="btn btn-neutral float-left" title="JSONRPC Record Errors" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

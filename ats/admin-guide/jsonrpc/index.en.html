@@ -1478,7 +1478,7 @@ The stats may be viewed using the <a class="reference internal" href="#admin-loo
 <td><code class="docutils literal notranslate"><span class="pre">string</span></code></td>
 <td>Set the duration of an operation to <code class="docutils literal notranslate"><span class="pre">count</span></code> seconds. A value of <code class="docutils literal notranslate"><span class="pre">0</span></code> means no duration, the
 condition persists until explicitly changed. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code> if an operation requires a time
-and none is provided by this option.</td>
+and none is provided by this option. optional when <code class="docutils literal notranslate"><span class="pre">op=up</span></code></td>
 </tr>
 </tbody>
 </table>
@@ -1758,7 +1758,7 @@ For instance, the <code class="docutils literal notranslate"><span class="pre">h
 </div>
 <div class="section" id="id36">
 <h4>Description<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h4>
-<p>Interact with plugins. Send a message to plugins. All plugins that have hooked the  <a class="reference internal" href="../../developer-guide/api/functions/TSLifecycleHookAdd.en.html#_CPPv4N17TSLifecycleHookID21TS_LIFECYCLE_MSG_HOOKE" title="TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK</span></code></a> will receive a callback for that hook.
+<p>Interact with plugins. Send a message to plugins. All plugins that have hooked the <code class="docutils literal notranslate"><span class="pre">TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK</span></code> will receive a callback for that hook.
 The <em>tag</em> and <em>data</em> will be available to the plugin hook processing. It is expected that plugins will use <em>tag</em> to select relevant messages and determine the format of the <em>data</em>.</p>
 </div>
 <div class="section" id="id37">
@@ -2013,7 +2013,30 @@ path specified in <a class="reference internal" href="../files/storage.config.en
 </div></blockquote>
 <p># Response.</p>
 <blockquote>
-<div></div></blockquote>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+   <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;f4477ac4-0d44-11eb-958d-001fc69cc946&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span> <span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+   <span class="nt">&quot;result&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;methods&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;admin_host_set_status&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_server_stop_drain&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_server_start_drain&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_clear_metrics_records&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_clear_all_metrics_records&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_plugin_send_basic_msg&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_lookup_records&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_config_set_records&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_storage_get_device_status&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_storage_set_device_offline&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;admin_config_reload&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;show_registered_handlers&quot;</span>
+      <span class="p">],</span>
+      <span class="nt">&quot;notifications&quot;</span><span class="p">:</span> <span class="p">[]</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
 </div>
 </div>
 </div>
