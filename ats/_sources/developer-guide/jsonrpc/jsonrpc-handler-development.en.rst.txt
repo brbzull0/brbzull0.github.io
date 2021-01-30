@@ -35,13 +35,13 @@ This class is the entrance point for both, server calls and registered functions
 
 .. figure:: ../../uml/images/JsonRPCManager.svg
 
-Distpatcher class
+Dispatcher class
 ^^^^^^^^^^^^^^^^^
 
 * Class that keeps track of all the registered methods and notification that can be invoked by the RPC server. This class holds two
   hash tables containing methods and notification which uses the method name as a key.
-* This class internally consumes :ref:`RPCRequestInfo` objects and performs the invocation of the respective calls.
-* This class handles the responses from the registered callbacks and it fills the appropiated :ref:`RPCResponseInfo` which then is passed
+* This class internally consumes ``RPCRequestInfo`` objects and performs the invocation of the respective calls.
+* This class handles the responses from the registered callbacks and it fills the appropiated ``RPCResponseInfo`` which then is passed
   back to the ``JsonRPCManager`` class.
 
 
@@ -124,7 +124,7 @@ Please refer to `rpc-error-code`_ and in particular ``ExecutionError = 9``. Also
 #. Definig a custom error object and include this as a part of the response object.
 
 * This is up to the developer and the errors can be part of the response ``YAML::Node``.
-* The JSONRPC Distpatcher will read that there is no error returned from the call and use the result to build the response. If this is 
+* The JSONRPC Dispatcher will read that there is no error returned from the call and use the result to build the response. If this is 
   what you are willing to respond, then make sure that the error is not set in the ``ts::Rv``.
 
 
