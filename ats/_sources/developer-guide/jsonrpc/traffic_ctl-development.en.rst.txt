@@ -40,9 +40,15 @@ Overall structure
   the putput could be send to a different destination.
 * JSONRPC requests have a base class that hides some of the basic and common part, like ``id``, and ``version``. When deriving
   from this class, the only thing that needs to be override is the ``method``
-* CtrlCommand will invoke ``_invoked_func`` when executed, this should be set by the derived class. The whole design is that the command
-  will execute the ``_invoked_func`` once invoked. This function ptr should be set by the appropriated derived class base on the passed
-  parameters. The derived class have the option to override the execute() which is ``virtual`` function and do something else. Check ``RecordCommand`` as an example.
+
+
+.. important::
+
+   CtrlCommand will invoke ``_invoked_func`` when executed, this should be set by the derived class
+
+* The whole design is that the command will execute the ``_invoked_func`` once invoked. This function ptr should be set by the
+  appropriated derived class base on the passed parameters. The derived class have the option to override the execute() which
+  is ``virtual`` function and do something else. Check ``RecordCommand`` as an example.
 
 
 Command implementation
@@ -178,6 +184,13 @@ Let's define a new command for a new specific API with name == ``admin_new_comma
             auto response = result.as<RecordLookUpResponse>(); // will invoke the yamlcpp decode.
             // you can now deal with the Record object and not with the yaml node.
          }
+
+Notes
+=====
+
+There is code that was written in this way by design, ``RecordPrinter`` and ``RecordRequest`` are meant to be use by any command
+that needs to query and print recoreds without any major hassle.
+
 
 
 :ref:`admnin-jsonrpc-configuration`, 

@@ -124,6 +124,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#overall-structure">Overall structure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#command-implementation">Command implementation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementation-example">Implementation Example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
@@ -215,9 +216,15 @@
 the putput could be send to a different destination.</li>
 <li>JSONRPC requests have a base class that hides some of the basic and common part, like <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">version</span></code>. When deriving
 from this class, the only thing that needs to be override is the <code class="docutils literal notranslate"><span class="pre">method</span></code></li>
-<li>CtrlCommand will invoke <code class="docutils literal notranslate"><span class="pre">_invoked_func</span></code> when executed, this should be set by the derived class. The whole design is that the command
-will execute the <code class="docutils literal notranslate"><span class="pre">_invoked_func</span></code> once invoked. This function ptr should be set by the appropriated derived class base on the passed
-parameters. The derived class have the option to override the execute() which is <code class="docutils literal notranslate"><span class="pre">virtual</span></code> function and do something else. Check <code class="docutils literal notranslate"><span class="pre">RecordCommand</span></code> as an example.</li>
+</ul>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">CtrlCommand will invoke <code class="docutils literal notranslate"><span class="pre">_invoked_func</span></code> when executed, this should be set by the derived class</p>
+</div>
+<ul class="simple">
+<li>The whole design is that the command will execute the <code class="docutils literal notranslate"><span class="pre">_invoked_func</span></code> once invoked. This function ptr should be set by the
+appropriated derived class base on the passed parameters. The derived class have the option to override the execute() which
+is <code class="docutils literal notranslate"><span class="pre">virtual</span></code> function and do something else. Check <code class="docutils literal notranslate"><span class="pre">RecordCommand</span></code> as an example.</li>
 </ul>
 </div>
 <div class="section" id="command-implementation">
@@ -339,6 +346,11 @@ to decode the <code class="docutils literal notranslate"><span class="pre">YAML:
 </div>
 </li>
 </ol>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p>There is code that was written in this way by design, <code class="docutils literal notranslate"><span class="pre">RecordPrinter</span></code> and <code class="docutils literal notranslate"><span class="pre">RecordRequest</span></code> are meant to be use by any command
+that needs to query and print recoreds without any major hassle.</p>
 <p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
 <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a>,
 <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a></p>
