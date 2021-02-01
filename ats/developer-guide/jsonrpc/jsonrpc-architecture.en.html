@@ -119,9 +119,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">JSONRPC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rpc-architecture">RPC Architecture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#jsonrpc-2-0-protocol">JSONRPC 2.0 Protocol</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#rpc-architecture">RPC Architecture</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#development-guide">Development Guide</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
 </ul>
@@ -205,6 +205,46 @@
             
   <div class="section" id="id1">
 <h1>JSONRPC<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="rpc-architecture">
+<h2>RPC Architecture<a class="headerlink" href="#rpc-architecture" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="protocol">
+<h3>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h3>
+<p>The RPC mechanism implements the  <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> protrocol. You can refer to this section <a class="reference internal" href="#jsonrpc-protocol">jsonrpc-protocol</a> for more information.</p>
+</div>
+<div class="section" id="server">
+<h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="ipc">
+<h4>IPC<a class="headerlink" href="#ipc" title="Permalink to this headline">¶</a></h4>
+<p>The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style.
+The implementation runs on a dedicated <code class="docutils literal notranslate"><span class="pre">TSThread</span></code> and as their style express, this performs blocking calls to the registered handlers.
+Configuration for this particular server style can be found in the admin section <a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>.</p>
+</div>
+</div>
+<div class="section" id="using-the-jsonrpc-mechanism">
+<h3>Using the JSONRPC mechanism<a class="headerlink" href="#using-the-jsonrpc-mechanism" title="Permalink to this headline">¶</a></h3>
+<p>As a user, currently,  <strong class="program">traffic_ctl</strong> excersise this new protocol, please refer to the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> section.</p>
+<p>As a developer, please refer to the <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a> for a more detailed guide.</p>
+</div>
+<div class="section" id="json-parsing">
+<h3>JSON Parsing<a class="headerlink" href="#json-parsing" title="Permalink to this headline">¶</a></h3>
+<p>Our JSONRPC  protocol implementation uses lib yamlcpp for parsing incoming and outgoing requests,
+this allows the server to accept either JSON or YAML format messages which then will be parsed by the protocol implementation. This seems handy
+for user that want to feed Traffic Server with existing yaml configuration without the need to translate yaml into json.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><strong class="program">traffic_ctl</strong> have an option to read files from disc and push them into Traffic Server through the RPC server. Files should be a
+valid <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> message. Please refer to <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-rpc"><span class="std std-ref">traffic_ctl rpc</span></a> for more details.</p>
+</div>
+<p>In order to programs communicate with Traffic Server , this one implements a simple RPC mechanism to expose all the registered API handlers.</p>
+<p>You can check all currtent API by:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>traffic_ctl rpc get-api
+</pre></div>
+</div>
+</div></blockquote>
+<p>or by using the <code class="docutils literal notranslate"><span class="pre">show_registered_handlers</span></code> API method.</p>
+</div>
+</div>
 <div class="section" id="jsonrpc-2-0-protocol">
 <span id="jsonrpc-protocol"></span><h2>JSONRPC 2.0 Protocol<a class="headerlink" href="#jsonrpc-2-0-protocol" title="Permalink to this headline">¶</a></h2>
 <p>JSON-RPC is a stateless, light-weight remote procedure call (RPC) protocol. Primarily this specification defines several data structures
@@ -675,49 +715,12 @@ the error, in most cases are specified in the <code class="docutils literal notr
 </div>
 </div>
 </div>
-<div class="section" id="rpc-architecture">
-<h2>RPC Architecture<a class="headerlink" href="#rpc-architecture" title="Permalink to this headline">¶</a></h2>
-<p>In order to programs communicate with Traffic Server , this one implements a simple RPC mechanism to expose all the registered API handlers.</p>
-<p>You can check all currtent API by:</p>
-<blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>traffic_ctl rpc get-api
-</pre></div>
-</div>
-</div></blockquote>
-<p>or by using the <code class="docutils literal notranslate"><span class="pre">show_registered_handlers</span></code> API method.</p>
-<div class="section" id="protocol">
-<h3>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h3>
-<p>The RPC mechanism implements the  <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> protrocol. You can refer to this section <a class="reference internal" href="#jsonrpc-protocol">jsonrpc-protocol</a> for more information.</p>
-</div>
-<div class="section" id="server">
-<h3>Server<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="ipc">
-<h4>IPC<a class="headerlink" href="#ipc" title="Permalink to this headline">¶</a></h4>
-<p>The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style. Configuration
-for this particular server style can be found in the admin section <a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>.
-The implementation runs on a dedicated thread and as their style express that this performs blocking calls to the registered handlers.</p>
-</div>
-</div>
-<div class="section" id="using-the-jsonrpc-mechanism">
-<h3>Using the JSONRPC mechanism<a class="headerlink" href="#using-the-jsonrpc-mechanism" title="Permalink to this headline">¶</a></h3>
-<p>As a user, currently,  <strong class="program">traffic_ctl</strong> excersise this new protocol, please refer to the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> section.</p>
-<p>As a developer, please refer to the <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a> for a more detailed guide.</p>
-</div>
-<div class="section" id="json-parsing">
-<h3>JSON Parsing<a class="headerlink" href="#json-parsing" title="Permalink to this headline">¶</a></h3>
-<p>Our JSONRPC  protocol implementation uses lib yamlcpp for parsing incoming and outgoing requests,
-this allows the server to accept either JSON or YAML format messages which then will be parsed by the protocol implementation. This seems handy
-for user that want to feed Traffic Server with existing yaml configuration without the need to translate yaml into json.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><strong class="program">traffic_ctl</strong> have an option to read files from disc and push them into Traffic Server through the RPC server. Files should be a
-valid <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> message. Please refer to <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-rpc"><span class="std std-ref">traffic_ctl rpc</span></a> for more details.</p>
-</div>
-</div>
-</div>
 <div class="section" id="development-guide">
 <h2>Development Guide<a class="headerlink" href="#development-guide" title="Permalink to this headline">¶</a></h2>
-<p>For details on how to implement jsonapi handler and expose them through the rpc server, please refer to <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a>.</p>
+<ul class="simple">
+<li>For details on how to implement JSONRPC  handler and expose them through the rpc server, please refer to <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a>.</li>
+<li>If you need to call a new JSONRPC API through <strong class="program">traffic_ctl</strong>, please refer to <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a></li>
+</ul>
 </div>
 <div class="section" id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>

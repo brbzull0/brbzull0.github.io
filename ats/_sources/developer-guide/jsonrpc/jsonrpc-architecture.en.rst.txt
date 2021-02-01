@@ -39,6 +39,59 @@
 JSONRPC
 *******
 
+RPC Architecture
+================
+
+
+Protocol
+^^^^^^^^
+
+The RPC mechanism implements the  `JSONRPC`_ protrocol. You can refer to this section `jsonrpc-protocol`_ for more information.
+
+Server
+^^^^^^
+
+IPC
+"""
+
+The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style. 
+The implementation runs on a dedicated ``TSThread`` and as their style express, this performs blocking calls to the registered handlers.
+Configuration for this particular server style can be found in the admin section :ref:`admnin-jsonrpc-configuration`. 
+
+
+Using the JSONRPC mechanism
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As a user, currently,  :program:`traffic_ctl` excersise this new protocol, please refer to the :ref:`traffic_ctl_jsonrpc` section.
+
+As a developer, please refer to the :ref:`jsonrpc_development` for a more detailed guide.
+
+
+
+JSON Parsing
+^^^^^^^^^^^^
+
+Our JSONRPC  protocol implementation uses lib yamlcpp for parsing incoming and outgoing requests,
+this allows the server to accept either JSON or YAML format messages which then will be parsed by the protocol implementation. This seems handy
+for user that want to feed |TS| with existing yaml configuration without the need to translate yaml into json.  
+
+.. note::
+
+   :program:`traffic_ctl` have an option to read files from disc and push them into |TS| through the RPC server. Files should be a
+   valid `JSONRPC`_ message. Please refer to :ref:`traffic_ctl rpc` for more details.
+
+
+In order to programs communicate with |TS| , this one implements a simple RPC mechanism to expose all the registered API handlers.
+
+You can check all currtent API by:
+
+   .. code-block:: bash
+
+      traffic_ctl rpc get-api
+
+or by using the ``show_registered_handlers`` API method.
+
+
 .. _jsonrpc-protocol:
 
 JSONRPC 2.0 Protocol
@@ -467,64 +520,11 @@ Some of this errors are already defined by the `JSONRPC`_ specs and some (``>=1`
 
 
 
-RPC Architecture
-================
-
-In order to programs communicate with |TS| , this one implements a simple RPC mechanism to expose all the registered API handlers.
-
-You can check all currtent API by:
-
-   .. code-block:: bash
-
-      traffic_ctl rpc get-api
-
-or by using the ``show_registered_handlers`` API method.
-
-
-Protocol
-^^^^^^^^
-
-The RPC mechanism implements the  `JSONRPC`_ protrocol. You can refer to this section `jsonrpc-protocol`_ for more information.
-
-Server
-^^^^^^
-
-IPC
-"""
-
-The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style. Configuration
-for this particular server style can be found in the admin section :ref:`admnin-jsonrpc-configuration`. 
-The implementation runs on a dedicated thread and as their style express that this performs blocking calls to the registered handlers.
-
-
-Using the JSONRPC mechanism
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-As a user, currently,  :program:`traffic_ctl` excersise this new protocol, please refer to the :ref:`traffic_ctl_jsonrpc` section.
-
-As a developer, please refer to the :ref:`jsonrpc_development` for a more detailed guide.
-
-
-
-JSON Parsing
-^^^^^^^^^^^^
-
-Our JSONRPC  protocol implementation uses lib yamlcpp for parsing incoming and outgoing requests,
-this allows the server to accept either JSON or YAML format messages which then will be parsed by the protocol implementation. This seems handy
-for user that want to feed |TS| with existing yaml configuration without the need to translate yaml into json.  
-
-.. note::
-
-   :program:`traffic_ctl` have an option to read files from disc and push them into |TS| through the RPC server. Files should be a
-   valid `JSONRPC`_ message. Please refer to :ref:`traffic_ctl rpc` for more details.
-
-
-
 Development Guide
 =================
 
-For details on how to implement jsonapi handler and expose them through the rpc server, please refer to :ref:`jsonrpc_development`.
-
+* For details on how to implement JSONRPC  handler and expose them through the rpc server, please refer to :ref:`jsonrpc_development`.
+* If you need to call a new JSONRPC API through :program:`traffic_ctl`, please refer to :ref:`developer-guide-traffic_ctl-development`
 
 See also
 ========
