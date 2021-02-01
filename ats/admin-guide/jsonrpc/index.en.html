@@ -214,13 +214,13 @@ Primarily this specification defines several data structures and the rules aroun
 <p>In case a special configuration is needed, the following describes the structure.</p>
 <p>File <cite>jsonrpc.yaml</cite> is a YAML format. The default configuration is:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#YAML</span>
-<span class="nl">comm_type</span><span class="p">:</span> <span class="mi">1</span>
-<span class="nl">comm_config</span><span class="p">:</span>
-   <span class="nl">backlog</span><span class="p">:</span> <span class="mi">5</span>
-   <span class="nl">lock_path_name</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">conf_jsonrpc</span><span class="p">.</span><span class="n">lock</span>
-   <span class="nl">max_retry_on_transient_errors</span><span class="p">:</span> <span class="mi">64</span>
-   <span class="nl">sock_path_name</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">conf_jsonrpc</span><span class="p">.</span><span class="n">sock</span>
-<span class="nl">rpc_enabled</span><span class="p">:</span> <span class="nb">true</span>
+<span class="nl">rpc</span><span class="p">:</span>
+   <span class="nl">enabled</span><span class="p">:</span> <span class="nb">true</span>
+   <span class="nl">unix</span><span class="p">:</span>
+      <span class="nl">lock_path_name</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">conf_jsonrpc</span><span class="p">.</span><span class="n">lock</span>
+      <span class="nl">sock_path_name</span><span class="p">:</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">conf_jsonrpc</span><span class="p">.</span><span class="n">sock</span>
+      <span class="nl">backlog</span><span class="p">:</span> <span class="mi">5</span>
+      <span class="nl">max_retry_on_transient_errors</span><span class="p">:</span> <span class="mi">64</span>
 </pre></div>
 </div>
 <table border="1" class="docutils">
@@ -234,35 +234,19 @@ Primarily this specification defines several data structures and the rules aroun
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">comm_type</span></code></td>
-<td><p class="first">Defined communication implementation type that should be selected by the rpc server.</p>
-<dl class="last class">
-<dt id="_CPPv48CommType">
-<span id="_CPPv38CommType"></span><span id="_CPPv28CommType"></span><span id="CommType"></span><em class="property">class </em><code class="descname">CommType</code><a class="headerlink" href="#_CPPv48CommType" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Defines which socket implementation should be created by the server.</p>
-<dl class="enumerator">
-<dt id="_CPPv4N8CommType10IPC_SOCKETE">
-<span id="_CPPv3N8CommType10IPC_SOCKETE"></span><span id="_CPPv2N8CommType10IPC_SOCKETE"></span><em class="property">enumerator </em><code class="descname">IPC_SOCKET</code> = 1<a class="headerlink" href="#_CPPv4N8CommType10IPC_SOCKETE" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Unix Domain Socket implementation</p>
-</dd></dl>
-
-</dd></dl>
-
-</td>
-</tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">rpc_enabled</span></code></td>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">enabled</span></code></td>
 <td>Enable/disable toggle for the whole implementation, server will not start if this is false/no</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">comm_config</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">unix</span></code></td>
 <td>Specific definitions as per transport.</td>
 </tr>
 </tbody>
 </table>
-<p>IPC Socket (comm_config):</p>
+<p>IPC Socket (<code class="docutils literal notranslate"><span class="pre">unix</span></code>):</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="28%" />
-<col width="72%" />
+<col width="21%" />
+<col width="79%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Field Name</th>
@@ -271,10 +255,10 @@ Primarily this specification defines several data structures and the rules aroun
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">lock_path_name</span></code></td>
-<td>Lock path, including the file name.</td>
+<td>Lock path, including the file name. (changing this may have impacts in <strong class="program">traffic_ctl</strong>)</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sock_path_name</span></code></td>
-<td>Sock path, including the file name. This will be used as <code class="docutils literal notranslate"><span class="pre">sockaddr_un.sun_path</span></code></td>
+<td>Sock path, including the file name. This will be used as <code class="docutils literal notranslate"><span class="pre">sockaddr_un.sun_path</span></code>. (changing this may have impacts in <strong class="program">traffic_ctl</strong>)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">backlog</span></code></td>
 <td>Check <a class="reference external" href="https://man7.org/linux/man-pages/man2/listen.2.html">https://man7.org/linux/man-pages/man2/listen.2.html</a></td>

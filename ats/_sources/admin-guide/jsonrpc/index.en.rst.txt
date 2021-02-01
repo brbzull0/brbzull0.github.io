@@ -85,41 +85,30 @@ File `jsonrpc.yaml` is a YAML format. The default configuration is::
 
 
    #YAML
-   comm_type: 1
-   comm_config:
-      backlog: 5
-      lock_path_name: /tmp/conf_jsonrpc.lock
-      max_retry_on_transient_errors: 64
-      sock_path_name: /tmp/conf_jsonrpc.sock
-   rpc_enabled: true
-
+   rpc:
+      enabled: true
+      unix:
+         lock_path_name: /tmp/conf_jsonrpc.lock
+         sock_path_name: /tmp/conf_jsonrpc.sock
+         backlog: 5
+         max_retry_on_transient_errors: 64
 
 
 ===================== =========================================================================================
 Field Name            Description
 ===================== =========================================================================================
-``comm_type``         Defined communication implementation type that should be selected by the rpc server. 
-
-                      .. class:: CommType
-
-                         Defines which socket implementation should be created by the server.
-
-                         .. enumerator:: IPC_SOCKET  = 1
-
-                            Unix Domain Socket implementation
-
-``rpc_enabled``       Enable/disable toggle for the whole implementation, server will not start if this is false/no
-``comm_config``       Specific definitions as per transport.
+``enabled``           Enable/disable toggle for the whole implementation, server will not start if this is false/no
+``unix``              Specific definitions as per transport.
 ===================== =========================================================================================
 
 
-IPC Socket (comm_config):
+IPC Socket (``unix``):
 
 ===================================== =========================================================================================
 Field Name                            Description
 ===================================== =========================================================================================
-``lock_path_name``                    Lock path, including the file name.
-``sock_path_name``                    Sock path, including the file name. This will be used as ``sockaddr_un.sun_path``
+``lock_path_name``                    Lock path, including the file name. (changing this may have impacts in :program:`traffic_ctl`)
+``sock_path_name``                    Sock path, including the file name. This will be used as ``sockaddr_un.sun_path``. (changing this may have impacts in :program:`traffic_ctl`)
 ``backlog``                           Check https://man7.org/linux/man-pages/man2/listen.2.html
 ``max_retry_on_transient_errors``     Number of times the implementation is allowed to retry when a transient error is encountered.
 ===================================== =========================================================================================

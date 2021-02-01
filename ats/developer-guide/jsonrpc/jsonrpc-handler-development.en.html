@@ -261,13 +261,13 @@ more information in <a class="reference internal" href="jsonrpc-architecture.en.
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If there is no explicit response from the handler the protocol implementation will responde with <span class="xref std std-ref">success_response</span> unless an error
+<p class="last">If there is no explicit response from the method, the protocol implementation will responde with <span class="xref std std-ref">success_response</span> unless an error
 was specified.</p>
 </div>
 </div>
 <div class="section" id="error-handling">
 <h3>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h3>
-<p>There are several ways to deal with internal handler errors, erros are expected to be send back to the client if the API was expressed that way
+<p>There are several ways to deal with internal handler errors. Errors are expected to be send back to the client if the API was expressed that way
 and if the request was a <code class="docutils literal notranslate"><span class="pre">method</span></code>.
 We have defined some generic errors that can be used to respond depending on the nature of the registered handler,
 please check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a> for more info.</p>
@@ -299,7 +299,7 @@ what you are willing to respond, then make sure that the error is not set in the
 <span class="n">respond_with_an_error</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">using</span> <span class="k">namespace</span> <span class="n">rpc</span><span class="o">::</span><span class="n">handlers</span><span class="o">::</span><span class="n">errors</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Somthing happened in the server&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -312,7 +312,7 @@ what you are willing to respond, then make sure that the error is not set in the
         <span class="nt">&quot;data&quot;</span><span class="p">:[</span>
             <span class="p">{</span>
                 <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="mi">3000</span><span class="p">,</span>
-                <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Somthing happened in the server&quot;</span>
+                <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Something happened in the server&quot;</span>
             <span class="p">}</span>
         <span class="p">]</span>
     <span class="p">},</span>
@@ -322,11 +322,11 @@ what you are willing to respond, then make sure that the error is not set in the
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">make_errata</span></code> hides some of the internal details of creating an errata.</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">make_errata</span></code> hides some internal details when creating an errata.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Respond with custom handler error. In this case, make sure that the API defintion and documentation reflects this as so far we do not
+<li><p class="first">Respond with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
 have json schemas to enforce any of this on the client side.</p>
 <blockquote>
 <div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span>  ts::Rv&lt;YAML::Node&gt;
@@ -356,22 +356,32 @@ The &quot;error&quot; is part of the ``result``, in this case this could be used
 </div>
 <div class="section" id="registration">
 <h3>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h3>
-<p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object.</p>
+<p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object. Note that there are a ser of convenient helper
+functions that can be used to achive registration through the singleton object.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">rpc</span> <span class="p">{</span>
+    <span class="c1">// this set of function will call the singleton object and perform the same as by using the singleton directly.</span>
+    <span class="n">add_handler</span><span class="p">(...)</span>
+    <span class="n">add_notification_handler</span><span class="p">(...)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Handler implementation</span>
 <span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span>
 <span class="n">my_handler_impl</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">using</span> <span class="k">namespace</span> <span class="n">rpc</span><span class="o">::</span><span class="n">handlers</span><span class="o">::</span><span class="n">errors</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Somthing happened in the server&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>The actual registration:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;rpc/jsonrpc/JsonRPCManager.h&quot;</span><span class="cp"></span>
 <span class="p">...</span>
-<span class="n">rpc</span><span class="o">::</span><span class="n">JsonRPCManager</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">add_handler</span><span class="p">(</span><span class="s">&quot;my_handler_impl&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_handler_impl</span><span class="p">);</span>
+<span class="n">rpc</span><span class="o">::</span><span class="n">add_handler</span><span class="p">(</span><span class="s">&quot;my_handler_impl&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_handler_impl</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>In case of a need to remove a handler from the rpc mechanism, this can also be done, by just using the remove* version of the same
+functions as used to register.</p>
 <p>Notification example:</p>
 <p>As mentioned before, notification does not need to response, as they are fire and forget calls, no id will be provided as part of the api.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
