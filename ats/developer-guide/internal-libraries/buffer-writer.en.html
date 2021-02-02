@@ -1,0 +1,1431 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>BufferWriter &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="IntrusiveDList" href="intrusive-list.en.html" />
+    <link rel="prev" title="TS.Scalar" href="scalar.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Internal libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="TextView.en.html">TextView</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemSpan.en.html">MemSpan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html">TS.Scalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#usage">Usage</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BufferWriter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#formatted-output">Formatted Output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-defined-formatting">User Defined Formatting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#format-classes">Format Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-names">Global Names</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-standard-i-o">Working with standard I/O</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html">IntrusiveDList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html">IntrusiveHashMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#details">Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemArena.en.html">MemArena</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AcidPtr.en.html">AcidPtr &amp; AcidCommitPtr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extendible.en.html">Extendible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ArgParser.en.html">ArgParser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Internal libraries</a> &raquo;</li>
+        
+      <li>BufferWriter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/internal-libraries/buffer-writer.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bufferwriter">
+<span id="id1"></span><h1>BufferWriter<a class="headerlink" href="#bufferwriter" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriterForward.h&gt; // Custom formatter support only.</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriter.h&gt; // General usage.</span><span class="cp"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is intended to increase code reliability and reduce complexity in the common
+circumstance of generating formatted output strings in fixed buffers. Current usage is a mixture of
+<code class="code docutils literal notranslate"><span class="pre">snprintf</span></code> and <code class="code docutils literal notranslate"><span class="pre">memcpy</span></code> which provides a large scope for errors and verbose code to
+check for buffer overruns. The goal is to provide a wrapper over buffer size tracking to make such
+code simpler and less vulnerable to implementation error.</p>
+<p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> itself is an abstract class to describe the base interface to wrappers for
+various types of output buffers. As a common example, <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> is a subclass
+designed to wrap a fixed size buffer. <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> is constructed by passing it a
+buffer and a size, which it then tracks as data is written. Writing past the end of the buffer is
+clipped to prevent overruns.</p>
+<p>Consider current code that looks like this.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">ptr</span> <span class="o">=</span> <span class="n">buff</span><span class="p">;</span>
+<span class="kt">size_t</span> <span class="n">len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">);</span>
+<span class="c1">//...</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">len</span><span class="p">,</span> <span class="n">thing1_len</span><span class="p">);</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">thing1</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+  <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">len</span><span class="p">,</span> <span class="n">thing2_len</span><span class="p">);</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">thing2</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+  <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">min</span><span class="p">(</span><span class="n">len</span><span class="p">,</span> <span class="n">thing3_len</span><span class="p">);</span>
+  <span class="n">memcpy</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">thing3</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+  <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is changed to</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
+<span class="c1">//...</span>
+<span class="n">bw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">thing1</span><span class="p">,</span> <span class="n">thing1_len</span><span class="p">);</span>
+<span class="n">bw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">thing2</span><span class="p">,</span> <span class="n">thing2_len</span><span class="p">);</span>
+<span class="n">bw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">thing3</span><span class="p">,</span> <span class="n">thing3_len</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The remaining length is updated every time and checked every time. A series of checks, calls to
+<code class="code docutils literal notranslate"><span class="pre">memcpy</span></code>, and size updates become a simple series of calls to <a class="reference internal" href="#_CPPv4N12BufferWriter5writeEPv6size_t" title="BufferWriter::write"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::write()</span></code></a>.</p>
+<p>For other types of interaction, <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> provides access to the unused buffer via
+<a class="reference internal" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="BufferWriter::auxBuffer"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::auxBuffer()</span></code></a> and <a class="reference internal" href="#_CPPv4NK12BufferWriter9remainingEv" title="BufferWriter::remaining"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::remaining()</span></code></a>. This makes it possible to easily
+use <code class="code docutils literal notranslate"><span class="pre">snprintf</span></code>, given that <code class="code docutils literal notranslate"><span class="pre">snprint</span></code> returns the number of bytes written.
+<a class="reference internal" href="#_CPPv4N12BufferWriter4fillE6size_t" title="BufferWriter::fill"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::fill()</span></code></a> is used to indicate how much of the unused buffer was used. Therefore
+something like (riffing off the previous example):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">ptr</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;format string&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">...);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>becomes:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="n">snprintf</span><span class="p">(</span><span class="n">bw</span><span class="p">.</span><span class="n">auxBuffer</span><span class="p">(),</span> <span class="n">bw</span><span class="p">.</span><span class="n">remaining</span><span class="p">(),</span>
+        <span class="s">&quot;format string&quot;</span><span class="p">,</span> <span class="n">args</span><span class="p">...));</span>
+</pre></div>
+</div>
+<p>By hiding the length tracking and checking, the result is a simple linear sequence of output chunks,
+making the logic much easier to follow.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The header files are divided in to two variants. <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/include/tscore/BufferWriter.h">include/tscore/BufferWriter.h</a> provides the basic
+capabilities of buffer output control. <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/include/tscore/BufferWriterForward.h">include/tscore/BufferWriterForward.h</a> provides the basic
+<a class="reference internal" href="#bw-formatting"><span class="std std-ref">formatted output mechanisms</span></a>, primarily the implementation and ancillary
+classes for <a class="reference internal" href="#_CPPv47BWFSpec" title="BWFSpec"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BWFSpec</span></code></a> which is used to build formatters.</p>
+<p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is an abstract base class, in the style of <code class="code docutils literal notranslate"><span class="pre">std::ostream</span></code>. There are
+several subclasses for various use cases. When passing around this is the common type.</p>
+<p><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> writes to an externally provided buffer of a fixed length. The buffer must
+be provided to the constructor. This will generally be used in a function where the target buffer is
+external to the function or already exists.</p>
+<p><a class="reference internal" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="LocalBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">LocalBufferWriter</span></code></a> is a templated class whose template argument is the size of an internal
+buffer. This is useful when the buffer is local to a function and the results will be transferred
+from the buffer to other storage after the output is assembled. Rather than having code like:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>it can be written more compactly as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">LocalBufferWriter</span><span class="o">&lt;</span><span class="mi">1024</span><span class="o">&gt;</span> <span class="n">bw</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In many cases, when using <a class="reference internal" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="LocalBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">LocalBufferWriter</span></code></a> this is the only place the size of the buffer
+needs to be specified and therefore can simply be a constant without the overhead of defining a size
+to maintain consistency. The choice between <a class="reference internal" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="LocalBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">LocalBufferWriter</span></code></a> and <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a>
+comes down to the owner of the buffer - the former has its own buffer while the latter operates on
+a buffer owned by some other object. Therefore if the buffer is declared locally, use
+<a class="reference internal" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="LocalBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">LocalBufferWriter</span></code></a> and if the buffer is received from an external source (such as via a
+function parameter) use <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a>.</p>
+<div class="section" id="writing">
+<h3>Writing<a class="headerlink" href="#writing" title="Permalink to this headline">¶</a></h3>
+<p>The basic mechanism for writing to a <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is <a class="reference internal" href="#_CPPv4N12BufferWriter5writeEPv6size_t" title="BufferWriter::write"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::write()</span></code></a>.
+This is an overloaded method for a character (<code class="code docutils literal notranslate"><span class="pre">char</span></code>), a buffer (<code class="code docutils literal notranslate"><span class="pre">void</span> <span class="pre">*,</span> <span class="pre">size_t</span></code>)
+and a string view (<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>). Because there is a constructor for <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>
+that takes a <code class="code docutils literal notranslate"><span class="pre">const</span> <span class="pre">char*</span></code> as a C string, passing a literal string works as expected.</p>
+<p>There are also stream operators in the style of C++ stream I/O. The basic template is</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span> <span class="k">typename</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">T</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The stream operators are provided as a convenience, the primary mechanism for formatted output is
+via overloading the <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bwformat()</span></code></a> function. Except for a limited set of cases the stream operators
+are implemented by calling <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bwformat()</span></code></a> with the Buffer Writer, the argument, and a default
+format specification.</p>
+</div>
+<div class="section" id="reading">
+<h3>Reading<a class="headerlink" href="#reading" title="Permalink to this headline">¶</a></h3>
+<p>Data in the buffer can be extracted using <a class="reference internal" href="#_CPPv4NK12BufferWriter4dataEv" title="BufferWriter::data"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::data()</span></code></a>. This and
+<a class="reference internal" href="#_CPPv4NK12BufferWriter4sizeEv" title="BufferWriter::size"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::size()</span></code></a> return a pointer to the start of the buffer and the amount of data
+written to the buffer. This is effectively the same as <a class="reference internal" href="#_CPPv4NK12BufferWriter4viewEv" title="BufferWriter::view"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::view()</span></code></a> which returns a
+<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> which covers the output data. Calling <a class="reference internal" href="#_CPPv4NK12BufferWriter5errorEv" title="BufferWriter::error"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::error()</span></code></a> will indicate
+if more data than space available was written (i.e. the buffer would have been overrun).
+<a class="reference internal" href="#_CPPv4NK12BufferWriter6extentEv" title="BufferWriter::extent"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extent()</span></code></a> returns the amount of data written to the <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a>. This
+can be used in a two pass style with a null / size 0 buffer to determine the buffer size required
+for the full output.</p>
+</div>
+<div class="section" id="advanced">
+<h3>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and <a class="reference internal" href="#_CPPv4N12BufferWriter6extendE6size_t" title="BufferWriter::extend"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extend()</span></code></a> methods can be used to reserve space
+in the buffer. A common use case for this is to guarantee matching delimiters in output if buffer
+space is exhausted. <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> can be used to temporarily reduce the buffer size by
+an amount large enough to hold the terminal delimiter. After writing the contained output,
+<a class="reference internal" href="#_CPPv4N12BufferWriter6extendE6size_t" title="BufferWriter::extend"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extend()</span></code></a> can be used to restore the capacity and then output the terminal
+delimiter.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><strong>Never</strong> call <a class="reference internal" href="#_CPPv4N12BufferWriter6extendE6size_t" title="BufferWriter::extend"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extend()</span></code></a> without previously calling <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and always pass the same argument value.</p>
+</div>
+<p><a class="reference internal" href="#_CPPv4NK12BufferWriter9remainingEv" title="BufferWriter::remaining"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::remaining()</span></code></a> returns the amount of buffer space not yet consumed.</p>
+<p><a class="reference internal" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="BufferWriter::auxBuffer"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::auxBuffer()</span></code></a> returns a pointer to the first byte of the buffer not yet used. This
+is useful to do speculative output, or do bounded output in a manner similar to using
+<a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and <a class="reference internal" href="#_CPPv4N12BufferWriter6extendE6size_t" title="BufferWriter::extend"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extend()</span></code></a>. A new <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> instance
+can be constructed with</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">subw</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">auxBuffer</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">remaining</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>or as a convenience</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">FixedBuffer</span> <span class="n">subw</span><span class="p">{</span><span class="n">w</span><span class="p">.</span><span class="n">auxBuffer</span><span class="p">()};</span>
+</pre></div>
+</div>
+<p>Output can be written to <em>subw</em>. If successful, then <code class="code docutils literal notranslate"><span class="pre">w.fill(subw.size())</span></code> will add that
+output to the main buffer. Depending on the purpose, <code class="code docutils literal notranslate"><span class="pre">w.fill(subw.extent())</span></code> can be used -
+this will track the attempted output if sizing is important. Note that space for any terminal
+markers can be reserved by bumping down the size from <a class="reference internal" href="#_CPPv4NK12BufferWriter9remainingEv" title="BufferWriter::remaining"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::remaining()</span></code></a>. Be careful of
+underrun as the argument is an unsigned type.</p>
+<p>If there is an error then <em>subw</em> can be ignored and some suitable error output written to
+<em>w</em> instead. A common use case is to verify there is sufficient space in the buffer and create
+a “not enough space” message if not. E.g.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">subw</span><span class="p">{</span><span class="n">w</span><span class="p">.</span><span class="n">auxWriter</span><span class="p">()};</span>
+<span class="k">this</span><span class="o">-&gt;</span><span class="n">write_some_output</span><span class="p">(</span><span class="n">subw</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">subw</span><span class="p">.</span><span class="n">error</span><span class="p">())</span> <span class="n">w</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="n">subw</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+<span class="k">else</span> <span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Insufficient space&quot;</span><span class="n">sv</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>For example, error prone code that looks like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">new_via_string</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span> <span class="c1">// 512-bytes for hostname+via string, 512-bytes for the debug info</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">via_string</span> <span class="o">=</span> <span class="n">new_via_string</span><span class="p">;</span>
+<span class="kt">char</span> <span class="o">*</span> <span class="n">via_limit</span>  <span class="o">=</span> <span class="n">via_string</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">new_via_string</span><span class="p">);</span>
+
+<span class="c1">// ...</span>
+
+<span class="o">*</span> <span class="n">via_string</span><span class="o">++</span> <span class="o">=</span> <span class="sc">&#39; &#39;</span><span class="p">;</span>
+<span class="o">*</span> <span class="n">via_string</span><span class="o">++</span> <span class="o">=</span> <span class="sc">&#39;[&#39;</span><span class="p">;</span>
+
+<span class="c1">// incoming_via can be max MAX_VIA_INDICES+1 long (i.e. around 25 or so)</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">txn_conf</span><span class="o">-&gt;</span><span class="n">insert_request_via_string</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Highest verbosity</span>
+   <span class="n">via_string</span> <span class="o">+=</span> <span class="n">nstrcpy</span><span class="p">(</span><span class="n">via_string</span><span class="p">,</span> <span class="n">incoming_via</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="n">memcpy</span><span class="p">(</span><span class="n">via_string</span><span class="p">,</span> <span class="n">incoming_via</span> <span class="o">+</span> <span class="n">VIA_CLIENT</span><span class="p">,</span> <span class="n">VIA_SERVER</span> <span class="o">-</span> <span class="n">VIA_CLIENT</span><span class="p">);</span>
+   <span class="n">via_string</span> <span class="o">+=</span> <span class="n">VIA_SERVER</span> <span class="o">-</span> <span class="n">VIA_CLIENT</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">*</span><span class="n">via_string</span><span class="o">++</span> <span class="o">=</span> <span class="sc">&#39;]&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>becomes</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">LocalBufferWriter</span><span class="o">&lt;</span><span class="mi">1024</span><span class="o">&gt;</span> <span class="n">w</span><span class="p">;</span> <span class="c1">// 1K internal buffer.</span>
+
+<span class="c1">// ...</span>
+
+<span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot; [&quot;</span><span class="n">sv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">txn_conf</span><span class="o">-&gt;</span><span class="n">insert_request_via_string</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Highest verbosity</span>
+   <span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">incoming_via</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+   <span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="p">{</span><span class="n">incoming_via</span> <span class="o">+</span> <span class="n">VIA_CLIENT</span><span class="p">,</span> <span class="n">VIA_SERVER</span> <span class="o">-</span> <span class="n">VIA_CLIENT</span><span class="p">});</span>
+<span class="p">}</span>
+<span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="sc">&#39;]&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>There will be no overrun on the memory buffer in <em>w</em>, in strong contrast to the original code.
+This can be done better, as</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">remaining</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">w</span><span class="p">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">write</span><span class="p">(</span><span class="s">&quot; [&quot;</span><span class="n">sv</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">s</span><span class="o">-&gt;</span><span class="n">txn_conf</span><span class="o">-&gt;</span><span class="n">insert_request_via_string</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// Highest verbosity</span>
+      <span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">incoming_via</span><span class="p">);</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">w</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="p">{</span><span class="n">incoming_via</span> <span class="o">+</span> <span class="n">VIA_CLIENT</span><span class="p">,</span> <span class="n">VIA_SERVER</span> <span class="o">-</span> <span class="n">VIA_CLIENT</span><span class="p">});</span>
+   <span class="p">}</span>
+   <span class="n">w</span><span class="p">.</span><span class="n">extend</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="n">write</span><span class="p">(</span><span class="sc">&#39;]&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This has the result that the terminal bracket will always be present which is very much appreciated
+by code that parses the resulting log file.</p>
+</div>
+<div class="section" id="formatted-output">
+<span id="bw-formatting"></span><h2>Formatted Output<a class="headerlink" href="#formatted-output" title="Permalink to this headline">¶</a></h2>
+<p>The base <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> was made to provide memory safety for formatted output. Support for
+formatted output was made to provide <em>type</em> safety. The implementation deduces the types of the
+arguments to be formatted and handles them in a type specific and safe way.</p>
+<p>The formatting style is of the “prefix” or “printf” style - the format is specified first and then
+all the arguments. This contrasts to the “infix” or “streaming” style where formatting, literals,
+and argument are intermixed in the order of output. There are various arguments for both styles but
+conversations within the Traffic Server community indicated a clear preference for the prefix style. Therefore
+formatted out consists of a format string, containing <em>formats</em>, which are replaced during output
+with the values of arguments to the print function.</p>
+<p>The primary use case for formatting is formatted output to fixed buffers. This is by far the
+dominant style of output in Traffic Server and during the design phase I was told any performance loss must be
+minimal. While work has and will be done to extend <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> to operate on non-fixed
+buffers, such use is secondary to operating directly on memory.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">The overriding design goal is to provide the type specific formatting and flexibility of C++
+stream operators with the performance of <code class="code docutils literal notranslate"><span class="pre">snprintf</span></code> and <code class="code docutils literal notranslate"><span class="pre">memcpy</span></code>.</p>
+</div>
+<p>This will preserve the general style of output in Traffic Server while still reaping the benefits of type safe
+formatting with little to no performance cost.</p>
+<p>Type safe formatting has two major benefits -</p>
+<ul class="simple">
+<li>No mismatch between the format specifier and the argument. Although some modern compilers do
+better at catching this at run time, there is still risk (especially with non-constant format
+strings) and divergence between operating systems such that there is no <a class="reference external" href="https://github.com/apache/trafficserver/pull/3476/files">universally correct
+choice</a>. In addition the number of
+arguments can be verified to be correct which is often useful.</li>
+<li>Formatting can be customized per type or even per partial type (e.g. <code class="code docutils literal notranslate"><span class="pre">T*</span></code> for generic
+<code class="code docutils literal notranslate"><span class="pre">T</span></code>). This enables embedding common formatting work in the format system once, rather than
+duplicating it in many places (e.g. converting enum values to names). This makes it easier for
+developers to make useful error messages. See <a class="reference internal" href="#bwf-http-debug-name-example"><span class="std std-ref">this example</span></a>
+for more detail.</li>
+</ul>
+<p>As a result of these benefits there has been other work on similar projects, to replace
+<code class="code docutils literal notranslate"><span class="pre">printf</span></code> a better mechanism. Unfortunately most of these are rather project specific and don’t
+suit the use case in Traffic Server. The two best options, <a class="reference external" href="https://www.boost.org/doc/libs/1_64_0/libs/format/">Boost.Format</a> and <a class="reference external" href="https://github.com/fmtlib/fmt">fmt</a>,
+while good, are also not quite close enough to outweigh the benefits of a version specifically
+tuned for Traffic Server. <code class="docutils literal notranslate"><span class="pre">Boost.Format</span></code> is not acceptable because of the Boost footprint. <code class="docutils literal notranslate"><span class="pre">fmt</span></code> has the
+problem of depending on C++ stream operators and therefore not having the required level of
+performance or memory characteristics. Its main benefit, of reusing stream operators, doesn’t apply
+to Traffic Server because of the nigh non-existence of such operators. The possibility of using C++ stream
+operators was investigated but changing those to use pre-existing buffers not allocated internally
+was very difficult, judged worse than building a relatively simple implementation from scratch. The
+actual core implementation of formatted output for <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is not very large - most of
+the overall work will be writing formatters, work which would need to be done in any case but in
+contrast to current practice, only done once.</p>
+<p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> supports formatting output in a style similar to Python formatting via
+<a class="reference internal" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="BufferWriter::print"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::print()</span></code></a>. Looking at the other versions of work in this area, almost all of them
+have gone with this style. Boost.Format also takes basically this same approach, just using
+different paired delimiters. Traffic Server contains increasing amounts of native Python code which means many
+Traffic Server developers will already be familiar (or should become familiar) with this style of formatting.
+While not <em>exactly</em> the same at the Python version, BWF (<a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> Formatting) tries to
+be as similar as language and internal needs allow.</p>
+<p>As noted previously and in the Python and even <code class="code docutils literal notranslate"><span class="pre">printf</span></code> way, a format string consists of
+literal text in which formats are embedded. Each format marks a place where formatted data of
+an argument will be placed, along with argument specific formatting. The format is divided in to
+three parts, separated by colons.</p>
+<p>While this seems a bit complex, all of it is optional. If default output is acceptable, then BWF
+will work with just the format <code class="docutils literal notranslate"><span class="pre">{}</span></code>. In a sense, <code class="docutils literal notranslate"><span class="pre">{}</span></code> serves the same function for output as
+<code class="code docutils literal notranslate"><span class="pre">auto</span></code> does for programming - the compiler knows the type, it should be able to do something
+reasonable without the programmer needing to be explicit.</p>
+<pre>
+<strong id="grammar-token-format">format   </strong> ::=  &quot;{&quot; [name] [&quot;:&quot; [specifier] [&quot;:&quot; extension]] &quot;}&quot;
+<strong id="grammar-token-name">name     </strong> ::=  index | ICHAR+
+<strong id="grammar-token-index">index    </strong> ::=  non-negative integer
+<strong id="grammar-token-extension">extension</strong> ::=  ICHAR*
+<strong id="grammar-token-ichar">ICHAR    </strong> ::=  a printable ASCII character except for '{', '}', ':'
+</pre>
+<dl class="docutils">
+<dt><a class="reference internal" href="#grammar-token-name"><code class="xref std std-token docutils literal notranslate"><span class="pre">name</span></code></a></dt>
+<dd><p class="first">The <a class="reference internal" href="#grammar-token-name"><code class="xref std std-token docutils literal notranslate"><span class="pre">name</span></code></a> of the argument to use. This can be a non-negative integer in which case it is
+the zero based index of the argument to the method call. E.g. <code class="docutils literal notranslate"><span class="pre">{0}</span></code> means the first argument
+and <code class="docutils literal notranslate"><span class="pre">{2}</span></code> is the third argument after the format.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{0}</span> <span class="pre">{1}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">b</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{1}</span> <span class="pre">{0}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">a</span></code></p>
+</div></blockquote>
+<p>The <a class="reference internal" href="#grammar-token-name"><code class="xref std std-token docutils literal notranslate"><span class="pre">name</span></code></a> can be omitted in which case it is treated as an index in parallel to the
+position in the format string. Only the position in the format string matters, not what names
+other format elements may have used.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{0}</span> <span class="pre">{2}</span> <span class="pre">{}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b',</span> <span class="pre">'c')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">c</span> <span class="pre">c</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{0}</span> <span class="pre">{2}</span> <span class="pre">{2}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b',</span> <span class="pre">'c')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">c</span> <span class="pre">c</span></code></p>
+</div></blockquote>
+<p>Note that an argument can be printed more than once if the name is used more than once.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{0}</span> <span class="pre">{}</span> <span class="pre">{0}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">b</span> <span class="pre">a</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">bw.print(&quot;{0}</span> <span class="pre">{1}</span> <span class="pre">{0}&quot;,</span> <span class="pre">'a',</span> <span class="pre">'b')</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">b</span> <span class="pre">a</span></code></p>
+</div></blockquote>
+<p class="last">Alphanumeric names refer to values in a global table. These will be described in more detail
+someday. Such names, however, do not count in terms of default argument indexing.</p>
+</dd>
+<dt><a class="reference internal" href="#grammar-token-specifier"><code class="xref std std-token docutils literal notranslate"><span class="pre">specifier</span></code></a></dt>
+<dd><p class="first">Basic formatting control.</p>
+<pre>
+<strong id="grammar-token-specifier">specifier</strong> ::=  [[fill]align][sign][&quot;#&quot;][&quot;0&quot;][[min][.precision][,max][type]]
+<strong id="grammar-token-fill">fill     </strong> ::=  fill-char | URI-char
+<strong id="grammar-token-uri-char">URI-char </strong> ::=  &quot;%&quot; hex-digit hex-digit
+<strong id="grammar-token-fill-char">fill-char</strong> ::=  printable character except &quot;{&quot;, &quot;}&quot;, &quot;:&quot;, &quot;%&quot;
+<strong id="grammar-token-align">align    </strong> ::=  &quot;&lt;&quot; | &quot;&gt;&quot; | &quot;=&quot; | &quot;^&quot;
+<strong id="grammar-token-sign">sign     </strong> ::=  &quot;+&quot; | &quot;-&quot; | &quot; &quot;
+<strong id="grammar-token-min">min      </strong> ::=  non-negative integer
+<strong id="grammar-token-precision">precision</strong> ::=  positive integer
+<strong id="grammar-token-max">max      </strong> ::=  non-negative integer
+<strong id="grammar-token-type">type     </strong> ::=  type: &quot;g&quot; | &quot;s&quot; | &quot;S&quot; | &quot;x&quot; | &quot;X&quot; | &quot;d&quot; | &quot;o&quot; | &quot;b&quot; | &quot;B&quot; | &quot;p&quot; | &quot;P&quot;
+<strong id="grammar-token-hex-digit">hex-digit</strong> ::=  &quot;0&quot; .. &quot;9&quot; | &quot;a&quot; .. &quot;f&quot; | &quot;A&quot; .. &quot;F&quot;
+</pre>
+<p>The output is placed in a field that is at least <a class="reference internal" href="#grammar-token-min"><code class="xref std std-token docutils literal notranslate"><span class="pre">min</span></code></a> wide and no more than <a class="reference internal" href="#grammar-token-max"><code class="xref std std-token docutils literal notranslate"><span class="pre">max</span></code></a> wide. If
+the output is less than <a class="reference internal" href="#grammar-token-min"><code class="xref std std-token docutils literal notranslate"><span class="pre">min</span></code></a> then</p>
+<blockquote>
+<div><ul>
+<li><p class="first">The <a class="reference internal" href="#grammar-token-fill"><code class="xref std std-token docutils literal notranslate"><span class="pre">fill</span></code></a> character is used for the extra space required. This can be an explicit
+character or a URI encoded one (to allow otherwise reserved characters).</p>
+</li>
+<li><p class="first">The output is shifted according to the <a class="reference internal" href="#grammar-token-align"><code class="xref std std-token docutils literal notranslate"><span class="pre">align</span></code></a>.</p>
+<dl class="docutils">
+<dt>&lt;</dt>
+<dd><p class="first last">Align to the left, fill to the right.</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>&gt;</dt>
+<dd><p class="first last">Align to the right, fill to the left.</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>^</dt>
+<dd><p class="first last">Align in the middle, fill to left and right.</p>
+</dd>
+</dl>
+<dl class="docutils">
+<dt>=</dt>
+<dd><p class="first last">Numerically align, putting the fill between the sign character and the value.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>The output is clipped by <a class="reference internal" href="#grammar-token-max"><code class="xref std std-token docutils literal notranslate"><span class="pre">max</span></code></a> width characters and by the end of the buffer.
+<a class="reference internal" href="#grammar-token-precision"><code class="xref std std-token docutils literal notranslate"><span class="pre">precision</span></code></a> is used by floating point values to specify the number of places of precision.</p>
+<p><a class="reference internal" href="#grammar-token-type"><code class="xref std std-token docutils literal notranslate"><span class="pre">type</span></code></a> is used to indicate type specific formatting. For integers it indicates the output
+radix and if <code class="docutils literal notranslate"><span class="pre">#</span></code> is present the radix is prefix is generated (one of <code class="docutils literal notranslate"><span class="pre">0xb</span></code>, <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">0x</span></code>).
+Format types of the same letter are equivalent, varying only in the character case used for
+output. Most commonly ‘x’ prints values in lower cased hexadecimal (<code class="code docutils literal notranslate"><span class="pre">0x1337beef</span></code>) while ‘X’
+prints in upper case hexadecimal (<code class="code docutils literal notranslate"><span class="pre">0X1337BEEF</span></code>). Note there is no upper case decimal or
+octal type because case is irrelevant for those.</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="3%" />
+<col width="97%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>g</td>
+<td>generic, default.</td>
+</tr>
+<tr class="row-even"><td>b</td>
+<td>binary</td>
+</tr>
+<tr class="row-odd"><td>B</td>
+<td>Binary</td>
+</tr>
+<tr class="row-even"><td>d</td>
+<td>decimal</td>
+</tr>
+<tr class="row-odd"><td>o</td>
+<td>octal</td>
+</tr>
+<tr class="row-even"><td>x</td>
+<td>hexadecimal</td>
+</tr>
+<tr class="row-odd"><td>X</td>
+<td>Hexadecimal</td>
+</tr>
+<tr class="row-even"><td>p</td>
+<td>pointer (hexadecimal address)</td>
+</tr>
+<tr class="row-odd"><td>P</td>
+<td>Pointer (Hexadecimal address)</td>
+</tr>
+<tr class="row-even"><td>s</td>
+<td>string</td>
+</tr>
+<tr class="row-odd"><td>S</td>
+<td>String (upper case)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>For several specializations the hexadecimal format is taken to indicate printing the value as if
+it were a hexidecimal value, in effect providing a hex dump of the value. This is the case for
+<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> and therefore a hex dump of an object can be done by creating a
+<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> covering the data and then printing it with <code class="code docutils literal notranslate"><span class="pre">{:x}</span></code>.</p>
+<p class="last">The string type (‘s’ or ‘S’) is generally used to cause alphanumeric output for a value that would
+normally use numeric output. For instance, a <code class="code docutils literal notranslate"><span class="pre">bool</span></code> is normally <code class="docutils literal notranslate"><span class="pre">0</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>. Using the
+type ‘s’ yields <code class="docutils literal notranslate"><span class="pre">true`</span> <span class="pre">or</span> <span class="pre">``false</span></code>. The upper case form, ‘S’, applies only in these cases where the
+formatter generates the text, it does not apply to normally text based values unless specifically noted.</p>
+</dd>
+<dt><a class="reference internal" href="#grammar-token-extension"><code class="xref std std-token docutils literal notranslate"><span class="pre">extension</span></code></a></dt>
+<dd>Text (excluding braces) that is passed to the type specific formatter function. This can be used
+to provide extensions for specific argument types (e.g., IP addresses). The base logic ignores it
+but passes it on to the formatting function which can then behave different based on the
+extension.</dd>
+</dl>
+<div class="section" id="usage-examples">
+<h3>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this headline">¶</a></h3>
+<p>Some examples, comparing <code class="code docutils literal notranslate"><span class="pre">snprintf</span></code> and <a class="reference internal" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="BufferWriter::print"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::print()</span></code></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;count %d&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+   <span class="n">buff</span> <span class="o">+=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;count {}&quot;</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+
+<span class="c1">// --</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;Size %&quot;</span> <span class="n">PRId64</span> <span class="s">&quot; bytes&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">thing</span><span class="p">));</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+   <span class="n">buff</span> <span class="o">+=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Size {} bytes&quot;</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">thing</span><span class="p">));</span>
+
+<span class="c1">// --</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;Number of items %ld&quot;</span><span class="p">,</span> <span class="n">thing</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">());</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+   <span class="n">buff</span> <span class="o">+=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Number of items {}&quot;</span><span class="p">,</span> <span class="n">thing</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Enumerations become easier. Note in this case argument indices are used in order to print both a
+name and a value for the enumeration. A key benefit here is the lack of need for a developer to know
+the specific free function or method needed to do the name lookup. In this case,
+<code class="code docutils literal notranslate"><span class="pre">HttpDebugNames::get_server_state_name</span></code>. Rather than every developer having to memorize the
+association between the type and the name lookup function, or grub through the code hoping for an
+example, the compiler is told once and henceforth does the lookup. The internal implementation of
+this is <a class="reference internal" href="#bwf-http-debug-name-example"><span class="std std-ref">here</span></a></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">auto</span> <span class="n">n</span> <span class="o">=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;Unexpected event %d in state %s[%d] for %.*s&quot;</span><span class="p">,</span>
+      <span class="n">event</span><span class="p">,</span>
+      <span class="n">HttpDebugNames</span><span class="o">::</span><span class="n">get_server_state_name</span><span class="p">(</span><span class="n">t_state</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">state</span><span class="p">),</span>
+      <span class="n">t_state</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">state</span><span class="p">,</span>
+      <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">host_len</span><span class="p">),</span> <span class="n">host</span><span class="p">);</span>
+   <span class="n">buff</span> <span class="o">+=</span> <span class="n">n</span><span class="p">;</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">n</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Unexpected event {0} in state {1}[{1:d}] for {2}&quot;</span><span class="p">,</span>
+   <span class="n">event</span><span class="p">,</span> <span class="n">t_state</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="n">state</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">string_view</span><span class="p">{</span><span class="n">host</span><span class="p">,</span> <span class="n">host_len</span><span class="p">});</span>
+</pre></div>
+</div>
+<p>Using <code class="code docutils literal notranslate"><span class="pre">std::string</span></code>, which illustrates the advantage of a formatter overloading knowing how to
+get the size from the object and not having to deal with restrictions on the numeric type (e.g.,
+that <code class="code docutils literal notranslate"><span class="pre">%.*s</span></code> requires an <code class="code docutils literal notranslate"><span class="pre">int</span></code>, not a <code class="code docutils literal notranslate"><span class="pre">size_t</span></code>).</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">len</span> <span class="o">-=</span> <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;%.*s&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span> <span class="n">s</span><span class="p">.</span><span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>IP addresses are much easier. There are two big advantages here. One is not having to know the
+conversion function name. The other is the lack of having to declare local variables and having to
+remember what the appropriate size is. Beyond there this code is more performant because the output
+is rendered directly in the output buffer, not rendered to a temporary and then copied over. This
+lack of local variables can be particularly nice in the context of a <code class="code docutils literal notranslate"><span class="pre">switch</span></code> statement where
+local variables for a <code class="code docutils literal notranslate"><span class="pre">case</span></code> mean having to add extra braces, or declare the temporaries at an
+outer scope.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">ip_buff1</span><span class="p">[</span><span class="n">INET6_ADDRPORTSTRLEN</span><span class="p">];</span>
+<span class="kt">char</span> <span class="n">ip_buff2</span><span class="p">[</span><span class="n">INET6_ADDRPORTSTRLEN</span><span class="p">];</span>
+<span class="n">ats_ip_nptop</span><span class="p">(</span><span class="n">ip_buff1</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ip_buff1</span><span class="p">),</span> <span class="n">addr1</span><span class="p">);</span>
+<span class="n">ats_ip_nptop</span><span class="p">(</span><span class="n">ip_buff2</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">ip_buff2</span><span class="p">),</span> <span class="n">add2</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">snprintf</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="n">len</span><span class="p">,</span> <span class="s">&quot;Connecting to %s from %s&quot;</span><span class="p">,</span> <span class="n">ip_buff1</span><span class="p">,</span> <span class="n">ip_buff2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Connecting to {} from {}&quot;</span><span class="p">,</span> <span class="n">addr1</span><span class="p">,</span> <span class="n">addr2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="user-defined-formatting">
+<h2>User Defined Formatting<a class="headerlink" href="#user-defined-formatting" title="Permalink to this headline">¶</a></h2>
+<p>To get the full benefit of type safe formatting it is necessary to provide type specific formatting
+functions which are called when a value of that type is formatted. This is how type specific
+knowledge such as the names of enumeration values are encoded in a single location. Additional type
+specific formatting can be provided via the <a class="reference internal" href="#grammar-token-extension"><code class="xref std std-token docutils literal notranslate"><span class="pre">extension</span></code></a> field. Without this, special formatting
+requires extra functions and additional work at the call site, rather than a single consolidated
+formatting function.</p>
+<p>To provide a formatter for a type <code class="code docutils literal notranslate"><span class="pre">V</span></code> the function <code class="code docutils literal notranslate"><span class="pre">bwformat</span></code> is overloaded. The signature
+would look like this:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">ts</span><span class="o">::</span><span class="n">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">V</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>w</em> is the output and <em>spec</em> the parsed specifier, including the extension (if any). The
+calling framework will handle basic alignment as per <em>spec</em> therefore the overload does not need
+to unless the alignment requirements are more detailed (e.g. integer alignment operations) or
+performance is critical. In the latter case the formatter should make sure to use at least the
+minimum width in order to disable any additional alignment operation.</p>
+<p>It is important to note that a formatter can call another formatter. For example, the formatter for
+pointers looks like:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Pointers that are not specialized.</span>
+<span class="kr">inline</span> <span class="n">BufferWriter</span> <span class="o">&amp;</span>
+<span class="n">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">ptr</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">BWFSpec</span> <span class="n">ptr_spec</span><span class="p">{</span><span class="n">spec</span><span class="p">};</span>
+   <span class="n">ptr_spec</span><span class="p">.</span><span class="n">_radix_lead_p</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">ptr_spec</span><span class="p">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">BWFSpec</span><span class="o">::</span><span class="n">DEFAULT_TYPE</span> <span class="o">||</span> <span class="n">ptr_spec</span><span class="p">.</span><span class="n">_type</span> <span class="o">==</span> <span class="sc">&#39;p&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// if default or specifically &#39;p&#39;, switch to lower case hex.</span>
+      <span class="n">ptr_spec</span><span class="p">.</span><span class="n">_type</span> <span class="o">=</span> <span class="sc">&#39;x&#39;</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">ptr_spec</span><span class="p">.</span><span class="n">_type</span> <span class="o">==</span> <span class="sc">&#39;P&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// Incoming &#39;P&#39; means upper case hex.</span>
+      <span class="n">ptr_spec</span><span class="p">.</span><span class="n">_type</span> <span class="o">=</span> <span class="sc">&#39;X&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="n">bw_fmt</span><span class="o">::</span><span class="n">Format_Integer</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">ptr_spec</span><span class="p">,</span>
+      <span class="k">reinterpret_cast</span><span class="o">&lt;</span><span class="kt">intptr_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ptr</span><span class="p">),</span> <span class="nb">false</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The code checks if the type <code class="docutils literal notranslate"><span class="pre">p</span></code> or <code class="docutils literal notranslate"><span class="pre">P</span></code> was used in order to select the appropriate case, then
+delegates the actual rendering to the integer formatter with a type of <code class="docutils literal notranslate"><span class="pre">x</span></code> or <code class="docutils literal notranslate"><span class="pre">X</span></code> as
+appropriate. In turn other formatters, if given the type <code class="docutils literal notranslate"><span class="pre">p</span></code> or <code class="docutils literal notranslate"><span class="pre">P</span></code> can cast the value to
+<code class="code docutils literal notranslate"><span class="pre">const</span> <span class="pre">void*</span></code> and call <code class="code docutils literal notranslate"><span class="pre">bwformat</span></code> on that to output the value as a pointer.</p>
+<p>To help reduce duplication, the output stream operator <code class="code docutils literal notranslate"><span class="pre">operator&lt;&lt;</span></code> is defined to call this
+function with a default constructed <code class="code docutils literal notranslate"><span class="pre">BWFSpec</span></code> instance so that absent a specific overload
+a BWF formatter will also provide a C++ stream output operator.</p>
+<div class="section" id="enum-example">
+<h3>Enum Example<a class="headerlink" href="#enum-example" title="Permalink to this headline">¶</a></h3>
+<p id="bwf-http-debug-name-example">For a specific example of using BufferWriter formatting to make debug messages easier, consider the
+case of <code class="code docutils literal notranslate"><span class="pre">HttpDebugNames</span></code>. This is a class that serves as a namespace to provide various
+methods that convert state machine related data into descriptive strings. Currently this is
+undocumented (and even uncommented) and is therefore used infrequently, as that requires either
+blind cut and paste, or tracing through header files to understand the code. This can be greatly
+simplified by adding formatters to <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/proxy/http/HttpDebugNames.h">proxy/http/HttpDebugNames.h</a></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span> <span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span>
+<span class="n">bwformat</span><span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">ts</span><span class="o">::</span><span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="n">HttpTransact</span><span class="o">::</span><span class="n">ServerState_t</span> <span class="n">state</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">spec</span><span class="p">.</span><span class="n">has_numeric_type</span><span class="p">())</span> <span class="p">{</span>
+      <span class="c1">// allow the user to force numeric output with &#39;{:d}&#39; or other numeric type.</span>
+      <span class="k">return</span> <span class="n">bwformat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">uintmax_t</span><span class="o">&gt;</span><span class="p">(</span><span class="n">state</span><span class="p">));</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="n">bwformat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">HttpDebugNames</span><span class="o">::</span><span class="n">get_server_state_name</span><span class="p">(</span><span class="n">state</span><span class="p">));</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>With this in place, any one wanting to print the name of the server state enumeration can do</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;state {}&quot;</span><span class="p">,</span> <span class="n">t_state</span><span class="p">.</span><span class="n">current_state</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>There is no need to remember names like <code class="code docutils literal notranslate"><span class="pre">HttpDebugNames</span></code> nor which method in it does the
+conversion. The developer making the <code class="code docutils literal notranslate"><span class="pre">HttpDebugNames</span></code> class or equivalent can take care of
+that in the same header file that provides the type.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In actual practice, due to this method being so obscure it’s not actually used as far as I
+can determine.</p>
+</div>
+</div>
+<div class="section" id="argument-forwarding">
+<h3>Argument Forwarding<a class="headerlink" href="#argument-forwarding" title="Permalink to this headline">¶</a></h3>
+<p>It will frequently be useful for other libraries to allow local formatting (such as <code class="code docutils literal notranslate"><span class="pre">Errata</span></code>).
+For such cases the class methods will need to take variable arguments and then forward them on to
+the formatter. <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> provides the <a class="reference internal" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="BufferWriter::printv"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::printv()</span></code></a> overload for this
+purpose. Instead of taking variable arguments, these overloads take a <code class="code docutils literal notranslate"><span class="pre">std::tuple</span></code> of
+arguments. Such as tuple is easily created with <a class="reference external" href="http://en.cppreference.com/w/cpp/utility/tuple/forward_as_tuple">std::forward_as_tuple</a>. A standard implementation that
+uses the <code class="code docutils literal notranslate"><span class="pre">std::string</span></code> overload for <a class="reference internal" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="bwprint"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bwprint()</span></code></a> would look like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span> <span class="k">typename</span> <span class="p">...</span> <span class="n">Args</span> <span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">message</span><span class="p">(</span><span class="n">string_view</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">Args</span> <span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">zret</span><span class="p">;</span>
+   <span class="k">return</span> <span class="n">ts</span><span class="o">::</span><span class="n">bwprint</span><span class="p">(</span><span class="n">zret</span><span class="p">,</span> <span class="n">fmt</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">forward_as_tuple</span><span class="p">(</span><span class="n">args</span><span class="p">...));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This gathers the argument (generally references to the arguments) in to a single tuple which is then
+passed by reference, to avoid restacking the arguments for every nested function call. In essence the
+arguments are put on the stack (inside the tuple) once and a reference to that stack is passed to
+nested functions.</p>
+</div>
+<div class="section" id="specialized-types">
+<h3>Specialized Types<a class="headerlink" href="#specialized-types" title="Permalink to this headline">¶</a></h3>
+<p>These are types for which there exists a type specific BWF formatter.</p>
+<dl class="docutils">
+<dt><code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code></dt>
+<dd><p class="first">Generally the contents of the view.</p>
+<dl class="docutils">
+<dt>‘x’ or ‘X’</dt>
+<dd>A hexadecimal dump of the contents of the view in lower (‘x’) or upper (‘X’) case.</dd>
+<dt>‘p’ or ‘P’</dt>
+<dd>The pointer and length value of the view in lower (‘p’) or upper (‘P’) case.</dd>
+</dl>
+<p class="last">The <a class="reference internal" href="#grammar-token-precision"><code class="xref std std-token docutils literal notranslate"><span class="pre">precision</span></code></a> is interpreted specially for this type to mean “skip <a class="reference internal" href="#grammar-token-precision"><code class="xref std std-token docutils literal notranslate"><span class="pre">precision</span></code></a>
+initial characters”. When combined with <a class="reference internal" href="#grammar-token-max"><code class="xref std std-token docutils literal notranslate"><span class="pre">max</span></code></a> this allows a mechanism for printing
+substrings of the <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>. For instance, to print the 10th through 20th characters
+the format <code class="docutils literal notranslate"><span class="pre">{:.10,20}</span></code> would suffice. Given the method <code class="code docutils literal notranslate"><span class="pre">substr</span></code> for <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>
+is cheap, it’s unclear how useful this is.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">sockaddr</span> <span class="pre">const*</span></code></dt>
+<dd><p class="first">The IP address is printed. Fill is used to fill in address segments if provided, not to the
+minimum width if specified. <a class="reference internal" href="../api/types/CoreTypes.en.html#_CPPv410IpEndpoint" title="IpEndpoint"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IpEndpoint</span></code></a> and <a class="reference internal" href="../api/types/CoreTypes.en.html#_CPPv46IpAddr" title="IpAddr"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">IpAddr</span></code></a> are supported with the same
+formatting. The formatting support in this case is extensive because of the commonality and
+importance of IP address data.</p>
+<p>Type overrides</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>‘p’ or ‘P’</dt>
+<dd>The pointer address is printed as hexadecimal lower (‘p’) or upper (‘P’) case.</dd>
+</dl>
+</div></blockquote>
+<p>The extension can be used to control which parts of the address are printed. These can be in any order,
+the output is always address, port, family. The default is the equivalent of “ap”. In addition, the
+character ‘=’ (“numeric align”) can be used to internally right justify the elements.</p>
+<dl class="docutils">
+<dt>‘a’</dt>
+<dd>The address.</dd>
+<dt>‘p’</dt>
+<dd>The port (host order).</dd>
+<dt>‘f’</dt>
+<dd>The IP address family.</dd>
+<dt>‘=’</dt>
+<dd>Internally justify the numeric values. This must be the first or second character. If it is the second
+the first character is treated as the internal fill character. If omitted ‘0’ (zero) is used.</dd>
+</dl>
+<p>E.g.</p>
+<div class="last highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">sockaddr</span> <span class="k">const</span><span class="o">*</span> <span class="n">addr</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;To {}&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span> <span class="c1">// -&gt; &quot;To 172.19.3.105:4951&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;To {0::a} on port {0::p}&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span> <span class="c1">// -&gt; &quot;To 172.19.3.105 on port 4951&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;To {::=}&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span> <span class="c1">// -&gt; &quot;To 127.019.003.105:04951&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Using address family {::f}&quot;</span><span class="p">,</span> <span class="n">addr</span><span class="p">);</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{::a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>      <span class="c1">// -&gt; &quot;172.19.3.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{::=a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>     <span class="c1">// -&gt; &quot;172.019.003.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{::0=a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>    <span class="c1">// -&gt; &quot;172.019.003.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{:: =a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>    <span class="c1">// -&gt; &quot;172. 19.  3.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{:&gt;20:a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>   <span class="c1">// -&gt; &quot;        172.19.3.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{:&gt;20:=a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span>  <span class="c1">// -&gt; &quot;     172.019.003.105&quot;</span>
+  <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{:&gt;20: =a}&quot;</span><span class="p">,</span><span class="n">addr</span><span class="p">);</span> <span class="c1">// -&gt; &quot;     172. 19.  3.105&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="format-classes">
+<h2>Format Classes<a class="headerlink" href="#format-classes" title="Permalink to this headline">¶</a></h2>
+<p>Although the extension for a format can be overloaded to provide additional features, this can become
+too confusing and complex to use if it is used for fundamentally different semantics on the same
+based type. In that case it is better to provide a format wrapper class that holds the base type
+but can be overloaded to produce different (wrapper class based) output. The classic example is
+<code class="code docutils literal notranslate"><span class="pre">errno</span></code> which is an integral type but frequently should be formatted with additional information
+such as the descriptive string for the value. To do this the format wrapper class <code class="code docutils literal notranslate"><span class="pre">ts::bwf::Errno</span></code>
+is provided. Using it is simple:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;File not open - {}&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">::</span><span class="n">bwf</span><span class="o">::</span><span class="n">Errno</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>which will produce output that looks like</p>
+<blockquote>
+<div>“File not open - EACCES: Permission denied [13]”</div></blockquote>
+<p>For <code class="code docutils literal notranslate"><span class="pre">errno</span></code> this is handy in another way as <code class="code docutils literal notranslate"><span class="pre">ts::bwf::Errno</span></code> will preserve the value of
+<code class="code docutils literal notranslate"><span class="pre">errno</span></code> across other calls that might change it. E.g.:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">bwf</span><span class="o">::</span><span class="n">Errno</span> <span class="n">last_err</span><span class="p">(</span><span class="n">errno</span><span class="p">);</span>
+<span class="c1">// some other code generating diagnostics that might tweak errno.</span>
+<span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;File not open - {}&quot;</span><span class="p">,</span> <span class="n">last_err</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This can also be useful for user defined data types. For instance, in the HostDB the type of the entry
+is printed in multiple places and each time this code is repeated</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;%s%s %s&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">round_robin</span> <span class="o">?</span> <span class="s">&quot;Round-Robin&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+   <span class="n">r</span><span class="o">-&gt;</span><span class="n">reverse_dns</span> <span class="o">?</span> <span class="s">&quot;Reverse DNS&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">r</span><span class="o">-&gt;</span><span class="n">is_srv</span> <span class="o">?</span> <span class="s">&quot;SRV&quot;</span> <span class="o">:</span> <span class="s">&quot;DNS&quot;</span>
+</pre></div>
+</div>
+<p>This could be wrapped in a class, <code class="code docutils literal notranslate"><span class="pre">HostDBType</span></code> such as</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">HostDBType</span> <span class="p">{</span>
+   <span class="n">HostDBInfo</span><span class="o">*</span> <span class="n">_r</span> <span class="p">{</span> <span class="k">nullptr</span> <span class="p">};</span>
+   <span class="n">HostDBType</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">_r</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="p">{}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Then define a formatter for the wrapper</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">HostDBType</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">wrap</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}{} {}&quot;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">.</span><span class="n">_r</span><span class="o">-&gt;</span><span class="n">round_robin</span> <span class="o">?</span> <span class="s">&quot;Round-Robin&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+     <span class="n">r</span><span class="o">-&gt;</span><span class="n">reverse_dns</span> <span class="o">?</span> <span class="s">&quot;Reverse DNS&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+     <span class="n">r</span><span class="o">-&gt;</span><span class="n">is_srv</span> <span class="o">?</span> <span class="s">&quot;SRV&quot;</span> <span class="o">:</span> <span class="s">&quot;DNS&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now this can be output elsewhere with just</p>
+<blockquote>
+<div>w.print(“{}”, HostDBType(r));</div></blockquote>
+<p>If this is used multiple places, this is cleaner and more robust as it can be updated everywhere with a
+change in a single code location.</p>
+<p>These are the existing format classes in header file <code class="docutils literal notranslate"><span class="pre">bfw_std_format.h</span></code>. All are in the <code class="code docutils literal notranslate"><span class="pre">ts::bwf</span></code> namespace.</p>
+<dl class="class">
+<dt id="_CPPv45Errno">
+<span id="_CPPv35Errno"></span><span id="_CPPv25Errno"></span><span id="Errno"></span><em class="property">class </em><code class="descname">Errno</code><a class="headerlink" href="#_CPPv45Errno" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Formatting for <code class="code docutils literal notranslate"><span class="pre">errno</span></code>. Generically the formatted output is the short name, the description,
+and the numeric value. A format type of <code class="docutils literal notranslate"><span class="pre">d</span></code> will generate just the numeric value, while a format
+type of <code class="docutils literal notranslate"><span class="pre">s</span></code> will generate just the short name and description.</p>
+<dl class="function">
+<dt id="_CPPv4N5Errno5ErrnoEi">
+<span id="_CPPv3N5Errno5ErrnoEi"></span><span id="_CPPv2N5Errno5ErrnoEi"></span><span id="Errno::Errno__i"></span><code class="descname">Errno</code><span class="sig-paren">(</span>int <em>errno</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Errno5ErrnoEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Initialize the instance with the error value <em>errno</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4IDpE7FirstOfDpRR4Args">
+<span id="_CPPv3IDpE7FirstOfDpRR4Args"></span><span id="_CPPv2IDpE7FirstOfDpRR4Args"></span>template&lt;typename ...<code class="descname">Args</code>&gt;<br /><code class="descname">FirstOf</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="FirstOf::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print the first non-empty string in an argument list. All arguments must be convertible to
+<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>.</p>
+<p>By far the most common case is the two argument case used to print a special string if the base
+string is null or empty. For instance, something like this:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">!=</span> <span class="k">nullptr</span> <span class="o">?</span> <span class="nl">name</span> <span class="p">:</span> <span class="s">&quot;&lt;void&gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This could also be done like:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">ts</span><span class="o">::</span><span class="n">bwf</span><span class="o">::</span><span class="n">FirstOf</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;&lt;void&gt;&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>In addition, if the first argument is a local variable that exists only to do the empty check, that
+variable can eliminated entirely. E.g.:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">name</span> <span class="o">=</span> <span class="n">thing</span><span class="p">.</span><span class="n">get_name</span><span class="p">();</span>
+<span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">!=</span> <span class="k">nullptr</span> <span class="o">?</span> <span class="nl">name</span> <span class="p">:</span> <span class="s">&quot;&lt;void&gt;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>can be simplified to</p>
+<blockquote>
+<div>w.print(“{}”, ts::bwf::FirstOf(thing.get_name(), “&lt;void&gt;”));</div></blockquote>
+<p>In general avoiding ternary operators in the print argument list makes the code cleaner and
+easier to understand.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv44Date">
+<span id="_CPPv34Date"></span><span id="_CPPv24Date"></span><span id="Date"></span><em class="property">class </em><code class="descname">Date</code><a class="headerlink" href="#_CPPv44Date" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Date formatting in the <code class="code docutils literal notranslate"><span class="pre">strftime</span></code> style.</p>
+<dl class="function">
+<dt id="_CPPv4N4Date4DateE6time_tNSt11string_viewE">
+<span id="_CPPv3N4Date4DateE6time_tNSt11string_viewE"></span><span id="_CPPv2N4Date4DateE6time_tNSt11string_viewE"></span><span id="Date::Date__time_t.std::string_view"></span><code class="descname">Date</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46time_t" title="time_t">time_t</a> <em>epoch</em>, std::string_view <em>fmt</em> = &quot;%Y %b %d %H:%M:%S&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateE6time_tNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><em>epoch</em> is the time to print. <em>fmt</em> is the format for printing which is identical to
+that of <a class="reference external" href="https://linux.die.net/man/3/strftime">strftime</a>. The default format looks like
+“2018 Jun 08 13:55:37”.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N4Date4DateENSt11string_viewE">
+<span id="_CPPv3N4Date4DateENSt11string_viewE"></span><span id="_CPPv2N4Date4DateENSt11string_viewE"></span><span id="Date::Date__std::string_view"></span><code class="descname">Date</code><span class="sig-paren">(</span>std::string_view <em>fmt</em> = &quot;%Y %b %d %H:%M:%S&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>As previous except the epoch is the current epoch at the time the constructor is invoked.
+Therefore if the current time is to be printed the default constructor can be used.</p>
+</dd></dl>
+
+<p>When used the format specification can take an extension of “local” which formats the time as
+local time. Otherwise it is GMT. <code class="docutils literal notranslate"><span class="pre">w.print(&quot;{}&quot;,</span> <span class="pre">Date(&quot;%H:%M&quot;));</span></code> will print the hour and minute
+as GMT values. <code class="docutils literal notranslate"><span class="pre">w.print(&quot;{::local}&quot;,</span> <span class="pre">Date(&quot;%H:%M&quot;));</span></code> will When used the format specification
+can take an extension of “local” which formats the time as local time. Otherwise it is GMT.
+<code class="docutils literal notranslate"><span class="pre">w.print(&quot;{}&quot;,</span> <span class="pre">Date(&quot;%H:%M&quot;));</span></code> will print the hour and minute as GMT values.
+<code class="docutils literal notranslate"><span class="pre">w.print(&quot;{::local}&quot;,</span> <span class="pre">Date(&quot;%H:%M&quot;));</span></code> will print the hour and minute in the local time zone.
+<code class="docutils literal notranslate"><span class="pre">w.print(&quot;{::gmt}&quot;),</span> <span class="pre">...);</span></code> will output in GMT if additional explicitness is desired.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv413OptionalAffix">
+<span id="_CPPv313OptionalAffix"></span><span id="_CPPv213OptionalAffix"></span><span id="OptionalAffix"></span><em class="property">class </em><code class="descname">OptionalAffix</code><a class="headerlink" href="#_CPPv413OptionalAffix" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Affix support for printing optional strings. This enables printing a string such the affixes are
+printed only if the string is not empty. An empty string (or <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>) yields no output. A
+common situation in which is this is useful is code like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s%s&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">?</span> <span class="nl">data</span> <span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">?</span> <span class="s">&quot; &quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>or something like</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s &quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Instead <a class="reference internal" href="#_CPPv413OptionalAffix" title="OptionalAffix"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">OptionalAffix</span></code></a> can be used in line, which is easier if there are multiple items. E.g.</p>
+<blockquote>
+<div>w.print(“{}”, ts::bwf::OptionalAffix(data)); // because default is single trailing space suffix.</div></blockquote>
+<dl class="function">
+<dt id="_CPPv4N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE">
+<span id="_CPPv3N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__cCP.std::string_view.std::string_view"></span><code class="descname">OptionalAffix</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>text</em>, std::string_view <em>suffix</em> = &quot; &quot;, std::string_view <em>prefix</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a format wrapper with <em>suffix</em> and <em>prefix</em>. If <em>text</em> is
+<code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> or is empty generate no output. Otherwise print the <em>prefix</em>,
+<em>text</em>, <em>suffix</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE">
+<span id="_CPPv3N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__std::string_view.std::string_view.std::string_view"></span><code class="descname">OptionalAffix</code><span class="sig-paren">(</span>std::string_view <em>text</em>, std::string_view <em>suffix</em> = &quot; &quot;, std::string_view <em>prefix</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a format wrapper with <em>suffix</em> and <em>prefix</em>. If <em>text</em> is
+<code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> or is empty generate no output. Otherwise print the <em>prefix</em>,
+<em>text</em>, <em>suffix</em>. Note that passing <code class="code docutils literal notranslate"><span class="pre">std::string</span></code> as the first argument will
+work for this overload.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="global-names">
+<h2>Global Names<a class="headerlink" href="#global-names" title="Permalink to this headline">¶</a></h2>
+<p>As a convenience, there are a few predefined global names that can be used to generate output. These
+do not take any arguments to <a class="reference internal" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="BufferWriter::print"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::print()</span></code></a>, the data needed for output is either
+process or thread global and is retrieved directly. They also are not counted for automatic indexing.</p>
+<dl class="docutils">
+<dt>now</dt>
+<dd>The epoch time in seconds.</dd>
+<dt>tick</dt>
+<dd>The high resolution clock tick.</dd>
+<dt>timestamp</dt>
+<dd>UTC time in the format “Year Month Date Hour:Minute:Second”, e.g. “2018 Apr 17 14:23:47”.</dd>
+<dt>thread-id</dt>
+<dd>The id of the current thread.</dd>
+<dt>thread-name</dt>
+<dd>The name of the current thread.</dd>
+<dt>ts-thread</dt>
+<dd>A pointer to the Traffic Server <a class="reference internal" href="../threads-and-events.en.html#_CPPv46Thread" title="Thread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Thread</span></code></a> object for the current thread. This is useful for comparisons.</dd>
+<dt>ts-ethread</dt>
+<dd>A pointer to the Traffic Server <a class="reference internal" href="../threads-and-events.en.html#_CPPv47EThread" title="EThread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EThread</span></code></a> object for the current thread. This is useful for comparisons
+or to indicate if the thread is an <a class="reference internal" href="../threads-and-events.en.html#_CPPv47EThread" title="EThread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EThread</span></code></a> (if not, the value will be <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>).</dd>
+</dl>
+<p>For example, to have the same output as the normal diagnostic messages with a timestamp and the current thread:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{timestamp} {ts-thread} Counter is {}&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Note that even though no argument is provided the global names do not count as part of the argument
+indexing, therefore the preceding example could be written as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{timestamp} {ts-thread} Counter is {0}&quot;</span><span class="p">,</span> <span class="n">counter</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="working-with-standard-i-o">
+<h2>Working with standard I/O<a class="headerlink" href="#working-with-standard-i-o" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> can be used with some of the basic I/O functionality of a C++ environment. At the lowest
+level the output stream operator can be used with a file descriptor or a <code class="code docutils literal notranslate"><span class="pre">std::ostream</span></code>. For these
+examples assume <code class="code docutils literal notranslate"><span class="pre">bw</span></code> is an instance of <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> with data in it.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="n">open</span><span class="p">(</span><span class="s">&quot;some_file&quot;</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="p">);</span>
+<span class="n">bw</span> <span class="o">&gt;&gt;</span> <span class="n">fd</span><span class="p">;</span> <span class="c1">// Write to file.</span>
+<span class="n">bw</span> <span class="o">&gt;&gt;</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="p">;</span> <span class="c1">// write to standard out.</span>
+</pre></div>
+</div>
+<p>For convenience a stream operator for <code class="code docutils literal notranslate"><span class="pre">std::stream</span></code> is provided to make the use more natural.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">bw</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">bw</span><span class="p">.</span><span class="n">view</span><span class="p">();</span> <span class="c1">// identical effect as the previous line.</span>
+</pre></div>
+</div>
+<p>Using a <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> with <code class="code docutils literal notranslate"><span class="pre">printf</span></code> is straight forward by use of the sized string
+format code.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">LocalBufferWriter</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">&gt;</span> <span class="n">bw</span><span class="p">;</span>
+<span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Failed to connect to {}&quot;</span><span class="p">,</span> <span class="n">addr1</span><span class="p">);</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%.*s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="n">bw</span><span class="p">.</span><span class="n">size</span><span class="p">()),</span> <span class="n">bw</span><span class="p">.</span><span class="n">data</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>Alternatively the output can be null terminated in the formatting to avoid having to pass the size.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">LocalBufferWriter</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">&gt;</span> <span class="n">bw</span><span class="p">;</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">bw</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Failed to connect to {}</span><span class="se">\0</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">addr1</span><span class="p">).</span><span class="n">data</span><span class="p">());</span>
+</pre></div>
+</div>
+<p>When using C++ stream I/O, writing to a stream can be done without any local variables at all.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">ts</span><span class="o">::</span><span class="n">LocalBufferWriter</span><span class="o">&lt;</span><span class="mi">256</span><span class="o">&gt;</span><span class="p">().</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Failed to connect to {}</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">addr1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This is handy for temporary debugging messages as it avoids having to clean up local variable
+declarations later, particularly when the types involved themselves require additional local
+declarations (such as in this example, an IP address which would normally require a local text
+buffer for conversion before printing). As noted previously this is particularly useful inside a
+<code class="code docutils literal notranslate"><span class="pre">case</span></code> where local variables are more annoying to set up.</p>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv412BufferWriter">
+<span id="_CPPv312BufferWriter"></span><span id="_CPPv212BufferWriter"></span><span id="BufferWriter"></span><em class="property">class </em><code class="descname">BufferWriter</code><a class="headerlink" href="#_CPPv412BufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is the abstract base class which defines the basic client interface. This
+is intended to be the reference type used when passing concrete instances rather than having to
+support the distinct types.</p>
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter5writeEPv6size_t">
+<span id="_CPPv3N12BufferWriter5writeEPv6size_t"></span><span id="_CPPv2N12BufferWriter5writeEPv6size_t"></span><span id="BufferWriter::write__voidP.s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">write</code><span class="sig-paren">(</span>void *<em>data</em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write to the buffer starting at <em>data</em> for at most <em>length</em> bytes. If there is not
+enough room to fit all the data, none is written.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter5writeENSt11string_viewE">
+<span id="_CPPv3N12BufferWriter5writeENSt11string_viewE"></span><span id="_CPPv2N12BufferWriter5writeENSt11string_viewE"></span><span id="BufferWriter::write__std::string_view"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">write</code><span class="sig-paren">(</span>std::string_view <em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write the string <em>str</em> to the buffer. If there is not enough room to write the string no
+data is written.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter5writeEc">
+<span id="_CPPv3N12BufferWriter5writeEc"></span><span id="_CPPv2N12BufferWriter5writeEc"></span><span id="BufferWriter::write__c"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">write</code><span class="sig-paren">(</span>char <em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write the character <em>c</em> to the buffer. If there is no space in the buffer the character
+is not written.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter4fillE6size_t">
+<span id="_CPPv3N12BufferWriter4fillE6size_t"></span><span id="_CPPv2N12BufferWriter4fillE6size_t"></span><span id="BufferWriter::fill__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">fill</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4fillE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increase the output size by <em>n</em> without changing the buffer contents. This is used in
+conjunction with <a class="reference internal" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="BufferWriter::auxBuffer"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::auxBuffer()</span></code></a> after writing output to the buffer returned by
+that method. If this method is not called then such output will not be counted by
+<a class="reference internal" href="#_CPPv4NK12BufferWriter4sizeEv" title="BufferWriter::size"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::size()</span></code></a> and will be overwritten by subsequent output.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter4dataEv">
+<span id="_CPPv3NK12BufferWriter4dataEv"></span><span id="_CPPv2NK12BufferWriter4dataEv"></span><span id="BufferWriter::dataC"></span>char *<code class="descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4dataEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a pointer to start of the buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter4sizeEv">
+<span id="_CPPv3NK12BufferWriter4sizeEv"></span><span id="_CPPv2NK12BufferWriter4sizeEv"></span><span id="BufferWriter::sizeC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the number of valid (written) bytes in the buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter4viewEv">
+<span id="_CPPv3NK12BufferWriter4viewEv"></span><span id="_CPPv2NK12BufferWriter4viewEv"></span><span id="BufferWriter::viewC"></span>std::string_view <code class="descname">view</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4viewEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> that covers the valid data in the buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter9remainingEv">
+<span id="_CPPv3NK12BufferWriter9remainingEv"></span><span id="_CPPv2NK12BufferWriter9remainingEv"></span><span id="BufferWriter::remainingC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">remaining</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter9remainingEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the number of available remaining bytes that could be written to the buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter8capacityEv">
+<span id="_CPPv3NK12BufferWriter8capacityEv"></span><span id="_CPPv2NK12BufferWriter8capacityEv"></span><span id="BufferWriter::capacityC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">capacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter8capacityEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the number of bytes in the buffer.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter9auxBufferEv">
+<span id="_CPPv3NK12BufferWriter9auxBufferEv"></span><span id="_CPPv2NK12BufferWriter9auxBufferEv"></span><span id="BufferWriter::auxBufferC"></span>char *<code class="descname">auxBuffer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return a pointer to the first byte in the buffer not yet consumed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter4clipE6size_t">
+<span id="_CPPv3N12BufferWriter4clipE6size_t"></span><span id="_CPPv2N12BufferWriter4clipE6size_t"></span><span id="BufferWriter::clip__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">clip</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4clipE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Reduce the available space by <em>n</em> bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter6extendE6size_t">
+<span id="_CPPv3N12BufferWriter6extendE6size_t"></span><span id="_CPPv2N12BufferWriter6extendE6size_t"></span><span id="BufferWriter::extend__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">extend</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter6extendE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Increase the available space by <em>n</em> bytes. Extreme care must be used with this method as
+<a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> will trust the argument, having no way to verify it. In general this
+should only be used after calling <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and passing the same value.
+Together these allow the buffer to be temporarily reduced to reserve space for the trailing
+element of a required pair of output strings, e.g. making sure a closing quote can be written
+even if part of the string is not.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter5errorEv">
+<span id="_CPPv3NK12BufferWriter5errorEv"></span><span id="_CPPv2NK12BufferWriter5errorEv"></span><span id="BufferWriter::errorC"></span>bool <code class="descname">error</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter5errorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return <code class="code docutils literal notranslate"><span class="pre">true</span></code> if the buffer has overflowed from writing, <code class="code docutils literal notranslate"><span class="pre">false</span></code> if not.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriter6extentEv">
+<span id="_CPPv3NK12BufferWriter6extentEv"></span><span id="_CPPv2NK12BufferWriter6extentEv"></span><span id="BufferWriter::extentC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">extent</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter6extentEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the total number of bytes in all attempted writes to this buffer. This value allows a
+successful retry in case of overflow, presuming the output data doesn’t change. This works
+well with the standard “try before you buy” approach of attempting to write output, counting
+the characters needed, then allocating a sufficiently sized buffer and actually writing.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriter5printE8TextViewz">
+<span id="_CPPv3N12BufferWriter5printE8TextViewz"></span><span id="_CPPv2N12BufferWriter5printE8TextViewz"></span><span id="BufferWriter::print__TextView.z"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">print</code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView">TextView</a> <em>fmt</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print the arguments according to the format. See <a class="reference internal" href="#bw-formatting">bw-formatting</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE">
+<span id="_CPPv3IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span>template&lt;typename ...<code class="descname">Args</code>&gt;<br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">printv</code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView">TextView</a> <em>fmt</em>, std::tuple&lt;<a class="reference internal" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="BufferWriter::printv::Args">Args</a>...&gt; &amp;&amp;<em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Print the arguments in the tuple <em>args</em> according to the format. See <a class="reference internal" href="#bw-formatting">bw-formatting</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12BufferWriterrsERNSt7ostreamE">
+<span id="_CPPv3NK12BufferWriterrsERNSt7ostreamE"></span><span id="_CPPv2NK12BufferWriterrsERNSt7ostreamE"></span><span id="BufferWriter::rshift-operator__osRC"></span>std::ostream &amp;<code class="descname">operator&gt;&gt;</code><span class="sig-paren">(</span>std::ostream &amp;<em>stream</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriterrsERNSt7ostreamE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write the contents of the buffer to <em>stream</em> and return <em>stream</em>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N12BufferWriterrsEi">
+<span id="_CPPv3N12BufferWriterrsEi"></span><span id="_CPPv2N12BufferWriterrsEi"></span><span id="BufferWriter::rshift-operator__i"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47ssize_t" title="ssize_t">ssize_t</a> <code class="descname">operator&gt;&gt;</code><span class="sig-paren">(</span>int <em>fd</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriterrsEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Write the contents of the buffer to file descriptor <em>fd</em> and return the number of bytes
+write (the results of the call to file <code class="code docutils literal notranslate"><span class="pre">write()</span></code>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv417FixedBufferWriter">
+<span id="_CPPv317FixedBufferWriter"></span><span id="_CPPv217FixedBufferWriter"></span><span id="FixedBufferWriter"></span><em class="property">class </em><code class="descname">FixedBufferWriter</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a><a class="headerlink" href="#_CPPv417FixedBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This is a class that implements <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> on a fixed buffer, passed in to the constructor.</p>
+<dl class="function">
+<dt id="_CPPv4N17FixedBufferWriter17FixedBufferWriterEPv6size_t">
+<span id="_CPPv3N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="_CPPv2N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="FixedBufferWriter::FixedBufferWriter__voidP.s"></span><code class="descname">FixedBufferWriter</code><span class="sig-paren">(</span>void *<em>buffer</em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter17FixedBufferWriterEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct an instance that will write to <em>buffer</em> at most <em>length</em> bytes. If more
+data is written, all data past the maximum size is discarded.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N17FixedBufferWriter6reduceE6size_t">
+<span id="_CPPv3N17FixedBufferWriter6reduceE6size_t"></span><span id="_CPPv2N17FixedBufferWriter6reduceE6size_t"></span><span id="FixedBufferWriter::reduce__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> &amp;<code class="descname">reduce</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter6reduceE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Roll back the output to have <em>n</em> valid (used) bytes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N17FixedBufferWriter5resetEv">
+<span id="_CPPv3N17FixedBufferWriter5resetEv"></span><span id="_CPPv2N17FixedBufferWriter5resetEv"></span><span id="FixedBufferWriter::reset"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> &amp;<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter5resetEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Equivalent to <code class="code docutils literal notranslate"><span class="pre">reduce(0)</span></code>, provide for convenience.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N17FixedBufferWriter9auxWriterE6size_t">
+<span id="_CPPv3N17FixedBufferWriter9auxWriterE6size_t"></span><span id="_CPPv2N17FixedBufferWriter9auxWriterE6size_t"></span><span id="FixedBufferWriter::auxWriter__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> <code class="descname">auxWriter</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>reserve</em> = 0<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter9auxWriterE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Create a new instance of <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> for the remaining output buffer. If
+<em>reserve</em> is non-zero then if possible the capacity of the returned instance is reduced
+by <em>reserve</em> bytes, in effect reserving that amount of space at the end. Note the space will
+not be reserved if <em>reserve</em> is larger than the remaining output space.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv4I_6size_tE17LocalBufferWriter">
+<span id="_CPPv3I_6size_tE17LocalBufferWriter"></span><span id="_CPPv2I_6size_tE17LocalBufferWriter"></span>template&lt;<a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">N</code>&gt;<br /><em class="property">class </em><code class="descname">LocalBufferWriter</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a><a class="headerlink" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This is a convenience class which is a subclass of <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a>. It which creates a
+buffer as a member rather than having an external buffer that is passed to the instance. The
+buffer is <em>N</em> bytes long. This differs from its super class only in the constructor, which
+is only a default constructor.</p>
+<dl class="function">
+<dt id="_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv">
+<span id="_CPPv3N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="_CPPv2N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter"></span><code class="descclassname"><a class="reference internal" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter">LocalBufferWriter</a><code class="descclassname">::</code></code><code class="descname">LocalBufferWriter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Construct an instance with a capacity of <em>N</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv47BWFSpec">
+<span id="_CPPv37BWFSpec"></span><span id="_CPPv27BWFSpec"></span><span id="BWFSpec"></span><em class="property">class </em><code class="descname">BWFSpec</code><a class="headerlink" href="#_CPPv47BWFSpec" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This holds a format specifier. It has the parsing logic for a specifier and if the constructor is
+passed a <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> of a specifier, that will parse it and loaded into the class
+members. This is useful to specialized implementations of <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bwformat()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V">
+<span id="_CPPv3I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span><span id="_CPPv2I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span>template&lt;typename <code class="descname">V</code>&gt;<br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="descname">bwformat</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<em>w</em>, <a class="reference internal" href="#_CPPv47BWFSpec" title="BWFSpec">BWFSpec</a> <em class="property">const</em> &amp;<em>spec</em>, <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat::V">V</a> <em class="property">const</em> &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A family of overloads that perform formatted output on a <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a>. The set of types
+supported can be extended by defining an overload of this function for the types.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args">
+<span id="_CPPv3IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span><span id="_CPPv2IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span>template&lt;typename ...<code class="descname">Args</code>&gt;<br />std::string &amp;<code class="descname">bwprint</code><span class="sig-paren">(</span>std::string &amp;<em>s</em>, std::string_view <em>format</em>, <a class="reference internal" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="bwprint::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate formatted output in <em>s</em> based on the <em>format</em> and arguments <em>args</em>. The
+string <em>s</em> is adjusted in size to be the exact length as required by the output. If the
+string already had enough capacity it is not re-allocated, otherwise the resizing will cause
+a re-allocation.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE">
+<span id="_CPPv3IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span>template&lt;typename ...<code class="descname">Args</code>&gt;<br />std::string &amp;<code class="descname">bwprintv</code><span class="sig-paren">(</span>std::string &amp;<em>s</em>, std::string_view <em>format</em>, std::tuple&lt;<a class="reference internal" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="bwprintv::Args">Args</a>...&gt; <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Generate formatted output in <em>s</em> based on the <em>format</em> and <em>args</em>, which must be a
+tuple of the arguments to use for the format. The string <em>s</em> is adjusted in size to be the
+exact length as required by the output. If the string already had enough capacity it is not
+re-allocated, otherwise the resizing will cause a re-allocation.</p>
+<p>This overload is used primarily as a back end to another function which takes the arguments for
+the formatting independently.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intrusive-list.en.html" class="btn btn-neutral float-right" title="IntrusiveDList" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scalar.en.html" class="btn btn-neutral float-left" title="TS.Scalar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

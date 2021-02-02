@@ -1,0 +1,522 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Introduction &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Installing Traffic Server" href="installation/index.en.html" />
+    <link rel="prev" title="Administrator’s Guide" href="index.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ts-deployment-options">Traffic Server Deployment Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ts-as-a-web-proxy-cache">Traffic Server as a Web Proxy Cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ts-as-a-reverse-proxy">Traffic Server as a Reverse Proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ts-in-a-cache-hierarchy">Traffic Server in a Cache Hierarchy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ts-as-a-load-balancer">Traffic Server as a Load Balancer</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#ts-components">Traffic Server Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-ts-cache">The Traffic Server Cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-ram-cache">The RAM Cache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-host-database">The Host Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-dns-resolver">The DNS Resolver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ts-processes">Traffic Server Processes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#administration-tools">Administration Tools</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#traffic-analysis-options">Traffic Analysis Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ts-security-options">Traffic Server Security Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuning-ts">Tuning Traffic Server</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/admin-guide/introduction.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction">
+<span id="admin-introduction"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Global data networking has become part of everyday life: Internet users
+request billions of documents and petabytes of data, on a daily basis,
+to and from all parts of the world. Information is free, abundant, and
+accessible. Unfortunately, global data networking can also be a
+nightmare for IT professionals as they struggle with overloaded servers
+and congested networks. It can be challenging to consistently and
+reliably accommodate society’s growing data demands.</p>
+<p>Traffic Server is a high-performance web proxy cache that improves
+network efficiency and performance by caching frequently-accessed
+information at the edge of the network. This brings content physically
+closer to end users, while enabling faster delivery and reduced
+bandwidth use. Traffic Server is designed to improve content delivery
+for enterprises, Internet service providers (ISPs), backbone providers,
+and large intranets by maximizing existing and available bandwidth.</p>
+<div class="section" id="ts-deployment-options">
+<h2>Traffic Server Deployment Options<a class="headerlink" href="#ts-deployment-options" title="Permalink to this headline">¶</a></h2>
+<p>To best suit your needs, Traffic Server can be deployed in several ways:</p>
+<ul class="simple">
+<li>As a web proxy cache</li>
+<li>As a reverse proxy</li>
+<li>In a cache hierarchy</li>
+</ul>
+<p>The following sections provide a summary of these Traffic Server
+deployment options.</p>
+<div class="section" id="ts-as-a-web-proxy-cache">
+<h3>Traffic Server as a Web Proxy Cache<a class="headerlink" href="#ts-as-a-web-proxy-cache" title="Permalink to this headline">¶</a></h3>
+<p>As a web proxy cache, Traffic Server receives user requests for web
+content as those requests travel to the destined web server (origin
+server). If Traffic Server contains the requested content, then it
+serves the content directly. If the requested content is not available
+from cache, then Traffic Server acts as a proxy: it obtains the content
+from the origin server on the user’s behalf and also keeps a copy to
+satisfy future requests.</p>
+<p>Traffic Server provides explicit proxy caching, in which the user’s
+client software must be configured to send requests directly to Traffic
+Server. Explicit proxy caching is described in the <a class="reference internal" href="configuration/explicit-forward-proxying.en.html#explicit-proxy-caching"><span class="std std-ref">Explicit Proxy Caching</span></a>
+chapter.</p>
+<p>Traffic Server can also be employed as a transparent caching proxy server, in
+which the client software needs no special configuration or even knowledge of
+the proxy’s existence. This setup is described in the <a class="reference internal" href="configuration/transparent-proxy.en.html#transparent-proxy"><span class="std std-ref">Transparent Proxying</span></a>
+section.</p>
+</div>
+<div class="section" id="ts-as-a-reverse-proxy">
+<h3>Traffic Server as a Reverse Proxy<a class="headerlink" href="#ts-as-a-reverse-proxy" title="Permalink to this headline">¶</a></h3>
+<p>As a reverse proxy, Traffic Server is configured to be the origin server
+to which the user is trying to connect (typically, the origin server’s
+advertised hostname resolves to Traffic Server, which acts as the real
+origin server). The reverse proxy feature is also called server
+acceleration. Reverse proxy is described in more detail in
+<a class="reference internal" href="configuration/redirecting-http-requests.en.html#reverse-proxy-and-http-redirects"><span class="std std-ref">Reverse Proxy and HTTP Redirects</span></a>.</p>
+</div>
+<div class="section" id="ts-in-a-cache-hierarchy">
+<h3>Traffic Server in a Cache Hierarchy<a class="headerlink" href="#ts-in-a-cache-hierarchy" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server can participate in flexible cache hierarchies, in which
+Internet requests not fulfilled from one cache are routed to other
+regional caches, thereby leveraging the contents and proximity of nearby
+caches. In a hierarchy of proxy servers, Traffic Server can act either
+as a parent or a child cache to other Traffic Server systems or to
+similar caching products.</p>
+</div>
+<div class="section" id="ts-as-a-load-balancer">
+<h3>Traffic Server as a Load Balancer<a class="headerlink" href="#ts-as-a-load-balancer" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server can act as a layer 7 HTTP load balancer distributing requests across
+several servers. It can choose the next hop server using request attributes
+like the Host: header, URL attributes, scheme, method, and client IP address.
+It has a few selection strategies in place like weighted round robin, and
+URL consistent hashing.</p>
+</div>
+</div>
+<div class="section" id="ts-components">
+<h2>Traffic Server Components<a class="headerlink" href="#ts-components" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server consists of several components that work together to form
+a web proxy cache you can easily monitor and configure.</p>
+<div class="section" id="the-ts-cache">
+<h3>The Traffic Server Cache<a class="headerlink" href="#the-ts-cache" title="Permalink to this headline">¶</a></h3>
+<p>The Traffic Server cache consists of a high-speed object database called
+the <em>object store</em>. The object store indexes objects according to URLs and
+associated headers. Using sophisticated object management, the object
+store can cache alternate versions of the same object (perhaps in a
+different language or encoding type). It can also efficiently store very
+small and very large objects, thereby minimizing wasted space. When the
+cache is full, Traffic Server removes stale data to ensure that the most
+requested objects are readily available and fresh.</p>
+<p>Traffic Server is designed to tolerate total disk failures on any of the
+cache disks. If the disk fails completely, then Traffic Server marks the
+entire disk as corrupt and continues to use remaining disks. If all of
+the cache disks fail, then Traffic Server switches to proxy-only mode.
+You can partition the cache to reserve a certain amount of disk space
+for storing data for specific protocols and origin servers. For more
+information about the cache, see <a class="reference internal" href="configuration/cache-basics.en.html#http-proxy-caching"><span class="std std-ref">HTTP Proxy Caching</span></a>.</p>
+</div>
+<div class="section" id="the-ram-cache">
+<h3>The RAM Cache<a class="headerlink" href="#the-ram-cache" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server maintains a small RAM cache that contains extremely
+popular objects. This RAM cache serves the most popular objects as fast
+as possible and reduces load on disks, especially during temporary
+traffic peaks. You can configure the RAM cache size to suit your needs.
+For detailed information, refer to <a class="reference internal" href="storage/index.en.html#changing-the-size-of-the-ram-cache"><span class="std std-ref">Changing the Size of the RAM Cache</span></a>.</p>
+</div>
+<div class="section" id="the-host-database">
+<h3>The Host Database<a class="headerlink" href="#the-host-database" title="Permalink to this headline">¶</a></h3>
+<p>The Traffic Server host database stores the domain name server (DNS)
+entries of origin servers to which Traffic Server connects to fulfill
+user requests. This information is used to adapt future protocol
+interactions and optimize performance. Along with other information, the
+host database tracks:</p>
+<ul class="simple">
+<li>DNS information (for fast conversion of hostnames to IP addresses).</li>
+<li>The HTTP version of each host (so advanced protocol features can be
+used with hosts running modern servers).</li>
+<li>Host reliability and availability information (so users will not wait
+for servers that are not running).</li>
+</ul>
+</div>
+<div class="section" id="the-dns-resolver">
+<h3>The DNS Resolver<a class="headerlink" href="#the-dns-resolver" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server includes a fast, asynchronous DNS resolver to streamline
+conversion of hostnames to IP addresses. Traffic Server implements the
+DNS resolver natively by directly issuing DNS command packets rather
+than relying on slower, conventional resolver libraries. Since many DNS
+queries can be issued in parallel and a fast DNS cache maintains popular
+bindings in memory, DNS traffic is reduced.</p>
+</div>
+<div class="section" id="ts-processes">
+<h3>Traffic Server Processes<a class="headerlink" href="#ts-processes" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server contains two processes that work together to serve
+requests and manage, control, and monitor the health of the system.</p>
+<ol class="arabic">
+<li><p class="first">The <strong class="program">traffic_server</strong> process is the transaction processing engine
+of Traffic Server. It is responsible for accepting connections,
+processing protocol requests, and serving documents from the cache or
+origin server.</p>
+</li>
+<li><p class="first">The <strong class="program">traffic_manager</strong> process is the command and control facility
+of the Traffic Server, responsible for launching, monitoring, and
+reconfiguring the <strong class="program">traffic_server</strong> process. The <strong class="program">traffic_manager</strong>
+process is also responsible for the proxy autoconfiguration port, the
+statistics interface, and virtual IP failover.</p>
+<p>If the <strong class="program">traffic_manager</strong> process detects a <strong class="program">traffic_server</strong>
+process failure, it instantly restarts the process but also maintains
+a connection queue of all incoming requests. All incoming connections
+that arrive in the several seconds before full server restart are
+saved in the connection queue and processed in first-come,
+first-served order. This connection queueing shields users from any
+server restart downtime.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="administration-tools">
+<h3>Administration Tools<a class="headerlink" href="#administration-tools" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server offers the following administration options:</p>
+<ul class="simple">
+<li>The <strong class="program">traffic_ctl</strong> command-line interface is a
+text-based interface from which you can monitor Traffic Server performance
+and network traffic, as well as configure the Traffic Server system.</li>
+<li>Various configuration files enable you to configure Traffic Server
+through a simple file-editing and signal-handling interface. Any
+changes you make through <strong class="program">traffic_ctl</strong> are
+automatically made to the configuration files as well.</li>
+<li>Finally, there is a clean C API which can be put to good use from a
+multitude of languages. The Traffic Server Admin Client demonstrates
+this for Perl.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="traffic-analysis-options">
+<h2>Traffic Analysis Options<a class="headerlink" href="#traffic-analysis-options" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides several options for network traffic analysis and
+monitoring:</p>
+<ul>
+<li><p class="first"><strong class="program">traffic_ctl</strong> enables you to collect and process
+statistics obtained from network traffic information.</p>
+</li>
+<li><p class="first">Transaction logging enables you to record information (in a log file)
+about every request Traffic Server receives and every error it
+detects. By analyzing the log files, you can determine how many
+clients used the Traffic Server cache, how much information each of
+them requested, and what pages were most popular. You can also see
+why a particular transaction was in error and what state the Traffic
+Server was in at a particular time. For example, you can see that
+Traffic Server was restarted.</p>
+<p>Traffic Server supports several standard log file formats, such as
+Squid and Netscape, and its own custom format. You can analyze the
+standard format log files with off-the-shelf analysis packages. To
+help with log file analysis, you can separate log files so that they
+contain information specific to protocol or hosts.</p>
+</li>
+</ul>
+<p>Traffic Server event and error logging, monitoring, and analysis is covered in greater
+detail in <a class="reference internal" href="monitoring/index.en.html#admin-monitoring"><span class="std std-ref">Monitoring</span></a>.</p>
+</div>
+<div class="section" id="ts-security-options">
+<h2>Traffic Server Security Options<a class="headerlink" href="#ts-security-options" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server provides numerous options that enable you to establish
+secure communication between the Traffic Server system and other
+computers on the network. Using the security options, you can do the
+following:</p>
+<ul class="simple">
+<li>Control client access to the Traffic Server proxy cache.</li>
+<li>Configure Traffic Server to use multiple DNS servers to match your
+site’s security configuration. For example, Traffic Server can use
+different DNS servers, depending on whether it needs to resolve
+hostnames located inside or outside a firewall. This enables you to
+keep your internal network configuration secure while continuing to
+provide transparent access to external sites on the Internet.</li>
+<li>Configure Traffic Server to verify that clients are authenticated
+before they can access content from the Traffic Server cache.</li>
+<li>Secure connections in reverse proxy mode between a client and Traffic
+Server, and Traffic Server and the origin server, using the SSL
+termination option.</li>
+<li>Control access via SSL (Secure Sockets Layer).</li>
+</ul>
+<p>Traffic Server security options are described in more detail in
+<a class="reference internal" href="security/index.en.html#admin-security"><span class="std std-ref">Security</span></a>.</p>
+</div>
+<div class="section" id="tuning-ts">
+<h2>Tuning Traffic Server<a class="headerlink" href="#tuning-ts" title="Permalink to this headline">¶</a></h2>
+<p>Finally, this last chapter on <a class="reference internal" href="performance/index.en.html#performance-tuning"><span class="std std-ref">Performance Tuning</span></a> discusses the vast
+number of options that allow administrators to optimally tune Apache Traffic
+Server for maximum performance.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="installation/index.en.html" class="btn btn-neutral float-right" title="Installing Traffic Server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Administrator’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

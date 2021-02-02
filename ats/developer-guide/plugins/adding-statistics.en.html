@@ -1,0 +1,371 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Adding Statistics &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Example Plugins" href="example-plugins/index.en.html" />
+    <link rel="prev" title="Plugin Interfaces" href="plugin-interfaces.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>Adding Statistics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/plugins/adding-statistics.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="adding-statistics">
+<span id="developer-plugins-add-statistics"></span><h1>Adding Statistics<a class="headerlink" href="#adding-statistics" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes how to add statistics to your plugins. The Traffic Server statistics API functions add
+your plugin’s statistics so you can view your plugin statistics as you would any other Traffic Server
+statistic, using <strong class="program">traffic_ctl</strong> or the <a class="reference internal" href="../api/functions/TSStat.en.html#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a> API.</p>
+<p>A statistic is an opaque object referred to by an integral handle returned by
+<a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatCreate" title="TSStatCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatCreate()</span></code></a>. Only integer statistics are supported, so the <em>type</em> argument to
+<a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatCreate" title="TSStatCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatCreate()</span></code></a> must be <a class="reference internal" href="../api/types/TSRecordDataType.en.html#c.TS_RECORDDATATYPE_INT" title="TS_RECORDDATATYPE_INT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_RECORDDATATYPE_INT</span></code></a>.</p>
+<p>The following example shows how to add custom statistics to your plugin. Typically, you would
+attempt to find the statistic by name before creating is. This technique is useful if you want to
+increment a statistic from multiple plugins. Once you have a handle to the statistic, set the value
+with <a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatIntSet" title="TSStatIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntSet()</span></code></a>, and increment it with <a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatIntIncrement" title="TSStatIntIncrement"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntIncrement()</span></code></a> or
+<a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatIntDecrement" title="TSStatIntDecrement"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatIntDecrement()</span></code></a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;cinttypes&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
+
+<span class="cp">#define PLUGIN_NAME &quot;statistics&quot;</span>
+
+<span class="kt">void</span>
+<span class="nf">TSPluginInit</span><span class="p">(</span><span class="kt">int</span> <span class="cm">/* argc */</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="cm">/* argv */</span><span class="p">[])</span>
+<span class="p">{</span>
+  <span class="n">TSPluginRegistrationInfo</span> <span class="n">info</span><span class="p">;</span>
+
+  <span class="n">info</span><span class="p">.</span><span class="n">plugin_name</span>   <span class="o">=</span> <span class="n">PLUGIN_NAME</span><span class="p">;</span>
+  <span class="n">info</span><span class="p">.</span><span class="n">vendor_name</span>   <span class="o">=</span> <span class="s">&quot;Apache Software Foundation&quot;</span><span class="p">;</span>
+  <span class="n">info</span><span class="p">.</span><span class="n">support_email</span> <span class="o">=</span> <span class="s">&quot;dev@trafficserver.apache.org&quot;</span><span class="p">;</span>
+
+  <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+  <span class="k">const</span> <span class="kt">char</span> <span class="n">name</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&quot;plugin.&quot;</span> <span class="n">PLUGIN_NAME</span> <span class="s">&quot;.now&quot;</span><span class="p">;</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">TSStatFindName</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">)</span> <span class="o">==</span> <span class="n">TS_ERROR</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">id</span> <span class="o">=</span> <span class="n">TSStatCreate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">TS_RECORDDATATYPE_INT</span><span class="p">,</span> <span class="n">TS_STAT_NON_PERSISTENT</span><span class="p">,</span> <span class="n">TS_STAT_SYNC_SUM</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">id</span> <span class="o">==</span> <span class="n">TS_ERROR</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">TSError</span><span class="p">(</span><span class="s">&quot;[%s] failed to register &#39;%s&#39;&quot;</span><span class="p">,</span> <span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+      <span class="k">return</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="n">TSError</span><span class="p">(</span><span class="s">&quot;[%s] %s registered with id %d&quot;</span><span class="p">,</span> <span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">id</span><span class="p">);</span>
+
+<span class="cp">#if DEBUG</span>
+  <span class="n">TSReleaseAssert</span><span class="p">(</span><span class="n">id</span> <span class="o">!=</span> <span class="n">TS_ERROR</span><span class="p">);</span>
+<span class="cp">#endif</span>
+
+  <span class="c1">// Set an initial value for our statistic.</span>
+  <span class="n">TSStatIntSet</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">time</span><span class="p">(</span><span class="k">nullptr</span><span class="p">));</span>
+
+  <span class="c1">// Increment the statistic as time passes.</span>
+  <span class="n">TSStatIntIncrement</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+  <span class="n">TSDebug</span><span class="p">(</span><span class="n">PLUGIN_NAME</span><span class="p">,</span> <span class="s">&quot;%s is set to %&quot;</span> <span class="n">PRId64</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">TSStatIntGet</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+  <span class="n">TSReleaseAssert</span><span class="p">(</span><span class="n">TSPluginRegister</span><span class="p">(</span><span class="o">&amp;</span><span class="n">info</span><span class="p">)</span> <span class="o">==</span> <span class="n">TS_SUCCESS</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If this plugin is loaded, then the statistic can be accessed with</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">metric</span> <span class="n">show</span> <span class="n">plugin</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">now</span>
+</pre></div>
+</div>
+<p>The name of the statistic can be any string but it is best to use the convention of starting it with the literal tag “plugin” followed the plugin name followed by statistic specific tags. This avoids any name collisions and also makes finding all statistics for a plugin simple. For instance, the “redirect_1” example plugin creates a number of statistics. These can be listed with the command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">metric</span> <span class="n">match</span> <span class="n">plugin</span><span class="o">.</span><span class="n">redirect_1</span><span class="o">..*</span>
+</pre></div>
+</div>
+<p>The “redirect_1” example plugin has a more realistic handling of statistics with regard to updating and is worth examining.</p>
+<p><a class="reference internal" href="../api/functions/TSStat.en.html#c.TSStatFindName" title="TSStatFindName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatFindName()</span></code></a> can be used to check if the statistic already exists or to provide a generic interface to statistics. In the example above you can see the code first verifies the statistic does not already exist before creating it. In general, though, this should be handled by not executing the registration code twice. If done only from plugin initialization then this will be the case. It can be the case however that statistics are based on configuration data which may be reloaded and the check must be done. This is more likely with remap plugins.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="example-plugins/index.en.html" class="btn btn-neutral float-right" title="Example Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="plugin-interfaces.en.html" class="btn btn-neutral float-left" title="Plugin Interfaces" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

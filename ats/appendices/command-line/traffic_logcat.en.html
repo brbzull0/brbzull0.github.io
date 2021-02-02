@@ -1,0 +1,398 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>traffic_logcat &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_logstats" href="traffic_logstats.en.html" />
+    <link rel="prev" title="traffic_layout" href="traffic_layout.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="traffic_cache_tool.en.html">traffic_cache_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_crashlog.en.html">traffic_crashlog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl_jsonrpc.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_layout.en.html">traffic_layout</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">traffic_logcat</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logstats.en.html">traffic_logstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_manager.en.html">traffic_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_server.en.html">traffic_server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_top.en.html">traffic_top</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_via.en.html">traffic_via</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_wccp.en.html">traffic_wccp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tspush.en.html">tspush</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsxs.en.html">tsxs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Appendices</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Command Line Utilities</a> &raquo;</li>
+        
+      <li>traffic_logcat</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/appendices/command-line/traffic_logcat.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-logcat">
+<span id="id1"></span><h1>traffic_logcat<a class="headerlink" href="#traffic-logcat" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<p><strong class="program">traffic_logcat</strong> [-o output-file | -a] [-CEhSVw2] [input-file …]</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>To analyze a binary log file using standard tools, you must first convert
+it to ASCII. <strong class="program">traffic_logcat</strong> does exactly that.</p>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-o">
+<code class="descname">-o</code><code class="descclassname"> PATH</code><code class="descclassname">, </code><code class="descname">--output_file</code><code class="descclassname"> PATH</code><a class="headerlink" href="#cmdoption-traffic-logcat-o" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Specifies where the command output is directed.</p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-a">
+<code class="descname">-a</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--auto_filename</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Automatically generates the output filename based on the input
+filename. If the input is from stdin, then this option is ignored.
+For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_logcat</span> <span class="o">-</span><span class="n">a</span> <span class="n">squid</span><span class="o">-</span><span class="mf">1.</span><span class="n">blog</span> <span class="n">squid</span><span class="o">-</span><span class="mf">2.</span><span class="n">blog</span> <span class="n">squid</span><span class="o">-</span><span class="mf">3.</span><span class="n">blog</span>
+</pre></div>
+</div>
+<p>generates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">squid</span><span class="o">-</span><span class="mf">1.</span><span class="n">log</span> <span class="n">squid</span><span class="o">-</span><span class="mf">2.</span><span class="n">log</span> <span class="n">squid</span><span class="o">-</span><span class="mf">3.</span><span class="n">log</span>
+</pre></div>
+</div>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-f">
+<code class="descname">-f</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--follow</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-f" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Follows the file, like <em class="manpage">tail(1)</em> <code class="docutils literal notranslate"><span class="pre">-f</span></code></p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-c">
+<code class="descname">-C</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--clf</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Attempts to transform the input to Netscape Common format, if possible.</p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-e">
+<code class="descname">-E</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--elf</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-e" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Attempts to transform the input to Netscape Extended format, if possible.</p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-s">
+<code class="descname">-S</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--squid</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-s" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Attempts to transform the input to Squid format, if possible.</p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-2">
+<code class="descname">-2</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--elf2</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Attempt to transform the input to Netscape Extended-2 format, if possible.</p>
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-t">
+<code class="descname">-T</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--debug_tags</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-t" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-w">
+<code class="descname">-w</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--overwrite_output</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-w" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-h">
+<code class="descname">-h</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--help</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print usage information and exit.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-traffic-logcat-v">
+<code class="descname">-V</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-logcat-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print version information and exit.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use only one of the following options at any given time: <code class="docutils literal notranslate"><span class="pre">-S</span></code>, <code class="docutils literal notranslate"><span class="pre">-C</span></code>, <code class="docutils literal notranslate"><span class="pre">-E</span></code>, or <code class="docutils literal notranslate"><span class="pre">-2</span></code>.</p>
+</div>
+<p>If no input files are specified, then <strong class="program">traffic_logcat</strong> reads from the
+standard input (<code class="docutils literal notranslate"><span class="pre">stdin</span></code>). If you do not specify an output file, then
+<strong class="program">traffic_logcat</strong> writes to the standard output (<code class="docutils literal notranslate"><span class="pre">stdout</span></code>).</p>
+<p>For example, to convert a binary log file to an ASCII file, you can use
+the <strong class="program">traffic_logcat</strong> command with either of the following options
+below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_logcat</span> <span class="n">binary_file</span> <span class="o">&gt;</span> <span class="n">ascii_file</span>
+<span class="n">traffic_logcat</span> <span class="o">-</span><span class="n">o</span> <span class="n">ascii_file</span> <span class="n">binary_file</span>
+</pre></div>
+</div>
+<p>The binary log file is not modified by this command.</p>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">tail(1)</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="traffic_logstats.en.html" class="btn btn-neutral float-right" title="traffic_logstats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="traffic_layout.en.html" class="btn btn-neutral float-left" title="traffic_layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

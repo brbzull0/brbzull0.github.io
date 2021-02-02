@@ -1,0 +1,636 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>logging.yaml &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="parent.config" href="parent.config.en.html" />
+    <link rel="prev" title="ip_allow.yaml" href="ip_allow.yaml.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Configuration Files</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cache.config.en.html">cache.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hosting.config.en.html">hosting.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_allow.yaml.en.html">ip_allow.yaml</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">logging.yaml</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#log-definitions">Log Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="parent.config.en.html">parent.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin.config.en.html">plugin.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="records.config.en.html">records.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remap.config.en.html">remap.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="splitdns.config.en.html">splitdns.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ssl_multicert.config.en.html">ssl_multicert.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sni.yaml.en.html">sni.yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="storage.config.en.html">storage.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="strategies.yaml.en.html">strategies.yaml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Configuration Files</a> &raquo;</li>
+        
+      <li>logging.yaml</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/files/logging.yaml.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="logging-yaml">
+<span id="std:configfile-logging.yaml"></span><h1>logging.yaml<a class="headerlink" href="#logging-yaml" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> file defines all custom log file formats, filters,
+and processing options.</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">This configuration file replaces the XML based logs_xml.config, as well as
+the Lua based logging.config from past Traffic Server releases. If you are upgrading
+from a Traffic Server release which used either the XML or the Lua configuration file
+format, and you have created custom log formats, filters, and destinations,
+you will need to update those settings to this format.</p>
+</div>
+<div class="section" id="log-definitions">
+<span id="admin-custom-logs"></span><h2>Log Definitions<a class="headerlink" href="#log-definitions" title="Permalink to this headline">¶</a></h2>
+<p>Custom logs are configured by the combination of three key elements: a format,
+an optional filter, and a log destination.</p>
+<p>A <a class="reference internal" href="#admin-custom-logs-formats"><span class="std std-ref">format</span></a> defines how log lines will appear
+(as well as whether the logs using the format will be event logs or summary
+logs).</p>
+<p>A <a class="reference internal" href="#admin-custom-logs-filters"><span class="std std-ref">filter</span></a> defines what events do, and what
+events don’t, make it into the logs employing the filter.</p>
+<p>A <a class="reference internal" href="#admin-custom-logs-logs"><span class="std std-ref">log</span></a> defines where the record of events or
+summaries ends up.</p>
+<div class="section" id="formats">
+<span id="admin-custom-logs-formats"></span><h3>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h3>
+<p>Custom logging formats may be provided directly to a log definition, or they
+may be defined as a reusable variable in your <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> for ease
+of reference, particularly when you may have more than one log using the same
+format. Which approach you use is entirely up to you, though it’s strongly
+recommended to create an explicit format object if you intend to reuse the same
+format for multiple log files.</p>
+<p>Custom formats are defined by choosing a <code class="docutils literal notranslate"><span class="pre">name</span></code> to identify the given logging
+format, and a <code class="docutils literal notranslate"><span class="pre">format</span></code> string, which defines the output format string for
+every event. An optional <code class="docutils literal notranslate"><span class="pre">interval</span></code> attribute can be specified to define the
+aggregation interval for summary logs.</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A one-line-per-event format that just prints event timestamps.</span>
+<span class="n">formats</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">myformat</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;cqtq&gt;&#39;</span>
+
+<span class="c1"># An aggregation/summary format that prints the last event timestamp from</span>
+<span class="c1"># the interval along with the total count of events in the same interval.</span>
+<span class="c1"># (Doing so every 30 seconds.)</span>
+<span class="n">formats</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">mysummaryformat</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;LAST(cqtq)&gt; %&lt;COUNT(*)&gt;&#39;</span>
+  <span class="n">interval</span><span class="p">:</span> <span class="mi">30</span>
+</pre></div>
+</div>
+<p>You may define as many and as varied a collection of format objects as you
+desire.</p>
+<div class="section" id="format-specification">
+<h4>Format Specification<a class="headerlink" href="#format-specification" title="Permalink to this headline">¶</a></h4>
+<p>The format specification provided as the required <code class="docutils literal notranslate"><span class="pre">format</span></code> attribute of the
+objects listed in <code class="docutils literal notranslate"><span class="pre">formats</span></code> is a simple string, containing whatever mixture
+of logging field variables and literal characters meet your needs. Logging
+fields are discussed in great detail in the <a class="reference internal" href="../logging/formatting.en.html#admin-logging-fields"><span class="std std-ref">Log Fields</span></a>
+section.</p>
+<p>Flexible enough to not only emulate the logging formats of most other proxy and
+HTTP servers, but also to provide even finer detail than many of them, the
+logging fields are very easy to use. Within the format string, logging fields
+are indicated by enclosing their name within angle brackets (<code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>),
+preceded by a percent symbol (<code class="docutils literal notranslate"><span class="pre">%</span></code>). For example, returning to the altogether
+too simple format shown earlier, the following format string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;%&lt;cqtq&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Defines a format in which nothing but the value of the logging field <a class="reference internal" href="../logging/formatting.en.html#cqtq"><span class="std std-ref">cqtq</span></a> is interpolated for each event’s entry in the log. We could include
+some literal characters in the log output by updating the format specification
+as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;Event received at %&lt;cqtq&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Because the string “Event received at ” (including the trailing space) is just
+a bunch of characters, not enclosed in <code class="docutils literal notranslate"><span class="pre">%&lt;...&gt;</span></code>, it is repeated verbatim in
+the logging output.</p>
+<p>Multiple logging fields may of course be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;%&lt;cqtq&gt; %&lt;chi&gt; %&lt;cqhm&gt; %&lt;cqtx&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Each logging field is separately enclosed in its own percent-brace set.</p>
+<p>There are a small number of logging fields which extend this simple format,
+primarily those dealing with request and response headers. Instead of defining
+a separate logging field name for every single possible HTTP header (an
+impossible task, given that arbitrary vendor/application headers may be present
+in both requests and responses), there are instead single logging fields for
+each of the major stages of an event lifecycle that permit access to named
+headers, such as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;%&lt;{User-Agent}cqh&gt;&#39;</span>
+</pre></div>
+</div>
+<p>Which emits to the log the value of the client request’s <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> HTTP
+header. Other stages of the event lifecycle have similar logging fields:
+<code class="docutils literal notranslate"><span class="pre">pqh</span></code> (proxy requests), <code class="docutils literal notranslate"><span class="pre">ssh</span></code> (origin server responses), and <code class="docutils literal notranslate"><span class="pre">psh</span></code>
+(proxy responses).</p>
+<p>You will find a complete listing of the available fields in
+<a class="reference internal" href="../logging/formatting.en.html#admin-logging-fields"><span class="std std-ref">Log Fields</span></a>.</p>
+</div>
+<div class="section" id="aggregation-interval">
+<h4>Aggregation Interval<a class="headerlink" href="#aggregation-interval" title="Permalink to this headline">¶</a></h4>
+<p>Every format may be given an optional <code class="docutils literal notranslate"><span class="pre">interval</span></code> value, specified as the
+number of seconds over which events destined for a log using the format are
+aggregated and summarized. Logs which use formats containing an aggregation
+interval do not behave like regular logs, with a single line for every event.
+Instead, they emit a single line only every <em>interval</em>-seconds.</p>
+<p>These types of logs are described in more detail in
+<a class="reference internal" href="../logging/understanding.en.html#admin-logging-type-summary"><span class="std std-ref">Summary Logs</span></a>.</p>
+<p>Formats have no interval by default, and will generate event-based logs unless
+given one.</p>
+</div>
+</div>
+<div class="section" id="filters">
+<span id="admin-custom-logs-filters"></span><h3>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h3>
+<p>Trafficserver supports different type of filters : <code class="docutils literal notranslate"><span class="pre">accept</span></code>, <code class="docutils literal notranslate"><span class="pre">reject</span></code> and <code class="docutils literal notranslate"><span class="pre">wipe_field_value</span></code>.
+They may be used, optionally, to accept, reject logging or mask query param values for matching events.</p>
+<p>Filter objects are created by assigning them a <code class="docutils literal notranslate"><span class="pre">name</span></code> to be used later to
+refer to the filter, as well as an <code class="docutils literal notranslate"><span class="pre">action</span></code> (either <code class="docutils literal notranslate"><span class="pre">accept</span></code>, <code class="docutils literal notranslate"><span class="pre">reject</span></code> or
+<code class="docutils literal notranslate"><span class="pre">wipe_field_value</span></code>). <code class="docutils literal notranslate"><span class="pre">Accept</span></code>, <code class="docutils literal notranslate"><span class="pre">reject</span></code> or <code class="docutils literal notranslate"><span class="pre">wipe_field_value</span></code> filters require
+a <code class="docutils literal notranslate"><span class="pre">condition</span></code> against which to match all events. The <code class="docutils literal notranslate"><span class="pre">condition</span></code> fields must
+be in the following format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">field</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>For example, the following snippet defines a filter that matches all POST
+requests:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">postfilter</span>
+  <span class="n">action</span><span class="p">:</span> <span class="n">accept</span>
+  <span class="n">condition</span><span class="p">:</span> <span class="n">cqhm</span> <span class="n">MATCH</span> <span class="n">POST</span>
+</pre></div>
+</div>
+<div class="section" id="filter-fields">
+<h4>Filter Fields<a class="headerlink" href="#filter-fields" title="Permalink to this headline">¶</a></h4>
+<p>The log fields have already been discussed in the <a class="reference internal" href="#formats">Formats</a> section above. For
+a reference to the available log field names, see <a class="reference internal" href="../logging/formatting.en.html#admin-logging-fields"><span class="std std-ref">Log Fields</span></a>.
+Unlike with the log format specification, you do not wrap the log field names
+in any additional markup.</p>
+</div>
+<div class="section" id="filter-operators">
+<h4>Filter Operators<a class="headerlink" href="#filter-operators" title="Permalink to this headline">¶</a></h4>
+<p>The operators describe how to perform the matching in the filter rule, and may
+be any one of the following:</p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">MATCH</span></code></dt>
+<dd>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
+Case-sensitive.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_MATCH</span></code></dt>
+<dd>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
+Case-insensitive.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONTAIN</span></code></dt>
+<dd>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
+substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-sensitive.</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_CONTAIN</span></code></dt>
+<dd>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
+substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-insensitive.</dd>
+</dl>
+</div>
+<div class="section" id="filter-values">
+<h4>Filter Values<a class="headerlink" href="#filter-values" title="Permalink to this headline">¶</a></h4>
+<p>The final component of a filter string specifies the value against which the
+name field will be compared.</p>
+<p>For integer matches, all of the operators are effectively equivalent and require
+the field to be equal to the given integer. If you wish to match multiple
+integers, provide a comma separated list like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">field</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span> <span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span>
+</pre></div>
+</div>
+<p>String matches work similarly to integer matches. Multiple matches are also
+supported via a comma separated list. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">field</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span> <span class="n">e1host</span><span class="p">,</span><span class="n">host2</span><span class="p">,</span><span class="n">hostz</span>
+</pre></div>
+</div>
+<p>For IP addresses, ranges may be specified by separating the first address and
+the last of the range with a single <code class="docutils literal notranslate"><span class="pre">-</span></code> dash, as <code class="docutils literal notranslate"><span class="pre">10.0.0.0-10.255.255.255</span></code>
+which gives the ranges for the 10/8 network. Other network notations are not
+supported at this time.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It may be tempting to attach multiple Filters to a log object
+reject multiple log fields (in lieu of providing a single comma separated list
+to a single Filter). Avoid this temptation and use a comma separated list of reject objects
+instead. Remember that you may not have multiple accept filter objects.
+Attaching multiple filters does the opposite of what you’d
+expect. If, for example, we had 2 accept log filters, each disjoint from the other,
+nothing will ever get logged on the given log object.</p>
+</div>
+</div>
+</div>
+<div class="section" id="logs">
+<span id="admin-custom-logs-logs"></span><h3>Logs<a class="headerlink" href="#logs" title="Permalink to this headline">¶</a></h3>
+<p>Up to this point, we’ve only described what events should be logged and what
+they should look like in the logging output. Now we define where those logs
+should be sent.</p>
+<p>Three options currently exist for the type of logging output: <code class="docutils literal notranslate"><span class="pre">ascii</span></code>,
+<code class="docutils literal notranslate"><span class="pre">binary</span></code>, and <code class="docutils literal notranslate"><span class="pre">ascii_pipe</span></code>.  Which type of logging output you choose
+depends largely on how you intend to process the logs with other tools, and a
+discussion of the merits of each is covered elsewhere, in
+<a class="reference internal" href="../logging/destinations.en.html#admin-logging-ascii-v-binary"><span class="std std-ref">Deciding Between ASCII or Binary Output</span></a>.</p>
+<p>The following subsections cover the attributes you should specify when creating
+your logging object. Only <code class="docutils literal notranslate"><span class="pre">filename</span></code> and <code class="docutils literal notranslate"><span class="pre">format</span></code> are required.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="13%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>filename</td>
+<td>string</td>
+<td>The name of the logfile relative to the default
+logging directory (set with
+<a class="reference internal" href="records.config.en.html#proxy-config-log-logfile-dir" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logfile_dir</span></code></a>).</td>
+</tr>
+<tr class="row-odd"><td>format</td>
+<td>string</td>
+<td>a string with a valid named format specification.</td>
+</tr>
+<tr class="row-even"><td>header</td>
+<td>string</td>
+<td>If present, emitted as the first line of each
+new log file.</td>
+</tr>
+<tr class="row-odd"><td>rolling_enabled</td>
+<td><em>see below</em></td>
+<td>Determines the type of log rolling to use (or
+whether to disable rolling). Overrides
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td>rolling_interval_sec</td>
+<td>number</td>
+<td>Interval in seconds between log file rolling.
+Overrides
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-interval-sec" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_interval_sec</span></code></a>.</td>
+</tr>
+<tr class="row-odd"><td>rolling_offset_hr</td>
+<td>number</td>
+<td>Specifies an hour (from 0 to 23) at which log
+rolling is guaranteed to align. Only has an
+effect if RollingIntervalSec is set to greater
+than one hour. Overrides
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-offset-hr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_offset_hr</span></code></a>.</td>
+</tr>
+<tr class="row-even"><td>rolling_size_mb</td>
+<td>number</td>
+<td>Size, in megabytes, at which log files are
+rolled.</td>
+</tr>
+<tr class="row-odd"><td>rolling_min_count</td>
+<td>number</td>
+<td>Specifies the minimum number of rolled logs to
+keep.</td>
+</tr>
+<tr class="row-even"><td>filters</td>
+<td>array of
+filters</td>
+<td>The optional list of filter objects which
+restrict the individual events logged. The array
+may only contain one accept filter.</td>
+</tr>
+</tbody>
+</table>
+<p>Enabling log rolling may be done globally in <a class="reference internal" href="records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, or on a
+per-log basis by passing appropriate values for the <code class="docutils literal notranslate"><span class="pre">rolling_enabled</span></code> key. The
+latter method may also be used to effect different rolling settings for
+individual logs. The numeric values that may be passed are the same as used by
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>. For convenience and readability,
+the following predefined variables may also be used in <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>:</p>
+<dl class="docutils">
+<dt>log.roll.none</dt>
+<dd>Disable log rolling.</dd>
+<dt>log.roll.time</dt>
+<dd>Roll at a certain time frequency, specified by RollingIntervalSec and
+RollingOffsetHr.</dd>
+<dt>log.roll.size</dt>
+<dd>Roll when the size exceeds RollingSizeMb.</dd>
+<dt>log.roll.both</dt>
+<dd>Roll when either the specified rolling time is reached or the specified
+file size is reached.</dd>
+<dt>log.roll.any</dt>
+<dd>Roll the log file when the specified rolling time is reached if the size of
+the file equals or exceeds the specified size.</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following is an example of a format that collects information using three
+common fields:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">formats</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">minimalfmt</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;chi&gt; , %&lt;cqu&gt; , %&lt;pssc&gt;&#39;</span>
+</pre></div>
+</div>
+<p>The following is an example of a format that uses aggregate operators to
+produce a summary log:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">formats</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">summaryfmt</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;LAST(cqts)&gt;:%&lt;COUNT(*)&gt;:%&lt;SUM(psql)&gt;&#39;</span>
+  <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span>
+</pre></div>
+</div>
+<p>The following is an example of a filter that will cause only REFRESH_HIT events
+to be logged:</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">refreshhitfilter</span>
+  <span class="n">action</span><span class="p">:</span> <span class="n">accept</span>
+  <span class="n">condition</span><span class="p">:</span> <span class="n">pssc</span> <span class="n">MATCH</span> <span class="n">REFRESH_HIT</span>
+</pre></div>
+</div>
+<p>The following is an example of a log specification that creates a local log
+file for the minimal format defined earlier. The log filename will be
+<code class="docutils literal notranslate"><span class="pre">minimal.log</span></code> because we select the ASCII logging format.</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logs</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">mode</span><span class="p">:</span> <span class="n">ascii</span>
+  <span class="n">filename</span><span class="p">:</span> <span class="n">minimal</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="n">minimalfmt</span>
+</pre></div>
+</div>
+<p>The following is an example of a log specification that creates a local log
+file using the summary format from earlier, and only includes events that
+matched the REFRESH_HIT filter we created.</p>
+<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logs</span><span class="p">:</span>
+<span class="o">-</span> <span class="n">mode</span><span class="p">:</span> <span class="n">ascii</span>
+  <span class="n">filename</span><span class="p">:</span> <span class="n">refreshhit_summary</span>
+  <span class="nb">format</span><span class="p">:</span> <span class="n">summaryfmt</span>
+  <span class="n">filters</span><span class="p">:</span>
+  <span class="o">-</span> <span class="n">refreshhitfilter</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="parent.config.en.html" class="btn btn-neutral float-right" title="parent.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ip_allow.yaml.en.html" class="btn btn-neutral float-left" title="ip_allow.yaml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

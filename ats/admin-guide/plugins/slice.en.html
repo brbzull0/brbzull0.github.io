@@ -1,0 +1,594 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Slice Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="SSL Headers Plugin" href="sslheaders.en.html" />
+    <link rel="prev" title="Signed URL Plugin" href="url_sig.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Slice Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/slice.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="slice-plugin">
+<span id="admin-plugins-slice"></span><h1>Slice Plugin<a class="headerlink" href="#slice-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin takes client requests and breaks them up into
+successive aligned block requests.  This supports both
+whole asset and single range requests.</p>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>This slice plugin, along with the <cite>cache_range_requests</cite>
+plugin allows the following:</p>
+<ul class="simple">
+<li>Fulfill arbitrary range requests by fetching a minimum
+number of cacheable aligned blocks to fulfill the request.</li>
+<li>Breaks up very large assets into much smaller cache
+blocks that can be spread across multiple storage
+devices and within cache groups.</li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is intended for use as a remap plugin and is
+configured in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
+<p>Or preferably per remap rule in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> \
+    <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>In this case, the plugin will use the default behaviour:</p>
+<ul class="simple">
+<li>Fulfill whole file or range requests by requesting cacheable
+block aligned ranges from the parent and assemble them
+into client responses, either 200 or 206 depending on the
+client request.</li>
+<li>Default block size is 1mb (1048576 bytes).</li>
+<li>This plugin depends on the cache_range_requests plugin
+to perform actual parent fetching and block caching
+and If-* conditional header evaluations.</li>
+</ul>
+<div class="section" id="plugin-options">
+<h3>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h3>
+<p>The slice plugin supports the following options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">blockbytes</span><span class="o">=&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Default</span> <span class="ow">is</span> <span class="mi">1</span><span class="n">m</span> <span class="ow">or</span> <span class="mi">1048576</span> <span class="nb">bytes</span>
+    <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">short</span><span class="o">.</span>
+    <span class="n">Suffix</span> <span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">g</span> <span class="n">supported</span>
+    <span class="n">Limited</span> <span class="n">to</span> <span class="mi">32</span><span class="n">k</span> <span class="ow">and</span> <span class="mi">32</span><span class="n">m</span> <span class="n">inclusive</span><span class="o">.</span>
+
+<span class="o">--</span><span class="n">blockbytes</span><span class="o">-</span><span class="n">test</span><span class="o">=&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Suffix</span> <span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">g</span> <span class="n">supported</span>
+    <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">short</span><span class="o">.</span>
+    <span class="n">Limited</span> <span class="n">to</span> <span class="nb">any</span> <span class="n">positive</span> <span class="n">number</span><span class="o">.</span>
+    <span class="n">Ignored</span> <span class="k">if</span> <span class="o">--</span><span class="n">blockbytes</span> <span class="n">provided</span><span class="o">.</span>
+
+<span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">errorlog</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Disable</span> <span class="n">writing</span> <span class="n">block</span> <span class="n">stitch</span> <span class="n">errors</span> <span class="n">to</span> <span class="n">the</span> <span class="n">error</span> <span class="n">log</span><span class="o">.</span>
+    <span class="o">-</span><span class="n">d</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">regex</span><span class="o">=&lt;</span><span class="n">regex</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">If</span> <span class="n">provided</span><span class="p">,</span> <span class="n">only</span> <span class="nb">slice</span> <span class="n">what</span> <span class="n">matches</span><span class="o">.</span>
+    <span class="n">If</span> <span class="ow">not</span> <span class="n">provided</span> <span class="n">will</span> <span class="n">always</span> <span class="nb">slice</span>
+    <span class="n">Cannot</span> <span class="n">be</span> <span class="n">used</span> <span class="k">with</span> <span class="o">--</span><span class="n">include</span><span class="o">-</span><span class="n">regex</span>
+    <span class="o">-</span><span class="n">e</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">include</span><span class="o">-</span><span class="n">regex</span><span class="o">=&lt;</span><span class="n">regex</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">If</span> <span class="n">provided</span><span class="p">,</span> <span class="n">only</span> <span class="nb">slice</span> <span class="n">what</span> <span class="n">matches</span><span class="o">.</span>
+    <span class="n">If</span> <span class="ow">not</span> <span class="n">provided</span> <span class="n">will</span> <span class="n">always</span> <span class="nb">slice</span>
+    <span class="n">Cannot</span> <span class="n">be</span> <span class="n">used</span> <span class="k">with</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">regex</span>
+    <span class="o">-</span><span class="n">i</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">pace</span><span class="o">-</span><span class="n">errorlog</span><span class="o">=&lt;</span><span class="n">seconds</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Limit</span> <span class="n">stitching</span> <span class="n">error</span> <span class="n">logs</span> <span class="n">to</span> <span class="n">every</span> <span class="s1">&#39;n&#39;</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="o">-</span><span class="n">p</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">relative</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Self</span> <span class="n">healing</span> <span class="n">mode</span> <span class="n">typically</span> <span class="n">uses</span> <span class="nb">slice</span> <span class="mi">0</span> <span class="k">as</span> <span class="n">the</span> <span class="n">reference</span> <span class="nb">slice</span>
+    <span class="k">for</span> <span class="n">every</span> <span class="n">request</span><span class="o">.</span>  <span class="n">This</span> <span class="ow">is</span> <span class="n">very</span> <span class="n">safe</span> <span class="n">but</span> <span class="n">also</span> <span class="n">increases</span> <span class="n">plugin</span>
+    <span class="n">time</span> <span class="ow">and</span> <span class="n">latency</span> <span class="k">as</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">slice</span> <span class="ow">is</span> <span class="n">always</span> <span class="n">fully</span> <span class="n">processed</span>
+    <span class="n">whether</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">the</span> <span class="n">original</span> <span class="n">requests</span> <span class="n">needs</span> <span class="nb">any</span> <span class="n">data</span> <span class="kn">from</span> <span class="nn">slice</span> <span class="mf">0.</span>
+    <span class="n">This</span> <span class="n">option</span> <span class="n">uses</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">slice</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">request</span> <span class="k">as</span> <span class="n">reference</span>
+    <span class="n">which</span> <span class="n">has</span> <span class="n">better</span> <span class="n">performance</span><span class="o">.</span>  <span class="n">A</span> <span class="n">downside</span> <span class="n">of</span> <span class="n">this</span> <span class="n">mode</span> <span class="ow">is</span> <span class="n">that</span>
+    <span class="bp">self</span> <span class="n">healing</span> <span class="n">won</span><span class="s1">&#39;t happen if blocks in a request agree.</span>
+    <span class="n">Normally</span> <span class="n">leave</span> <span class="n">this</span> <span class="n">off</span><span class="o">.</span>
+    <span class="o">-</span><span class="n">l</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">remap</span><span class="o">-</span><span class="n">host</span><span class="o">=&lt;</span><span class="n">loopback</span> <span class="n">hostname</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Uses</span> <span class="n">effective</span> <span class="n">url</span> <span class="k">with</span> <span class="n">given</span> <span class="n">hostname</span> <span class="k">for</span> <span class="n">remapping</span><span class="o">.</span>
+    <span class="n">Requires</span> <span class="n">setting</span> <span class="n">up</span> <span class="n">an</span> <span class="n">intermediate</span> <span class="n">loopback</span> <span class="n">remap</span> <span class="n">rule</span><span class="o">.</span>
+    <span class="o">-</span><span class="n">r</span> <span class="k">for</span> <span class="n">short</span>
+
+<span class="o">--</span><span class="n">throttle</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+    <span class="n">Under</span> <span class="n">certain</span> <span class="n">circumstances</span> <span class="n">where</span> <span class="n">many</span> <span class="n">contiguous</span> <span class="n">slices</span> <span class="n">are</span> <span class="ow">in</span>
+    <span class="n">RAM</span> <span class="n">cache</span> <span class="n">ATS</span> <span class="n">will</span> <span class="n">aggressively</span> <span class="k">try</span> <span class="n">to</span> <span class="n">push</span> <span class="n">these</span> <span class="n">through</span> <span class="n">the</span>
+    <span class="nb">slice</span> <span class="n">plugin</span><span class="o">.</span>  <span class="n">The</span> <span class="n">downside</span> <span class="n">of</span> <span class="n">this</span> <span class="ow">is</span> <span class="n">that</span> <span class="nb">all</span> <span class="n">these</span> <span class="n">contiguous</span>
+    <span class="n">slices</span> <span class="n">end</span> <span class="n">up</span> <span class="n">being</span> <span class="n">marked</span> <span class="k">as</span> <span class="n">fresh</span> <span class="n">even</span> <span class="k">if</span> <span class="n">the</span> <span class="n">downstream</span>
+    <span class="n">client</span> <span class="n">aborts</span><span class="o">.</span>  <span class="n">This</span> <span class="n">option</span> <span class="n">keeps</span> <span class="n">track</span> <span class="n">of</span> <span class="n">how</span> <span class="n">much</span> <span class="n">data</span> <span class="n">the</span>
+    <span class="n">client</span> <span class="n">has</span> <span class="n">already</span> <span class="n">passed</span> <span class="n">down</span> <span class="ow">and</span> <span class="n">slows</span> <span class="n">down</span> <span class="n">issuing</span> <span class="n">new</span>
+    <span class="nb">slice</span> <span class="n">requests</span><span class="o">.</span>
+    <span class="n">Normally</span> <span class="n">leave</span> <span class="n">this</span> <span class="n">off</span><span class="o">.</span>
+    <span class="o">-</span><span class="n">o</span> <span class="k">for</span> <span class="n">short</span>
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">blockbytes</span><span class="o">=</span><span class="mi">1000000</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>Or alternatively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=-</span><span class="n">b</span> <span class="nd">@pparam</span><span class="o">=</span><span class="mi">1000000</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>Byte suffix examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">blockbytes</span><span class="o">=</span><span class="mi">5</span><span class="n">m</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">b</span> <span class="mi">512</span><span class="n">k</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">blockbytes</span><span class="o">=</span><span class="mi">32</span><span class="n">m</span>
+</pre></div>
+</div>
+<p>For testing and extreme purposes the parameter <code class="docutils literal notranslate"><span class="pre">blockbytes-test</span></code> may
+be used instead which is unchecked:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">blockbytes</span><span class="o">-</span><span class="n">test</span><span class="o">=</span><span class="mi">1</span><span class="n">G</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">t</span> <span class="mi">13</span>
+</pre></div>
+</div>
+<p>Because the slice plugin is susceptible to errors during block stitching
+extra logs related to stitching are written to <code class="docutils literal notranslate"><span class="pre">diags.log</span></code>.  Worst case
+an error log entry could be generated for every transaction.  The
+following options are provided to help with log overrun:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">pace</span><span class="o">-</span><span class="n">errorlog</span><span class="o">=</span><span class="mi">5</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">p</span> <span class="mi">1</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">errorlog</span>
+</pre></div>
+</div>
+<p>After modifying <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, restart or reload traffic server
+(sudo traffic_ctl config reload) or (sudo traffic_ctl server restart)
+to activate the new configuration values.</p>
+<p>Don’t slice txt files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span>\\<span class="o">.</span><span class="n">txt</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">e</span> \\<span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Slice only mp4 files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">include</span><span class="o">-</span><span class="n">regex</span><span class="o">=</span>\\<span class="o">.</span><span class="n">mp4</span>
+<span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">i</span> \\<span class="o">.</span><span class="n">mp4</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="debug-options">
+<h3>Debug Options<a class="headerlink" href="#debug-options" title="Permalink to this headline">¶</a></h3>
+<p>While the current slice plugin is able to detect block consistency
+errors during the block stitching process, it can only abort the
+client connection.  A CDN can only “fix” these by issuing an appropriate
+content revalidation.</p>
+<p>Under normal logging these slice block errors tend to show up as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pscl</span> <span class="n">value</span> <span class="mi">0</span>
+<span class="n">crc</span> <span class="n">value</span> <span class="n">ERR_READ_ERROR</span>
+</pre></div>
+</div>
+<p>By default more detailed stitching errors are written to <code class="docutils literal notranslate"><span class="pre">diags.log</span></code>.</p>
+<div class="topic">
+<p class="topic-title first">Example</p>
+<p>ERROR: [slice.cc: 288] logSliceError(): 1555705573.639 reason=”Non 206 internal block response” uri=”<a class="reference external" href="http://ats_ep/someasset.mp4">http://ats_ep/someasset.mp4</a>” uas=”curl” req_range=”bytes=1000000-” norm_range=”bytes 1000000-52428799/52428800” etag_exp=”%221603934496%22” lm_exp=”Fri, 19 Apr 2019 18:53:20 GMT” blk_range=”21000000-21999999” status_got=”206” cr_got=”” etag_got=”%221603934496%22” lm_got=”” cc=”no-store” via=””</p>
+<p>ERROR: [server.cc: 288] logSliceError(): 1572370000.219 reason=”Mismatch block Etag” uri=”<a class="reference external" href="http://ats_ep/someasset.mp4">http://ats_ep/someasset.mp4</a>” uas=”curl” req_range=”bytes=1092779033-1096299354” norm_range=”bytes 1092779033-1096299354/2147483648” etag_exp=”%223719843648%22” lm_exp=”Tue, 29 Oct 2019 14:40:00 GMT” blk_range=”1095000000-1095999999” status_got=”206” cr_got=”bytes 1095000000-1095999999/2147483648” etag_got=”%223719853648%22” lm_got=”Tue, 29 Oct 2019 17:26:40 GMT” cc=”max-age=10000” via=””</p>
+</div>
+<p>Whether or how often these detailed log entries are written are
+configurable plugin options.</p>
+</div>
+</div>
+<div class="section" id="implementation-notes">
+<h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>This slice plugin is a stop gap plugin for handling special cases
+involving very large assets that may be range requested. Hopefully
+the slice plugin is deprecated in the future when partial object
+caching is finally implemented.</p>
+<p>Slice <em>ONLY</em> handles slicing up requests into blocks, it delegates
+actual caching and fetching to the cache_range_requests.so plugin.</p>
+<div class="section" id="plugin-function">
+<h3>Plugin Function<a class="headerlink" href="#plugin-function" title="Permalink to this headline">¶</a></h3>
+<p>Below is a quick functional outline of how a request is served
+by a remap rule containing the Slice plugin with cache_range_requests:</p>
+<p>For each client request that comes in all remap plugins are run up
+until the slice plugin is hit.  If the slice plugin <em>can</em> be run (ie:
+GET request) it will handle the request and STOP any further plugins
+from executing.</p>
+<p>At this point the request is sliced into 1 or more blocks by
+adding in range request headers (“Range: bytes=”).  A special
+header X-Slicer-Info header is added and the pristine URL is
+restored.</p>
+<p>For each of these blocks separate sequential TSHttpConnect(s) are
+made back into the front end of ATS.  By default of the remap plugins
+are rerun.  Slice skips the remap due to presence of the X-Slicer-Info
+header and allows cache_range_requests.so to serve the slice block back
+to Slice either via cache OR parent request.</p>
+<p>Slice assembles a header based on the very first slice block response
+and sends it to the client.  If necessary it then skips over bytes in the
+first block and starts sending byte content, examining each block header
+and sends its bytes to the client until the client request is satisfied.</p>
+<p>Any extra bytes at the end of the last block are consumed by the the
+Slice plugin to allow cache_range_requests to finish the block fetch to
+ensure the block is cached.</p>
+</div>
+<div class="section" id="self-healing">
+<h3>Self Healing<a class="headerlink" href="#self-healing" title="Permalink to this headline">¶</a></h3>
+<p>The slice plugin uses the very first slice as a reference slice which
+uses content-length and last-modified and/or etags to ensure assembled
+blocks come from the same asset.  In the case where a slice from a parent
+is fetched which indicates that the asset has changed, the slice plugin
+will attempt to self heal the asset.  The <cite>cache_range_requests</cite> plugin
+must be configured with the <cite>–consider-ims</cite> parameter in order for
+this to work.</p>
+<p>Example <cite>remap.config</cite> configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="nb">slice</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">remap</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">cache_range_requests</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cache_range_requests</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">consider</span><span class="o">-</span><span class="n">ims</span>
+</pre></div>
+</div>
+<p>When a request is served, the slice plugin uses reference slice 0 to
+build a response to the client.  When subsequent slices are fetched they
+are checked against this reference slice.  If a mismatch occurs an IMS
+request for the offending slice is made through the <cite>cache_range_requests</cite>
+plugin using an X-Crr-Ims header.  If the refetched slice still mismatches
+then the client connection is aborted a crr IMS request is made for
+the reference slice in an attempt to refetch it.</p>
+<p>Optionally (but not recommended) the plugin may be configured to use
+the first slice in the request as the reference slice.  This option
+is faster since it does not visit any slices outside those needed to
+fulfill a request.  However this may still cause problems if the
+requested range was calculated from a newer version of the asset.</p>
+</div>
+</div>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<p>This plugin assumes that the content requested is cacheable.</p>
+<p>Any first block server response that is not a 206 is passed directly
+down to the client. Any 200 responses are passed back through to
+the client.</p>
+<p>Only the first server response block is used to evaluate any “If-”
+conditional headers.  Subsequent server slice block requests
+remove these headers.</p>
+<p>The only 416 response that this plugin handles itself is if the
+requested range is inside the last slice block but past the end of
+the asset contents.  Other 416 responses are handled by the parent.</p>
+<p>If a client aborts mid transaction the current slice block continues to
+be read from the server until it is complete to ensure that the block
+is cached.</p>
+<p>Slice <em>always</em> makes <code class="docutils literal notranslate"><span class="pre">blockbytes</span></code> sized requests which are handled
+by cache_range_requests.  The parent will trim those requests to
+account for the asset Content-Length so only the appropriate number
+of bytes are actually transferred and cached.</p>
+</div>
+<div class="section" id="effective-url-remap">
+<h2>Effective URL remap<a class="headerlink" href="#effective-url-remap" title="Permalink to this headline">¶</a></h2>
+<p>By default the plugin restores the Pristine Url which reuses the same
+remap rule for each slice block.  This is wasteful in that it reruns
+the previous remap rules, and those remap rules must be smart enough to
+check for the existence of any headers they may have created the first
+time they have were visited.</p>
+<p>To get around this the ‘–remap-host=&lt;host&gt;’ or ‘-r &lt;host&gt;’ option may
+be used.  This requires an intermediate loopback remap to be defined which
+handles each slice block request.</p>
+<p>This works well with any remap rules that use the url_sig or uri_signing
+plugins.  As the client remap rule is not caching any plugins that
+manipulate the cache key would need to go into the loopback to parent
+remap rule.</p>
+<p>NOTE: Requests NOT handled by the slice plugin (ie: HEAD requests) are
+handled as with a typical remap rule.  GET requests intercepted by the
+slice plugin are virtually reissued into ATS and are proxied through
+another remap rule which must contain the <code class="docutils literal notranslate"><span class="pre">cache_range_requests</span></code> plugin</p>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">remap</span><span class="o">-</span><span class="n">host</span><span class="o">=</span><span class="n">loopback</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">loopback</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>Alternatively:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=-</span><span class="n">r</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">loopback</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">loopback</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="current-limitations">
+<h2>Current Limitations<a class="headerlink" href="#current-limitations" title="Permalink to this headline">¶</a></h2>
+<p>Since the Slice plugin is written as an intercept handler it loses the
+ability to use normal state machine hooks and transaction states. This
+functionality is handled by using the <code class="docutils literal notranslate"><span class="pre">cache_range_requests</span></code> plugin
+to interact with ATS.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="sslheaders.en.html" class="btn btn-neutral float-right" title="SSL Headers Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="url_sig.en.html" class="btn btn-neutral float-left" title="Signed URL Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

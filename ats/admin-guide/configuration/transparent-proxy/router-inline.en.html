@@ -1,0 +1,360 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Inline on a Linux router &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="WCCP Configuration" href="wccp-configuration.en.html" />
+    <link rel="prev" title="Inline on a Linux Bridge" href="bridge.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Proxy Cache Configuration</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../session-protocol.en.html">Session Protocol</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../cache-basics.en.html">HTTP Proxy Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../redirecting-http-requests.en.html">Reverse Proxy and HTTP Redirects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../explicit-forward-proxying.en.html">Explicit Proxy Caching</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../transparent-proxy.en.html">Transparent Proxying</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="build.en.html">Building ATS for transparency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bridge.en.html">Inline on a Linux Bridge</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Inline on a Linux router</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wccp-configuration.en.html">WCCP Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="wccp-service-config.en.html">WCCP Service Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../transparent-forward-proxying.en.html">Forward Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hierarchical-caching.en.html">Hierarchical Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../proxy-protocol.en.html">Proxy Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Proxy Cache Configuration</a> &raquo;</li>
+        
+          <li><a href="../transparent-proxy.en.html">Transparent Proxying</a> &raquo;</li>
+        
+      <li>Inline on a Linux router</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/admin-guide/configuration/transparent-proxy/router-inline.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="inline-on-a-linux-router">
+<h1>Inline on a Linux router<a class="headerlink" href="#inline-on-a-linux-router" title="Permalink to this headline">¶</a></h1>
+<p>The routed set up presumes the set of clients are on distinct networks
+behind a single physical interface. For the purposes of this example
+will we presume</p>
+<ul class="simple">
+<li>The clients are on network 172.28.56.0/24</li>
+<li>The router connects the networks 172.28.56.0/24 and 192.168.1.0/24</li>
+<li>Interface <code class="docutils literal notranslate"><span class="pre">eth0</span></code> is on the network 192.168.1.0/24</li>
+<li>Interface <code class="docutils literal notranslate"><span class="pre">eth1</span></code> is on the network 172.28.56.0/24</li>
+<li>The router is already configured to route traffic correctly for the
+clients.</li>
+</ul>
+<p>In this example we will intercept port 80 (HTTP) traffic that traverses
+the router. The first step is to use <code class="docutils literal notranslate"><span class="pre">iptables</span></code> to handle IP packets
+appropriately.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># reflow client web traffic to TPROXY</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth1</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">-</span><span class="n">m</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">dport</span> <span class="mi">80</span> <span class="o">-</span><span class="n">j</span> <span class="n">TPROXY</span> \
+   <span class="o">--</span><span class="n">on</span><span class="o">-</span><span class="n">ip</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span> <span class="o">--</span><span class="n">on</span><span class="o">-</span><span class="n">port</span> <span class="mi">8080</span> <span class="o">--</span><span class="n">tproxy</span><span class="o">-</span><span class="n">mark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+<span class="c1"># Let locally directed traffic pass through.</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth0</span> <span class="o">--</span><span class="n">source</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span> <span class="o">-</span><span class="n">j</span> <span class="n">ACCEPT</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth0</span> <span class="o">--</span><span class="n">destination</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">24</span> <span class="o">-</span><span class="n">j</span> <span class="n">ACCEPT</span>
+<span class="c1"># Mark presumed return web traffic</span>
+<span class="n">iptables</span> <span class="o">-</span><span class="n">t</span> <span class="n">mangle</span> <span class="o">-</span><span class="n">A</span> <span class="n">PREROUTING</span> <span class="o">-</span><span class="n">i</span> <span class="n">eth0</span> <span class="o">-</span><span class="n">p</span> <span class="n">tcp</span> <span class="o">-</span><span class="n">m</span> <span class="n">tcp</span> <span class="o">--</span><span class="n">sport</span> <span class="mi">80</span> <span class="o">-</span><span class="n">j</span> <span class="n">MARK</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">mark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>
+</pre></div>
+</div>
+<p>We mark packets so that we can use policy routing on them. For inbound
+packets we use <code class="docutils literal notranslate"><span class="pre">TPROXY</span></code> to make it possible to accept packets sent to
+foreign IP addresses. For returning outbound packets there will be a
+socket open bound to the foreign address, we need only force it to be
+delivered locally. The value for <code class="docutils literal notranslate"><span class="pre">--on-ip</span></code> is 0 because the target
+port is listening and not bound to a specific address. The value for
+<code class="docutils literal notranslate"><span class="pre">--on-port</span></code> must match the Traffic Server server port. Otherwise its
+value is arbitrary. <code class="docutils literal notranslate"><span class="pre">--dport</span></code> and <code class="docutils literal notranslate"><span class="pre">--sport</span></code> specify the port from
+the point of view of the clients and origin servers. The middle two
+lines exempt local web traffic from being marked for Traffic Server –
+these rules can be tightened or loosened as needed. They server by
+matching traffic and exiting the <code class="docutils literal notranslate"><span class="pre">iptables</span></code> processing via <code class="docutils literal notranslate"><span class="pre">ACCEPT</span></code>
+before the last line is checked.</p>
+<p>Once the flows are marked we can force them to be delivered locally via
+the loopback interface via a policy routing table.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ip</span> <span class="n">rule</span> <span class="n">add</span> <span class="n">fwmark</span> <span class="mi">1</span><span class="o">/</span><span class="mi">1</span> <span class="n">table</span> <span class="mi">1</span>
+<span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="n">local</span> <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">/</span><span class="mi">0</span> <span class="n">dev</span> <span class="n">lo</span> <span class="n">table</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The marking used is arbitrary but it must be consistent between
+<code class="docutils literal notranslate"><span class="pre">iptables</span></code> and the routing rule. The table number must be in the range
+1..253.</p>
+<p>To configure Traffic Server set the following values in
+<a class="reference internal" href="../../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
+<dl class="docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></dt>
+<dd><code class="docutils literal notranslate"><span class="pre">STRING</span></code>
+Default: <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code></dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></dt>
+<dd><code class="docutils literal notranslate"><span class="pre">INT</span></code>
+Default: <code class="docutils literal notranslate"><span class="pre">1</span></code></dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></dt>
+<dd><code class="docutils literal notranslate"><span class="pre">INT</span></code>
+Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></dd>
+</dl>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="wccp-configuration.en.html" class="btn btn-neutral float-right" title="WCCP Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="bridge.en.html" class="btn btn-neutral float-left" title="Inline on a Linux Bridge" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

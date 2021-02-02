@@ -1,0 +1,1420 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Header Rewrite Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Health Checks Plugin" href="healthchecks.en.html" />
+    <link rel="prev" title="Generator Plugin" href="generator.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_promote.en.html">Cache Promotion Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_range_requests.en.html">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="esi.en.html">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compress.en.html">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcpinfo.en.html">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Header Rewrite Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/header_rewrite.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="header-rewrite-plugin">
+<span id="admin-plugins-header-rewrite"></span><h1>Header Rewrite Plugin<a class="headerlink" href="#header-rewrite-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin allows you to modify arbitrary headers based on defined rules, for
+both requests and responses.</p>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>Remapping an incoming client request to an origin server is at the heart of
+what we use Traffic Server for, but often we need to do more to requests than just change
+their destination according to simple rewriting rules against the URL.</p>
+<p>We may need to direct requests to different origins based on a client cookie.</p>
+<p>Our origins might return error response codes which are a little too customized
+and we want to condense the possible values to just the official codes.</p>
+<p>We might want to strip a set of internal-use or debugging related HTTP headers
+from responses before sending them to clients, unless the original request had
+its own special header indicating that they should be retained.</p>
+<p>Or perhaps we want to redirect certain requests differently when they come from
+a known group of IP addresses (say, our developers’ office network) and we have
+a file on our proxy caching servers called <code class="docutils literal notranslate"><span class="pre">/var/developertesting</span></code>. (Stranger
+QA methods exist.)</p>
+<p>Maybe we want to deny access to a resource with an HTTP 403 if the client
+connected to Traffic Server over a particular port, used <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> instead of <code class="docutils literal notranslate"><span class="pre">GET</span></code>,
+doesn’t list Spanish (Paraguay dialect) in their <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code> header,
+and either the origin server replied with 304 or we randomly generate an
+integer between 0 and 500 and get back anything greater than 290.</p>
+<p>These more complicated transformations of requests and responses (even that
+last one) are made possible by this plugin.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is considered stable and is included with Traffic Server by default. There
+are no special steps necessary for its installation.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Header rewrite configurations, the actual conditions and operations that make
+up the activity performed by the plugin, are specified in external files and
+not in-line with the various mapping (and remapping) rules you may have
+configured for your proxy. The location of this file is arbitrary, as long as
+the Traffic Server processes have permissions to read it, though you may find it useful
+to keep it in the same location as your other proxy configuration files.</p>
+<p>The paths given to the configuration file(s) may be absolute (leading with a
+<code class="docutils literal notranslate"><span class="pre">/</span></code> character), or they may be relative to the Traffic Server configuration directory.</p>
+<p>There are two methods for enabling this plugin, based on whether you wish it to
+operate globally on every request that passes through your proxy, or only on
+some subset of the requests by enabling it only for specific mapping rules.</p>
+<div class="section" id="enabling-globally">
+<h3>Enabling Globally<a class="headerlink" href="#enabling-globally" title="Permalink to this headline">¶</a></h3>
+<p>This plugin may be enabled globally, so that the conditions and header
+rewriting rules are evaluated for every request made to your Traffic Server instance.
+This is done by adding the following line to your <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>header_rewrite.so config_file_1.conf config_file_2.conf ...
+</pre></div>
+</div>
+<p>You may specify multiple configuration files. Their rules will be evaluated in
+the order the files are listed.</p>
+</div>
+<div class="section" id="enabling-per-mapping">
+<h3>Enabling Per-Mapping<a class="headerlink" href="#enabling-per-mapping" title="Permalink to this headline">¶</a></h3>
+<p>Alternatively, the plugin can be enabled for specific mapping rules, by
+modifying the relevant entries in your <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>map http://a http://b @plugin=header_rewrite.so @pparam=rules1.conf ...
+</pre></div>
+</div>
+<p>As with the global method above, multiple configuration files may be listed,
+each with its own <code class="docutils literal notranslate"><span class="pre">&#64;pparam=&lt;file&gt;</span></code> and their contents will be evaluated in
+the order the files were specified.</p>
+<p>Each ruleset that is configured per-mapping should have a special
+<a class="reference internal" href="#hook-conditions">Hook Conditions</a> defined. Without a defined hook, these rulesets will use the
+<code class="docutils literal notranslate"><span class="pre">REMAP_PSEUDO_HOOK</span></code>.</p>
+</div>
+</div>
+<div class="section" id="rewriting-rules">
+<h2>Rewriting Rules<a class="headerlink" href="#rewriting-rules" title="Permalink to this headline">¶</a></h2>
+<p>Header rewriting rules consist of zero or more <a class="reference internal" href="#conditions">Conditions</a> followed by one or
+more <a class="reference internal" href="#operators">Operators</a>. Conditions are used to limit the requests which will be
+affected by the operator(s). Additionally, both conditions and operators may
+have flags which modify their behavior.</p>
+<p>A complete rule, consisting of two conditions and a single operator might look
+like the following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{STATUS} &gt;399 [AND]
+cond %{STATUS} &lt;500
+set-status 404
+</pre></div>
+</div>
+<p>Which converts any 4xx HTTP status code from the origin server to a 404. A
+response from the origin with a status of 200 would be unaffected by this rule.</p>
+<div class="section" id="conditions">
+<h3>Conditions<a class="headerlink" href="#conditions" title="Permalink to this headline">¶</a></h3>
+<p>Conditions are used as qualifiers, causing the associated operators to only be
+evaluated if the condition(s) are met. Conditions all take the following form:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{&lt;condition name&gt;[:&lt;argument&gt;]} &lt;operand&gt; [&lt;flags&gt;]
+</pre></div>
+</div>
+<p>Every condition begins with the literal string <code class="docutils literal notranslate"><span class="pre">cond</span></code> to indicate that this
+line is a condition, not an operator. This is followed by the condition name,
+inside curly braces and preceded by a percent sign (e.g. <code class="docutils literal notranslate"><span class="pre">%{TRUE}</span></code> for the
+condition named <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>). Some condition names take an argument. Header
+conditions, for example, take the name of the header in question, and cookie
+conditions take the name of the cookie. For these, the condition name is
+followed by a colon and the argument value (e.g. <code class="docutils literal notranslate"><span class="pre">%{HEADER:User-Agent}</span></code> for a
+header condition against the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header).</p>
+<p>The operand of a condition provides a value, pattern, or range against which to
+match. The format is described in <a class="reference internal" href="#condition-operands">Condition Operands</a> below.</p>
+<p>Finally, a condition may optionally have various flags associated with it.
+These are described in <a class="reference internal" href="#condition-flags">Condition Flags</a> below.</p>
+<p>The following sections list all of the condition types currently supported. For
+increased clarity in their usage, the optional <code class="docutils literal notranslate"><span class="pre">[&lt;flags&gt;]</span></code> portion of the
+condition is omitted from all of the examples.</p>
+<div class="section" id="access">
+<h4>ACCESS<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{ACCESS:&lt;path&gt;}
+</pre></div>
+</div>
+<p>Returns true if Traffic Server was able to successfully update the access time on the
+file at <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. This condition will return false if the file does not exist
+or Traffic Server cannot access it for any other reason.</p>
+</div>
+<div class="section" id="client-header">
+<h4>CLIENT-HEADER<a class="headerlink" href="#client-header" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CLIENT-HEADER:&lt;name&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Value of the header <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> from the original client request (regardless of
+the hook context in which the rule is being evaluated). Note that some headers
+may appear in an HTTP message more than once. In these cases, the value of the
+header operated on by this condition will be a comma separated string of the
+values from every occurrence of the header. More details are provided in
+<a class="reference internal" href="#repeated-headers">Repeated Headers</a> below.</p>
+</div>
+<div class="section" id="client-url">
+<h4>CLIENT-URL<a class="headerlink" href="#client-url" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CLIENT-URL:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>The URL of the original request. Regardless of the hook context in which the
+rule is evaluated, this condition will always operate on the original, unmapped
+URL supplied by the client. The <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> may be specified according to the
+options documented in <a class="reference internal" href="#url-parts">URL Parts</a>.</p>
+<p>Note that the HOST <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> of the CLIENT-URL might not be set until the remap
+phase of the transaction.  This happens when there is no host in the incoming URL
+and only set as a host header.  During the remap phase the host header is copied
+to the CLIENT-URL.  Use CLIENT-HEADER:Host if you are going to match the host.</p>
+</div>
+<div class="section" id="cookie">
+<h4>COOKIE<a class="headerlink" href="#cookie" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{COOKIE:&lt;name&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Value of the cookie <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>. This does not expose or match against a
+cookie’s expiration, the domain(s) on which it is valid, whether it is protocol
+restricted, or any of the other metadata; simply the current value of the
+cookie as presented by the client.</p>
+</div>
+<div class="section" id="from-url">
+<h4>FROM-URL<a class="headerlink" href="#from-url" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{FROM-URL:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>In a remapping context, this condition matches against the source URL from
+which the remapping was generated. This condition is valid only within
+configurations provided through <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> as described in <a class="reference internal" href="#enabling-per-mapping">Enabling
+Per-Mapping</a> above.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> allows the operand to match against just a component of the URL,
+as documented in <a class="reference internal" href="#url-parts">URL Parts</a> below.</p>
+</div>
+<div class="section" id="geo">
+<h4>GEO<a class="headerlink" href="#geo" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{GEO:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Perform a GeoIP lookup of the client-IP, using a 3rd party library and
+DB. Currently only the MaxMind GeoIP API is supported. The default is to
+do a Country lookup, but the following qualifiers are supported:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{GEO:COUNTRY}      The country code (e.g. &quot;US&quot;)
+%{GEO:COUNTRY-ISO}  The country ISO code (e.g. 225)
+%{GEO:ASN}          The AS number for the provider network (e.g. 7922)
+%{GEO:ASN-NAME}     A descriptive string of the AS provider
+</pre></div>
+</div>
+<p>These operators can be used both as conditionals, as well as values for
+setting headers. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK} [AND]
+cond %${GEO:COUNTRY} =US
+    set-header ATS-Geo-Country %{GEO:COUNTRY}
+    set-header ATS-Geo-Country-ISO %{GEO:COUNTRY-ISO}
+    set-header ATS-Geo-ASN %{GEO:ASN}
+    set-header ATS-Geo-ASN-NAME %{GEO:ASN-NAME}
+</pre></div>
+</div>
+</div>
+<div class="section" id="header">
+<h4>HEADER<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{HEADER:&lt;name&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Value of the header <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> from either the original client request or the
+origin server’s response, depending upon the hook context in which the rule is
+being evaluated. Consult <a class="reference internal" href="#requests-vs-responses">Requests vs. Responses</a> for more information on how
+to distinguish the two, as well as enforce that a rule is always evaluated in
+the desired context.</p>
+<p>Note that some headers may appear in an HTTP message more than once. In these
+cases, the value of the header operated on by this condition will be a comma
+separated string of the values from every occurrence of the header. Refer to
+<a class="reference internal" href="#repeated-headers">Repeated Headers</a> for more information.</p>
+<p>If you wish to use a client request header, regardless of hook context, you may
+consider using the <a class="reference internal" href="#client-header">CLIENT-HEADER</a> condition instead.</p>
+</div>
+<div class="section" id="id">
+<h4>ID<a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{ID:REQUEST} &gt;100
+</pre></div>
+</div>
+<p>This condition provides access to three identifier values that ATS uses
+internally for things like logging and debugging. Since these are IDs, they
+are mostly useful as a value (operand) to other operators. The three types of
+IDs are</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{ID:REQUEST}    A unique, sequence number for the transaction
+%{ID:PROCESS}    A UUID string, generated every time ATS restarts
+%{ID:UNIQUE}     The combination of the previous two IDs
+</pre></div>
+</div>
+<p>Now, even though these are conditionals, their primary use are as value
+arguments to another operator. For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-header ATS-Req-UUID %{ID:UNIQUE}
+</pre></div>
+</div>
+</div>
+<div class="section" id="cidr">
+<h4>CIDR<a class="headerlink" href="#cidr" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-header @Client-CIDR %{CIDR:24,48}
+</pre></div>
+</div>
+<p>This condition takes the client IP, and applies the provided CIDR style masks
+to the IP, before producing a string. The typical use of this conditions is as
+above, producing a header that contains a IP representation which has some
+privacy properties. It can of course also be used as a regular condition, and
+the output is a string that can be compared against. The two optional
+arguments are as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>IPv4-Mask    Length, in bits, of the IPv4 address to preserve. Default: 24
+IPv6-Mask    Length, in bits, of the IPv6 address to preserve. Default: 48
+</pre></div>
+</div>
+<p>The two arguments, if provided, are comma separated. Valid syntax includes:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{CIDR}         Defaults to 24,48 (as above)
+%{CIDR:16}      IPv4 CIDR mask is 16 bits, IPv6 mask is 48
+%{CIDR:18,42}   IPv4 CIDR mask is 18 bits, IPv6 mask is 42 bits
+</pre></div>
+</div>
+<p>A typical use case is to insert the &#64;-prefixed header as above, and then use
+this header in a custom log format, rather than logging the full client
+IP. Another use case could be to make a special condition on a sub-net,
+e.g.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CIDR:8} =&quot;8.0.0.0&quot;
+    set-header X-Is-Eight &quot;Yes&quot;
+cond %{CIDR:,8} =&quot;fd00::&quot; #note the IPv6 Mask is in the second position
+    set-header IPv6Internal &quot;true&quot;
+</pre></div>
+</div>
+<p>This condition has no requirements other than access to the Client IP, hence,
+it should work in any and all hooks.</p>
+</div>
+<div class="section" id="inbound">
+<h4>INBOUND<a class="headerlink" href="#inbound" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{INBOUND:TLS} /./
+</pre></div>
+</div>
+<p>This condition provides access to information about the inbound (client, user agent) connection to ATS.
+The data that can be checked is</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{INBOUND:LOCAL-ADDR}      The local (ATS) address for the connection. Equivalent to %{IP:INBOUND}.
+%{INBOUND:LOCAL-PORT}      The local (ATS) port for the connection.
+%{INBOUND:REMOTE-ADDR}     The client address for the connection. Equivalent to %{IP:CLIENT}.
+%{INBOUND:REMOTE-PORT}     The client port for the connection.
+%{INBOUND:TLS}             The TLS protocol if the connection is over TLS, otherwise the empty string.
+%{INBOUND:H2}              The string &quot;h2&quot; if the connection is HTTP/2, otherwise the empty string.
+%{INBOUND:IPV4}            The string &quot;ipv4&quot; if the connection is IPv4, otherwise the empty string.
+%{INBOUND:IPV6}            The string &quot;ipv6&quot; if the connection is IPv6, otherwise the empty string.
+%{INBOUND:IP-FAMILY}       The IP family, either &quot;ipv4&quot; or &quot;ipv6&quot;.
+%{INBOUND:STACK}           The full protocol stack separated by &#39;,&#39;.
+</pre></div>
+</div>
+<p>All of the tags generated by this condition are from the <a class="reference internal" href="../../developer-guide/api/functions/TSClientProtocolStack.en.html#protocol-tags"><span class="std std-ref">protocol stack tags</span></a>.</p>
+<p>Because of the implicit match rules, using these as conditions is a bit unexpected. The condition
+listed above will be true if the inbound connection is over TLS because <code class="docutils literal notranslate"><span class="pre">%{INBOUND:TLS}</span></code> will only
+return a non-empty string for TLS connections. In contrast</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{INBOUND:TLS}
+</pre></div>
+</div>
+<p>will be true for <em>non</em>-TLS connections because it will be true when <code class="docutils literal notranslate"><span class="pre">%{INBOUND:TLS}</span></code> is the empty
+string. This happens because the default matching is equality and the default value the empty
+string. Therefore the condition is treated as if it were</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{INBOUND:TLS}=&quot;&quot;
+</pre></div>
+</div>
+<p>which is true when the connection is not TLS. The arguments <code class="docutils literal notranslate"><span class="pre">H2</span></code>, <code class="docutils literal notranslate"><span class="pre">IPV4</span></code>, and <code class="docutils literal notranslate"><span class="pre">IPV6</span></code> work the
+same way.</p>
+</div>
+<div class="section" id="ip">
+<h4>IP<a class="headerlink" href="#ip" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{IP:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>This is one of four possible IPs associated with the transaction, with the
+possible parts being</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{IP:CLIENT}     Client&#39;s IP address. Equivalent to %{INBOUND:REMOTE-ADDR}.
+%{IP:INBOUND}    ATS&#39;s IP address to which the client connected. Equivalent to %{INBOUND:LOCAL-ADDR}
+%{IP:SERVER}     Upstream (next-hop) server IP address (typically origin, or parent)
+%{IP:OUTBOUND}   ATS&#39;s outbound IP address, that was used to connect upstream (next-hop)
+</pre></div>
+</div>
+<p>Note that both <cite>%{IP:SERVER}</cite> and <cite>%{IP:OUTBOUND}</cite> can be unset, in which case the
+empty string is returned. The common use for this condition is
+actually as a value to an operator, e.g.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+  set-header X-Client-IP %{IP:CLIENT}
+  set-header X-Inbound-IP %{IP:INBOUND}
+  set-header X-Server-IP %{IP:SERVER}
+  set-header X-Outbound-IP %{IP:OUTBOUND}
+</pre></div>
+</div>
+</div>
+<div class="section" id="internal-transaction">
+<h4>INTERNAL-TRANSACTION<a class="headerlink" href="#internal-transaction" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{INTERNAL-TRANSACTION}
+</pre></div>
+</div>
+<p>Returns true if the current transaction was internally-generated by Traffic Server (using
+<a class="reference internal" href="../../developer-guide/api/functions/TSHttpTxnIsInternal.en.html#c.TSHttpTxnIsInternal" title="TSHttpTxnIsInternal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIsInternal()</span></code></a>). These transactions are not initiated by
+external client requests, but are triggered (often by plugins) entirely within
+the Traffic Server process.</p>
+</div>
+<div class="section" id="method">
+<h4>METHOD<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{METHOD} &lt;operand&gt;
+</pre></div>
+</div>
+<p>The HTTP method (e.g. <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>, <code class="docutils literal notranslate"><span class="pre">POST</span></code>, and so on) used by the
+client for this transaction.</p>
+</div>
+<div class="section" id="now">
+<h4>NOW<a class="headerlink" href="#now" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{NOW:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>This is the current time, in the local timezone as set on the machine,
+typically GMC. Without any further qualifiers, this is the time in seconds
+since EPOCH aka Unix time. Qualifiers can be used to give various other
+values, such as year, month etc.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{NOW:YEAR}      Current year (e.g. 2016)
+%{NOW:MONTH}     Current month (0-11, 0 == January)
+%{NOW:DAY}       Current day of the month (1-31)
+%{NOW:HOUR}      Current hour (0-23, in the 24h system)
+%{NOW:MIN}       Current minute (0-59}
+%{NOW:WEEKDAY}   Current weekday (0-6, 0 == Sunday)
+%{NOW:YEARDAY}   Current day of the year (0-365, 0 == Jan 1st)
+</pre></div>
+</div>
+</div>
+<div class="section" id="random">
+<h4>RANDOM<a class="headerlink" href="#random" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{RANDOM:&lt;n&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Generates a random integer between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code>, inclusive.</p>
+</div>
+<div class="section" id="status">
+<h4>STATUS<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{STATUS} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Numeric HTTP status code of the response.</p>
+</div>
+<div class="section" id="to-url">
+<h4>TO-URL<a class="headerlink" href="#to-url" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{TO-URL:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>In a remapping context, this condition matches against the target URL to which
+the remapping is directed. This condition is valid only within configurations
+provided through <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> as described in <a class="reference internal" href="#enabling-per-mapping">Enabling Per-Mapping</a>
+above.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> allows the operand to match against just a component of the URL,
+as documented in <a class="reference internal" href="#url-parts">URL Parts</a> below.</p>
+</div>
+<div class="section" id="true-false">
+<h4>TRUE / FALSE<a class="headerlink" href="#true-false" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{TRUE}
+cond %{FALSE}
+</pre></div>
+</div>
+<p>These conditions always return a true value and a false value, respectively.
+The true condition is implicit in any rules which specify no conditions (only
+operators).</p>
+</div>
+<div class="section" id="txn-count">
+<h4>TXN-COUNT<a class="headerlink" href="#txn-count" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{TXN-COUNT} &lt;operand&gt;
+</pre></div>
+</div>
+<p>Returns the number of transactions (including the current one) that have been sent on the current
+client connection. This can be used to detect if the current transaction is the first transaction.</p>
+</div>
+<div class="section" id="url">
+<h4>URL<a class="headerlink" href="#url" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{URL:&lt;part&gt;} &lt;operand&gt;
+</pre></div>
+</div>
+<p>The complete URL of the current transaction. This will automatically choose the
+most relevant URL depending upon the hook context in which the condition is
+being evaluated.</p>
+<p>Refer to <a class="reference internal" href="#requests-vs-responses">Requests vs. Responses</a> for more information on determining the
+context in which the transaction’s URL is evaluated.  The <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> may be
+specified according to the options documented in <a class="reference internal" href="#url-parts">URL Parts</a>.</p>
+</div>
+</div>
+<div class="section" id="condition-operands">
+<h3>Condition Operands<a class="headerlink" href="#condition-operands" title="Permalink to this headline">¶</a></h3>
+<p>Operands provide the means to restrict the values, provided by a condition,
+which will lead to that condition evaluating as true. There are currently four
+types supported:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operand</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/regex/</td>
+<td>Matches the condition’s provided value against the regular
+expression.</td>
+</tr>
+<tr class="row-odd"><td>&lt;string</td>
+<td>Matches if the value from the condition is lexically less than
+<em>string</em>.</td>
+</tr>
+<tr class="row-even"><td>&gt;string</td>
+<td>Matches if the value from the condition is lexically greater than
+<em>string</em>.</td>
+</tr>
+<tr class="row-odd"><td>=string</td>
+<td>Matches if the value from the condition is lexically equal to
+<em>string</em>.</td>
+</tr>
+</tbody>
+</table>
+<p>The absence of an operand for conditions which accept them simply requires that
+a value exists (e.g. the content of the header is not an empty string) for the
+condition to be considered true.</p>
+</div>
+<div class="section" id="condition-flags">
+<h3>Condition Flags<a class="headerlink" href="#condition-flags" title="Permalink to this headline">¶</a></h3>
+<p>The condition flags are optional, and you can combine more than one into
+a comma-separated list of flags. Note that whitespaces are not allowed inside
+the brackets:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="92%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AND</td>
+<td>Indicates that both the current condition and the next must be true.
+This is the default behavior for all conditions when no flags are
+provided.</td>
+</tr>
+<tr class="row-odd"><td>NOT</td>
+<td>Inverts the condition.</td>
+</tr>
+<tr class="row-even"><td>OR</td>
+<td>Indicates that either the current condition or the next one must be
+true, as contrasted with the default behavior from <code class="docutils literal notranslate"><span class="pre">[AND]</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="operators">
+<h3>Operators<a class="headerlink" href="#operators" title="Permalink to this headline">¶</a></h3>
+<p>Operators are the part of your header rewriting rules which actually modify the
+header content of your requests and responses. They are always the final part
+of a rule, following any of the conditions which whittled down the requests and
+responses to which they will be applied.</p>
+<p>Multiple operators may be specified for a single rule, and they will be
+executed in the order listed. The end of the rule is marked either by the end
+of the configuration file or the next appearance of a condition (whichever
+occurs first).</p>
+<p>The following operators are available:</p>
+<div class="section" id="add-cookie">
+<h4>add-cookie<a class="headerlink" href="#add-cookie" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>add-cookie &lt;name&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Adds a new <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> cookie line with the contents <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>. Note that this
+operator will do nothing if a cookie pair with <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> already exists.</p>
+</div>
+<div class="section" id="add-header">
+<h4>add-header<a class="headerlink" href="#add-header" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>add-header &lt;name&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Adds a new <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> header line with the contents <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>. Note that this
+operator can produce duplicate headers if one of <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> already exists, or
+your configuration supplies multiple instances of this operator in different
+rules which are all invoked. This is not an issue for headers which may safely
+be specified multiple times, such as <code class="docutils literal notranslate"><span class="pre">Set-Cookie</span></code>, but for headers which may
+only be specified once you may prefer to use <a class="reference internal" href="#set-header">set-header</a> instead.</p>
+<p>The header’s <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> may be specified as a literal string, or it may take
+advantage of <a class="reference internal" href="#string-concatenations">String concatenations</a> to calculate a dynamic value
+for the header.</p>
+</div>
+<div class="section" id="counter">
+<h4>counter<a class="headerlink" href="#counter" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>counter &lt;name&gt;
+</pre></div>
+</div>
+<p>Increments an integer counter called <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> every time the rule is invoked.
+The counter is initialized at <code class="docutils literal notranslate"><span class="pre">0</span></code> if it does not already exist. The name you
+give your counter is arbitrary, though it is strongly advisable to avoid
+conflicts with existing Traffic Server statistics.</p>
+<p>This counter can be viewed at any time through the standard statistics APIs,
+including the <a class="reference internal" href="stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP plugin</span></a>.</p>
+<p>Counters can only increment by 1 each time this operator is invoked. There is
+no facility to increment by other amounts, nor is it possible to initialize the
+counter with any value other than <code class="docutils literal notranslate"><span class="pre">0</span></code>. Additionally, the counter will reset
+whenever Traffic Server is restarted.</p>
+</div>
+<div class="section" id="no-op">
+<h4>no-op<a class="headerlink" href="#no-op" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>no-op
+</pre></div>
+</div>
+<p>This operator does nothing, takes no arguments, and has no side effects.</p>
+</div>
+<div class="section" id="rm-header">
+<h4>rm-header<a class="headerlink" href="#rm-header" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rm-header &lt;name&gt;
+</pre></div>
+</div>
+<p>Removes the header <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>.</p>
+</div>
+<div class="section" id="rm-cookie">
+<h4>rm-cookie<a class="headerlink" href="#rm-cookie" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>rm-cookie &lt;name&gt;
+</pre></div>
+</div>
+<p>Removes the cookie <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code>.</p>
+</div>
+<div class="section" id="set-config">
+<h4>set-config<a class="headerlink" href="#set-config" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-config &lt;name&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Allows you to override the value of a Traffic Server configuration variable for the
+current connection. The variables specified by <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> must be overridable.
+For details on available Traffic Server configuration variables, consult the
+documentation for <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. You can read more about overridable
+configuration variables in the developer’s documentation for
+<a class="reference internal" href="../../developer-guide/api/functions/TSHttpOverridableConfig.en.html#ts-overridable-config"><span class="std std-ref">TSHttpOverridableConfig</span></a>.</p>
+</div>
+<div class="section" id="set-conn-dscp">
+<h4>set-conn-dscp<a class="headerlink" href="#set-conn-dscp" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-conn-dscp &lt;value&gt;
+</pre></div>
+</div>
+<p>When invoked, sets the client side <a class="reference external" href="https://en.wikipedia.org/wiki/Differentiated_services">DSCP</a> value for the current
+transaction.  The <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> should be specified as a decimal integer.</p>
+</div>
+<div class="section" id="set-conn-mark">
+<h4>set-conn-mark<a class="headerlink" href="#set-conn-mark" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-conn-mark &lt;value&gt;
+</pre></div>
+</div>
+<p>When invoked, sets the client side MARK value for the current
+transaction.  The <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> should be specified as a decimal integer.
+Requires at least Linux 2.6.25.</p>
+</div>
+<div class="section" id="set-debug">
+<h4>set-debug<a class="headerlink" href="#set-debug" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-debug
+</pre></div>
+</div>
+<p>When invoked, this operator enables the internal transaction debugging flag
+(via <a class="reference internal" href="../../developer-guide/api/functions/TSDebug.en.html#c.TSHttpTxnDebugSet" title="TSHttpTxnDebugSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnDebugSet()</span></code></a>), which causes debug messages to be printed to
+the appropriate logs even when the debug tag has not been enabled. For
+additional information on Traffic Server debugging statements, refer to
+<a class="reference internal" href="../../developer-guide/debugging/debug-tags.en.html#developer-debug-tags"><span class="std std-ref">Debug Tags</span></a> in the developer’s documentation.</p>
+</div>
+<div class="section" id="set-destination">
+<h4>set-destination<a class="headerlink" href="#set-destination" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-destination &lt;part&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Modifies individual components of the remapped destination’s address. When
+changing the remapped destination, <code class="docutils literal notranslate"><span class="pre">&lt;part&gt;</span></code> should be used to indicate the
+component that is being modified (see <a class="reference internal" href="#url-parts">URL Parts</a>), and <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> will be
+used as its replacement. You must supply a non-zero length value, otherwise
+this operator will be an effective no-op (though a warning will be emitted to
+the logs if debugging is enabled).</p>
+</div>
+<div class="section" id="set-header">
+<h4>set-header<a class="headerlink" href="#set-header" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-header &lt;name&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Replaces the value of header <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> with <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>, creating the header
+if necessary.</p>
+<p>The header’s <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> may be a literal string, or take advantage of
+<a class="reference internal" href="#string-concatenations">String concatenations</a> to calculate a dynamic value for the header.</p>
+</div>
+<div class="section" id="set-redirect">
+<h4>set-redirect<a class="headerlink" href="#set-redirect" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-redirect &lt;code&gt; &lt;destination&gt;
+</pre></div>
+</div>
+<p>When invoked, sends a redirect response to the client, with HTTP status
+<code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code>, and a new location of <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>. If the <code class="docutils literal notranslate"><span class="pre">QSA</span></code> flag is
+enabled, the original query string will be preserved and added to the new
+location automatically. This operator supports
+<a class="reference internal" href="#string-concatenations">String concatenations</a> for <code class="docutils literal notranslate"><span class="pre">&lt;destination&gt;</span></code>.</p>
+</div>
+<div class="section" id="set-status">
+<h4>set-status<a class="headerlink" href="#set-status" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-status &lt;code&gt;
+</pre></div>
+</div>
+<p>Modifies the <a class="reference internal" href="../../appendices/http-status-codes.en.html#appendix-http-status-codes"><span class="std std-ref">HTTP status code</span></a> used for the
+response. <code class="docutils literal notranslate"><span class="pre">&lt;code&gt;</span></code> must be a valid status code. This operator will also
+update the reason in the HTTP response, based on the code you have chosen. If
+you wish to override that with your own text, you will need to invoke the
+<a class="reference internal" href="#set-status-reason">set-status-reason</a> operator after this one.</p>
+</div>
+<div class="section" id="set-status-reason">
+<h4>set-status-reason<a class="headerlink" href="#set-status-reason" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-status-reason &lt;reason&gt;
+</pre></div>
+</div>
+<p>Modifies the HTTP response to use <code class="docutils literal notranslate"><span class="pre">&lt;reason&gt;</span></code> as the HTTP status reason,
+instead of the standard string (which depends on the <a class="reference internal" href="../../appendices/http-status-codes.en.html#appendix-http-status-codes"><span class="std std-ref">HTTP status code</span></a> used).</p>
+</div>
+<div class="section" id="set-timeout-out">
+<h4>set-timeout-out<a class="headerlink" href="#set-timeout-out" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-timeout-out &lt;type&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Modifies the timeout values for the current transaction to <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>
+(specified in milliseconds). The <code class="docutils literal notranslate"><span class="pre">&lt;type&gt;</span></code> must be one of the following:
+<code class="docutils literal notranslate"><span class="pre">active</span></code>, <code class="docutils literal notranslate"><span class="pre">inactive</span></code>, <code class="docutils literal notranslate"><span class="pre">connect</span></code>, or <code class="docutils literal notranslate"><span class="pre">dns</span></code>.</p>
+</div>
+<div class="section" id="skip-remap">
+<h4>skip-remap<a class="headerlink" href="#skip-remap" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>skip-remap &lt;value&gt;
+</pre></div>
+</div>
+<p>When invoked, and when <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> is any of <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code>, or <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>, this
+operator causes Traffic Server to abort further request remapping. Any other value and
+the operator will effectively be a no-op.</p>
+</div>
+<div class="section" id="set-cookie">
+<h4>set-cookie<a class="headerlink" href="#set-cookie" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-cookie &lt;name&gt; &lt;value&gt;
+</pre></div>
+</div>
+<p>Replaces the value of cookie <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> with <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>, creating the cookie
+if necessary.</p>
+</div>
+</div>
+<div class="section" id="operator-flags">
+<h3>Operator Flags<a class="headerlink" href="#operator-flags" title="Permalink to this headline">¶</a></h3>
+<p>Operator flags are optional, are separated by commas when using more than one
+for a single operator, and must not contain whitespace inside the brackets. For
+example, an operator with the <code class="docutils literal notranslate"><span class="pre">L</span></code> flag would be written in this manner:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set-destination HOST foo.bar.com [L]
+</pre></div>
+</div>
+<p>The flags currently supported are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="8%" />
+<col width="92%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Flag</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>L</td>
+<td>Last rule, do not continue.</td>
+</tr>
+<tr class="row-odd"><td>QSA</td>
+<td>Append the results of the rule to the query string.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="string-concatenations">
+<h3>String concatenations<a class="headerlink" href="#string-concatenations" title="Permalink to this headline">¶</a></h3>
+<p>You can concatenate values using strings, condition values and variable expansions on the same line.</p>
+<blockquote>
+<div>add-header CustomHeader “Hello from %{IP:SERVER}:%{INBOUND:LOCAL-PORT}”</div></blockquote>
+<p>This is the new, generic form of setting header values. Unfortunately, string
+concatenation is not yet supported in conditionals.</p>
+<p>Note: In versions prior to ATS v9.0.0, an alternative string expansion was available. those
+expansions are no longer available, but the following table can help migrations:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Old expansion variable</th>
+<th class="head">Condition variable to use with concatenations</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>%&lt;proto&gt;</td>
+<td>%{CLIENT-URL:SCHEME}</td>
+</tr>
+<tr class="row-odd"><td>%&lt;port&gt;</td>
+<td>%{CLIENT-URL:PORT}</td>
+</tr>
+<tr class="row-even"><td>%&lt;chi&gt;</td>
+<td>%{IP:CLIENT}, %{INBOUND:REMOTE-ADDR} or e.g. %{CIDR:24,48}</td>
+</tr>
+<tr class="row-odd"><td>%&lt;cqhl&gt;</td>
+<td>%{CLIENT-HEADER:Content-Length}</td>
+</tr>
+<tr class="row-even"><td>%&lt;cqhm&gt;</td>
+<td>%{METHOD}</td>
+</tr>
+<tr class="row-odd"><td>%&lt;cque&gt;</td>
+<td>%[CLIENT-URL}</td>
+</tr>
+<tr class="row-even"><td>%&lt;cquup&gt;</td>
+<td>%{CLIENT-URL:PATH}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="url-parts">
+<h3>URL Parts<a class="headerlink" href="#url-parts" title="Permalink to this headline">¶</a></h3>
+<p>Some of the conditions and operators which use a request or response URL as
+their target allow for matching against specific components of the URL. For
+example, the <a class="reference internal" href="#client-url">CLIENT-URL</a> condition can be used to test just against the query
+parameters by writing it as:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CLIENT-URL:QUERY} &lt;operand&gt;
+</pre></div>
+</div>
+<p>The URL part names which may be used for these conditions and actions are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Part</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>HOST</td>
+<td>Full hostname.</td>
+</tr>
+<tr class="row-odd"><td>PATH</td>
+<td>URL substring beginning with (but not including) the first <code class="docutils literal notranslate"><span class="pre">/</span></code> after
+the hostname up to, but not including, the query string. <strong>Note</strong>: previous
+versions of ATS had a <cite>%{PATH}</cite> directive, this will no longer work. Instead,
+you want to use <cite>%{CLIENT-URL:PATH}</cite>.</td>
+</tr>
+<tr class="row-even"><td>PORT</td>
+<td>Port number.</td>
+</tr>
+<tr class="row-odd"><td>QUERY</td>
+<td>URL substring from the <code class="docutils literal notranslate"><span class="pre">?</span></code>, signifying the beginning of the query
+parameters, until the end of the URL. Empty string if there were no
+query parameters.</td>
+</tr>
+<tr class="row-even"><td>SCHEME</td>
+<td>URL scheme in use (e.g. <code class="docutils literal notranslate"><span class="pre">http</span></code> and <code class="docutils literal notranslate"><span class="pre">https</span></code>).</td>
+</tr>
+<tr class="row-odd"><td>URL</td>
+<td>The complete URL.</td>
+</tr>
+</tbody>
+</table>
+<p>As another example, a remap rule might use the <a class="reference internal" href="#set-destination">set-destination</a> operator to
+change just the hostname via:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{HEADER:X-Mobile} = &quot;foo&quot;
+set-destination HOST foo.mobile.bar.com [L]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="requests-vs-responses">
+<h2>Requests vs. Responses<a class="headerlink" href="#requests-vs-responses" title="Permalink to this headline">¶</a></h2>
+<p>Both HTTP requests and responses have headers, a good number of them with the
+same names. When writing a rule against, for example, the <code class="docutils literal notranslate"><span class="pre">Connection</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Via</span></code> headers which are both valid in a request and a response, how can you
+tell which is which, and how do you indicate to Traffic Server that the condition is
+specifically and exclusively for a request header or just for a response
+header? And how do you ensure that a header rewrite occurs against a request
+before it is proxied?</p>
+<div class="section" id="hook-conditions">
+<h3>Hook Conditions<a class="headerlink" href="#hook-conditions" title="Permalink to this headline">¶</a></h3>
+<p>In addition to the conditions already described above, there are a set of
+special hook conditions. Only one of these conditions may be specified per
+ruleset, and they must be the first condition listed. Which hook condition is
+used determines the context in which the ruleset is evaluated, and whether the
+other conditions will default to operating on the client request headers or the
+origin response (or cache response) headers.</p>
+<p>Hook conditions are written just like the other conditions, except that none of
+them take any operands:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{&lt;name&gt;}
+</pre></div>
+</div>
+<p>Because hook conditions must be the first condition in a ruleset, the use of
+one forces the beginning of a new ruleset.</p>
+<div class="graphviz"><img src="../../_images/graphviz-33b411c80ead8bc25231374b909d5114ec7d0288.png" alt="header rewrite hooks" class="graphviz" /></div>
+<div class="section" id="read-request-hdr-hook">
+<h4>READ_REQUEST_HDR_HOOK<a class="headerlink" href="#read-request-hdr-hook" title="Permalink to this headline">¶</a></h4>
+<p>Evaluates as soon as the client request has been read, but prior to any further
+processing (including contacting origin servers or fetching objects from cache).
+Conditions and operators which adapt to matching or manipulating request or
+response entities (e.g. headers) depending on their context will all operate on
+the request variants when using this hook, as there is no response data yet.</p>
+<p>This hook is not available to remap rules.</p>
+</div>
+<div class="section" id="read-request-pre-remap-hook">
+<h4>READ_REQUEST_PRE_REMAP_HOOK<a class="headerlink" href="#read-request-pre-remap-hook" title="Permalink to this headline">¶</a></h4>
+<p>For ruleset configurations provided via <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, this forces their
+evaluation as soon as the request has been read, but prior to the remapping.
+For all context-adapting conditions and operators, matching will occur against
+the request, as there is no response data available yet.</p>
+<p>This hook is not available to remap rules.</p>
+</div>
+<div class="section" id="remap-pseudo-hook">
+<h4>REMAP_PSEUDO_HOOK<a class="headerlink" href="#remap-pseudo-hook" title="Permalink to this headline">¶</a></h4>
+<p>Similar to <a class="reference internal" href="#read-request-hdr-hook">READ_REQUEST_HDR_HOOK</a>, but only available when used in a remap
+context, evaluates prior to <a class="reference internal" href="#send-request-hdr-hook">SEND_REQUEST_HDR_HOOK</a> and allows the rewrite to
+evaluate as part of the remapping.</p>
+<p>Because this hook is valid only within a remapping context, for configuration
+files shared by both the global <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> and individual remapping
+entries in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, this hook condition will force the subsequent
+ruleset(s) to be valid only for remapped transactions.</p>
+</div>
+<div class="section" id="send-request-hdr-hook">
+<h4>SEND_REQUEST_HDR_HOOK<a class="headerlink" href="#send-request-hdr-hook" title="Permalink to this headline">¶</a></h4>
+<p>Forces evaluation of the ruleset just prior to contacting origin servers (or
+fetching the object from cache), but after any remapping may have occurred.</p>
+</div>
+<div class="section" id="read-response-hdr-hook">
+<h4>READ_RESPONSE_HDR_HOOK<a class="headerlink" href="#read-response-hdr-hook" title="Permalink to this headline">¶</a></h4>
+<p>Rulesets evaluated within this context will process only once the origin server
+response has been read, but prior to Traffic Server sending that
+response to the client.</p>
+<p>This is the default hook condition for all globally-configured rulesets.</p>
+</div>
+<div class="section" id="send-response-hdr-hook">
+<h4>SEND_RESPONSE_HDR_HOOK<a class="headerlink" href="#send-response-hdr-hook" title="Permalink to this headline">¶</a></h4>
+<p>Evaluates rulesets just prior to sending the client response, but after any
+cache updates may have been performed. This hook context provides a means to
+modify aspects of the response sent to a client, while still caching the
+original versions of those attributes delivered by the origin server.</p>
+</div>
+</div>
+<div class="section" id="affected-conditions">
+<h3>Affected Conditions<a class="headerlink" href="#affected-conditions" title="Permalink to this headline">¶</a></h3>
+<p>The following conditions are affected by the hook context in which they are
+evaluated and will adjust using request or response entities automatically:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#header">HEADER</a></li>
+<li><a class="reference internal" href="#method">METHOD</a></li>
+<li><a class="reference internal" href="#url">URL</a></li>
+</ul>
+</div>
+<div class="section" id="affected-operators">
+<h3>Affected Operators<a class="headerlink" href="#affected-operators" title="Permalink to this headline">¶</a></h3>
+<p>The following operators are affected by the hook context in which they are
+evaluated and will adjust modifying request or response entities automatically:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#add-header">add-header</a></li>
+<li><a class="reference internal" href="#rm-header">rm-header</a></li>
+<li><a class="reference internal" href="#set-header">set-header</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="caveats">
+<h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="repeated-headers">
+<h3>Repeated Headers<a class="headerlink" href="#repeated-headers" title="Permalink to this headline">¶</a></h3>
+<p>Some headers may appear more than once in a request or a response. When this
+occurs, all values will be collapsed into a single comma-delimited string
+before the conditions see them. This avoids the problem of determining which
+header instance out of several a condition’s rule will be applied to, but it
+may introduce unexpected behavior in your operands.</p>
+<p>For example, let us assume an origin response includes a header named <code class="docutils literal notranslate"><span class="pre">X-Foo</span></code>
+which specifies a keyword of some sort. This header may appear zero or more
+times and we wish to construct a <a class="reference internal" href="#header">HEADER</a> condition that can handle this.</p>
+<div class="section" id="condition-a">
+<h4>Condition A<a class="headerlink" href="#condition-a" title="Permalink to this headline">¶</a></h4>
+<p>This condition will match using a direct equality operand:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{HEADER:X-Foo} =bar
+</pre></div>
+</div>
+</div>
+<div class="section" id="condition-b">
+<h4>Condition B<a class="headerlink" href="#condition-b" title="Permalink to this headline">¶</a></h4>
+<p>This condition will match using an unanchored regular expression:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{HEADER:X-Foo} /bar/
+</pre></div>
+</div>
+</div>
+<div class="section" id="sample-headers">
+<h4>Sample Headers<a class="headerlink" href="#sample-headers" title="Permalink to this headline">¶</a></h4>
+<p>Both conditions A and B will match this response:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HTTP/1.1 200 OK
+Date: Mon, 08 Feb 2016 18:11:30 GMT
+Content-Length: 1234
+Content-Type: text/html
+X-Foo: bar
+</pre></div>
+</div>
+<p>Only condition B will match this response:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>HTTP/1.1 200 OK
+Date: Mon, 08 Feb 2016 18:11:30 GMT
+Content-Length: 1234
+Content-Type: text/html
+X-Foo: bar
+X-Foo: baz
+</pre></div>
+</div>
+<p>That is because the <a class="reference internal" href="#header">HEADER</a> condition will see the value of <code class="docutils literal notranslate"><span class="pre">X-Foo</span></code> as
+<code class="docutils literal notranslate"><span class="pre">bar,baz</span></code>. Condition B will still match this because the regular expression,
+being unanchored, finds the substring <code class="docutils literal notranslate"><span class="pre">bar</span></code>. But condition A fails, as it is
+expecting the value to be the exact string <code class="docutils literal notranslate"><span class="pre">bar</span></code>, nothing more and nothing
+less.</p>
+</div>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="remove-origin-authentication-headers">
+<h3>Remove Origin Authentication Headers<a class="headerlink" href="#remove-origin-authentication-headers" title="Permalink to this headline">¶</a></h3>
+<p>The following ruleset removes any authentication headers from the origin
+response before caching it or returning it to the client. This is accomplished
+by setting the hook context and then removing the cookie and basic
+authentication headers.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{READ_RESPONSE_HDR_HOOK}
+rm-header Set-Cookie
+rm-header WWW-Authenticate
+</pre></div>
+</div>
+</div>
+<div class="section" id="count-teapots">
+<h3>Count Teapots<a class="headerlink" href="#count-teapots" title="Permalink to this headline">¶</a></h3>
+<p>Maintains a counter statistic, which is incremented every time an origin server
+has decided to be funny by returning HTTP 418:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{STATUS} =418
+counter plugin.header_rewrite.teapots
+</pre></div>
+</div>
+</div>
+<div class="section" id="normalize-statuses">
+<h3>Normalize Statuses<a class="headerlink" href="#normalize-statuses" title="Permalink to this headline">¶</a></h3>
+<p>For client-facing purposes only (because we set the hook context to just prior
+to delivering the response back to the client, but after all processing and
+possible cache updates have occurred), replaces all 4xx HTTP status codes from
+the origin server with <code class="docutils literal notranslate"><span class="pre">404</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+cond %{STATUS} &gt;399
+cond %{STATUS} &lt;500
+set-status 404
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-cache-control-to-origins">
+<h3>Remove Cache Control to Origins<a class="headerlink" href="#remove-cache-control-to-origins" title="Permalink to this headline">¶</a></h3>
+<p>Removes cache control related headers from requests before sending them to an
+origin server:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_REQUEST_HDR_HOOK}
+rm-header Cache-Control
+rm-header Pragma
+</pre></div>
+</div>
+</div>
+<div class="section" id="enable-debugging-per-request">
+<h3>Enable Debugging Per-Request<a class="headerlink" href="#enable-debugging-per-request" title="Permalink to this headline">¶</a></h3>
+<p>Turns on Traffic Server debugging statements for a transaction, but only when a special
+header is present in the client request:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{READ_REQUEST_HDR_HOOK}
+cond %{CLIENT-HEADER:X-Debug} =supersekret
+set-debug
+</pre></div>
+</div>
+</div>
+<div class="section" id="remove-internal-headers">
+<h3>Remove Internal Headers<a class="headerlink" href="#remove-internal-headers" title="Permalink to this headline">¶</a></h3>
+<p>Removes special internal/development headers from origin responses, unless the
+client request included a special debug header:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CLIENT-HEADER:X-Debug} =keep [NOT]
+rm-header X-Debug-Foo
+rm-header X-Debug-Bar
+</pre></div>
+</div>
+</div>
+<div class="section" id="return-original-method-in-response-header">
+<h3>Return Original Method in Response Header<a class="headerlink" href="#return-original-method-in-response-header" title="Permalink to this headline">¶</a></h3>
+<p>This rule copies the original HTTP method that was used by the client into a
+custom response header:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+set-header X-Original-Method %{METHOD}
+</pre></div>
+</div>
+</div>
+<div class="section" id="useless-example-from-purpose">
+<h3>Useless Example From Purpose<a class="headerlink" href="#useless-example-from-purpose" title="Permalink to this headline">¶</a></h3>
+<p>Even that useless example from <a class="reference internal" href="#purpose">Purpose</a> in the beginning of this document is
+possible to accomplish:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{INBOUND:LOCAL-PORT} =8090
+cond %{METHOD} =HEAD
+cond %{CLIENT-HEADER:Accept-Language} /es-py/ [NOT]
+cond %{STATUS} =304 [OR]
+cond %{RANDOM:500} &gt;290
+set-status 403
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-cache-control-headers-based-on-origin-path">
+<h3>Add Cache Control Headers Based on Origin Path<a class="headerlink" href="#add-cache-control-headers-based-on-origin-path" title="Permalink to this headline">¶</a></h3>
+<p>This rule adds cache control headers to CDN responses based matching the origin
+path.  One provides a max age and the other provides a “no-cache” statement to
+two different file paths.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+cond %{CLIENT-URL:PATH} /examplepath1/
+add-header Cache-Control &quot;max-age=3600&quot; [L]
+cond %{SEND_RESPONSE_HDR_HOOK}
+cond %{CLIENT-URL:PATH} /examplepath2\/examplepath3\/.*/
+add-header Cache-Control &quot;no-cache&quot; [L]
+</pre></div>
+</div>
+</div>
+<div class="section" id="redirect-when-the-origin-server-times-out">
+<h3>Redirect when the Origin Server Times Out<a class="headerlink" href="#redirect-when-the-origin-server-times-out" title="Permalink to this headline">¶</a></h3>
+<p>This rule sends a 302 redirect to the client with the requested URI’s Path and
+Query string when the Origin server times out or the connection is refused:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+cond %{STATUS} =502 [OR]
+cond %{STATUS} =504
+set-redirect 302 http://different_origin.example.com/%{CLIENT-URL:PATH} [QSA]
+</pre></div>
+</div>
+</div>
+<div class="section" id="check-for-existence-of-a-header">
+<h3>Check for existence of a header<a class="headerlink" href="#check-for-existence-of-a-header" title="Permalink to this headline">¶</a></h3>
+<p>This rule will modify the <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> header, but only if it is not
+already set to some value, and the status code is a 2xx:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{READ_RESPONSE_HDR_HOOK} [AND]
+cond %{HEADER:Cache-Control} =&quot;&quot; [AND]
+cond %{STATUS} &gt;199 [AND]
+cond %{STATUS} &lt;300
+set-header Cache-Control &quot;max-age=600, public&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-hsts">
+<h3>Add HSTS<a class="headerlink" href="#add-hsts" title="Permalink to this headline">¶</a></h3>
+<p>Add the HTTP Strict Transport Security (HSTS) header if it does not exist and the inbound connection is TLS:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{READ_RESPONSE_HDR_HOOK} [AND]
+cond %{HEADER:Strict-Transport-Security} =&quot;&quot; [AND]
+cond %{INBOUND:TLS} /./
+set-header Strict-Transport-Security &quot;max-age=63072000; includeSubDomains; preload&quot;
+</pre></div>
+</div>
+<p>This is mostly used by being attached to a remap rule that maps to a host known to support TLS. If
+the parallel <cite>OUTBOUND</cite> supported is added then this could be done by checking for inbound TLS both
+outbound TLS in the <cite>SEND_REQUEST_HDR_HOOK</cite>. However this technique may be used for a non-TLS
+upstream if the goal is to require the user agent to connect to Traffic Server over TLS.</p>
+</div>
+<div class="section" id="close-connections-for-draining">
+<h3>Close Connections for draining<a class="headerlink" href="#close-connections-for-draining" title="Permalink to this headline">¶</a></h3>
+<p>When a healthcheck file is missing (in this example, <code class="docutils literal notranslate"><span class="pre">/path/to/the/healthcheck/file.txt</span></code>),
+add a <code class="docutils literal notranslate"><span class="pre">Connection:</span> <span class="pre">close</span></code> header to have clients drop their connection,
+allowing the server to drain. Although Connection header is only available on
+HTTP/1.1 in terms of protocols, but this also works for HTTP/2 connections
+because the header triggers HTTP/2 graceful shutdown. This should be a global
+configuration.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK}
+cond %{ACCESS:/path/to/the/healthcheck/file.txt}    [NOT,OR]
+set-header Connection &quot;close&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-internal-header-to-pass-data">
+<h3>Use Internal header to pass data<a class="headerlink" href="#use-internal-header-to-pass-data" title="Permalink to this headline">¶</a></h3>
+<p>In Traffic Server, a header that begins with <code class="docutils literal notranslate"><span class="pre">&#64;</span></code> does not leave Traffic Server. Thus, you can use
+this to pass data to different Traffic Server systems. For instance, a series of remap rules
+could each be tagged with a consistent name to make finding logs easier.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{REMAP_PSEUDO_HOOK}
+set-header @PropertyName &quot;someproperty&quot;
+</pre></div>
+</div>
+<p>(Then in <a class="reference internal" href="../files/logging.yaml.en.html#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>, log <code class="docutils literal notranslate"><span class="pre">%&lt;{&#64;PropertyName}cqh&gt;</span></code>)</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="healthchecks.en.html" class="btn btn-neutral float-right" title="Health Checks Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generator.en.html" class="btn btn-neutral float-left" title="Generator Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

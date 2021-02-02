@@ -1,0 +1,692 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ArgParser &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugin Development" href="../plugins/index.en.html" />
+    <link rel="prev" title="Extendible" href="Extendible.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Internal libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="TextView.en.html">TextView</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemSpan.en.html">MemSpan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html">TS.Scalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer-writer.en.html">BufferWriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html">IntrusiveDList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html">IntrusiveHashMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#details">Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemArena.en.html">MemArena</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AcidPtr.en.html">AcidPtr &amp; AcidCommitPtr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Extendible.en.html">Extendible</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ArgParser</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Internal libraries</a> &raquo;</li>
+        
+      <li>ArgParser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/internal-libraries/ArgParser.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="argparser">
+<span id="id1"></span><h1>ArgParser<a class="headerlink" href="#argparser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ArgParser.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a> is a powerful and easy-to-use command line Parsing library for ATS.
+The program defines what it requires by adding commands and options.
+Then <a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a> will figure out the related information from the command line.
+All parsed arguments and function will be put in a key-value pairs structure
+<a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> available for users to use.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The usage of the ArgParser is straightforward. An <code class="code docutils literal notranslate"><span class="pre">ArgParser</span></code> instance is
+created. Commands and options are then added to this instance, along with
+details including ENV variable, arguments expected, etc. The method
+<code class="code docutils literal notranslate"><span class="pre">parse(argv)</span></code> is called, passing the <code class="code docutils literal notranslate"><span class="pre">argv</span></code> from the command line
+(<code class="code docutils literal notranslate"><span class="pre">main</span></code> function arguments). An object containing the parsed command line
+information will be returned.</p>
+<div class="section" id="create-a-parser">
+<h3>Create a parser<a class="headerlink" href="#create-a-parser" title="Permalink to this headline">¶</a></h3>
+<p>The first step to use ArgParser is to create a parser.
+The parser can be created simply by calling:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span> <span class="n">parser</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>or initialize with the following arguments:
+<em>name, help description, environment variable, argument number expected, function</em></p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span> <span class="n">parser</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">,</span> <span class="s">&quot;ENV_VAR&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To add the usage for the help message of this program:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="p">.</span><span class="n">add_global_usage</span><span class="p">(</span><span class="s">&quot;traffic_blabla [--SWITCH]&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-commands-and-options">
+<h3>Add commands and options<a class="headerlink" href="#add-commands-and-options" title="Permalink to this headline">¶</a></h3>
+<p>We can perform all kinds of operations on the parser which is the <a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a> or command which is a <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a>.</p>
+<p>To add commands to the program or current command:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span> <span class="o">&amp;</span><span class="n">command1</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;command1&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">command1</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;command2&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">command1</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;command3&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">,</span> <span class="s">&quot;ENV_VAR&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">command1</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;command4&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">,</span> <span class="s">&quot;ENV_VAR&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">,</span> <span class="s">&quot;lookup_key&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function call returns the new <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a> instance added.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The 0 here is the number of arguments we expected. It can be also set to <cite>MORE_THAN_ZERO_ARG_N</cite> or <cite>MORE_THAN_ONE_ARG_N</cite>
+to specify that this command expects all the arguments come later (more than zero or more than one).</p>
+</div>
+<p>To add options to the parser or current command:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">parser</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--switch&quot;</span><span class="p">,</span> <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;switch description&quot;</span><span class="p">);</span>
+<span class="n">command1</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--switch&quot;</span><span class="p">,</span> <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;switch description&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">command1</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--switch&quot;</span><span class="p">,</span> <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;switch description&quot;</span><span class="p">,</span> <span class="s">&quot;ENV_VAR&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;default&quot;</span><span class="p">,</span> <span class="s">&quot;lookup_key&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function call returns the new <a class="reference internal" href="#_CPPv46Option" title="Option"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Option</span></code></a> instance. (0 is also number of arguments expected)</p>
+<p>We can also use the following chained way to add subcommand or option:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;init&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">).</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;subinit&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;remove&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">).</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="s">&quot;--initoption&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>which is equivalent to</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span><span class="o">::</span><span class="n">Command</span> <span class="o">&amp;</span><span class="n">init_command</span> <span class="o">=</span> <span class="n">command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;init&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span><span class="o">::</span><span class="n">Command</span> <span class="o">&amp;</span><span class="n">remove_command</span> <span class="o">=</span> <span class="n">command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;remove&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">init_command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;subinit&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">);</span>
+<span class="n">remove_command</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-i&quot;</span><span class="p">,</span> <span class="s">&quot;--initoption&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>In this case, <cite>subinit</cite> is the subcommand of <cite>init</cite> and <cite>–initoption</cite> is a switch of command <cite>remove</cite>.</p>
+</div>
+<div class="section" id="parsing-arguments">
+<h3>Parsing Arguments<a class="headerlink" href="#parsing-arguments" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a> parses arguments through the <code class="code docutils literal notranslate"><span class="pre">parse(argv)</span></code> method. This will inspect the command line
+and walk through it. A <a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> object will be built up from attributes
+parsed out of the command line holding key-value pairs all the parsed data and the function.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Arguments</span> <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="invoke-functions">
+<h3>Invoke functions<a class="headerlink" href="#invoke-functions" title="Permalink to this headline">¶</a></h3>
+<p>To invoke the function associated with certain commands, we can perform this by simply calling <code class="code docutils literal notranslate"><span class="pre">invoke()</span></code>
+from the <a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> object returned from the parsing. The function can be a lambda.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">args</span><span class="p">.</span><span class="n">invoke</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="help-and-version-messages">
+<h3>Help and Version messages<a class="headerlink" href="#help-and-version-messages" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Help message will be outputted when a wrong usage of the program is detected or <cite>–help</cite> option found.</li>
+<li>Version message is defined unified in <code class="code docutils literal notranslate"><span class="pre">ArgParser::version_message()</span></code>.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="_CPPv49ArgParser">
+<span id="_CPPv39ArgParser"></span><span id="_CPPv29ArgParser"></span><span id="ArgParser"></span><em class="property">class </em><code class="descname">ArgParser</code><a class="headerlink" href="#_CPPv49ArgParser" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="function">
+<dt id="_CPPv4N9ArgParser10add_optionERKNSt6stringERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N9ArgParser10add_optionERKNSt6stringERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N9ArgParser10add_optionERKNSt6stringERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt6stringERKNSt6stringE"></span><span id="ArgParser::add_option__ssCR.ssCR.ssCR.ssCR.unsigned.ssCR.ssCR"></span><a class="reference internal" href="#_CPPv46Option" title="Option">Option</a> &amp;<code class="descname">add_option</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>long_option</em>, std::string <em class="property">const</em> &amp;<em>short_option</em>, std::string <em class="property">const</em> &amp;<em>description</em>, std::string <em class="property">const</em> &amp;<em>envvar</em> = &quot;&quot;, unsigned <em>arg_num</em> = 0, std::string <em class="property">const</em> &amp;<em>default_value</em> = &quot;&quot;, std::string <em class="property">const</em> &amp;<em>key</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser10add_optionERKNSt6stringERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt6stringERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add an option to current command with <em>long name</em>, <em>short name</em>, <em>help description</em>, <em>environment variable</em>, <em>arguments expected</em>, <em>default value</em> and <em>lookup key</em>. Return The Option object itself.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt8functionIFvvEEERKNSt6stringE">
+<span id="_CPPv3N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt8functionIFvvEEERKNSt6stringE"></span><span id="_CPPv2N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt8functionIFvvEEERKNSt6stringE"></span><a class="reference internal" href="#_CPPv47Command" title="Command">Command</a> &amp;<code class="descname">add_command</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>cmd_name</em>, std::string <em class="property">const</em> &amp;<em>cmd_description</em>, std::function&lt;void<span class="sig-paren">(</span><span class="sig-paren">)</span>&gt; <em class="property">const</em> &amp;<em>f</em> = nullptrstd::string <em class="property">const</em> &amp;<em>key</em> = &quot;&quot;, <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt8functionIFvvEEERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a command with only <em>name</em> and <em>description</em>, <em>function to invoke</em> and <em>lookup key</em>. Return the new <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a> object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt8functionIFvvEEERKNSt6stringE">
+<span id="_CPPv3N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt8functionIFvvEEERKNSt6stringE"></span><span id="_CPPv2N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt8functionIFvvEEERKNSt6stringE"></span><a class="reference internal" href="#_CPPv47Command" title="Command">Command</a> &amp;<code class="descname">add_command</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>cmd_name</em>, std::string <em class="property">const</em> &amp;<em>cmd_description</em>, std::string <em class="property">const</em> &amp;<em>cmd_envvar</em>, unsigned <em>cmd_arg_num</em>, std::function&lt;void<span class="sig-paren">(</span><span class="sig-paren">)</span>&gt; <em class="property">const</em> &amp;<em>f</em> = nullptrstd::string <em class="property">const</em> &amp;<em>key</em> = &quot;&quot;, <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser11add_commandERKNSt6stringERKNSt6stringERKNSt6stringEjRKNSt8functionIFvvEEERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a command with <em>name</em>, <em>description</em>, <em>environment variable</em>, <em>number of arguments expected</em>, <em>function to invoke</em> and <em>lookup key</em>.
+The function can be passed by reference or be a lambda. It returns the new <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a> object.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser5parseEPPKc">
+<span id="_CPPv3N9ArgParser5parseEPPKc"></span><span id="_CPPv2N9ArgParser5parseEPPKc"></span><span id="ArgParser::parse__cCPP"></span>void <code class="descname">parse</code><span class="sig-paren">(</span><em class="property">const</em> char **<em>argv</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser5parseEPPKc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Parse the command line by calling <code class="code docutils literal notranslate"><span class="pre">parser.parse(argv)</span></code>. Return the new <a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> instance.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK9ArgParser12help_messageEv">
+<span id="_CPPv3NK9ArgParser12help_messageEv"></span><span id="_CPPv2NK9ArgParser12help_messageEv"></span><span id="ArgParser::help_messageC"></span>void <code class="descname">help_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK9ArgParser12help_messageEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output usage to the console.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK9ArgParser15version_messageEv">
+<span id="_CPPv3NK9ArgParser15version_messageEv"></span><span id="_CPPv2NK9ArgParser15version_messageEv"></span><span id="ArgParser::version_messageC"></span>void <code class="descname">version_message</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK9ArgParser15version_messageEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Output version string to the console.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser16add_global_usageERKNSt6stringE">
+<span id="_CPPv3N9ArgParser16add_global_usageERKNSt6stringE"></span><span id="_CPPv2N9ArgParser16add_global_usageERKNSt6stringE"></span><span id="ArgParser::add_global_usage__ssCR"></span>void <code class="descname">add_global_usage</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>usage</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser16add_global_usageERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add a global_usage for <code class="code docutils literal notranslate"><span class="pre">help_message()</span></code>. Example: <cite>traffic_blabla [–SWITCH [ARG]]</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser19set_default_commandERKNSt6stringE">
+<span id="_CPPv3N9ArgParser19set_default_commandERKNSt6stringE"></span><span id="_CPPv2N9ArgParser19set_default_commandERKNSt6stringE"></span><span id="ArgParser::set_default_command__ssCR"></span>void <code class="descname">set_default_command</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>cmd</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser19set_default_commandERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a default command to the parser. This method should be called after the adding of the commands.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser16require_commandsEv">
+<span id="_CPPv3N9ArgParser16require_commandsEv"></span><span id="_CPPv2N9ArgParser16require_commandsEv"></span><span id="ArgParser::require_commands"></span><a class="reference internal" href="#_CPPv47Command" title="Command">Command</a> &amp;<code class="descname">require_commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser16require_commandsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Make the parser require commands. If no command is found, output help message. Return The <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a> instance for chained calls.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9ArgParser9set_errorENSt6stringE">
+<span id="_CPPv3N9ArgParser9set_errorENSt6stringE"></span><span id="_CPPv2N9ArgParser9set_errorENSt6stringE"></span><span id="ArgParser::set_error__ss"></span>void <code class="descname">set_error</code><span class="sig-paren">(</span>std::string <em>e</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ArgParser9set_errorENSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the user customized error message for the parser.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK9ArgParser9get_errorEv">
+<span id="_CPPv3NK9ArgParser9get_errorEv"></span><span id="_CPPv2NK9ArgParser9get_errorEv"></span><span id="ArgParser::get_errorC"></span>std::string <code class="descname">get_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK9ArgParser9get_errorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the error message of the parser.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv46Option">
+<span id="_CPPv36Option"></span><span id="_CPPv26Option"></span><span id="Option"></span><em class="property">class </em><code class="descname">Option</code><a class="headerlink" href="#_CPPv46Option" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#_CPPv46Option" title="Option"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Option</span></code></a> is a data struct containing information about an option.</p>
+</dd></dl>
+
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">Option</span> <span class="p">{</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">long_option</span><span class="p">;</span>   <span class="c1">// long option: --arg</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">short_option</span><span class="p">;</span>  <span class="c1">// short option: -a</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">description</span><span class="p">;</span>   <span class="c1">// help description</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">envvar</span><span class="p">;</span>        <span class="c1">// stored ENV variable</span>
+   <span class="kt">unsigned</span> <span class="n">arg_num</span><span class="p">;</span>          <span class="c1">// number of argument expected</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">default_value</span><span class="p">;</span> <span class="c1">// default value of option</span>
+   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">key</span><span class="p">;</span>           <span class="c1">// look-up key</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="_CPPv47Command">
+<span id="_CPPv37Command"></span><span id="_CPPv27Command"></span><span id="Command"></span><em class="property">class </em><code class="descname">Command</code><a class="headerlink" href="#_CPPv47Command" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a> is a nested structure of command for <a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a>. The <code class="code docutils literal notranslate"><span class="pre">add_option()</span></code>, <code class="code docutils literal notranslate"><span class="pre">add_command()</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">require_command()</span></code> are the same with those in <a class="reference internal" href="#_CPPv49ArgParser" title="ArgParser"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgParser</span></code></a>. When <code class="code docutils literal notranslate"><span class="pre">add_command()</span></code>
+is called under certain command, it will be added as a subcommand for the current command. For Example, <code class="code docutils literal notranslate"><span class="pre">command1.add_command(&quot;command2&quot;,</span> <span class="pre">&quot;description&quot;)</span></code>
+will make <code class="code docutils literal notranslate"><span class="pre">command2</span></code> a subcommand of <code class="code docutils literal notranslate"><span class="pre">command1</span></code>. <code class="code docutils literal notranslate"><span class="pre">require_commands()</span></code> is also available within <a class="reference internal" href="#_CPPv47Command" title="Command"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Command</span></code></a>.</p>
+<dl class="function">
+<dt id="_CPPv4N7Command17add_example_usageERKNSt6stringE">
+<span id="_CPPv3N7Command17add_example_usageERKNSt6stringE"></span><span id="_CPPv2N7Command17add_example_usageERKNSt6stringE"></span><span id="Command::add_example_usage__ssCR"></span>void <code class="descname">add_example_usage</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>usage</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Command17add_example_usageERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Add an example usage for the command to output in <cite>help_message</cite>.
+For Example: <code class="code docutils literal notranslate"><span class="pre">command.add_example_usage(&quot;traffic_blabla</span> <span class="pre">init</span> <span class="pre">--path=/path/to/file&quot;)</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N7Command11set_defaultEv">
+<span id="_CPPv3N7Command11set_defaultEv"></span><span id="_CPPv2N7Command11set_defaultEv"></span><span id="Command::set_default"></span><a class="reference internal" href="#_CPPv47Command" title="Command">Command</a> &amp;<code class="descname">set_default</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7Command11set_defaultEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>set the current command as default</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv49Arguments">
+<span id="_CPPv39Arguments"></span><span id="_CPPv29Arguments"></span><span id="Arguments"></span><em class="property">class </em><code class="descname">Arguments</code><a class="headerlink" href="#_CPPv49Arguments" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> holds the parsed arguments and function to invoke.
+It basically contains a function to invoke and a private map holding key-value pairs.
+The key is the command or option name string and the value is the Parsed data object which
+contains the environment variable and arguments that belong to this certain command or option.</p>
+<dl class="function">
+<dt id="_CPPv4N9Arguments3getERKNSt6stringE">
+<span id="_CPPv3N9Arguments3getERKNSt6stringE"></span><span id="_CPPv2N9Arguments3getERKNSt6stringE"></span><span id="Arguments::get__ssCR"></span>std::string <code class="descname">get</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Arguments3getERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the <a class="reference internal" href="#_CPPv412ArgumentData" title="ArgumentData"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgumentData</span></code></a> object related to the name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9Arguments7set_envERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N9Arguments7set_envERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N9Arguments7set_envERKNSt6stringERKNSt6stringE"></span><span id="Arguments::set_env__ssCR.ssCR"></span>std::string <code class="descname">set_env</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>key</em>, std::string <em class="property">const</em> &amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Arguments7set_envERKNSt6stringERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the environment variable given <cite>key</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9Arguments6appendERKNSt6stringERK12ArgumentData">
+<span id="_CPPv3N9Arguments6appendERKNSt6stringERK12ArgumentData"></span><span id="_CPPv2N9Arguments6appendERKNSt6stringERK12ArgumentData"></span><span id="Arguments::append__ssCR.ArgumentDataCR"></span>void <code class="descname">append</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>key</em>, <a class="reference internal" href="#_CPPv412ArgumentData" title="ArgumentData">ArgumentData</a> <em class="property">const</em> &amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Arguments6appendERKNSt6stringERK12ArgumentData" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append key-value pairs to the map in <a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9Arguments10append_argERKNSt6stringERKNSt6stringE">
+<span id="_CPPv3N9Arguments10append_argERKNSt6stringERKNSt6stringE"></span><span id="_CPPv2N9Arguments10append_argERKNSt6stringERKNSt6stringE"></span><span id="Arguments::append_arg__ssCR.ssCR"></span>void <code class="descname">append_arg</code><span class="sig-paren">(</span>std::string <em class="property">const</em> &amp;<em>key</em>, std::string <em class="property">const</em> &amp;<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Arguments10append_argERKNSt6stringERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Append <cite>value</cite> to the data of <cite>key</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK9Arguments22show_all_configurationEv">
+<span id="_CPPv3NK9Arguments22show_all_configurationEv"></span><span id="_CPPv2NK9Arguments22show_all_configurationEv"></span><span id="Arguments::show_all_configurationC"></span>void <code class="descname">show_all_configuration</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK9Arguments22show_all_configurationEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Show all the called commands, options, and associated arguments.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4N9Arguments6invokeEv">
+<span id="_CPPv3N9Arguments6invokeEv"></span><span id="_CPPv2N9Arguments6invokeEv"></span><span id="Arguments::invoke"></span>void <code class="descname">invoke</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Arguments6invokeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Invoke the function associated with the parsed command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK9Arguments10has_actionEv">
+<span id="_CPPv3NK9Arguments10has_actionEv"></span><span id="_CPPv2NK9Arguments10has_actionEv"></span><span id="Arguments::has_actionC"></span>void <code class="descname">has_action</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK9Arguments10has_actionEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>return true if there is any function to invoke.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="_CPPv412ArgumentData">
+<span id="_CPPv312ArgumentData"></span><span id="_CPPv212ArgumentData"></span><span id="ArgumentData"></span><em class="property">class </em><code class="descname">ArgumentData</code><a class="headerlink" href="#_CPPv412ArgumentData" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><a class="reference internal" href="#_CPPv412ArgumentData" title="ArgumentData"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgumentData</span></code></a> is a struct containing the parsed Environment variable and command line arguments.
+There are methods to get the data out of it.</p>
+<p>Note: More methods can be added later to get specific types from the arguments.</p>
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentDatacvbEv">
+<span id="_CPPv3NK12ArgumentDatacvbEv"></span><span id="_CPPv2NK12ArgumentDatacvbEv"></span><span id="ArgumentData::castto-b-operatorC"></span><code class="descname">operator bool</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentDatacvbEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p><cite>bool</cite> for checking if certain command or option is called.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentDataixEi">
+<span id="_CPPv3NK12ArgumentDataixEi"></span><span id="_CPPv2NK12ArgumentDataixEi"></span><span id="ArgumentData::subscript-operator__iC"></span>std::string <em class="property">const</em> &amp;<code class="descname">operator[]</code><span class="sig-paren">(</span>int <em>x</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12ArgumentDataixEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Index accessing operator.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData3envEv">
+<span id="_CPPv3NK12ArgumentData3envEv"></span><span id="_CPPv2NK12ArgumentData3envEv"></span><span id="ArgumentData::envC"></span>std::string <em class="property">const</em> &amp;<code class="descname">env</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData3envEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the environment variable associated with the argument.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData5beginEv">
+<span id="_CPPv3NK12ArgumentData5beginEv"></span><span id="_CPPv2NK12ArgumentData5beginEv"></span><span id="ArgumentData::beginC"></span>std::<a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv4I0ENSt6vectorE" title="std::vector">vector</a>&lt;std::string&gt;::const_iterator <code class="descname">begin</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData5beginEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Begin iterator for iterating the arguments data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData3endEv">
+<span id="_CPPv3NK12ArgumentData3endEv"></span><span id="_CPPv2NK12ArgumentData3endEv"></span><span id="ArgumentData::endC"></span>std::<a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv4I0ENSt6vectorE" title="std::vector">vector</a>&lt;std::string&gt;::const_iterator <code class="descname">end</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData3endEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>End iterator for iterating the arguments data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData2atEj">
+<span id="_CPPv3NK12ArgumentData2atEj"></span><span id="_CPPv2NK12ArgumentData2atEj"></span><span id="ArgumentData::at__unsignedC"></span>std::string <em class="property">const</em> &amp;<code class="descname">at</code><span class="sig-paren">(</span>unsigned <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12ArgumentData2atEj" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Index accessing method.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData5valueEv">
+<span id="_CPPv3NK12ArgumentData5valueEv"></span><span id="_CPPv2NK12ArgumentData5valueEv"></span><span id="ArgumentData::valueC"></span>std::string <em class="property">const</em> &amp;<code class="descname">value</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData5valueEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the first element of the arguments data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData4sizeEv">
+<span id="_CPPv3NK12ArgumentData4sizeEv"></span><span id="_CPPv2NK12ArgumentData4sizeEv"></span><span id="ArgumentData::sizeC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return the size of the arguments vector</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="_CPPv4NK12ArgumentData5emptyEv">
+<span id="_CPPv3NK12ArgumentData5emptyEv"></span><span id="_CPPv2NK12ArgumentData5emptyEv"></span><span id="ArgumentData::emptyC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">empty</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em> <em class="property">noexcept</em><a class="headerlink" href="#_CPPv4NK12ArgumentData5emptyEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Return true if the arguments vector and env variable are both empty.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id2">
+<h3>ArgParser<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Below is a short example of using the ArgParser. We add some options and some commands to it using different ways.
+This program will have such functionality:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">--switch</span></code>, <code class="docutils literal notranslate"><span class="pre">-s</span></code> as a global switch.</li>
+<li>Command <code class="docutils literal notranslate"><span class="pre">func</span></code> will call <code class="docutils literal notranslate"><span class="pre">function()</span></code> and this command takes 2 argument.</li>
+<li>Command <code class="docutils literal notranslate"><span class="pre">func2</span></code> will call <code class="docutils literal notranslate"><span class="pre">function2(int</span> <span class="pre">num)</span></code>.</li>
+<li>Command <code class="docutils literal notranslate"><span class="pre">init</span></code> has subcommand <code class="docutils literal notranslate"><span class="pre">subinit</span></code> and option <code class="docutils literal notranslate"><span class="pre">--path</span></code> which take 1 argument.</li>
+<li>Command <code class="docutils literal notranslate"><span class="pre">remove</span></code> has option <code class="docutils literal notranslate"><span class="pre">--path</span></code> which takes 1 argument and has <code class="docutils literal notranslate"><span class="pre">HOME</span></code> as the environment variable.</li>
+</ul>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;ts/ArgParser.h&quot;</span><span class="cp"></span>
+
+<span class="kt">void</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">function2</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">ts</span><span class="o">::</span><span class="n">ArgParser</span> <span class="n">parser</span><span class="p">;</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_global_usage</span><span class="p">(</span><span class="s">&quot;traffic_blabla [some stuff]&quot;</span><span class="p">);</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--switch&quot;</span><span class="p">,</span> <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="s">&quot;top level switch&quot;</span><span class="p">);</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;func&quot;</span><span class="p">,</span> <span class="s">&quot;some function&quot;</span><span class="p">,</span> <span class="s">&quot;ENV_VAR&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">function</span><span class="p">);</span>
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;func2&quot;</span><span class="p">,</span> <span class="s">&quot;some function2&quot;</span><span class="p">,</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">]()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">function2</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span> <span class="p">});</span>
+
+    <span class="k">auto</span> <span class="o">&amp;</span><span class="n">init_command</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;init&quot;</span><span class="p">,</span> <span class="s">&quot;initialize&quot;</span><span class="p">);</span>
+    <span class="n">init_command</span><span class="p">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--path&quot;</span><span class="p">,</span> <span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;specify the path&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">init_command</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;subinit&quot;</span><span class="p">,</span> <span class="s">&quot;sub initialize&quot;</span><span class="p">);</span>
+
+    <span class="n">parser</span><span class="p">.</span><span class="n">add_command</span><span class="p">(</span><span class="s">&quot;remove&quot;</span><span class="p">,</span> <span class="s">&quot;remove things&quot;</span><span class="p">).</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--path&quot;</span><span class="p">,</span> <span class="s">&quot;-p&quot;</span><span class="p">,</span> <span class="s">&quot;specify the path&quot;</span><span class="p">,</span> <span class="s">&quot;HOME&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="n">ts</span><span class="o">::</span><span class="n">Arguments</span> <span class="n">parsed_data</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">parse</span><span class="p">(</span><span class="n">argv</span><span class="p">);</span>
+    <span class="n">parsed_data</span><span class="p">.</span><span class="n">invoke</span><span class="p">();</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="arguments">
+<h3>Arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h3>
+<p>To get the values from the arguments data, please refer to the methods in <a class="reference internal" href="#_CPPv49Arguments" title="Arguments"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Arguments</span></code></a> and <a class="reference internal" href="#_CPPv412ArgumentData" title="ArgumentData"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">ArgumentData</span></code></a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../plugins/index.en.html" class="btn btn-neutral float-right" title="Plugin Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Extendible.en.html" class="btn btn-neutral float-left" title="Extendible" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

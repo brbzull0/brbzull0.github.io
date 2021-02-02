@@ -1,0 +1,544 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Plugin Development Introduction &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Getting Started" href="getting-started/index.en.html" />
+    <link rel="prev" title="Plugin Development" href="index.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Plugin Development Introduction</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#roadmap">Roadmap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#asynchronous-event-model">Asynchronous Event Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>Plugin Development Introduction</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/plugins/introduction.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="plugin-development-introduction">
+<span id="developer-plugins-introduction"></span><h1>Plugin Development Introduction<a class="headerlink" href="#plugin-development-introduction" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>This chapter provides a foundation for designing and writing plugins.
+Reading this chapter will help you to understand:</p>
+<ul class="simple">
+<li>The asynchronous event mode. This is the design paradigm used
+throughout Traffic Server; plugins must also follow this design. It
+includes the callback mechanism for Traffic Server to “wake up” your
+plugin and put it to work.</li>
+<li>Traffic Server’s HTTP processing, with an overview of the HTTP state
+machine.</li>
+<li>How plugins can hook onto and modify/extend Traffic Server’s HTTP
+processing.</li>
+<li>A <a class="reference internal" href="#developer-plugins-roadmap"><span class="std std-ref">Roadmap</span></a> with an overview of the functionality
+provided by the Traffic Server API.</li>
+</ul>
+<div class="section" id="roadmap">
+<span id="developer-plugins-roadmap"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
+<p>This chapter has provided an overview of Traffic Server’s HTTP
+processing, API hooks, and the asynchronous event model. Next, you must
+understand the capabilities of Traffic Server API functions. These are
+quite broad:</p>
+<ul>
+<li><p class="first"><strong>HTTP header manipulation functions</strong></p>
+<p>Obtain information about and manipulate HTTP headers, URLs, &amp; MIME
+headers.</p>
+</li>
+<li><p class="first"><strong>HTTP transaction functions</strong></p>
+<p>Get information about and modify HTTP transactions (for example: get
+the client IP associated to the transaction; get the server IP; get
+parent proxy information)</p>
+</li>
+<li><p class="first"><strong>IO functions</strong></p>
+<p>Manipulate vconnections (virtual connections, used for network and
+disk I/O)</p>
+</li>
+<li><p class="first"><strong>Network connection functions</strong></p>
+<p>Open connections to remote servers.</p>
+</li>
+<li><p class="first"><strong>Statistics functions</strong></p>
+<p>Define and compute statistics for your plugin’s activity.</p>
+</li>
+<li><p class="first"><strong>Traffic Server management functions</strong></p>
+<p>Obtain values for Traffic Server configuration and statistics
+variables.</p>
+</li>
+</ul>
+<p>Below are some guidelines for creating a plugin:</p>
+<ol class="arabic simple">
+<li>Decide what you want your plugin to do, based on the capabilities of
+the API and Traffic Server. The two kinds of example plugins
+provided with this SDK are HTTP-based (includes header-based and
+response transform plugins), and non-HTTP-based (a protocol plugin).
+These examples are discussed in the following chapters.</li>
+<li>Determine where your plugin needs to hook on to Traffic Server’s HTTP
+processing (view the <a class="reference internal" href="hooks-and-transactions/index.en.html#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a>).</li>
+<li>Read <a class="reference internal" href="example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a> to learn the basics of
+writing plugins: creating continuations and setting up hooks. If you
+want to write a plugin that transforms data, then read
+<a class="reference internal" href="http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a>.</li>
+<li>Figure out what parts of the Traffic Server API you need to use and
+then read about the details of those APIs in this manual’s reference
+chapters.</li>
+<li>Compile and load your plugin (see <a class="reference internal" href="getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a>).</li>
+<li>Depending on your plugin’s functionality, you might start testing it
+by issuing requests by hand and checking for the desired behavior in
+Traffic Server log files. See the <strong>*Traffic Server Administrator’s
+Guide*</strong> for information about Traffic Server logs.</li>
+</ol>
+</div>
+<div class="section" id="asynchronous-event-model">
+<h2>Asynchronous Event Model<a class="headerlink" href="#asynchronous-event-model" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server is a multi-threaded process. There are two main reasons
+why a server might use multiple threads:</p>
+<ul class="simple">
+<li>To take advantage of the concurrency available with multiple CPUs and
+multiple I/O devices.</li>
+<li>To manage concurrency from having many simultaneous client
+connections. For example, a server could create one thread for each
+connection, allowing the operating system (OS) to control switching
+between threads.</li>
+</ul>
+<p>Traffic Server uses multiple threads for the first reason. However,
+Traffic Server does not use a separate OS thread per transaction because
+it would not be efficient when handling thousands of simultaneous
+connections.</p>
+<p>Instead, Traffic Server provides special event-driven mechanisms for
+efficiently scheduling work: the event system and continuations. The
+<strong>event system</strong> is used to schedule work to be done on threads. A
+<strong>continuation</strong> is a passive, event-driven state machine that can do
+some work until it reaches a waiting point; it then sleeps until it
+receives notification that conditions are right for doing more work. For
+example, HTTP state machines (which handle HTTP transactions) are
+implemented as continuations.</p>
+<p>Continuation objects are used throughout Traffic Server. Some might live
+for the duration of the Traffic Server process, while others are created
+(perhaps by other continuations) for specific needs and then destroyed.
+<a class="reference internal" href="#tsinternals"><span class="std std-ref">Traffic Server Internals</span></a> (below) shows how the major
+components of Traffic Server interact. Traffic Server has several
+<strong>processors</strong>, such as <em>cache processor</em> and <em>net processor</em>, that
+consolidate cache or network I/O tasks. Processors talk to the event
+system and schedule work on threads. An executing thread calls back a
+continuation by sending it an event. When a continuation receives an
+event, it wakes up, does some work, and either destroys itself or goes
+back to sleep &amp; waits for the next event.</p>
+<p><strong>Traffic Server Internals</strong></p>
+<div class="figure" id="id1">
+<span id="tsinternals"></span><img alt="Traffic Server Internals" src="../../_images/event_sys80.jpg" />
+<p class="caption"><span class="caption-text">Traffic Server Internals</span></p>
+</div>
+<p>Plugins are typically implemented as continuations. All of the sample
+code plugins (except <code class="docutils literal notranslate"><span class="pre">hello_world</span></code>) are continuations that are created
+when Traffic Server starts up; they then wait for events that trigger
+them into activity.</p>
+<p><strong>Traffic Server with Plugins</strong></p>
+<div class="figure" id="id2">
+<span id="tswithplugins"></span><img alt="Traffic Server with Plugins" src="../../_images/evt_plugin120.jpg" />
+<p class="caption"><span class="caption-text">Traffic Server with Plugins</span></p>
+</div>
+<p>A plugin may consist of just one static continuation that is called
+whenever certain events happen. Examples of such plugins include
+<code class="docutils literal notranslate"><span class="pre">denylist_1.c</span></code>, <code class="docutils literal notranslate"><span class="pre">basic_auth.c</span></code>, and <code class="docutils literal notranslate"><span class="pre">redirect_1.c</span></code>.
+Alternatively, a plugin might dynamically create other continuations as
+needed. Transform plugins are built in this manner: a static parent
+continuation checks all transactions to see if any are transformable;
+when a transaction is transformable, the static continuation creates a
+type of continuation called a <strong>vconnection</strong>. The vconnection lives as
+long as it takes to complete the transform and then destroys itself.
+This design can be seen in all of the sample transform plugins. Plugins
+that support new protocols also have this architecture: a static
+continuation listens for incoming client connections and then creates
+transaction state machines to handle each protocol transaction.</p>
+<p>When you write plugins, there are several ways to send events to
+continuations. For HTTP plugins, there is a “hook” mechanism that
+enables the Traffic Server HTTP state machine to send your plugin wakeup
+calls when needed. Additionally, several Traffic Server API functions
+trigger Traffic Server sub-processes to send events to plugins:
+<code class="docutils literal notranslate"><span class="pre">TSContCall</span></code>, <code class="docutils literal notranslate"><span class="pre">TSVConnRead</span></code>, <code class="docutils literal notranslate"><span class="pre">TSCacheWrite</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">TSMgmtUpdateRegister</span></code>, to name a few.</p>
+</div>
+<div class="section" id="naming-conventions">
+<h2>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="traffic-server-http-state-machine">
+<h3>Traffic Server HTTP State Machine<a class="headerlink" href="#traffic-server-http-state-machine" title="Permalink to this headline">¶</a></h3>
+<p>Traffic Server performs sophisticated HTTP caching and proxying.
+Important features include checking for alternates and document
+freshness, filtering, supporting cache hierarchies, and hosting. Traffic
+Server handles thousands of client requests at a time and each request
+is handled by an HTTP state machine. These machines follow a complex
+state diagram that includes all of the states required to support
+Traffic Server’s features. The Traffic Server API provides hooks to a
+subset of these states, chosen for their relevance to plugins. You can
+view the API hooks and corresponding HTTP states in the
+<a class="reference internal" href="hooks-and-transactions/index.en.html#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a>.</p>
+<p>The example in this section (below) explains how a plugin typically
+intervenes and extends Traffic Server’s processing of an HTTP
+transaction. Complete details about hooking on to Traffic Server
+processes are provided in <a class="reference internal" href="hooks-and-transactions/index.en.html#developer-plugins-hooks-and-transactions"><span class="std std-ref">Hooks and Transactions</span></a>.</p>
+<div class="section" id="http-transaction">
+<h4>HTTP Transaction<a class="headerlink" href="#http-transaction" title="Permalink to this headline">¶</a></h4>
+<p>An HTTP transaction consists of a client request for a web document and
+Traffic Server’s response. The response could be the requested web
+server content or it could be an error message. The content could come
+from the Traffic Server cache or Traffic Server might fetch it from the
+origin server. The following diagram shows some states in a typical
+transaction - specifically, the scenario wherein content is served from
+cache.</p>
+<p><strong>Simplified HTTP Transaction</strong></p>
+<div class="figure" id="id3">
+<span id="simplifiedhttptransaction"></span><img alt="Simplified HTTP Transaction" src="../../_images/transact75.jpg" />
+<p class="caption"><span class="caption-text">Simplified HTTP Transaction</span></p>
+</div>
+<p>In the diagram above, Traffic Server accepts the client connection,
+reads the request headers, looks up the origin server’s IP address, and
+looks for the requested content in the cache. If the content is not in
+the cache (a “miss”), then Traffic Server opens a connection to the
+origin server and issues a request for the content. If the content is in
+the cache (a “hit”), then Traffic Server checks it for freshness.</p>
+<p>If the content is fresh, then Traffic Server sends a reply header to the
+client. If the content is stale, then Traffic Server opens a connection
+to the origin server and requests the content. The figure above,
+<a class="reference internal" href="#simplifiedhttptransaction"><span class="std std-ref">Simplified HTTP Transaction</span></a>, does not
+show behavior in the event of an error. If there is an error at a any
+stage, then the HTTP state machine jumps to the “send reply header”
+state and sends a reply. If the reply is an error, then the transaction
+closes. If the reply is not an error, then Traffic Server first sends
+the response content before it closes the transaction.</p>
+<p><strong>API Hooks Corresponding to States</strong></p>
+<div class="figure" id="id4">
+<span id="apihookscorrespondingtostates"></span><img alt="API Hooks Corresponding to States Listed in" src="../../_images/transact_hook75.jpg" />
+<p class="caption"><span class="caption-text">API Hooks Corresponding to States Listed in</span></p>
+</div>
+<p>You use hooks as triggers to start your plugin. The name of a hook
+reflects the Traffic Server state that was <em>just completed</em>. For
+example, the “OS DNS lookup” hook wakes up a plugin right <em>after</em> the
+origin server DNS lookup. For a plugin that requires the IP address of
+the requested origin server, this hook is the right one to use. The
+Denylist plugin works in this manner, as shown in the <a class="reference internal" href="#denylistplugin"><span class="std std-ref">Denylist Plugin</span></a>
+diagram below.</p>
+<p><strong>Denylist Plugin</strong></p>
+<div class="figure" id="id5">
+<span id="denylistplugin"></span><img alt="Denylist Plugin" src="../../_images/denylist.jpg" />
+<p class="caption"><span class="caption-text">Denylist Plugin</span></p>
+</div>
+<p>Traffic Server calls the Denylist plugin right after the origin server
+DNS lookup. The plugin checks the requested host against a list of
+denylisted servers; if the request is allowed, then the transaction
+proceeds. If the host is forbidden, then the Denylist plugin sends the
+transaction into an error state. When the HTTP state machine gets to the
+“send reply header” state, it then calls the Denylist plugin to provide
+the error message that’s sent to the client.</p>
+</div>
+<div class="section" id="types-of-hooks">
+<h4>Types of Hooks<a class="headerlink" href="#types-of-hooks" title="Permalink to this headline">¶</a></h4>
+<p>The Denylist plugin’s hook to the origin server DNS lookup state is a <em>global
+hook</em>, meaning that the plugin is called every time there’s an HTTP transaction
+with a DNS lookup event. The plugin’s hook to the send reply header state is a
+<em>transaction hook</em>, meaning that this hook is only invoked for specified
+transactions (in the <a class="reference internal" href="example-plugins/denylist/index.en.html#developer-plugins-examples-denylist"><span class="std std-ref">Denylist Plugin</span></a> example, it’s
+only used for requests to denylisted servers). Several examples of setting up
+hooks are provided in <a class="reference internal" href="example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a> and
+<a class="reference internal" href="http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a>.</p>
+<p><em>Header manipulation plugins</em>, such as filtering, basic authorization,
+or redirects, usually have a global hook to the DNS lookup or the read
+request header states. If specific actions need to be done to the
+transaction further on, then the plugin adds itself to a transaction
+hook. <em>Transformation plugins</em> require a global hook to check
+all transactions for transformability followed by a <em>transform hook</em>,
+which is a type of transaction hook used specifically for transforms.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getting-started/index.en.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Plugin Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>
