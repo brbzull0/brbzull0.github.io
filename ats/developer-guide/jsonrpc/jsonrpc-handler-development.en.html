@@ -215,10 +215,10 @@ few components.</p>
 <div class="section" id="dispatcher-class">
 <h3>Dispatcher class<a class="headerlink" href="#dispatcher-class" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Class that keeps track of all the registered methods and notification that can be invoked by the RPC server. This class holds two
-hash tables containing methods and notification which uses the method name as a key.</li>
+<li>Class that keeps track of all the registered methods and notifications that can be invoked by the RPC server. This class holds two
+hash tables containing methods and notifications which uses the method name as a key.</li>
 <li>This class internally consumes <code class="docutils literal notranslate"><span class="pre">RPCRequestInfo</span></code> objects and performs the invocation of the respective calls.</li>
-<li>This class handles the responses from the registered callbacks and it fills the appropiated <code class="docutils literal notranslate"><span class="pre">RPCResponseInfo</span></code> which then is passed
+<li>This class handlers the responses from the registered callbacks and it fills the appropriated <code class="docutils literal notranslate"><span class="pre">RPCResponseInfo</span></code> which then is passed
 back to the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> class.</li>
 </ul>
 </div>
@@ -227,7 +227,7 @@ back to the <code class="docutils literal notranslate"><span class="pre">JsonRPC
 <ul class="simple">
 <li>Singleton class that handles the JSONRPC handler registration and JSONRPC handler invocation.</li>
 <li>This class is the main entrance point for the RPC server through <code class="docutils literal notranslate"><span class="pre">handle_call(std::string_view</span> <span class="pre">req)</span></code> function.</li>
-<li>this class is the main entrance point for handler to be able to register in the RPC logic. <code class="docutils literal notranslate"><span class="pre">add_notification_handler</span></code> and <code class="docutils literal notranslate"><span class="pre">remove_notification_handler</span></code>.</li>
+<li>This class is the main entrance point for handler to be able to register in the RPC logic. <code class="docutils literal notranslate"><span class="pre">add_notification_handler</span></code> and <code class="docutils literal notranslate"><span class="pre">remove_notification_handler</span></code>.</li>
 </ul>
 </div>
 </div>
@@ -237,7 +237,7 @@ back to the <code class="docutils literal notranslate"><span class="pre">JsonRPC
 the nature of the handler that you want to implement.
 Dealing with incoming and outgoing parameters is up to the developer, we will touch some ways to deal with this through this guide.</p>
 <div class="section" id="design">
-<h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
+<span id="jsonrpc-development-design"></span><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
 <p>As requirement from the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> in order to be able to register inside the RPC management a function should implement the
 following signature:</p>
 <p>Methods:</p>
@@ -249,7 +249,7 @@ following signature:</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Incomming method request’s id will be passed to the handler, this is read only value as the server is expected to respond with the same value.</li>
+<li>Incoming method request’s id will be passed to the handler, this is read only value as the server is expected to respond with the same value.</li>
 <li><code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> params is expected to be a <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> or a <code class="docutils literal notranslate"><span class="pre">Map</span></code>, as per protocol this cannot be a single value, so do not expect things like:
 <code class="docutils literal notranslate"><span class="pre">param=123</span></code> or <code class="docutils literal notranslate"><span class="pre">param=SomeString</span></code>.</li>
 <li>The <code class="docutils literal notranslate"><span class="pre">params</span></code> can be empty and contains no data at all.</li>
@@ -261,7 +261,7 @@ more information in <a class="reference internal" href="jsonrpc-architecture.en.
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If there is no explicit response from the method, the protocol implementation will responde with <span class="xref std std-ref">success_response</span> unless an error
+<p class="last">If there is no explicit response from the method, the protocol implementation will respond with <span class="xref std std-ref">success_response</span> unless an error
 was specified.</p>
 </div>
 </div>
@@ -284,7 +284,7 @@ Please refer to <a href="#id1"><span class="problematic" id="id2">`rpc-error-cod
 will be set in the response.</p>
 </div>
 <ol class="arabic simple">
-<li>Definig a custom error object and include this as a part of the response object.</li>
+<li>Defining a custom error object and include this as a part of the response object.</li>
 </ol>
 <ul class="simple">
 <li>This is up to the developer and the errors can be part of the response <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code>.</li>
@@ -326,7 +326,7 @@ what you are willing to respond, then make sure that the error is not set in the
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Respond with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
+<li><p class="first">Response with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
 have json schemas to enforce any of this on the client side.</p>
 <blockquote>
 <div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span>  ts::Rv&lt;YAML::Node&gt;
@@ -352,14 +352,14 @@ The &quot;error&quot; is part of the ``result``, in this case this could be used
 </div></blockquote>
 </li>
 </ul>
-<p>We have selected the <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code> as message interface as this can hold the actual rrespond and the error.</p>
+<p>We have selected the <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code> as a message interface as this can hold the actual response/error.</p>
 </div>
 <div class="section" id="registration">
 <h3>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h3>
-<p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object. Note that there are a ser of convenient helper
-functions that can be used to achive registration through the singleton object.</p>
+<p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object. Note that there are a set of convenient helper
+functions that can be used to achieve registration through the singleton object.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">rpc</span> <span class="p">{</span>
-    <span class="c1">// this set of function will call the singleton object and perform the same as by using the singleton directly.</span>
+    <span class="c1">// this set of functions will call the singleton object and perform the same as by using the singleton directly.</span>
     <span class="n">add_handler</span><span class="p">(...)</span>
     <span class="n">add_notification_handler</span><span class="p">(...)</span>
 <span class="p">}</span>
@@ -383,7 +383,7 @@ functions that can be used to achive registration through the singleton object.<
 <p>In case of a need to remove a handler from the rpc mechanism, this can also be done, by just using the remove* version of the same
 functions as used to register.</p>
 <p>Notification example:</p>
-<p>As mentioned before, notification does not need to response, as they are fire and forget calls, no id will be provided as part of the api.</p>
+<p>As mentioned before, notifications does not need to respond, as they are “fire and forget” calls, no id will be provided as part of the api.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
 <span class="nf">my_notification_handler</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
 <span class="p">{</span>
@@ -392,7 +392,7 @@ functions as used to register.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Registration for notifications uses a differen API:</p>
+<p>Registration for notifications uses a different API:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;rpc/jsonrpc/JsonRPCManager.h&quot;</span><span class="cp"></span>
 <span class="n">rpc</span><span class="o">::</span><span class="n">JsonRPCManager</span><span class="o">::</span><span class="n">instance</span><span class="p">().</span><span class="n">add_notification_handler</span><span class="p">(</span><span class="s">&quot;admin_server_restart&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">server_shutdown</span><span class="p">);</span>
 </pre></div>

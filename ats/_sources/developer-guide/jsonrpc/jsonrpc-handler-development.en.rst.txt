@@ -38,10 +38,10 @@ This class is the entrance point for both, server calls and registered functions
 Dispatcher class
 ^^^^^^^^^^^^^^^^^
 
-* Class that keeps track of all the registered methods and notification that can be invoked by the RPC server. This class holds two
-  hash tables containing methods and notification which uses the method name as a key.
+* Class that keeps track of all the registered methods and notifications that can be invoked by the RPC server. This class holds two
+  hash tables containing methods and notifications which uses the method name as a key.
 * This class internally consumes ``RPCRequestInfo`` objects and performs the invocation of the respective calls.
-* This class handles the responses from the registered callbacks and it fills the appropiated ``RPCResponseInfo`` which then is passed
+* This class handlers the responses from the registered callbacks and it fills the appropriated ``RPCResponseInfo`` which then is passed
   back to the ``JsonRPCManager`` class.
 
 
@@ -50,7 +50,7 @@ JsonRPCManager class
 
 * Singleton class that handles the JSONRPC handler registration and JSONRPC handler invocation.
 * This class is the main entrance point for the RPC server through ``handle_call(std::string_view req)`` function.
-* this class is the main entrance point for handler to be able to register in the RPC logic. ``add_notification_handler`` and ``remove_notification_handler``.
+* This class is the main entrance point for handler to be able to register in the RPC logic. ``add_notification_handler`` and ``remove_notification_handler``.
 
 
 Implementing new handlers
@@ -59,6 +59,8 @@ Implementing new handlers
 There a a few basic concepts that needs to be known before implementing a new handler, this is an easy process and the complexity depends on
 the nature of the handler that you want to implement.
 Dealing with incoming and outgoing parameters is up to the developer, we will touch some ways to deal with this through this guide.
+
+.. _jsonrpc_development-design:
 
 Design
 ^^^^^^
@@ -81,7 +83,7 @@ Notifications:
     void your_rpc_handler_function_name(YAML::Node const &params);
 
 
-* Incomming method request's id will be passed to the handler, this is read only value as the server is expected to respond with the same value.
+* Incoming method request's id will be passed to the handler, this is read only value as the server is expected to respond with the same value.
 * ``YAML::Node`` params is expected to be a ``Sequence`` or a ``Map``, as per protocol this cannot be a single value, so do not expect things like:
   ``param=123`` or ``param=SomeString``. 
 * The ``params`` can be empty and contains no data at all.
@@ -95,7 +97,7 @@ Notifications:
 
 .. note::
 
-    If there is no explicit response from the method, the protocol implementation will responde with :ref:`success_response` unless an error
+    If there is no explicit response from the method, the protocol implementation will respond with :ref:`success_response` unless an error
     was specified.
 
 
@@ -121,7 +123,7 @@ Please refer to `rpc-error-code`_ and in particular ``ExecutionError = 9``. Also
     Errors have preference over any other response, so if you set both, the errata and the ``YAML::Node`` response, then the former
     will be set in the response.
 
-#. Definig a custom error object and include this as a part of the response object.
+#. Defining a custom error object and include this as a part of the response object.
 
 * This is up to the developer and the errors can be part of the response ``YAML::Node``.
 * The JSONRPC Dispatcher will read that there is no error returned from the call and use the result to build the response. If this is 
@@ -165,7 +167,7 @@ Examples:
 
         ``make_errata`` hides some internal details when creating an errata.
 
-* Respond with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
+* Response with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
   have json schemas to enforce any of this on the client side.
 
 
@@ -192,20 +194,20 @@ Examples:
       }
 
 
-We have selected the ``ts::Rv<YAML::Node>`` as message interface as this can hold the actual rrespond and the error.
+We have selected the ``ts::Rv<YAML::Node>`` as a message interface as this can hold the actual response/error.
 
 
 
 Registration
 ^^^^^^^^^^^^
 
-Handler registration should be done by using the ``JsonRPCManager`` singleton object. Note that there are a ser of convenient helper
-functions that can be used to achive registration through the singleton object.
+Handler registration should be done by using the ``JsonRPCManager`` singleton object. Note that there are a set of convenient helper
+functions that can be used to achieve registration through the singleton object.
 
 .. code-block:: cpp
 
     namespace rpc {
-        // this set of function will call the singleton object and perform the same as by using the singleton directly.
+        // this set of functions will call the singleton object and perform the same as by using the singleton directly.
         add_handler(...)
         add_notification_handler(...)
     }
@@ -236,7 +238,7 @@ functions as used to register.
 
 Notification example:
 
-As mentioned before, notification does not need to response, as they are fire and forget calls, no id will be provided as part of the api.
+As mentioned before, notifications does not need to respond, as they are "fire and forget" calls, no id will be provided as part of the api.
 
 .. code-block:: cpp
 
@@ -247,7 +249,7 @@ As mentioned before, notification does not need to response, as they are fire an
         // all errors will be ignored by the server.
     }
 
-Registration for notifications uses a differen API:
+Registration for notifications uses a different API:
 
 .. code-block:: cpp
 
