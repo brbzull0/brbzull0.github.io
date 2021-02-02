@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="JSONRPC Record Errors" href="RecordError.en.html" />
+    <link rel="next" title="API Handler error codes" href="HandlerError.en.html" />
     <link rel="prev" title="JSONRPC handler implementation" href="jsonrpc-handler-development.en.html" /> 
 </head>
 
@@ -127,7 +127,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#notes">Notes</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="RecordError.en.html">JSONRPC Record Errors</a></li>
 <li class="toctree-l3"><a class="reference internal" href="HandlerError.en.html">API Handler error codes</a></li>
 </ul>
 </li>
@@ -239,10 +238,12 @@ then you should check the existing command to decide where to place it.</p>
 <li>Implement the member function that will be dealing with the particular command, ie: (config_status())</li>
 <li>If a new JsonRPC Message needs to be done, then implement it by deriving from <code class="docutils literal notranslate"><span class="pre">CtrlClientRequest</span></code> if a method is needed, or from
 <code class="docutils literal notranslate"><span class="pre">CtrlClientRequestNotification</span></code> if it’s a notification.         More info can be found here <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-request"><span class="std std-ref">Requests</span></a> and
-<a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development-design"><span class="std std-ref">Design</span></a>.
-This can be done inside the <code class="docutils literal notranslate"><span class="pre">RPCRequest.h</span></code> file. Make sure you override the <code class="docutils literal notranslate"><span class="pre">std::string</span> <span class="pre">get_method()</span> <span class="pre">const</span></code> member
-function with the appropriate api method name.</li>
+<a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development-design"><span class="std std-ref">Design</span></a>. This can be done inside the <code class="docutils literal notranslate"><span class="pre">RPCRequest.h</span></code> file.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure you override the <code class="docutils literal notranslate"><span class="pre">std::string</span> <span class="pre">get_method()</span> <span class="pre">const</span></code> member function with the appropriate api method name.</p>
+</div>
 </div></blockquote>
 </li>
 <li><p class="first">If needed define a new <code class="docutils literal notranslate"><span class="pre">Printer</span></code> derived class inside  the <code class="docutils literal notranslate"><span class="pre">CtrlPrinter</span></code> file.</p>
@@ -373,7 +374,7 @@ that needs to query and print records without any major hassle.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="RecordError.en.html" class="btn btn-neutral float-right" title="JSONRPC Record Errors" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="HandlerError.en.html" class="btn btn-neutral float-right" title="API Handler error codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="jsonrpc-handler-development.en.html" class="btn btn-neutral float-left" title="JSONRPC handler implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

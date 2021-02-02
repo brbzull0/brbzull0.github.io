@@ -253,8 +253,8 @@ When querying for a record(s), in the majority of the cases the record api will 
 =================== ==================== ========================================================================
 Field               Type                 Description
 =================== ==================== ========================================================================
-``record_list``     |arrayrecord|        A list of record |object|. See `RecordRequestObject`_
-``error_list``      |arrayerror|         A list of error |object| . See `RecordErrorObject`_  
+``recordList``      |arrayrecord|         A list of record |object|. See `RecordRequestObject`_
+``errorList``       |arrayerror|          A list of error |object| . See `RecordErrorObject`_  
 =================== ==================== ========================================================================
 
 
@@ -272,7 +272,7 @@ Field               Type          Description
 =================== ============= ===========================================================================
 ``code``            |str|         |optional| An error code that should be used to get a description of the error.(Add error codes)
 ``record_name``     |str|         |optional| The associated record name, this may be omitted sometimes.
-``message``         |str|         |optional| A descriptive message, this may be omitted sometimes.
+``message``         |str|         |optional| A descriptive message. The server can omit this value.
 =================== ============= ===========================================================================
 
 
@@ -289,7 +289,7 @@ Example:
 
 Examples:
 
-#. Request a non existing record and an invalid type match for a record:
+#. Request a non existing record among with an invalid type for a record:
 
    .. code-block:: json
       :linenos:
@@ -316,26 +316,70 @@ Examples:
       :linenos:
       :emphasize-lines: 7, 11
 
-
       {
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "jsonrpc": "2.0",
-         "result": {
-            "errorList": [
-                  {
-                     "code": "2000",
-                     "record_name": "non.existing.record"
-                  },
-                  {
-                     "code": "2007",
-                     "record_name": "proxy.process.http.total_client_connections_ipv4"
-                  }
+         "jsonrpc":"2.0",
+         "result":{
+            "errorList":[
+               {
+                  "code":"2000",
+                  "record_name":"non.existing.record"
+               },
+               {
+                  "code":"2007",
+                  "record_name":"proxy.process.http.total_client_connections_ipv4"
+               }
             ]
-         }
+         },
+         "id":"ded7018e-0720-11eb-abe2-001fc69cc946"
       }
 
    In this case we get the response indicating that the requested fields couldn't be retrieved. See `RecordErrorObject`_ for more details.
 
+.. _RecordErrorObject-Enum:
+
+
+JSONRPC Record Errors
+"""""""""""""""""""""
+
+The following errors could be generated when requesting record from the server.
+
+.. class:: RecordError
+
+   .. enumerator:: RECORD_NOT_FOUND = 2000
+
+      Record not found.
+
+   .. enumerator:: RECORD_NOT_CONFIG = 2001
+
+      Record is not a configuration type.
+
+   .. enumerator:: RECORD_NOT_METRIC = 2002
+
+      Record is not a metric type.
+
+   .. enumerator:: INVALID_RECORD_NAME = 2003
+
+      Invalid Record Name.
+
+   .. enumerator:: VALIDITY_CHECK_ERROR = 2004
+
+      Validity check failed.
+
+   .. enumerator:: GENERAL_ERROR = 2005
+
+      Error reading the record.
+
+   .. enumerator:: RECORD_WRITE_ERROR = 2006
+
+      Generic error while writting the record. ie: RecResetStatRecord() returns  REC_ERR_OKAY
+
+   .. enumerator:: REQUESTED_TYPE_MISMATCH = 2007
+
+      The requested record's type does not match againts the passed type list.
+
+   .. enumerator:: INVALID_INCOMING_DATA = 2008
+
+      This could be caused by an invalid value in the incoming request which may cause the parser to fail.
 
 
 .. _RecordRequestObject:
@@ -398,25 +442,25 @@ Example with config meta:
       :linenos:
 
       {
-         "record": {
-            "config_meta": {
-               "access_type": "2",
-               "check_expr": "null",
-               "checktype": "0",
-               "source": "1",
-               "update_status": "3",
-               "update_type": "2"
+         "record":{
+            "record_name":"proxy.config.diags.debug.tags",
+            "record_type":"3",
+            "version":"0",
+            "raw_stat_block":"0",
+            "order":"421",
+            "config_meta":{
+               "access_type":"0",
+               "update_status":"0",
+               "update_type":"1",
+               "checktype":"0",
+               "source":"3",
+               "check_expr":"null"
             },
-            "current_value": "1.79999995",
-            "data_type": "FLOAT",
-            "default_value": "1",
-            "order": "355",
-            "overridable": "false",
-            "raw_stat_block": "0",
-            "record_class": "1",
-            "record_name": "proxy.config.exec_thread.autoconfig.scale",
-            "record_type": "2",
-            "version": "0"
+            "record_class":"1",
+            "overridable":"false",
+            "data_type":"STRING",
+            "current_value":"rpc",
+            "default_value":"http|dns"
          }
       }
 
@@ -516,46 +560,53 @@ Request a configuration record, no errors:
    .. code-block:: json
 
       {
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "jsonrpc": "2.0",
-         "method": "admin_lookup_records",
-         "params": [{
-            "rec_types": [1],
-            "record_name": "proxy.config.log.rolling_interval_sec"
-         }]
+         "id":"b2bb16a5-135a-4c84-b0a7-8d31ebd82542",
+         "jsonrpc":"2.0",
+         "method":"admin_lookup_records",
+         "params":[
+            {
+               "record_name":"proxy.config.log.rolling_interval_sec",
+               "rec_types":[
+                  "1",
+                  "16"
+               ]
+            }
+         ]
       }
 
 Response:
 
    .. code-block:: json
       
-      {  
-         "jsonrpc": "2.0",
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "result": {
-            "recordList": [{
-               "record": {
-                  "record_name": "proxy.config.log.rolling_interval_sec",
-                  "record_type": "1",
-                  "version": "0",
-                  "raw_stat_block": "0",
-                  "order": "410",
-                  "config_meta": {
-                     "access_type": "0",
-                     "update_status": "0",
-                     "update_type": "1",
-                     "checktype": "1",
-                     "source": "3",
-                     "check_expr": "^[0-9]+$"
-                  },
-                  "record_class": "1",
-                  "overridable": "false",
-                  "data_type": "INT",
-                  "current_value": "86416",
-                  "default_value": "86400"
+      {
+         "jsonrpc":"2.0",
+         "result":{
+            "recordList":[
+               {
+                  "record":{
+                     "record_name":"proxy.config.log.rolling_interval_sec",
+                     "record_type":"1",
+                     "version":"0",
+                     "raw_stat_block":"0",
+                     "order":"410",
+                     "config_meta":{
+                        "access_type":"0",
+                        "update_status":"0",
+                        "update_type":"1",
+                        "checktype":"1",
+                        "source":"3",
+                        "check_expr":"^[0-9]+$"
+                     },
+                     "record_class":"1",
+                     "overridable":"false",
+                     "data_type":"INT",
+                     "current_value":"86400",
+                     "default_value":"86400"
+                  }
                }
-            }]
-         }
+            ]
+         },
+         "id":"b2bb16a5-135a-4c84-b0a7-8d31ebd82542"
       }
 
 
@@ -589,38 +640,40 @@ Response:
       :emphasize-lines: 5-10
 
       {
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "jsonrpc": "2.0",
-         "result": {
-            "errorList": [
-                  {
-                     "code": "2000",
-                     "name": "proxy.config.log.rolling_interv"
+         "jsonrpc":"2.0",
+         "result":{
+            "recordList":[
+               {
+                  "record":{
+                     "record_name":"proxy.config.log.rolling_interval_sec",
+                     "record_type":"1",
+                     "version":"0",
+                     "raw_stat_block":"0",
+                     "order":"410",
+                     "config_meta":{
+                        "access_type":"0",
+                        "update_status":"0",
+                        "update_type":"1",
+                        "checktype":"1",
+                        "source":"3",
+                        "check_expr":"^[0-9]+$"
+                     },
+                     "record_class":"1",
+                     "overridable":"false",
+                     "data_type":"INT",
+                     "current_value":"86400",
+                     "default_value":"86400"
                   }
-            ],
-            "recordList": [{
-               "record": {
-                  "record_name": "proxy.config.log.rolling_interval_sec",
-                  "record_type": "1",
-                  "version": "0",
-                  "raw_stat_block": "0",
-                  "order": "410",
-                  "config_meta": {
-                     "access_type": "0",
-                     "update_status": "0",
-                     "update_type": "1",
-                     "checktype": "1",
-                     "source": "3",
-                     "check_expr": "^[0-9]+$"
-                  },
-                  "record_class": "1",
-                  "overridable": "false",
-                  "data_type": "INT",
-                  "current_value": "86416",
-                  "default_value": "86400"
                }
-            }]
-         }
+            ],
+            "errorList":[
+               {
+                  "code":"2000",
+                  "record_name":"proxy.config.log.rolling_interv"
+               }
+            ]
+         },
+         "id":"ded7018e-0720-11eb-abe2-001fc69cc946"
       }
 
 
@@ -628,7 +681,7 @@ Request using a `regex` instead of the full name.
 
 .. note::
 
-   regex lookups use ``record_name_regex` and not ``record_name``. Check `RecordRequestObject`_ .
+   Regex lookups use ``record_name_regex` and not ``record_name``. Check `RecordRequestObject`_ .
 
 Examples
 ^^^^^^^^
@@ -660,91 +713,68 @@ Examples
    .. code-block:: json
       
       {
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "jsonrpc": "2.0",
-         "result": {
-            "errorList": [
-                  {
-                     "code": "2008",
-                     "message": "Invalid request data provided"
+         "jsonrpc":"2.0",
+         "result":{
+            "recordList":[
+               {
+                  "record":{
+                     "record_name":"proxy.config.exec_thread.autoconfig.scale",
+                     "record_type":"2",
+                     "version":"0",
+                     "raw_stat_block":"0",
+                     "order":"355",
+                     "config_meta":{
+                        "access_type":"2",
+                        "update_status":"0",
+                        "update_type":"2",
+                        "checktype":"0",
+                        "source":"3",
+                        "check_expr":"null"
+                     },
+                     "record_class":"1",
+                     "overridable":"false",
+                     "data_type":"FLOAT",
+                     "current_value":"1",
+                     "default_value":"1"
                   }
-            ],
-            "recordList": [
-                  {
-                     "record": {
-                        "current_value": "0",
-                        "data_type": "COUNTER",
-                        "default_value": "0",
-                        "order": "7",
-                        "overridable": "false",
-                        "raw_stat_block": "9",
-                        "record_class": "2",
-                        "record_name": "proxy.process.http.total_client_connections_ipv4",
-                        "record_type": "4",
-                        "stat_meta": {
-                              "persist_type": "1"
-                        },
-                        "version": "0"
-                     }
-                  },
-                  {
-                     "record": {
-                        "current_value": "0",
-                        "data_type": "COUNTER",
-                        "default_value": "0",
-                        "order": "7",
-                        "overridable": "false",
-                        "raw_stat_block": "9",
-                        "record_class": "2",
-                        "record_name": "proxy.process.http.total_client_connections_ipv4",
-                        "record_type": "4",
-                        "stat_meta": {
-                              "persist_type": "1"
-                        },
-                        "version": "0"
-                     }
-                  },
-                  {
-                     "record": {
-                        "current_value": "0",
-                        "data_type": "COUNTER",
-                        "default_value": "0",
-                        "order": "8",
-                        "overridable": "false",
-                        "raw_stat_block": "10",
-                        "record_class": "2",
-                        "record_name": "proxy.process.http.total_client_connections_ipv6",
-                        "record_type": "4",
-                        "stat_meta": {
-                              "persist_type": "1"
-                        },
-                        "version": "0"
-                     }
-                  },
-                  {
-                     "record": {
-                        "config_meta": {
-                              "access_type": "2",
-                              "check_expr": "null",
-                              "checktype": "0",
-                              "source": "1",
-                              "update_status": "3",
-                              "update_type": "2"
-                        },
-                        "current_value": "1.79999995",
-                        "data_type": "FLOAT",
-                        "default_value": "1",
-                        "order": "355",
-                        "overridable": "false",
-                        "raw_stat_block": "0",
-                        "record_class": "1",
-                        "record_name": "proxy.config.exec_thread.autoconfig.scale",
-                        "record_type": "2",
-                        "version": "0"
-                     }
+               },
+               {
+                  "record":{
+                     "record_name":"proxy.process.http.total_client_connections_ipv4",
+                     "record_type":"4",
+                     "version":"0",
+                     "raw_stat_block":"9",
+                     "order":"7",
+                     "stat_meta":{
+                        "persist_type":"1"
+                     },
+                     "record_class":"2",
+                     "overridable":"false",
+                     "data_type":"COUNTER",
+                     "current_value":"0",
+                     "default_value":"0"
                   }
+               },
+               {
+                  "record":{
+                     "record_name":"proxy.process.http.total_client_connections_ipv6",
+                     "record_type":"4",
+                     "version":"0",
+                     "raw_stat_block":"10",
+                     "order":"8",
+                     "stat_meta":{
+                        "persist_type":"1"
+                     },
+                     "record_class":"2",
+                     "overridable":"false",
+                     "data_type":"COUNTER",
+                     "current_value":"0",
+                     "default_value":"0"
+                  }
+               }
             ]
-         }
+         },
+         "id":"ded7018e-0720-11eb-abe2-001fc69cc946"
       }
 
 
@@ -783,46 +813,46 @@ Examples
       :emphasize-lines: 7-8
 
       {
-         "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
-         "jsonrpc": "2.0",
-         "result": {
-            "errorList": [
-                  {
-                     "code": "2008",
-                     "message": "Invalid request data provided"
+         "jsonrpc":"2.0",
+         "result":{
+            "recordList":[
+               {
+                  "record":{
+                     "record_name":"proxy.config.exec_thread.autoconfig.scale",
+                     "record_type":"2",
+                     "version":"0",
+                     "raw_stat_block":"0",
+                     "order":"355",
+                     "config_meta":{
+                        "access_type":"2",
+                        "update_status":"0",
+                        "update_type":"2",
+                        "checktype":"0",
+                        "source":"3",
+                        "check_expr":"null"
+                     },
+                     "record_class":"1",
+                     "overridable":"false",
+                     "data_type":"FLOAT",
+                     "current_value":"1",
+                     "default_value":"1"
                   }
+               }
             ],
-            "recordList": [
-                  {
-                     "record": {
-                        "config_meta": {
-                              "access_type": "2",
-                              "check_expr": "null",
-                              "checktype": "0",
-                              "source": "1",
-                              "update_status": "3",
-                              "update_type": "2"
-                        },
-                        "current_value": "1.79999995",
-                        "data_type": "FLOAT",
-                        "default_value": "1",
-                        "order": "355",
-                        "overridable": "false",
-                        "raw_stat_block": "0",
-                        "record_class": "1",
-                        "record_name": "proxy.config.exec_thread.autoconfig.scale",
-                        "record_type": "2",
-                        "version": "0"
-                     }
-                  }
+            "errorList":[
+               {
+                  "code":"2008",
+                  "message":"Invalid request data provided"
+               }
             ]
-         }
+         },
+         "id":"ded7018e-0720-11eb-abe2-001fc69cc946"
       }
 
 
 
-   We get a valid record that was  found base on the passed criteria, ``proxy.config.exec_thread.autoconfig.sca*`` and the ``rec_type`` *1*. Check lines 
-
+   We get a valid record that was  found base on the passed criteria, ``proxy.config.exec_thread.autoconfig.sca*`` and the ``rec_type`` *1*.
+   Also we get a particular error that was caused by the invalid rec types ``987``
 
 
 #. Request all config records
@@ -856,7 +886,7 @@ Examples
 
    Response:
 
-   All the configuration records. See `RecordResponse`_.
+   All the configuration records. See `RecordResponse`_. The JSONRPC record handler is not limiting the response size.
 
 
 .. note::
@@ -903,7 +933,7 @@ Example:
 Result
 ^^^^^^
 
-A list of `RecordResponse`_ that were updated. In case of any error, the `RecordErrorObject`_ |object| will be included.
+A list of updated record names. :ref:`RecordErrorObject-Enum` will be included.
 
 Examples
 ^^^^^^^^
@@ -913,7 +943,6 @@ Examples
 
    .. code-block:: json
       :linenos:
-      :emphasize-lines: 4-10
 
       {
          "id": "a32de1da-08be-11eb-9e1e-001fc69cc946",
@@ -932,37 +961,16 @@ Examples
 
    .. code-block:: json
       :linenos:
-      :emphasize-lines: 8, 19
 
       {
-         "id": "cca82da4-08be-11eb-a1cc-001fc69cc946",
-         "jsonrpc": "2.0",
-         "result": [
+         "jsonrpc":"2.0",
+         "result":[
             {
-               "record": {
-                  "access": "2",
-                  "checktype": "0",
-                  "current_value": "1.29999995",
-                  "data_type": "FLOAT",
-                  "default_value": "1",
-                  "name": "proxy.config.exec_thread.autoconfig.scale",
-                  "order": "355",
-                  "overridable": "false",
-                  "raw_stat_block": "0",
-                  "record_class": "1",
-                  "record_type": "2",
-                  "source": "1",
-                  "syntax_check": "null",
-                  "update_status": "3",
-                  "update_type": "2",
-                  "version": "0"
-               }
+               "record_name":"proxy.config.exec_thread.autoconfig.scale"
             }
-         ]
+         ],
+         "id":"a32de1da-08be-11eb-9e1e-001fc69cc946"
       }
-
-   Note that in lines ``8`` and ``19`` you have the  record's name that were just updated. ``current_value`` may reflect the new value.
-
 
 .. _admin_config_reload:
 
@@ -1129,7 +1137,6 @@ This api will only inform for errors during the metric update. Errors will be tr
 
 Examples
 ^^^^^^^^
-
 
 
 * Request.
@@ -1400,7 +1407,7 @@ Examples
 
 The response will contain the default `success_response`
 
-# Response to a server that is already in drain mode.
+# Response from a server that is already in drain mode.
 
    .. code-block:: json
 
@@ -1440,7 +1447,7 @@ Parameters
    Field                   Type          Description
    ======================= ============= ================================================================================================================
    ``tag``                 |str|         A tag name that will be read by the interested plugin 
-   ``data``                |str|         
+   ``data``                |str|         Data to be send, this is |optional|
    ======================= ============= ================================================================================================================
 
 
@@ -1460,8 +1467,8 @@ Examples
          "jsonrpc": "2.0",
          "method": "admin_plugin_send_basic_msg",
          "params": {
-            "data": "world",
-            "tag": "hello"
+            "data": "ping",
+            "tag": "pong"
          }
       }
 
