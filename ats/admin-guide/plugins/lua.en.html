@@ -2497,7 +2497,7 @@ data is returned from the transform handler.</p>
 <h3>ts.http.transaction_count<a class="headerlink" href="#ts-http-transaction-count" title="Permalink to this headline">¶</a></h3>
 <p><strong>syntax:</strong> <em>ts.http.transaction_count()</em></p>
 <p><strong>context:</strong> do_remap/do_os_response or do_global_* or later</p>
-<p><strong>description:</strong> This function returns the number of transaction in this connection</p>
+<p><strong>description:</strong> This function returns the number of transaction in this client connection</p>
 <p>Here is an example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">do_remap</span><span class="p">()</span>
     <span class="n">local</span> <span class="n">count</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">transaction_count</span><span class="p">()</span>
@@ -2506,6 +2506,13 @@ data is returned from the transform handler.</p>
 <span class="n">end</span>
 </pre></div>
 </div>
+<p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
+</div>
+<div class="section" id="ts-http-server-transaction-count">
+<h3>ts.http.server_transaction_count<a class="headerlink" href="#ts-http-server-transaction-count" title="Permalink to this headline">¶</a></h3>
+<p><strong>syntax:</strong> <em>ts.http.server_transaction_count()</em></p>
+<p><strong>context:</strong> do_remap/do_os_response or do_global_* or later</p>
+<p><strong>description:</strong> This function returns the number of transaction in this server connection</p>
 <p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
 </div>
 <div class="section" id="ts-http-redirect-url-set">
@@ -3469,6 +3476,17 @@ of seconds since the beginning of the transaction.</p>
 <p><strong>context:</strong> do_remap/do_os_response or do_global_* or later.</p>
 <p><strong>description:</strong> This function can be used to retrieve the record value which has a string type.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">name</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">mgmt</span><span class="o">.</span><span class="n">get_string</span><span class="p">(</span><span class="s1">&#39;proxy.config.product_name&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
+</div>
+<div class="section" id="ts-mgmt-add-config-file">
+<h3>ts.mgmt.add_config_file<a class="headerlink" href="#ts-mgmt-add-config-file" title="Permalink to this headline">¶</a></h3>
+<p><strong>syntax:</strong> <em>ts.mgmt.add_config_file(parent, filename)</em></p>
+<p><strong>context:</strong> do_remap/do_os_response or do_global_* or later.</p>
+<p><strong>description:</strong> This function invokes <code class="docutils literal notranslate"><span class="pre">TSMgmtConfigFileAdd</span></code> API.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">remap</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">mgmt</span><span class="o">.</span><span class="n">get_string</span><span class="p">(</span><span class="s1">&#39;proxy.config.url_remap.filename&#39;</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">mgmt</span><span class="o">.</span><span class="n">add_config_file</span><span class="p">(</span><span class="n">remap</span><span class="p">,</span> <span class="s1">&#39;/etc/my.config&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>

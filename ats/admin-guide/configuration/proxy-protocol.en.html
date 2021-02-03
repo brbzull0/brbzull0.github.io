@@ -206,7 +206,7 @@ originating client connection information.  This can be done over either HTTP or
 TLS connections.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The current version only supports transforming client IP from PROXY Version 1
+<p class="last">The current version only supports transforming client IP from PROXY Version 1/2
 header to the Forwarded: header.</p>
 </div>
 <p>In the current implementation, the client IP address in the PROXY protocol header
@@ -214,7 +214,7 @@ is passed to the origin server via an HTTP <a class="reference external" href="h
 <p>The Proxy Protocol must be enabled on each port.  See
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> for information on how to enable the
 Proxy Protocol on a port.  Once enabled, all incoming requests must be prefaced
-with the PROXY v1 header.  Any request not preface by this header will be
+with the PROXY v1/v2 header.  Any request not preface by this header will be
 dropped.</p>
 <p>As a security measure, an optional list of trusted IP addresses may be
 configured with <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-proxy-protocol-allowlist" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.proxy_protocol_allowlist</span></code></a>.</p>
@@ -222,7 +222,7 @@ configured with <a class="reference internal" href="../files/records.config.en.h
 <div><div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">If the allowlist is configured, requests will only be accepted from these
-IP addresses and must be prefaced with the PROXY v1 header.</p>
+IP addresses and must be prefaced with the PROXY v1/v2 header.</p>
 </div>
 </div></blockquote>
 <p>See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a> for configuration information.

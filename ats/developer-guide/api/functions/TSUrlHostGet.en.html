@@ -205,6 +205,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPush.en.html">TSHttpTxnServerPush</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerReqGet.en.html">TSHttpTxnServerReqGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerRespGet.en.html">TSHttpTxnServerRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerSsnTransactionCount.en.html">TSHttpTxnServerSsnTransactionCount</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnSsnGet.en.html">TSHttpTxnSsnGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformRespGet.en.html">TSHttpTxnTransformRespGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformedRespCache.en.html">TSHttpTxnTransformedRespCache</a></li>
@@ -444,6 +445,11 @@ const char * <code class="descname">TSUrlSchemeGet</code><span class="sig-paren"
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="c.TSUrlRawSchemeGet">
+const char * <code class="descname">TSUrlRawSchemeGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a><em>&nbsp;bufp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a><em>&nbsp;offset</em>, int *<em>&nbsp;length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUrlRawSchemeGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="c.TSUrlUserGet">
 const char * <code class="descname">TSUrlUserGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a><em>&nbsp;bufp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a><em>&nbsp;offset</em>, int *<em>&nbsp;length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUrlUserGet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -486,12 +492,15 @@ Traffic Server URL API provides access to URL data stored in marshal
 buffers. The URL functions can create, copy, retrieve or delete entire URLs,
 and retrieve or modify parts of URLs, such as their host, port or scheme
 information.</p>
-<p><a class="reference internal" href="#c.TSUrlSchemeGet" title="TSUrlSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlSchemeGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlUserGet" title="TSUrlUserGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlUserGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlPasswordGet" title="TSUrlPasswordGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPasswordGet()</span></code></a>,
+<p><a class="reference internal" href="#c.TSUrlSchemeGet" title="TSUrlSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlSchemeGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlRawSchemeGet" title="TSUrlRawSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlRawSchemeGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlUserGet" title="TSUrlUserGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlUserGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlPasswordGet" title="TSUrlPasswordGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPasswordGet()</span></code></a>,
 <a class="reference internal" href="#c.TSUrlHostGet" title="TSUrlHostGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHostGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlPathGet" title="TSUrlPathGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPathGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlHttpParamsGet" title="TSUrlHttpParamsGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpParamsGet()</span></code></a>, <a class="reference internal" href="#c.TSUrlHttpQueryGet" title="TSUrlHttpQueryGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpQueryGet()</span></code></a>
 and <a class="reference internal" href="#c.TSUrlHttpFragmentGet" title="TSUrlHttpFragmentGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlHttpFragmentGet()</span></code></a> each retrieve an internal pointer to the
 specified portion of the URL from the marshall buffer <em>bufp</em>. The length
 of the returned string is placed in <em>length</em> and a pointer to the URL
 portion is returned.</p>
+<p>If a request URL does not have a explicit scheme, <a class="reference internal" href="#c.TSUrlRawSchemeGet" title="TSUrlRawSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlRawSchemeGet()</span></code></a> will return null and
+set <em>length</em> to zero.  <a class="reference internal" href="#c.TSUrlSchemeGet" title="TSUrlSchemeGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlSchemeGet()</span></code></a>, will return the scheme corresponding to the
+URL type (HTTP or HTTPS) if there is no explicit scheme.</p>
 <p><a class="reference internal" href="#c.TSUrlPortGet" title="TSUrlPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortGet()</span></code></a> retrieves the port number portion of the URL located at
 <em>offset</em> within the marshal buffer <em>bufp</em>. If there is no explicit
 port number in the URL, a canonicalized valued is returned based on the URL

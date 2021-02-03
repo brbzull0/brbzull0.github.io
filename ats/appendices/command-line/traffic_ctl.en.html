@@ -99,6 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cvtremappi.en.html">cvtremappi</a></li>
 <li class="toctree-l3"><a class="reference internal" href="traffic_cache_tool.en.html">traffic_cache_tool</a></li>
 <li class="toctree-l3"><a class="reference internal" href="traffic_crashlog.en.html">traffic_crashlog</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">traffic_ctl</a><ul>
@@ -443,7 +444,9 @@ effect as a disk failure for that storage. This does not persist across restarts
 <a class="reference internal" href="../../developer-guide/api/functions/TSLifecycleHookAdd.en.html#_CPPv4N17TSLifecycleHookID21TS_LIFECYCLE_MSG_HOOKE" title="TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK"><code class="xref cpp cpp-enumerator docutils literal notranslate"><span class="pre">TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK</span></code></a> will receive a callback for that hook.
 The <em>TAG</em> and <em>DATA</em> will be available to the plugin hook processing. It is expected
 that plugins will use <em>TAG</em> to select relevant messages and determine the format of the
-<em>DATA</em>.</p>
+<em>DATA</em>. The <em>DATA</em> is optional and may not be available to consume, if not available then size will be 0
+and the data will be NULL. Any extra passed value beside the tag and the optional data will be ignored.
+Check <a class="reference internal" href="../../developer-guide/api/functions/TSLifecycleHookAdd.en.html#c.TSPluginMsg" title="TSPluginMsg"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSPluginMsg</span></code></a> for more info.</p>
 </dd></dl>
 
 </div>
