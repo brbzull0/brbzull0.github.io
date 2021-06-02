@@ -54,15 +54,15 @@ Server
 IPC
 """
 
-The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style. 
+The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style.
 The implementation runs on a dedicated ``TSThread`` and as their style express, this performs blocking calls to all the registered handlers.
-Configuration for this particular server style can be found in the admin section :ref:`admnin-jsonrpc-configuration`. 
+Configuration for this particular server style can be found in the admin section :ref:`admnin-jsonrpc-configuration`.
 
 
 Using the JSONRPC mechanism
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As a user, currently,  :program:`traffic_ctl` exercise this new protocol, please refer to the :ref:`traffic_ctl_jsonrpc` section.
+As a user, currently,  :program:`traffic_ctl` exercises this new protocol, please refer to the :ref:`traffic_ctl_jsonrpc` section.
 
 As a developer, please refer to the :ref:`jsonrpc_development` for a more detailed guide.
 
@@ -73,7 +73,7 @@ JSON Parsing
 
 Our JSONRPC  protocol implementation uses lib yamlcpp for parsing incoming and outgoing requests,
 this allows the server to accept either JSON or YAML format messages which then will be parsed by the protocol implementation. This seems handy
-for user that want to feed |TS| with existing yaml configuration without the need to translate yaml into json.  
+for user that want to feed |TS| with existing yaml configuration without the need to translate yaml into json.
 
 .. note::
 
@@ -105,19 +105,19 @@ Overview
 ========
 
 .. note::
-   
-   Although most of the protocol specs are granted, we do have implemented some exceptions. All the modifications we have implemented will
-   be documented.
+
+   Although most of the protocol specs are granted, we have implemented some exceptions. All the modifications will be properly documented.
 
 
 There are a set  of mandatory fields that must be included in a `JSONRPC`_ message as well as some optional fields, all this is documented here,
-you also can find this information in the `JSONRPC`_ link. 
+you also can find this information in the `JSONRPC`_ link.
 
 .. _jsonrpc-request:
 
 Requests
 ^^^^^^^^
 
+Please find the `jsonrpc 2.0 request` schema for reference ( `mgmt2/rpc/schema/jsonrpc_request_schema.json` ).
 
 * Mandatory fields.
 
@@ -135,7 +135,7 @@ Requests
 
 
    * ``params``:
-      
+
       A Structured value that holds the parameter values to be used during the invocation of the method. This member
       **may** be omitted. If passed then a parameters for the rpc call **must** be provided as a Structured value.
       Either by-position through an Array or by-name through an Object.
@@ -205,6 +205,10 @@ Responses
 Although each individual API call will describe the response details and some specific errors, in this section we will describe a high
 level protocol response, some defined by the `JSONRPC`_ specs and some by |TS|
 
+Please find the `jsonrpc 2.0 response` schema for reference( `mgmt2/rpc/schema/jsonrpc_response_schema.json` ).
+
+
+
 The responses have the following structure:
 
 
@@ -213,7 +217,9 @@ The responses have the following structure:
    ============ ======== ==============================================
    ``jsonrpc``  |strnum| A Number that indicates the error type that occurred.
    ``result``            Result of the invoked operation. See `jsonrpc-result`_
-   ``id``       |strnum| It will be the same as the value of the id member in the `jsonrpc-request`_
+   ``id``       |strnum| It will be the same as the value of the id member in the `jsonrpc-request`_ .
+                         We will not be using `null` if the `id` could not be fetch from the request,
+                         in that case the field will not be set.
    ``error``    |object| Error object, it will be present in case of an error. See `jsonrpc-error`_
    ============ ======== ==============================================
 
@@ -222,7 +228,7 @@ Example 1:
 Request
 
    .. code-block:: json
-   
+
       {
          "jsonrpc": "2.0",
          "result": ["hello", 5],
@@ -334,7 +340,7 @@ Request:
 Response:
 
    .. code-block:: json
-      
+
       {
          "jsonrpc":"2.0",
          "result":{
@@ -419,7 +425,7 @@ Parse Error.
 
 
    .. code-block:: json
-      
+
       {
          "jsonrpc":"2.0",
          "error":{
@@ -441,7 +447,7 @@ Request:
          "jsonrpc":"2.0",
          "method":"some_non_existing_method",
          "params":{
-            
+
          }
       }
 
@@ -491,14 +497,14 @@ Some of this errors are already defined by the `JSONRPC`_ specs and some (``>=1`
    .. enumerator:: InvalidMethodType = 4
 
       The passed method field type is invalid. **must** be a **string**
-   
+
    .. enumerator:: MissingMethod = 5
 
       Method field is missing from the request. This field is mandatory.
 
    .. enumerator:: InvalidParamType = 6
 
-      The passed parameter field type is not valid. 
+      The passed parameter field type is not valid.
 
    .. enumerator:: InvalidIdType = 7
 

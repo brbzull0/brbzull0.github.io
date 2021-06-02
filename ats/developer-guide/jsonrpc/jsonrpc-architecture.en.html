@@ -221,7 +221,7 @@ Configuration for this particular server style can be found in the admin section
 </div>
 <div class="section" id="using-the-jsonrpc-mechanism">
 <h3>Using the JSONRPC mechanism<a class="headerlink" href="#using-the-jsonrpc-mechanism" title="Permalink to this headline">¶</a></h3>
-<p>As a user, currently,  <strong class="program">traffic_ctl</strong> exercise this new protocol, please refer to the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> section.</p>
+<p>As a user, currently,  <strong class="program">traffic_ctl</strong> exercises this new protocol, please refer to the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> section.</p>
 <p>As a developer, please refer to the <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">JSONRPC handler implementation</span></a> for a more detailed guide.</p>
 </div>
 <div class="section" id="json-parsing">
@@ -254,13 +254,13 @@ over http, or in many various message passing environments. It uses JSON (<a cla
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Although most of the protocol specs are granted, we do have implemented some exceptions. All the modifications we have implemented will
-be documented.</p>
+<p class="last">Although most of the protocol specs are granted, we have implemented some exceptions. All the modifications will be properly documented.</p>
 </div>
 <p>There are a set  of mandatory fields that must be included in a <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> message as well as some optional fields, all this is documented here,
 you also can find this information in the <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> link.</p>
 <div class="section" id="requests">
 <span id="jsonrpc-request"></span><h3>Requests<a class="headerlink" href="#requests" title="Permalink to this headline">¶</a></h3>
+<p>Please find the <cite>jsonrpc 2.0 request</cite> schema for reference ( <cite>mgmt2/rpc/schema/jsonrpc_request_schema.json</cite> ).</p>
 <ul>
 <li><p class="first">Mandatory fields.</p>
 <blockquote>
@@ -358,11 +358,12 @@ notification and the client should not expect any response back from the server.
 <span id="jsonrpc-response"></span><h3>Responses<a class="headerlink" href="#responses" title="Permalink to this headline">¶</a></h3>
 <p>Although each individual API call will describe the response details and some specific errors, in this section we will describe a high
 level protocol response, some defined by the <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> specs and some by Traffic Server</p>
+<p>Please find the <cite>jsonrpc 2.0 response</cite> schema for reference( <cite>mgmt2/rpc/schema/jsonrpc_response_schema.json</cite> ).</p>
 <p>The responses have the following structure:</p>
 <blockquote>
 <div><table border="1" class="docutils">
 <colgroup>
-<col width="13%" />
+<col width="12%" />
 <col width="8%" />
 <col width="79%" />
 </colgroup>
@@ -383,7 +384,9 @@ level protocol response, some defined by the <a class="reference external" href=
 </tr>
 <tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">id</span></code></td>
 <td><em>string|number</em></td>
-<td>It will be the same as the value of the id member in the <a class="reference internal" href="#jsonrpc-request">jsonrpc-request</a></td>
+<td>It will be the same as the value of the id member in the <a class="reference internal" href="#jsonrpc-request">jsonrpc-request</a> .
+We will not be using <cite>null</cite> if the <cite>id</cite> could not be fetch from the request,
+in that case the field will not be set.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">error</span></code></td>
 <td><em>object</em></td>

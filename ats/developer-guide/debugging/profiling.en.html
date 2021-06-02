@@ -107,7 +107,11 @@
 <li class="toctree-l3"><a class="reference internal" href="using-tsassert.en.html">Using TSAssert</a></li>
 <li class="toctree-l3"><a class="reference internal" href="debug-tags.en.html">Debug Tags</a></li>
 <li class="toctree-l3"><a class="reference internal" href="core-dump-analysis.en.html">Core Dump Analysis</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Profiling</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Profiling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#perf">perf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gperf">gperf</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="memory-leaks.en.html">Memory Leaks</a></li>
 </ul>
 </li>
@@ -200,6 +204,37 @@
             
   <div class="section" id="profiling">
 <span id="developer-profiling"></span><h1>Profiling<a class="headerlink" href="#profiling" title="Permalink to this headline">¶</a></h1>
+<p>There are two main options for performance profiling: perf and gperf.</p>
+<div class="section" id="perf">
+<h2>perf<a class="headerlink" href="#perf" title="Permalink to this headline">¶</a></h2>
+<p>The perf top option is useful to quickly identify functions that are taking a larger than expected
+portion of the execution time.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo perf top -p `pidof traffic_server`
+</pre></div>
+</div>
+<p>For more details use the record subcommand to gather profiling data on the traffic_server process.  Using
+the -g option will gather call stack information.  Compiling with -ggdb and -fno-omit-frame-pointer
+will make it more likely that perf record will gather complete callstacks.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo perf record -g -p `pidof traffic_server`
+</pre></div>
+</div>
+<p>After gathering profilng data with perf record, use perf report to display the call stacks with their corresponding
+contribution to total execution time.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">perf</span> <span class="n">report</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="gperf">
+<h2>gperf<a class="headerlink" href="#gperf" title="Permalink to this headline">¶</a></h2>
+<p>Gperftools also provides libraries to statistically sample the callstacks of a process.  The –with-profile=yes option for configure will
+link with the gperftools profiling library and add profile stop and profile dump function calls at the beginning and end of the traffic_server
+main function.  The profilng data will be dumped in /tmp/ts.prof.</p>
+<p>Once the profiling data file is present, you can use the pprof tool to generate a pdf callgraph of the data to see which
+call stacks contribute most to the execution time.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pprof</span> <span class="o">--</span><span class="n">pdf</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="mf">9.0</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">traffic_server</span> <span class="n">ts</span><span class="o">.</span><span class="n">prof</span> <span class="o">&gt;</span> <span class="n">prof</span><span class="o">.</span><span class="n">pdf</span>
+</pre></div>
+</div>
+</div>
 </div>
 
 

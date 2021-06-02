@@ -308,13 +308,14 @@ Traffic Server tries to use a private key in client_cert.  Otherwise,
 <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-private-key-filename" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.private_key.filename</span></code></a> is used.</p>
 </td>
 </tr>
-<tr class="row-even"><td>http2</td>
+<tr class="row-even"><td>client_sni_policy</td>
+<td><p class="first">Policy of SNI on outbound connection.</p>
+<p class="last">If not specified, the value of <a class="reference internal" href="records.config.en.html#proxy-config-ssl-client-sni-policy" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.client.sni_policy</span></code></a> is used.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>http2</td>
 <td>Indicates whether the H2 protocol should be added to or removed from the
 protocol negotiation list.  The valid values are <code class="code docutils literal notranslate"><span class="pre">on</span></code> or <code class="code docutils literal notranslate"><span class="pre">off</span></code>.</td>
-</tr>
-<tr class="row-odd"><td>disable_h2</td>
-<td>Deprecated for the more general h2 setting.  Setting disable_h2
-to <code class="code docutils literal notranslate"><span class="pre">true</span></code> is the same as setting http2 to <code class="code docutils literal notranslate"><span class="pre">on</span></code>.</td>
 </tr>
 <tr class="row-even"><td>tunnel_route</td>
 <td><p class="first">Destination as an FQDN and port, separated by a colon <code class="docutils literal notranslate"><span class="pre">:</span></code>.
@@ -337,6 +338,12 @@ need to be HTTP.</p>
 In addition partial_blind_route creates a new TLS connection to the specified origin.
 It does not interpret the decrypted data before passing it to the origin TLS
 connection, so the contents do not need to be HTTP.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>tunnel_alpn</td>
+<td><p class="first">List of ALPN Protocol Ids for Partial Blind Tunnel.</p>
+<p class="last">ATS negotiates application protocol with the client on behalf of the origin server.
+This only works with <code class="docutils literal notranslate"><span class="pre">partial_blind_route</span></code>.</p>
 </td>
 </tr>
 </tbody>

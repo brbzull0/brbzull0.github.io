@@ -465,6 +465,11 @@ int <code class="descname">TSUrlPortGet</code><span class="sig-paren">(</span><a
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="c.TSUrlRawPortGet">
+int <code class="descname">TSUrlRawPortGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a><em>&nbsp;bufp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a><em>&nbsp;offset</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUrlRawPortGet" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="c.TSUrlPathGet">
 const char * <code class="descname">TSUrlPathGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a><em>&nbsp;bufp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a><em>&nbsp;offset</em>, int *<em>&nbsp;length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUrlPathGet" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -505,16 +510,20 @@ URL type (HTTP or HTTPS) if there is no explicit scheme.</p>
 <em>offset</em> within the marshal buffer <em>bufp</em>. If there is no explicit
 port number in the URL, a canonicalized valued is returned based on the URL
 scheme.</p>
+<p><a class="reference internal" href="#c.TSUrlRawPortGet" title="TSUrlRawPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlRawPortGet()</span></code></a> also retrieves the port number portion of the URL located at
+<em>offset</em> within the marshal buffer <em>bufp</em>. If there is no explicit
+port number in the URL, zero is returned.</p>
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<p>All APIs except <a class="reference internal" href="#c.TSUrlPortGet" title="TSUrlPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortGet()</span></code></a> returns a string, which is not guaranteed
-to be NULL terminated. You must therefore always use the <em>length</em> value
+<p>All APIs except <a class="reference internal" href="#c.TSUrlPortGet" title="TSUrlPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortGet()</span></code></a> and <a class="reference internal" href="#c.TSUrlRawPortGet" title="TSUrlRawPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlRawPortGet()</span></code></a> return a string, which is
+not guaranteed to be NULL terminated. You must therefore always use the <em>length</em> value
 to determine the actual length of the returned string.</p>
 <p><a class="reference internal" href="#c.TSUrlPortGet" title="TSUrlPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlPortGet()</span></code></a> simply returns the port number as an integer, possibly
 canonicalized with <code class="docutils literal notranslate"><span class="pre">80</span></code> for HTTP and <code class="docutils literal notranslate"><span class="pre">443</span></code> for HTTPS schemes. If
 there is neither port nor scheme information available in the URL, <code class="docutils literal notranslate"><span class="pre">0</span></code>
-is returned.</p>
+is returned. <a class="reference internal" href="#c.TSUrlRawPortGet" title="TSUrlRawPortGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlRawPortGet()</span></code></a>, by contrast, returns 0 in all cases where the
+port is not explicitly present in the URL.</p>
 </div>
 <div class="section" id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>

@@ -206,11 +206,8 @@ originating client connection information.  This can be done over either HTTP or
 TLS connections.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The current version only supports transforming client IP from PROXY Version 1/2
-header to the Forwarded: header.</p>
+<p class="last">The current implementation doesn’t support TLV fields of Version 2.</p>
 </div>
-<p>In the current implementation, the client IP address in the PROXY protocol header
-is passed to the origin server via an HTTP <a class="reference external" href="https://tools.ietf.org/html/rfc7239">Forwarded:</a> header.</p>
 <p>The Proxy Protocol must be enabled on each port.  See
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> for information on how to enable the
 Proxy Protocol on a port.  Once enabled, all incoming requests must be prefaced
@@ -225,10 +222,17 @@ configured with <a class="reference internal" href="../files/records.config.en.h
 IP addresses and must be prefaced with the PROXY v1/v2 header.</p>
 </div>
 </div></blockquote>
-<p>See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a> for configuration information.
+<ol class="arabic simple">
+<li>HTTP Forwarded Header</li>
+</ol>
+<p>The client IP address in the PROXY protocol header is passed to the origin server via an HTTP <a class="reference external" href="https://tools.ietf.org/html/rfc7239">Forwarded:</a> header. See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a> for configuration information.
 Detection of the PROXY protocol header is automatic.  If the PROXY header
 precludes the request, it will automatically be parse and made available to the
 Forwarded: request header sent to the origin server.</p>
+<ol class="arabic simple" start="2">
+<li>Outbound PROXY protocol</li>
+</ol>
+<p>See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-proxy-protocol-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.proxy_protocol_out</span></code></a> for configuration information.</p>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
 <p>As an example, consider the following topology:</p>

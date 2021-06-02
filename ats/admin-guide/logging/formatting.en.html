@@ -319,8 +319,8 @@ cache while attempting to service incoming client requests.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="5%" />
-<col width="15%" />
-<col width="79%" />
+<col width="14%" />
+<col width="81%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Field</th>
@@ -349,7 +349,8 @@ Cache Result Code.</td>
 <td>Proxy Cache</td>
 <td>Cache Hit-Miss status. Specifies the level of cache from
 which this request was served by Traffic Server. Currently supports
-only RAM (<code class="docutils literal notranslate"><span class="pre">HIT_RAM</span></code>) vs disk (<code class="docutils literal notranslate"><span class="pre">HIT_DISK</span></code>).</td>
+only RAM (<code class="docutils literal notranslate"><span class="pre">HIT_RAM</span></code>), disk (<code class="docutils literal notranslate"><span class="pre">HIT_DISK</span></code>) and Read While Write (<code class="docutils literal notranslate"><span class="pre">HIT_RWW</span></code>).
+HIT_RWW could imply either HIT_RAM or HIT_DISK.</td>
 </tr>
 <tr class="row-even"><td>cwr</td>
 <td>Proxy Cache</td>
@@ -963,12 +964,16 @@ Use <code class="docutils literal notranslate"><span class="pre">cqpv</span></co
 <td>Client Request</td>
 <td>Client request protocol and version.</td>
 </tr>
-<tr class="row-even"><td>csshv</td>
+<tr class="row-even"><td>sqpv</td>
+<td>Proxy Request</td>
+<td>Origin negotiated protocol and version</td>
+</tr>
+<tr class="row-odd"><td>csshv</td>
 <td>Cached Proxy Response</td>
 <td>Origin server’s HTTP version from cached version of
 the document in Traffic Server proxy cache.</td>
 </tr>
-<tr class="row-odd"><td>sshv</td>
+<tr class="row-even"><td>sshv</td>
 <td>Origin Response</td>
 <td>Origin server’s response HTTP version.</td>
 </tr>
@@ -1005,7 +1010,7 @@ URL.</td>
 </div>
 <div class="section" id="ssl-encryption">
 <span id="admin-logging-fields-ssl"></span><h3>SSL / Encryption<a class="headerlink" href="#ssl-encryption" title="Permalink to this headline">¶</a></h3>
-<p id="pscert"><span id="pqssl"></span><span id="cqssu"></span><span id="cqssc"></span><span id="cqssv"></span><span id="cqssr"></span><span id="cqssl"></span><span id="cscert"></span><span id="cssn"></span>Fields which expose the use, or lack thereof, of specific SSL and encryption
+<p id="pscert"><span id="pqssl"></span><span id="cqssa"></span><span id="cqssu"></span><span id="cqssc"></span><span id="cqssv"></span><span id="cqssr"></span><span id="cqssl"></span><span id="cscert"></span><span id="cssn"></span>Fields which expose the use, or lack thereof, of specific SSL and encryption
 features.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1057,12 +1062,16 @@ handshake.</td>
 <td>SSL Elliptic Curve used by Traffic Server to communicate with the
 client when using an ECDHE cipher.</td>
 </tr>
-<tr class="row-odd"><td>pqssl</td>
+<tr class="row-odd"><td>cqssa</td>
+<td>Client Request</td>
+<td>ALPN Protocol ID negotiated with the client.</td>
+</tr>
+<tr class="row-even"><td>pqssl</td>
 <td>Proxy Request</td>
 <td>Indicates whether the connection from Traffic Server to the origin
 was over SSL or not.</td>
 </tr>
-<tr class="row-even"><td>pscert</td>
+<tr class="row-odd"><td>pscert</td>
 <td>Proxy Request</td>
 <td>1 if origin requested certificate from Traffic Server during TLS
 handshake but no client certificate was defined. 2 if origin

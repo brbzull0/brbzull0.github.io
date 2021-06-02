@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cert Reporting Tool Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>Rate Limit Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
@@ -39,8 +39,8 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Collapsed Forwarding Plugin" href="collapsed_forwarding.en.html" />
-    <link rel="prev" title="Certifier Plugin" href="certifier.en.html" /> 
+    <link rel="next" title="Signed URL Plugin" href="url_sig.en.html" />
+    <link rel="prev" title="MySQL Remap Plugin" href="mysql_remap.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -109,7 +109,7 @@
 <li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
 <li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
 <li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
 <li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
@@ -125,7 +125,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
-<li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Rate Limit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
@@ -199,13 +199,13 @@
         
           <li><a href="index.en.html">Plugins</a> &raquo;</li>
         
-      <li>Cert Reporting Tool Plugin</li>
+      <li>Rate Limit Plugin</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/admin-guide/plugins/cert_reporting_tool.en.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/admin-guide/plugins/rate_limit.en.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -218,30 +218,107 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cert-reporting-tool-plugin">
-<span id="admin-plugins-cert-reporting-tool"></span><h1>Cert Reporting Tool Plugin<a class="headerlink" href="#cert-reporting-tool-plugin" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="description">
-<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">cert</span> <span class="pre">reporting</span> <span class="pre">tool</span></code> can examine and log loaded certificates information like SAN and expiration date.
-User will send plugin message to trigger the reporting/logging.</p>
-<p>The log format for <code class="docutils literal notranslate"><span class="pre">cert_reporting_tool.log</span></code> is as followed:
-[time] [Lookup Name] [Subject] [SAN] [serial] [NotAfter]</p>
-</div>
-<div class="section" id="plugin-configuration">
-<h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Simply put the name <cite>cert_reporting_tool.so</cite> in plugin.config</li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> command.</dt>
-<dd><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">cert_reporting_tool.client</span> <span class="pre">1</span></code> - Triggers reporting/logging for client certs.</dd>
+  <div class="section" id="rate-limit-plugin">
+<span id="admin-plugins-rate-limit"></span><h1>Rate Limit Plugin<a class="headerlink" href="#rate-limit-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The <strong class="program">rate_limit</strong> plugin provides basic mechanism for how much
+traffic a particular service (remap rule) is allowed to do. Currently,
+the only implementation is a limit on how many active client transactions
+a service can have. However, it would be easy to refactor this plugin to
+allow for adding new limiter policies later on.</p>
+<p>The limit counters and queues are per remap rule only, i.e. there is
+(currently) no way to group transaction limits from different remap rules
+into a single rate limiter.</p>
+<p>All configuration is done via <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, and the following options
+are available:</p>
+<dl class="option">
+<dt id="cmdoption-rate-limit-limit">
+<code class="descname">--limit</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of active client transactions.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rate-limit-queue">
+<code class="descname">--queue</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the limit (above) has been reached, all new transactions are placed
+on a FIFO queue. This option (optional) sets an upper bound on how many
+queued transactions we will allow. When this threshold is reached, all
+additional transactions are immediately served with an error message.</p>
+<p>The queue is effectively disabled if this is set to <cite>0</cite>, which implies
+that when the transaction limit is reached, we immediately start serving
+error responses.</p>
+<p>The default queue size is <cite>UINT_MAX</cite>, which is essentially unlimited.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rate-limit-error">
+<code class="descname">--error</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-error" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional HTTP status error code, to be used together with the
+<a class="reference internal" href="#cmdoption-rate-limit-queue"><code class="xref std std-option docutils literal notranslate"><span class="pre">--queue</span></code></a> option above. The default is <cite>429</cite>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rate-limit-retry">
+<code class="descname">--retry</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional retry-after value, which if set will cause rejected (e.g. <cite>429</cite>)
+responses to also include a header <cite>Retry-After</cite>.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rate-limit-header">
+<code class="descname">--header</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-header" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an optional HTTP header name, which will be added to the client
+request header IF the transaction was delayed (queued). The value of the
+header is the delay, in milliseconds. This can be useful to for example
+log the delays for later analysis.</p>
+<p>It is recommended that an <cite>&#64;</cite> header is used here, e.g. <cite>&#64;RateLimit-Delay</cite>,
+since this header will not leave the ATS server instance.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-rate-limit-maxage">
+<code class="descname">--maxage</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-maxage" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional <cite>max-age</cite> for how long a transaction can sit in the delay queue.
+The value (default 0) is the age in milliseconds.</p>
+</dd></dl>
+
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This example shows a simple rate limiting of <cite>128</cite> concurrently active client
+transactions, with a maximum queue size of <cite>256</cite>. The default of HTTP status
+code <cite>429</cite> is used when queue is full.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>map <a class="reference external" href="http://cdn.example.com/">http://cdn.example.com/</a> <a class="reference external" href="http://some-server.example.com">http://some-server.example.com</a> </dt>
+<dd>&#64;plugin=rate_limit.so &#64;pparam=–limit=128 &#64;pparam=–queue=256</dd>
 </dl>
-</li>
-</ul>
-</div>
-<div class="section" id="example-usage">
-<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<p>Start traffic server with cert_reporting_tool loaded, then use traffic_ctl to send plugin message:
-<code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">cert_reporting_tool.client</span> <span class="pre">1</span></code></p>
+</div></blockquote>
+<p>This example would put a hard transaction (in) limit to 256, with no backoff
+queue, and add a header with the transaction delay if it was queued:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>map <a class="reference external" href="http://cdn.example.com/">http://cdn.example.com/</a> <a class="reference external" href="http://some-server.example.com">http://some-server.example.com</a> </dt>
+<dd>&#64;plugin=rate_limit.so &#64;pparam=–limit=256 &#64;pparam=–queue=0 &#64;pparam=-<a class="reference external" href="mailto:-header=&#37;&#52;&#48;RateLimit-Delay">-header=<span>&#64;</span>RateLimit-Delay</a></dd>
+</dl>
+</div></blockquote>
+<p>This final example will limit the active transaction, queue size, and also
+add a <cite>Retry-After</cite> header once the queue is full and we return a <cite>429</cite> error:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>map <a class="reference external" href="http://cdn.example.com/">http://cdn.example.com/</a> <a class="reference external" href="http://some-server.example.com">http://some-server.example.com</a> </dt>
+<dd>&#64;plugin=rate_limit.so &#64;pparam=–limit=256 &#64;pparam=–queue=1024 &#64;pparam=–retry=3600 &#64;pparam=-<a class="reference external" href="mailto:-header=&#37;&#52;&#48;RateLimit-Delay">-header=<span>&#64;</span>RateLimit-Delay</a></dd>
+</dl>
+</div></blockquote>
+<p>In this case, the response would look like this when the queue is full:</p>
+<blockquote>
+<div>HTTP/1.1 429 Too Many Requests
+Date: Fri, 26 Mar 2021 22:42:38 GMT
+Connection: keep-alive
+Server: ATS/10.0.0
+Cache-Control: no-store
+Content-Type: text/html
+Content-Language: en
+Retry-After: 3600
+Content-Length: 207</div></blockquote>
 </div>
 </div>
 
@@ -253,10 +330,10 @@ User will send plugin message to trigger the reporting/logging.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="collapsed_forwarding.en.html" class="btn btn-neutral float-right" title="Collapsed Forwarding Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="url_sig.en.html" class="btn btn-neutral float-right" title="Signed URL Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="certifier.en.html" class="btn btn-neutral float-left" title="Certifier Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="mysql_remap.en.html" class="btn btn-neutral float-left" title="MySQL Remap Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

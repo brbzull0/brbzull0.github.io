@@ -460,23 +460,7 @@ should an attempt timeout. The timeout applies from the moment Traffic Server be
 connection attempt until the origin fully establishes a connection (the connection is ready to write).
 After the connection is established the value of
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-transaction-no-activity-timeout-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_out</span></code></a> is used to established timeouts on the data over the connection.</p>
-<p>In the case where you wish to have a different (generally longer) timeout for
-<code class="docutils literal notranslate"><span class="pre">POST</span></code> and <code class="docutils literal notranslate"><span class="pre">PUT</span></code> connections to an origin server, you may also adjust
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-post-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post_connect_attempts_timeout</span></code></a> which applies only to
-origin connections using those HTTP verbs.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">30</span>
-<span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">post_connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">1800</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="parent-proxy-timeout">
-<h4>Parent Proxy Timeout<a class="headerlink" href="#parent-proxy-timeout" title="Permalink to this headline">¶</a></h4>
-<p>In hierarchical caching configurations, the <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-parent-proxy-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.connect_attempts_timeout</span></code></a>
-setting is used for all connection attempts to parent caches. It may be useful,
-in cases where you wish to have Traffic Server fall back to an alternate parent cache
-(in configurations where you have multiple parents for the same cache) more
-quickly, to lower this timeout.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span>  <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">parent_proxy</span><span class="o">.</span><span class="n">connect_attempts_timeout</span> <span class="n">INT</span> <span class="mi">30</span>
 </pre></div>
 </div>
 </div>

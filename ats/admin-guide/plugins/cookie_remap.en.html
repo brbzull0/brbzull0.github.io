@@ -222,6 +222,7 @@
 <li><a class="reference external" href="#operations">Operations</a><ul>
 <li><a class="reference external" href="#comments">Comments</a></li>
 <li><a class="reference external" href="#cookie-xxy">cookie: X|X.Y</a></li>
+<li><a class="reference external" href="#purl">target: purl</a></li>
 <li><a class="reference external" href="#operation-existsnot-existsstringregexbucket">operation: exists|not exists|string|regex|bucket</a></li>
 <li><a class="reference external" href="#match-str">match: str</a></li>
 <li><a class="reference external" href="#regex-str">regex: str</a></li>
@@ -304,6 +305,12 @@ A will operate on ACOOKIE
 B will operate on data&f=fsub&z=zsub
 B.f will operate on fsub
 </pre></div>
+<div class="section" id="target-puri">
+<h3>target: puri<a class="headerlink" href="#target-puri" title="Permalink to this headline">¶</a></h3>
+<hr class="docutils" />
+<p>When the cookie key is omitted, the operation is applied to the request uri instead.  If this key and value
+is specified, the uri for the operation will be the pre-remapped, rather than the remapped, uri.</p>
+</div>
 <div class="section" id="id8">
 <h3>operation: exists|not exists|string|regex|bucket<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
@@ -422,6 +429,11 @@ op:
 <pre>
 map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin=cookie_remap.so @pparam=foo.txt
 </pre><p>will become <a class="reference external" href="http://foo.com/what/ever/matches/x/y/z">http://foo.com/what/ever/matches/x/y/z</a></p>
+</div>
+<div class="section" id="alternatives-using-pre-remapped-url">
+<h3>Alternatives using pre-remapped URL<a class="headerlink" href="#alternatives-using-pre-remapped-url" title="Permalink to this headline">¶</a></h3>
+<p>$cr_req_url, $path and $unamatched_path are based on the remapped URL.  To use the pre-remapped
+URL, instead use $cr_req_purl, $ppath and $unmatched_ppath, respectively.</p>
 </div>
 </div>
 <div class="section" id="id22">

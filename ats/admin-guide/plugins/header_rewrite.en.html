@@ -262,11 +262,14 @@ some subset of the requests by enabling it only for specific mapping rules.</p>
 <p>This plugin may be enabled globally, so that the conditions and header
 rewriting rules are evaluated for every request made to your Traffic Server instance.
 This is done by adding the following line to your <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>header_rewrite.so config_file_1.conf config_file_2.conf ...
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>header_rewrite.so [--geo-db-path=path/to/geoip.db] config_file_1.conf config_file_2.conf ...
 </pre></div>
 </div>
 <p>You may specify multiple configuration files. Their rules will be evaluated in
 the order the files are listed.</p>
+<p>The plugin takes an optional switch <code class="docutils literal notranslate"><span class="pre">--geo-db-path</span></code>. If MaxMindDB support has
+been compiled in, use this switch to point at your .mmdb file. This also applies to
+the remap context.</p>
 </div>
 <div class="section" id="enabling-per-mapping">
 <h3>Enabling Per-Mapping<a class="headerlink" href="#enabling-per-mapping" title="Permalink to this headline">¶</a></h3>
@@ -383,7 +386,7 @@ as documented in <a class="reference internal" href="#url-parts">URL Parts</a> b
 </pre></div>
 </div>
 <p>Perform a GeoIP lookup of the client-IP, using a 3rd party library and
-DB. Currently only the MaxMind GeoIP API is supported. The default is to
+DB. Currently the MaxMind GeoIP and MaxMindDB APIs are supported. The default is to
 do a Country lookup, but the following qualifiers are supported:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>%{GEO:COUNTRY}      The country code (e.g. &quot;US&quot;)
 %{GEO:COUNTRY-ISO}  The country ISO code (e.g. 225)
@@ -574,7 +577,7 @@ values, such as year, month etc.</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{RANDOM:&lt;n&gt;} &lt;operand&gt;
 </pre></div>
 </div>
-<p>Generates a random integer between <code class="docutils literal notranslate"><span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code>, inclusive.</p>
+<p>Generates a random integer from <code class="docutils literal notranslate"><span class="pre">0</span></code> up to (but not including) <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code>. Mathmatically, <code class="docutils literal notranslate"><span class="pre">[0,n)</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">r</span> <span class="pre">&lt;</span> <span class="pre">n</span></code>.</p>
 </div>
 <div class="section" id="status">
 <h4>STATUS<a class="headerlink" href="#status" title="Permalink to this headline">¶</a></h4>
@@ -632,6 +635,14 @@ specified according to the options documented in <a class="reference internal" h
 </div>
 <p>Returns the number of transactions between the Traffic Server proxy and the origin server from a single session.
 Any value greater than zero indicates connection reuse.</p>
+</div>
+<div class="section" id="tcp-info">
+<h4>TCP-INFO<a class="headerlink" href="#tcp-info" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{&lt;name&gt;}
+    add-header @PropertyName &quot;%{TCP-INFO}&quot;
+</pre></div>
+</div>
+<p>This operation records TCP Info struct field values as an Internal remap as well as global header at the event hook specified by the condition. Supported hook conditions include TXN_START_HOOK, SEND_RESPONSE_HEADER_HOOK and TXN_CLOSE_HOOK in the Global plugin and REMAP_PSEUDO_HOOK, SEND_RESPONSE_HEADER_HOOK and TXN_CLOSE_HOOK in the Remap plugin. Conditions supported as request headers include TXN_START_HOOK and REMAP_PSEUDO_HOOK. The other conditions are supported as response headers. TCP Info fields currently recorded include rtt, rto, snd_cwnd and all_retrans. This operation is not supported on transactions originated within Traffic Server (for e.g using the Traffic Server <a class="reference internal" href="../../developer-guide/api/functions/TSHttpTxnIsInternal.en.html#c.TSHttpTxnIsInternal" title="TSHttpTxnIsInternal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIsInternal()</span></code></a>)</p>
 </div>
 </div>
 <div class="section" id="condition-operands">
@@ -1090,6 +1101,14 @@ response to the client.</p>
 cache updates may have been performed. This hook context provides a means to
 modify aspects of the response sent to a client, while still caching the
 original versions of those attributes delivered by the origin server.</p>
+</div>
+<div class="section" id="txn-start-hook">
+<h4>TXN_START_HOOK<a class="headerlink" href="#txn-start-hook" title="Permalink to this headline">¶</a></h4>
+<p>Rulesets are evaluated when Traffic Server receives a request and accepts it. This hook context indicates that a HTTP transaction is initiated and therefore, can only be enabled as a global plugin.</p>
+</div>
+<div class="section" id="txn-close-hook">
+<h4>TXN_CLOSE_HOOK<a class="headerlink" href="#txn-close-hook" title="Permalink to this headline">¶</a></h4>
+<p>Rulesets are evaluated when Traffic Server completes a transaction, i.e., after a response has been sent to the client. Therefore, header modifications at this hook condition only makes sense for internal headers.</p>
 </div>
 </div>
 <div class="section" id="affected-conditions">

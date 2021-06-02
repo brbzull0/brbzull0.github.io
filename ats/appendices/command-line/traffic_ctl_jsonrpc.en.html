@@ -109,6 +109,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#subcommands">Subcommands</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#autest">Autest</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
 </ul>
 </li>
@@ -564,9 +565,9 @@ Notifications:
 <dl class="option">
 <dt id="cmdoption-traffic-ctl-rpc-arg-input">
 <code class="descname">input</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-rpc-arg-input" title="Permalink to this definition">¶</a></dt>
-<dd><p>Input mode, traffic_ctl will provide a control input from a stream buffer. Once the content was write the terminal <strong class="program">traffic_ctl</strong>
+<dd><p>Input mode, traffic_ctl will provide a control input from a stream buffer. Once the content is written the terminal <strong class="program">traffic_ctl</strong>
 will wait for the user to press Control-D to send the request to the rpc endpoint.
-This feature allow you to directly interact with the jsonrpc endpoint and test your API easily and without the need to know the low level
+This feature allows you to directly interact with the jsonrpc endpoint and test your API easily and without the need to know the low level
 implementation details of the transport layer.
 <strong class="program">traffic_ctl</strong> will validate the input format, not the message content. The message content will be validated by the server.
 See example <a class="reference internal" href="#input-example-2">input_example_2</a>.</p>
@@ -678,6 +679,45 @@ for the <cite>manual</cite> reason, <cite>MANUAL:DOWN:1556896844:0</cite>, at th
 </pre></div>
 </div>
 </div></blockquote>
+</div>
+<div class="section" id="autest">
+<h2>Autest<a class="headerlink" href="#autest" title="Permalink to this headline">¶</a></h2>
+<p>If you want to interact with Traffic Server under a unit test, then a few things need to be considered.</p>
+<ul>
+<li><p class="first">Runroot needs to be configured in order to  let <cite>traffic_ctl</cite> knows where to find the socket.</p>
+<blockquote>
+<div><p>There are currently two ways to do this:</p>
+<ol class="arabic">
+<li><p class="first">Using <cite>run-root</cite> param.</p>
+<ol class="arabic simple">
+<li>Let <cite>Test.MakeATSProcess</cite> to create the runroot file under the Traffic Server config directory. This can be done by passing <cite>dump_runroot=True</cite> to the above function:</li>
+</ol>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">MakeATSProcess</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">dump_runroot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p><cite>dump_runroot</cite> will write out some of the keys inside the runroot file, in this case the <cite>runtimedir</cite>.</p>
+<ol class="arabic" start="2">
+<li><p class="first">Then you should specify the <code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">--run-root</span></code> when invoking the command:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="o">.</span><span class="n">Processes</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">Command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;traffic_ctl config reload --run-root </span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">Disk</span><span class="o">.</span><span class="n">runroot_yaml</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
+<li><p class="first">Setting up the <cite>TS_RUNROOT</cite> environment variable.
+This is very similar to <cite>1</cite> but, instead of passing the <cite>–run-root</cite> param to <cite>traffic_ctl</cite>, you just need to specify the
+<cite>TS_RUNROOT</cite> environment variable. To do that, just do as 1.1 shows and then:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">SetRunRootEnv</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The above call will set the variable, please be aware that this variable will also be read by TS.</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
 </div>
 <div class="section" id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>

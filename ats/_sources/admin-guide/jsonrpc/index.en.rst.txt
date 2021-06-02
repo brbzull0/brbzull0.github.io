@@ -20,8 +20,6 @@
 .. highlight:: cpp
 .. default-domain:: cpp
 
-
-
 .. |RPC| replace:: ``JSONRPC 2.0``
 
 .. _JSONRPC: https://www.jsonrpc.org/specification
@@ -45,8 +43,6 @@
 JSONRPC API
 ***********
 
-
-
 .. _admin-jsonrpc-description:
 
 Description
@@ -54,7 +50,7 @@ Description
 
 |TS| Implements and exposes management calls using a JSONRPC API.  This API is base on the following two things:
 
-* `JSON  <https://www.json.org/json-en.html>`_  format. Lightweight data-interchange format. It is easy for humans to read and write. 
+* `JSON  <https://www.json.org/json-en.html>`_  format. Lightweight data-interchange format. It is easy for humans to read and write.
   It is easy for machines to parse and generate. It's basically a  collection of name/value pairs.
 
 * `JSONRPC 2.0 <https://www.jsonrpc.org/specification>`_ protocol. Stateless, light-weight remote procedure call (RPC) protocol.
@@ -79,7 +75,7 @@ The |RPC| server can be configured using the following configuration file.
    |TS| will start the |RPC| server without any need for configuration.
 
 
-In case a special configuration is needed, the following describes the structure.
+If a non-default configuration is needed, the following describes the structure.
 
 
 File `jsonrpc.yaml` is a YAML format. The default configuration is::
@@ -117,14 +113,7 @@ Field Name                            Description
 
 .. note::
 
-   As today, there is only 1 communication mechanism supported. IPC Sockets.
-
-
-
-.. note::
-
-   Traffic Control does support this RPC mechanism for communication with |TS| . Please check :program:`traffic_ctl` documentation for
-   more details.
+   Currently, there is only 1 communication mechanism supported. IPC Sockets.
 
 
 .. _admin-jsonrpc-api:
@@ -138,7 +127,7 @@ API
 Administrative API
 ------------------
 
-This section describe how to interact with the administrative RPC API to interact with |TS|
+This section describes how to interact with the administrative RPC API to interact with |TS|
 
 ..
    _This: We should explain how to deal with permission once it's implemented.
@@ -166,7 +155,7 @@ To obtain information regarding a particular record(s) from |TS|, we should use 
    ====================== ============= ================================================================================================================
    ``record_name``        |str|         The name we want to query from |TS|. This is |optional| if ``record_name_regex`` is used.
    ``record_name_regex``  |str|         The regular expression we want to query from |TS|. This is |optional| if ``record_name`` is used.
-   ``rec_types``          |arraynumstr| |optional| A list of types that should be used to match against the found record. These types refer to ``RecT``. 
+   ``rec_types``          |arraynumstr| |optional| A list of types that should be used to match against the found record. These types refer to ``RecT``.
                                         Other values (in decimal) than the ones defined by the ``RecT`` ``enum`` will be ignored. If no type is
                                         specified, the server will not match the type against the found record.
    ====================== ============= ================================================================================================================
@@ -219,7 +208,7 @@ Example:
    #. Batch Request
 
    .. code-block:: json
-   
+
       [
          {
             "id": "ded7018e-0720-11eb-abe2-001fc69cc946",
@@ -253,7 +242,7 @@ When querying for a record(s), in the majority of the cases the record api will 
 Field               Type                 Description
 =================== ==================== ========================================================================
 ``recordList``      |arrayrecord|         A list of record |object|. See `RecordRequestObject`_
-``errorList``       |arrayerror|          A list of error |object| . See `RecordErrorObject`_  
+``errorList``       |arrayerror|          A list of error |object| . See `RecordErrorObject`_
 =================== ==================== ========================================================================
 
 
@@ -262,7 +251,7 @@ Field               Type                 Description
 RPC Record Error Object
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-All errors that are found during a record query, will be returned back to the caller in the ``error_list`` field as part of the `RecordResponse`_ object. 
+All errors that are found during a record query, will be returned back to the caller in the ``error_list`` field as part of the `RecordResponse`_ object.
 The record errors have the following fields.
 
 
@@ -279,7 +268,7 @@ Example:
 
    .. code-block:: json
       :linenos:
-      
+
       {
          "code": "2007",
          "record_name": "proxy.config.exec_thread.autoconfig.scale"
@@ -574,7 +563,7 @@ Request a configuration record, no errors:
 Response:
 
    .. code-block:: json
-      
+
       {
          "jsonrpc":"2.0",
          "result":{
@@ -705,7 +694,7 @@ Examples
    Response:
 
    .. code-block:: json
-      
+
       {
          "jsonrpc":"2.0",
          "result":{
@@ -844,7 +833,7 @@ Examples
 
 
 
-   We get a valid record that was  found base on the passed criteria, ``proxy.config.exec_thread.autoconfig.sca*`` and the ``rec_type`` *1*.
+   We get a valid record that was found based on the passed criteria, ``proxy.config.exec_thread.autoconfig.sca*`` and the ``rec_type`` *1*.
    Also we get a particular error that was caused by the invalid rec types ``987``
 
 
@@ -1036,7 +1025,7 @@ request should follow the  `RecordRequest`_ .
 Parameters
 ^^^^^^^^^^
 
-* ``params``: A list of `RecordRequest`_ objects. 
+* ``params``: A list of `RecordRequest`_ objects.
 
 .. note::
 
@@ -1051,7 +1040,7 @@ Successfully metric updates will not report back to the client. So it can be ass
 
 .. note::
 
-   As per our internal API if the metric could not be updated because there is no change in the value, ie: it's already ``0`` this will be reported back to the client as part of the  `RecordErrorObject`_ 
+   As per our internal API if the metric could not be updated because there is no change in the value, ie: it's already ``0`` this will be reported back to the client as part of the  `RecordErrorObject`_
 
 Examples
 ^^^^^^^^
@@ -1112,7 +1101,7 @@ Clear all the metrics.
 Parameters
 ^^^^^^^^^^
 
-* ``params``: This can be **Omitted** 
+* ``params``: This can be **Omitted**
 
 
 
@@ -1124,7 +1113,7 @@ This api will only inform for errors during the metric update. Errors will be tr
 .. note::
 
    As per our internal API if the metric could not be updated because there is no change in the value, ie: it's already ``0`` this
-   will be reported back to the client as part of the  `RecordErrorObject`_ 
+   will be reported back to the client as part of the  `RecordErrorObject`_
 
 Examples
 ^^^^^^^^
@@ -1159,7 +1148,7 @@ Description
 ^^^^^^^^^^^
 
 A stat to track status is created for each host. The name is the host fqdn with a prefix of `proxy.process.host_status`. The value of
-the stat is a string which is the serialized representation of the status. This contains the overall status and the status for each reason. 
+the stat is a string which is the serialized representation of the status. This contains the overall status and the status for each reason.
 The stats may be viewed using the `admin_lookup_records`_ rpc api or through the ``stats_over_http`` endpoint.
 
 Parameters
@@ -1198,7 +1187,7 @@ Parameters
    =================== ============= =================================================================================================
    ``active``          |str|         Set the active health check reason.
    ``local``           |str|         Set the local health check reason.
-   ``manual``          |str|         Set the administrative reason. This is the default reason if a reason is needed and not provided 
+   ``manual``          |str|         Set the administrative reason. This is the default reason if a reason is needed and not provided
                                      by this option. If an invalid reason is provided ``manual`` will be defaulted.
    =================== ============= =================================================================================================
 
@@ -1420,7 +1409,7 @@ The response will contain the default `success_response`
                "code": 3000,
                "message": "Server already draining."
                }]
-         
+
          }
 
       }
@@ -1443,7 +1432,7 @@ Parameters
    ======================= ============= ================================================================================================================
    Field                   Type          Description
    ======================= ============= ================================================================================================================
-   ``tag``                 |str|         A tag name that will be read by the interested plugin 
+   ``tag``                 |str|         A tag name that will be read by the interested plugin
    ``data``                |str|         Data to be send, this is |optional|
    ======================= ============= ================================================================================================================
 
@@ -1497,7 +1486,7 @@ Result
    ======================= ============= =============================================================================================
    Field                   Type          Description
    ======================= ============= =============================================================================================
-   ``path``                |str|         Storage identification.  The storage is identified by :arg:`path` which must match exactly a 
+   ``path``                |str|         Storage identification.  The storage is identified by :arg:`path` which must match exactly a
                                          path specified in :file:`storage.config`.
    ``status``              |str|         Disk status. ``online`` or ``offline``
    ``error_count``         |str|         Number of errors on the particular disk.
@@ -1557,8 +1546,8 @@ admin_storage_set_device_offline
 Description
 ^^^^^^^^^^^
 
-Mark a cache storage device as ``offline``. The storage is identified by :arg:`path` which must match exactly a path specified in 
-:file:`storage.config`. This removes the storage from the cache and redirects requests that would have used this storage to 
+Mark a cache storage device as ``offline``. The storage is identified by :arg:`path` which must match exactly a path specified in
+:file:`storage.config`. This removes the storage from the cache and redirects requests that would have used this storage to
 other storage. This has exactly the same effect as a disk failure for that storage. This does not persist across restarts of the
 :program:`traffic_server` process.
 
@@ -1577,7 +1566,7 @@ A list of |object| which the following fields:
    =========================== ============= =============================================================================================
    Field                       Type          Description
    =========================== ============= =============================================================================================
-   ``path``                    |str|         Storage identification.  The storage is identified by :arg:`path` which must match exactly a 
+   ``path``                    |str|         Storage identification.  The storage is identified by :arg:`path` which must match exactly a
                                              path specified in :file:`storage.config`.
    ``has_online_storage_left`` |str|         A flag indicating if there is any online storage left after this operation.
    =========================== ============= =============================================================================================

@@ -215,10 +215,10 @@
   <div class="section" id="generator-plugin">
 <span id="admin-plugins-generator"></span><h1>Generator Plugin<a class="headerlink" href="#generator-plugin" title="Permalink to this headline">¶</a></h1>
 <p>The <cite>Generator</cite> allows testing of synthetic workloads by generating
-HTTP responses of various sizes. The size and cacheability of the
-response is specified by the first two components of the requested
-URL path. This plugin only supports the <code class="docutils literal notranslate"><span class="pre">GET</span></code> and <code class="docutils literal notranslate"><span class="pre">HEAD</span></code> HTTP
-methods.</p>
+HTTP responses of various sizes and receiving POST bodies. The size
+and cacheability of the response is specified by the first two components
+of the requested URL path. This plugin supports the <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">POST</span></code> HTTP methods.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="19%" />
@@ -292,6 +292,10 @@ server, it must be syntactically valid and resolvable in DNS.</p>
 </div>
 <p>The <cite>Generator</cite> plugin can return responses as large as you like:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -o /dev/null -x 127.0.0.1:8080 http://workload.example.com/cache/$((10 * 1024 * 1024))/$RANDOM
+</pre></div>
+</div>
+<p>The <cite>Generator</cite> plugin can also receive POST requests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ curl -o /dev/null -x 127.0.0.1:8080 -d @/etc/hosts http://workload.example.com/
 </pre></div>
 </div>
 </div>
