@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -123,7 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -208,14 +208,14 @@ events and performs I/O operations on network connections. The time spent in the
 critical component of latency as any network connection has at most one I/O operation per loop. The
 general mechanism is</p>
 <ul class="simple">
-<li>Dispatch any pending events.</li>
-<li>Check for any pending I/O activity. This wait a variable amount of time. It is at most
+<li><p>Dispatch any pending events.</p></li>
+<li><p>Check for any pending I/O activity. This wait a variable amount of time. It is at most
 <a class="reference internal" href="../../../files/records.config.en.html#proxy-config-thread-max-heartbeat-mseconds" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.thread.max_heartbeat_mseconds</span></code></a> milliseconds. It is reduced to the amount of
 time until the next scheduled event. Although this is done in milliseconds, system timers are
-rarely that accurate.</li>
-<li>For each network connection dispatch an event to the corresponding network virtual connection
-object.</li>
-<li>Dispatch any events generated while handling I/O in the previous step</li>
+rarely that accurate.</p></li>
+<li><p>For each network connection dispatch an event to the corresponding network virtual connection
+object.</p></li>
+<li><p>Dispatch any events generated while handling I/O in the previous step</p></li>
 </ul>
 <p>Event loops that take a long time will have a noticeable impact on transaction latency. There are a
 number of statistics gathered to help determine if this is the problem. Because instantaneous values
@@ -229,398 +229,316 @@ high then it is likely transactions are experiencing significant latency.</p>
 <p class="rubric">10 Second Metrics</p>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-count-10s">
-<code class="descname">proxy.process.eventloop.count.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.count.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of event loops executed in the last 10 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-10s">
-<code class="descname">proxy.process.eventloop.events.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of events dispatched in the last 10 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-min-10s">
-<code class="descname">proxy.process.eventloop.events.min.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.min.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Minimum number of events dispatched in a single loop in the last 10 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-max-10s">
-<code class="descname">proxy.process.eventloop.events.max.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.max.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Maximum number of events dispatched in a single loop in the last 10 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-wait-10s">
-<code class="descname">proxy.process.eventloop.wait.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.wait.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of loops in which the I/O activity check was done with a non-zero time out in the last 10
 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-min-10s">
-<code class="descname">proxy.process.eventloop.time.min.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.min.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <blockquote>
-<div>The minimum amount of time spent in a single loop in the last 10 seconds.</div></blockquote>
+<div><p>The minimum amount of time spent in a single loop in the last 10 seconds.</p>
+</div></blockquote>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-max-10s">
-<code class="descname">proxy.process.eventloop.time.max.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-10s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.max.10s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-10s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <blockquote>
-<div>The maximum amount of time spent in a single loop in the last 10 seconds.</div></blockquote>
+<div><p>The maximum amount of time spent in a single loop in the last 10 seconds.</p>
+</div></blockquote>
 </div>
 <p class="rubric">100 Second Metrics</p>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-count-100s">
-<code class="descname">proxy.process.eventloop.count.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.count.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of event loops executed in the last 100 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-100s">
-<code class="descname">proxy.process.eventloop.events.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of events dispatched in the last 100 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-min-100s">
-<code class="descname">proxy.process.eventloop.events.min.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.min.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Minimum number of events dispatched in a single loop in the last 100 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-max-100s">
-<code class="descname">proxy.process.eventloop.events.max.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.max.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Maximum number of events dispatched in a single loop in the last 100 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-wait-100s">
-<code class="descname">proxy.process.eventloop.wait.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.wait.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of loops in which the I/O activity check was done with a non-zero time out in the last 100
 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-min-100s">
-<code class="descname">proxy.process.eventloop.time.min.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.min.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <p>The minimum amount of time spent in a single loop in the last 100 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-max-100s">
-<code class="descname">proxy.process.eventloop.time.max.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-100s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.max.100s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-100s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <p>The maximum amount of time spent in a single loop in the last 100 seconds.</p>
 </div>
 <p class="rubric">1000 Second Metrics</p>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-count-1000s">
-<code class="descname">proxy.process.eventloop.count.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.count.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-count-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of event loops executed in the last 1000 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-1000s">
-<code class="descname">proxy.process.eventloop.events.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of events dispatched in the last 1000 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-min-1000s">
-<code class="descname">proxy.process.eventloop.events.min.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.min.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-min-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Minimum number of events dispatched in a single loop in the last 1000 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-events-max-1000s">
-<code class="descname">proxy.process.eventloop.events.max.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.events.max.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-events-max-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Maximum number of events dispatched in a single loop in the last 1000 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-wait-1000s">
-<code class="descname">proxy.process.eventloop.wait.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.wait.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-wait-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
 <div class="compound">
 <p>Number of loops in which the I/O activity check was done with a non-zero time out in the last 1000
 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-min-1000s">
-<code class="descname">proxy.process.eventloop.time.min.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.min.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-min-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <p>The minimum amount of time spent in a single loop in the last 1000 seconds.</p>
 </div>
 <dl class="stat">
 <dt class="ts-stat-title" id="stat-proxy-process-eventloop-time-max-1000s">
-<code class="descname">proxy.process.eventloop.time.max.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-1000s" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">proxy.process.eventloop.time.max.1000s</code><a class="headerlink" href="#stat-proxy-process-eventloop-time-max-1000s" title="Permalink to this definition">¶</a></dt>
 </dl>
 
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Collection:</th><td class="field-body">global</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Units:</th><td class="field-body">nanoseconds</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Datatype:</th><td class="field-body">integer</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Units</dt>
+<dd class="field-even">nanoseconds</dd>
+<dt class="field-odd">Datatype</dt>
+<dd class="field-odd">integer</dd>
+</dl>
 <div class="compound">
 <p>The maximum amount of time spent in a single loop in the last 1000 seconds.</p>
 </div>

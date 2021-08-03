@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -431,17 +434,17 @@
 <p>Test whether a request is internally-generated.</p>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnIsInternal">
-int <code class="descname">TSHttpTxnIsInternal</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnIsInternal" title="Permalink to this definition">¶</a></dt>
+int <code class="sig-name descname">TSHttpTxnIsInternal</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnIsInternal" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnIsInternal">
-int <code class="descname">TSHttpSsnIsInternal</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a><em>&nbsp;ssnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnIsInternal" title="Permalink to this definition">¶</a></dt>
+int <code class="sig-name descname">TSHttpSsnIsInternal</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnIsInternal" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -454,17 +457,17 @@ was originated within Traffic Server.</p>
 </div>
 <div class="section" id="return-values">
 <h2>Return Values<a class="headerlink" href="#return-values" title="Permalink to this headline">¶</a></h2>
-<p>Both these APIs return a <code class="xref c c-type docutils literal notranslate"><span class="pre">int</span></code>, indicating whether the
+<p>Both these APIs return a <code class="code docutils literal notranslate"><span class="pre">int</span></code>, indicating whether the
 request was internal (<code class="docutils literal notranslate"><span class="pre">1</span></code>) or not (<code class="docutils literal notranslate"><span class="pre">0</span></code>).</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The ESI plugin uses <a class="reference internal" href="#c.TSHttpTxnIsInternal" title="TSHttpTxnIsInternal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIsInternal()</span></code></a> to ignore requests that is
 had generated while fetching portions of an ESI document:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>    <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_len</span><span class="p">,</span> <span class="n">TS_HTTP_VALUE_PRIVATE</span><span class="p">,</span> <span class="n">TS_HTTP_LEN_PRIVATE</span><span class="p">))</span> <span class="p">{</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>  <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name_len</span><span class="p">,</span> <span class="n">TS_MIME_FIELD_CACHE_CONTROL</span><span class="p">,</span> <span class="n">TS_MIME_LEN_CACHE_CONTROL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_len</span><span class="p">,</span> <span class="n">TS_HTTP_VALUE_PRIVATE</span><span class="p">,</span> <span class="n">TS_HTTP_LEN_PRIVATE</span><span class="p">))</span> <span class="p">{</span>
       <span class="n">cacheable</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>

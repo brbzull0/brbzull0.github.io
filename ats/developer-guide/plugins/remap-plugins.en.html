@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -217,7 +217,7 @@
   <div class="section" id="remap-plugins">
 <span id="developer-plugins-remap"></span><h1>Remap Plugins<a class="headerlink" href="#remap-plugins" title="Permalink to this headline">¶</a></h1>
 <p>Remap plugins are called during remap (URL rewriting). The particular plugins and the order is
-determined by the remap rule. The <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file can contain explicit references to
+determined by the remap rule. The <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file can contain explicit references to
 remap plugins in a rule and the presence of such a reference in a rule causes the plugin to be
 invoked when the rule is matched. For example, a rule such as</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>map http://example.one/ http://example.two/ @plugin=example.so @pparam=first_arg @pparm=second_arg
@@ -227,10 +227,10 @@ invoked when the rule is matched. For example, a rule such as</p>
 <cite>http://example.two/</cite>, “first_arg” and “second_arg”. Please keep in mind that “from” URL and “to” URL
 will be converted to their canonical view.</p>
 <p>A key difference between global and remap plugins is reconfiguration and reloading. If
-<a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is reloaded, then all remap plugins are reconfigured based on the new version
+<a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is reloaded, then all remap plugins are reconfigured based on the new version
 of the file. Global plugins need to handle their own configuration reloading, if any.</p>
 <p>In addition, as of Traffic Server 9.0, remap plugins can be reloaded during runtime. During a
-<a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> reload, if the plugin image file has changed, a new one is loaded and used.</p>
+<a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> reload, if the plugin image file has changed, a new one is loaded and used.</p>
 <p>All of the externally invoked functions must be declared as <code class="code docutils literal notranslate"><span class="pre">extern</span> <span class="pre">&quot;C&quot;</span></code> in order to be
 correctly located by the Traffic Server core. This is already done if <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/include/ts/remap.h">include/ts/remap.h</a>
 is included, otherwise it must be done explicitly.</p>
@@ -292,10 +292,10 @@ invoked by current and all previous still used configurations. This is an option
 <p><a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapPostConfigReload" title="TSRemapPostConfigReload"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapPostConfigReload()</span></code></a> is called to indicate the end of the new remap configuration
 load. It is called on the newly and previously loaded plugins, invoked by the new, current and
 previous still used configurations. It also indicates whether the configuration reload was successful
-by passing <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSREMAP_CONFIG_RELOAD_FAILURE" title="TSREMAP_CONFIG_RELOAD_FAILURE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_FAILURE</span></code></a> in case of failure and to notify the plugins if they
-are going to be part of the new configuration by passing <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED" title="TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED</span></code></a>
-or <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED" title="TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED</span></code></a>. This is an optional entry point.</p>
-<p>These calls are called per <em>plugin</em>, not per invocation of the plugin in <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+by passing <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapReloadStatus.TSREMAP_CONFIG_RELOAD_FAILURE" title="TSREMAP_CONFIG_RELOAD_FAILURE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_FAILURE</span></code></a> in case of failure and to notify the plugins if they
+are going to be part of the new configuration by passing <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapReloadStatus.TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED" title="TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_USED</span></code></a>
+or <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapReloadStatus.TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED" title="TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSREMAP_CONFIG_RELOAD_SUCCESS_PLUGIN_UNUSED</span></code></a>. This is an optional entry point.</p>
+<p>These calls are called per <em>plugin</em>, not per invocation of the plugin in <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 and only will be called if the plugin was instantiated by at least one configuration loaded
 after the traffic server started and at least one configuration using it is still loaded.</p>
 <p><a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapPreConfigReload" title="TSRemapPreConfigReload"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapPreConfigReload()</span></code></a> will be called serially for all loaded plugins
@@ -334,7 +334,7 @@ concurrently with those functions.</p>
 </div>
 <div class="section" id="cleanup">
 <h2>Cleanup<a class="headerlink" href="#cleanup" title="Permalink to this headline">¶</a></h2>
-<p>When a new <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is loaded successfully, the prior configuration is cleaned up. For
+<p>When a new <a class="reference internal" href="../../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is loaded successfully, the prior configuration is cleaned up. For
 each call to <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapNewInstance" title="TSRemapNewInstance"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapNewInstance()</span></code></a> a corresponding call to <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapDeleteInstance" title="TSRemapDeleteInstance"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapDeleteInstance()</span></code></a> is
 called. The only argument is the invocation instance handle, originally provided by the plugin to
 <a class="reference internal" href="../api/functions/TSRemap.en.html#c.TSRemapNewInstance" title="TSRemapNewInstance"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRemapNewInstance()</span></code></a>. This is expected to suffice for the plugin to clean up any rule specific

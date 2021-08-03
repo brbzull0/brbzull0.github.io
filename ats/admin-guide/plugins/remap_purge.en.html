@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -239,9 +239,9 @@ build with the experimental plugins enabled via <code class="docutils literal no
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>This plugin only functions as a remap plugin, and is therefore
-configured in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>. Be aware that the <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> requests
-are typically restricted to <code class="docutils literal notranslate"><span class="pre">localhost</span></code>, but see <a class="reference internal" href="../files/ip_allow.yaml.en.html#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a>
-and <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> how to configure these access controls.</p>
+configured in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>. Be aware that the <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> requests
+are typically restricted to <code class="docutils literal notranslate"><span class="pre">localhost</span></code>, but see <a class="reference internal" href="../files/ip_allow.yaml.en.html#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a>
+and <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> how to configure these access controls.</p>
 <p>If PURGE does not work for your setup, you can enable a relaxed configuration
 which allows GET requests to also perform the purge. This is not a recommended
 configuration, since there are likely no ACLs for this now, only the secret
@@ -259,11 +259,10 @@ protects the content from being maliciously purged.</p>
 <div class="section" id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<div><dl class="docutils">
-<dt>map <a class="reference external" href="https://www.example.com">https://www.example.com</a> <a class="reference external" href="http://origin.example.com">http://origin.example.com</a> </dt>
-<dd><dl class="first last docutils">
-<dt>&#64;plugin=purge_remap.so &#64;pparam=–state-file=example </dt>
-<dd>&#64;pparam=–header=ATS-Purger &#64;pparam=–secret=8BFE-656DC3564C05</dd>
+<div><dl class="simple">
+<dt>map <a class="reference external" href="https://www.example.com">https://www.example.com</a> <a class="reference external" href="http://origin.example.com">http://origin.example.com</a> </dt><dd><dl class="simple">
+<dt>&#64;plugin=purge_remap.so &#64;pparam=–state-file=example </dt><dd><p>&#64;pparam=–header=ATS-Purger &#64;pparam=–secret=8BFE-656DC3564C05</p>
+</dd>
 </dl>
 </dd>
 </dl>

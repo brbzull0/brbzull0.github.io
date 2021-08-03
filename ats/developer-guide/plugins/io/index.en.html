@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -309,39 +309,39 @@ is obtained from <code class="docutils literal notranslate"><span class="pre">in
 data (or when some other condition has occurred), it issues a call to
 <a class="reference internal" href="../../api/functions/TSContCall.en.html#c.TSContCall" title="TSContCall"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCall()</span></code></a>. It passes the <code class="docutils literal notranslate"><span class="pre">TSVIO</span></code> describing the operation as the
 data parameter, and one of the values below as the event parameter.</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_ERROR</span></code></dt>
-<dd>Indicates an error has occurred on the vconnection. This will
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_ERROR</span></code></dt><dd><p>Indicates an error has occurred on the vconnection. This will
 happen for network IO if the underlying <em class="manpage">read(2)</em> or
-<em class="manpage">write(2)</em> call returns an error.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></dt>
-<dd>The vconnection has placed data in the buffer passed to an
+<em class="manpage">write(2)</em> call returns an error.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></dt><dd><p>The vconnection has placed data in the buffer passed to an
 <a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a> operation and it would like to do more IO, but the
 buffer is now full. When the user consumes the data from the buffer,
 this should re-enable the VIO so it indicates to the vconnection
-that the buffer has been modified.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code></dt>
-<dd>The vconnection has removed data from the buffer passed to an
+that the buffer has been modified.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code></dt><dd><p>The vconnection has removed data from the buffer passed to an
 <a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a> operation and it would like to do more IO, but the
 buffer does not have enough data in it. When placing more data in
 the buffer, the user should re-enable the VIO so it indicates to the
-vconnection that the buffer has been modified.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_COMPLETE</span></code></dt>
-<dd>The vconnection has read all the bytes specified by an
+vconnection that the buffer has been modified.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_COMPLETE</span></code></dt><dd><p>The vconnection has read all the bytes specified by an
 <a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a> operation. The vconnection can now be used to
-initiate a new IO operation.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code></dt>
-<dd>The vconnection has written all the bytes specified by an
+initiate a new IO operation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code></dt><dd><p>The vconnection has written all the bytes specified by an
 <a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a> operation and can now be used to initiate a new IO
-operation.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_EOS</span></code></dt>
-<dd>An attempt was made to read past the end of the stream of bytes
+operation.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_EOS</span></code></dt><dd><p>An attempt was made to read past the end of the stream of bytes
 during the handling of an <a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a> operation. This event
 occurs when the number of bytes available for reading from a
 vconnection is less than the number of bytes the user specifies
 should be read from the vconnection in a call to <a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a>. A
 common case where this occurs is when the user specifies that
-<code class="docutils literal notranslate"><span class="pre">INT64_MAX</span></code> bytes are to be read from a network connection.</dd>
+<code class="docutils literal notranslate"><span class="pre">INT64_MAX</span></code> bytes are to be read from a network connection.</p>
+</dd>
 </dl>
 <p>For example: the null transform plugin’s transformation receives
 <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code> and <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code>
@@ -367,14 +367,14 @@ transformation plugins, see <a class="reference internal" href="../http-transfor
 Plugins</span></a>.</p>
 <p>The vconnection functions are listed below:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSVConnAbort.en.html#c.TSVConnAbort" title="TSVConnAbort"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnAbort()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnClosedGet.en.html#c.TSVConnClosedGet" title="TSVConnClosedGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClosedGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnReadVIOGet.en.html#c.TSVConnReadVIOGet" title="TSVConnReadVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReadVIOGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnShutdown.en.html#c.TSVConnShutdown" title="TSVConnShutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnShutdown()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSVConnWriteVIOGet.en.html#c.TSVConnWriteVIOGet" title="TSVConnWriteVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWriteVIOGet()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnAbort.en.html#c.TSVConnAbort" title="TSVConnAbort"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnAbort()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnClosedGet.en.html#c.TSVConnClosedGet" title="TSVConnClosedGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClosedGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnReadVIOGet.en.html#c.TSVConnReadVIOGet" title="TSVConnReadVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReadVIOGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnShutdown.en.html#c.TSVConnShutdown" title="TSVConnShutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnShutdown()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSVConnWriteVIOGet.en.html#c.TSVConnWriteVIOGet" title="TSVConnWriteVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWriteVIOGet()</span></code></a></p></li>
 </ul>
 </div>
 </div>

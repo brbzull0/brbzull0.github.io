@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -129,7 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -205,74 +205,73 @@
             
   <div class="section" id="splitdns-config">
 <h1>splitdns.config<a class="headerlink" href="#splitdns-config" title="Permalink to this headline">¶</a></h1>
-<p id="std:configfile-splitdns.config">The <a class="reference internal" href="#std:configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file enables you to specify the DNS server that
+<p id="std-configfile-splitdns.config"><span id="std:configfile-splitdns.config"></span>The <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file enables you to specify the DNS server that
 Traffic Server should use for resolving hosts under specific conditions.
 For more information, refer to <a class="reference internal" href="../security/index.en.html#admin-split-dns"><span class="std std-ref">Split DNS</span></a>.</p>
 <p>To specify a DNS server, you must supply the following information in
 each active line within the file:</p>
 <ul class="simple">
-<li>A primary destination specifier in the form of a destination domain,
-a destination host, or a URL regular expression</li>
-<li>A set of server directives, listing one or more DNS servers with
-corresponding port numbers</li>
+<li><p>A primary destination specifier in the form of a destination domain,
+a destination host, or a URL regular expression</p></li>
+<li><p>A set of server directives, listing one or more DNS servers with
+corresponding port numbers</p></li>
 </ul>
 <p>You can also include the following optional information with each DNS
 server specification:</p>
 <ul class="simple">
-<li>A default domain for resolving hosts</li>
-<li>A search list specifying the domain search order when multiple
-domains are specified</li>
+<li><p>A default domain for resolving hosts</p></li>
+<li><p>A search list specifying the domain search order when multiple
+domains are specified</p></li>
 </ul>
-<p>After you modify the <a class="reference internal" href="#std:configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file,
-run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the changes.</p>
+<p>After you modify the <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file,
+run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the changes.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>Each line in the <a class="reference internal" href="#std:configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file uses one of the following
+<p>Each line in the <a class="reference internal" href="#std-configfile-splitdns.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">splitdns.config</span></code></a> file uses one of the following
 formats:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_domain</span><span class="o">=</span><span class="n">dest_domain</span> <span class="o">|</span> <span class="n">dest_host</span> <span class="o">|</span> <span class="n">url_regex</span> <span class="n">named</span><span class="o">=</span><span class="n">dns_server</span> <span class="n">def_domain</span><span class="o">=</span><span class="n">def_domain</span> <span class="n">search_list</span><span class="o">=</span><span class="n">search_list</span>
 </pre></div>
 </div>
 <p>The following list describes each field.</p>
-<dl class="docutils" id="splitdns-config-format-dest-domain">
-<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt>
-<dd>A valid domain name. This specifies that DNS server selection will
+<dl class="simple" id="splitdns-config-format-dest-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt><dd><p>A valid domain name. This specifies that DNS server selection will
 be based on the destination domain. You can prefix the domain with
-an exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the NOT logical operator.</dd>
+an exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the NOT logical operator.</p>
+</dd>
 </dl>
-<dl class="docutils" id="splitdns-config-format-dest-host">
-<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt>
-<dd>A valid hostname. This specifies that DNS server selection will be
+<dl class="simple" id="splitdns-config-format-dest-host">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt><dd><p>A valid hostname. This specifies that DNS server selection will be
 based on the destination host. You can prefix the host with an
-exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the <code class="docutils literal notranslate"><span class="pre">NOT</span></code> logical operator.</dd>
+exclamation mark (<code class="docutils literal notranslate"><span class="pre">!</span></code>) to indicate the <code class="docutils literal notranslate"><span class="pre">NOT</span></code> logical operator.</p>
+</dd>
 </dl>
-<dl class="docutils" id="splitdns-config-format-url-regex">
-<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt>
-<dd>A valid URL regular expression. This specifies that DNS server
-selection will be based on a regular expression.</dd>
+<dl class="simple" id="splitdns-config-format-url-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt><dd><p>A valid URL regular expression. This specifies that DNS server
+selection will be based on a regular expression.</p>
+</dd>
 </dl>
-<dl class="docutils" id="splitdns-config-format-named">
-<dt><code class="docutils literal notranslate"><span class="pre">named</span></code></dt>
-<dd><p class="first">This is a required directive. It identifies the DNS server that
+<dl id="splitdns-config-format-named">
+<dt><code class="docutils literal notranslate"><span class="pre">named</span></code></dt><dd><p>This is a required directive. It identifies the DNS server that
 Traffic Server should use with the given destination specifier. You
 can specify a port using a colon (<code class="docutils literal notranslate"><span class="pre">:</span></code>). If you do not specify a
 port, then 53 is used. Specify multiple DNS servers with spaces or
 semicolons (<code class="docutils literal notranslate"><span class="pre">;</span></code>) as separators.</p>
-<p class="last">You must specify the domains with IP addresses in CIDR (“dot”)
+<p>You must specify the domains with IP addresses in CIDR (“dot”)
 notation.</p>
 </dd>
 </dl>
-<dl class="docutils" id="splitdns-config-format-def-domain">
-<dt><code class="docutils literal notranslate"><span class="pre">def_domain</span></code></dt>
-<dd>A valid domain name. This optional directive specifies the default
+<dl class="simple" id="splitdns-config-format-def-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">def_domain</span></code></dt><dd><p>A valid domain name. This optional directive specifies the default
 domain name to use for resolving hosts. Only one entry is allowed.
 If you do not provide the default domain, the system determines its
-value from <code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code></dd>
+value from <code class="docutils literal notranslate"><span class="pre">/etc/resolv.conf</span></code></p>
+</dd>
 </dl>
-<dl class="docutils" id="splitdns-config-format-search-list">
-<dt><code class="docutils literal notranslate"><span class="pre">search_list</span></code></dt>
-<dd>A list of domains separated by spaces or semicolons (;). This
+<dl class="simple" id="splitdns-config-format-search-list">
+<dt><code class="docutils literal notranslate"><span class="pre">search_list</span></code></dt><dd><p>A list of domains separated by spaces or semicolons (;). This
 specifies the domain search order. If you do not provide the search
-list, the system determines the value from <em class="manpage">resolv.conf(5)</em></dd>
+list, the system determines the value from <em class="manpage">resolv.conf(5)</em></p>
+</dd>
 </dl>
 </div>
 <div class="section" id="examples">

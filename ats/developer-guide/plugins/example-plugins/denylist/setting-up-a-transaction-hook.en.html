@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -253,28 +253,28 @@ denylist to prevent configuration changes in the middle of a
 denylisting operation. If the requested site is listed, then the
 following things happen:</p>
 <ol class="arabic simple">
-<li>A transaction hook is added with <code class="docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd</span></code>; the plugin is
+<li><p>A transaction hook is added with <code class="docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd</span></code>; the plugin is
 called back at the “send response header” event (i.e., the plugin
 sends an Access forbidden message to the client). You can see that in
 order to add a transaction hook, you need a handle to the transaction
-being processed.</li>
-<li>The transaction is reenabled using <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> with
+being processed.</p></li>
+<li><p>The transaction is re-enabled using <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> with
 <code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_ERROR</span></code> as its event argument. Reenabling with an
 error event tells the HTTP state machine to stop the transaction and
 jump to the “send response header” state. Notice that if the
-requested site is not listed, then the transaction is reenabled
-with the <code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_CONTINUE</span></code> event.</li>
-<li>The string and <code class="docutils literal notranslate"><span class="pre">TSMLoc</span></code> data stored in the marshal buffer <code class="docutils literal notranslate"><span class="pre">bufp</span></code> is
+requested site is not listed, then the transaction is re-enabled
+with the <code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_CONTINUE</span></code> event.</p></li>
+<li><p>The string and <code class="docutils literal notranslate"><span class="pre">TSMLoc</span></code> data stored in the marshal buffer <code class="docutils literal notranslate"><span class="pre">bufp</span></code> is
 released by <code class="docutils literal notranslate"><span class="pre">TSHandleMLocRelease</span></code> (see
 <a class="reference internal" href="../../http-headers/marshal-buffers.en.html#developer-plugins-http-headers-marshal-buffers"><span class="std std-ref">Marshal Buffers</span></a>). Release these
-handles before re-enabling the transaction.</li>
+handles before re-enabling the transaction.</p></li>
 </ol>
 <p>In general, whenever the plugin is doing something to a transaction, it
-must reenable the transaction when it is finished. In other words: every
+must re-enable the transaction when it is finished. In other words: every
 time your handler function handles a transaction event, it must call
 <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> when it is finished. Similarly, after your plugin
 handles session events (<code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_START</span></code> and
-<code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_CLOSE</span></code>), it must reenable the session with
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_CLOSE</span></code>), it must re-enable the session with
 <code class="docutils literal notranslate"><span class="pre">TSHttpSsnReenable</span></code>. Reenabling the transaction twice in the same
 plugin routine is a bad error.</p>
 </div>

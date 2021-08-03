@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -137,7 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -213,90 +213,82 @@
             
   <div class="section" id="remap-config">
 <h1>remap.config<a class="headerlink" href="#remap-config" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="std:configfile-remap.config"></span><div class="toctree-wrapper compound">
+<span class="target" id="std-configfile-remap.config"><span id="std:configfile-remap.config"></span></span><div class="toctree-wrapper compound">
 </div>
-<p>The <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file (by default, located in
+<p>The <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file (by default, located in
 <code class="docutils literal notranslate"><span class="pre">/usr/local/etc/trafficserver/</span></code>) contains mapping rules that Traffic Server
 uses to perform the following actions:</p>
 <ul class="simple">
-<li>Map URL requests for a specific origin server to the appropriate
+<li><p>Map URL requests for a specific origin server to the appropriate
 location on Traffic Server when Traffic Server acts as a reverse
-proxy for that particular origin server</li>
-<li>Reverse-map server location headers so that when origin servers
+proxy for that particular origin server</p></li>
+<li><p>Reverse-map server location headers so that when origin servers
 respond to a request with a location header that redirects the client
-to another location, the clients do not bypass Traffic Server</li>
-<li>Redirect HTTP requests permanently or temporarily without Traffic
-Server having to contact any origin servers</li>
+to another location, the clients do not bypass Traffic Server</p></li>
+<li><p>Redirect HTTP requests permanently or temporarily without Traffic
+Server having to contact any origin servers</p></li>
 </ul>
 <p>Refer to  <a class="reference internal" href="../configuration/redirecting-http-requests.en.html#reverse-proxy-and-http-redirects"><span class="std std-ref">Reverse Proxy and HTTP Redirects</span></a>, for information about
 redirecting HTTP requests and using reverse proxy.</p>
-<p>After you modify the <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> run the
-<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the changes.</p>
+<p>After you modify the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> run the
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the changes.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>Each line in the <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file must contain a mapping rule. Empty lines,
+<p>Each line in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file must contain a mapping rule. Empty lines,
 or lines starting with <code class="docutils literal notranslate"><span class="pre">#</span></code> are ignored. Each line can be broken up into multiple
 lines for better readability by using <code class="docutils literal notranslate"><span class="pre">\</span></code> as continuation marker.</p>
 <p>Traffic Server recognizes three space-delimited fields: <code class="docutils literal notranslate"><span class="pre">type</span></code>,
 <code class="docutils literal notranslate"><span class="pre">target</span></code>, and <code class="docutils literal notranslate"><span class="pre">replacement</span></code>. The following list describes the format of each field.</p>
-<dl class="docutils" id="remap-config-format-type">
-<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt>
-<dd><p class="first">Enter one of the following:</p>
-<ul class="last">
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">map</span></code> –translates an incoming request URL to the appropriate
-origin server URL.</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> –exactly like ‘map’ except that it uses the port at
+<dl id="remap-config-format-type">
+<dt><code class="docutils literal notranslate"><span class="pre">type</span></code></dt><dd><p>Enter one of the following:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> –translates an incoming request URL to the appropriate
+origin server URL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> –exactly like ‘map’ except that it uses the port at
 which the request was received to perform the mapping instead of the port present
 in the request. The regex qualifier can also be used for this type. When present,
 ‘map_with_recv_port’ mappings are checked first. If there is a match, then it is
-chosen without evaluating the “regular” forward mapping rules.</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">map_with_referer</span></code> – extended version of ‘map’, which can be used to activate
+chosen without evaluating the “regular” forward mapping rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_referer</span></code> – extended version of ‘map’, which can be used to activate
 “deep linking protection”, where target URLs are only accessible when the Referer
-header is set to a URL that is allowed to link to the target.</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">reverse_map</span></code> –translates the URL in origin server redirect
-responses to point to the Traffic Server.</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">redirect</span></code> –redirects HTTP requests permanently without having
+header is set to a URL that is allowed to link to the target.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reverse_map</span></code> –translates the URL in origin server redirect
+responses to point to the Traffic Server.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect</span></code> –redirects HTTP requests permanently without having
 to contact the origin server. Permanent redirects notify the
 browser of the URL change (by returning an HTTP status code 301)
-so that the browser can update bookmarks.</p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code> –redirects HTTP requests temporarily
+so that the browser can update bookmarks.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code> –redirects HTTP requests temporarily
 without having to contact the origin server. Temporary redirects
 notify the browser of the URL change for the current request only
 (by returning an HTTP status code 307).</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">use the <code class="docutils literal notranslate"><span class="pre">regex_</span></code> prefix to indicate that the line has a regular expression (regex).</p>
+<p class="admonition-title">Note</p>
+<p>use the <code class="docutils literal notranslate"><span class="pre">regex_</span></code> prefix to indicate that the line has a regular expression (regex).</p>
 </div>
 </li>
 </ul>
 </dd>
 </dl>
-<dl class="docutils" id="remap-config-format-target">
-<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt>
-<dd><p class="first">Enter the request (“from”) URL. You can enter up to four components:</p>
+<dl id="remap-config-format-target">
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><p>Enter the request (“from”) URL. You can enter up to four components:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheme</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">path_prefix</span>
 </pre></div>
 </div>
-<p class="last">where <code class="docutils literal notranslate"><span class="pre">scheme</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code>.</p>
+<p>where <code class="docutils literal notranslate"><span class="pre">scheme</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code>.</p>
 </dd>
 </dl>
-<dl class="docutils" id="remap-config-format-replacement">
-<dt><code class="docutils literal notranslate"><span class="pre">replacement</span></code></dt>
-<dd><blockquote class="first">
+<dl id="remap-config-format-replacement">
+<dt><code class="docutils literal notranslate"><span class="pre">replacement</span></code></dt><dd><blockquote>
 <div><p>Enter the origin (“to”) URL. You can enter up to four components:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scheme</span><span class="p">:</span><span class="o">//</span><span class="n">host</span><span class="p">:</span><span class="n">port</span><span class="o">/</span><span class="n">path_prefix</span>
 </pre></div>
 </div>
 <p>where <code class="docutils literal notranslate"><span class="pre">scheme</span></code> is <code class="docutils literal notranslate"><span class="pre">http</span></code>, <code class="docutils literal notranslate"><span class="pre">https</span></code>, <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code>.</p>
 </div></blockquote>
-<div class="last admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">A remap rule for requests that upgrade from HTTP to WebSocket still require a remap rule with the <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code> scheme.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A remap rule for requests that upgrade from HTTP to WebSocket still require a remap rule with the <code class="docutils literal notranslate"><span class="pre">ws</span></code> or <code class="docutils literal notranslate"><span class="pre">wss</span></code> scheme.</p>
 </div>
 </dd>
 </dl>
@@ -307,10 +299,10 @@ notify the browser of the URL change for the current request only
 priority. Once these rules are executed we pick the first match
 based on configuration file parse order.</p>
 <ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map_with_recv_port</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map</span></code> and <code class="docutils literal notranslate"><span class="pre">reverse_map</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">regex_redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_redirect_temporary</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_with_recv_port</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map_with_recv_port</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_map</span></code> and <code class="docutils literal notranslate"><span class="pre">reverse_map</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">redirect_temporary</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">regex_redirect</span></code> and <code class="docutils literal notranslate"><span class="pre">regex_redirect_temporary</span></code></p></li>
 </ol>
 <p>For each precedence group the rules are checked in two phases. If the first phase fails to find a
 match then the second phase is performed against the same group of rules. In the first phase the
@@ -330,7 +322,7 @@ end of the remap.config file. E.g.</p>
 <div class="section" id="examples">
 <h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
 <p>The following section shows example mapping rules in the
-<a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</p>
+<a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</p>
 <div class="section" id="reverse-proxy-mapping-rules">
 <h4>Reverse Proxy Mapping Rules<a class="headerlink" href="#reverse-proxy-mapping-rules" title="Permalink to this headline">¶</a></h4>
 <p>The following example shows a map rule that does not specify a path
@@ -340,22 +332,22 @@ prefix in the target or replacement:</p>
 </pre></div>
 </div>
 <p>This rule results in the following translations:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="46%" />
-<col width="54%" />
+<col style="width: 46%" />
+<col style="width: 54%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/index.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/Widgets/index.html</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/index.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/Widgets/index.html</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">http://www.x.com/cgi/form/submit.sh?arg=true</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/cgi/form/submit.sh?arg=true</span></code></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/cgi/form/submit.sh?arg=true</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/cgi/form/submit.sh?arg=true</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -372,25 +364,25 @@ the target:</p>
 </pre></div>
 </div>
 <p>These rules result in the following translations:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="52%" />
-<col width="48%" />
+<col style="width: 52%" />
+<col style="width: 48%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.y.com/marketing/projects/manhattan/specs.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://marketing.y.com/projects/manhattan/specs.html</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/marketing/projects/manhattan/specs.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://marketing.y.com/projects/manhattan/specs.html</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">http://www.y.com/stuff/marketing/projects/boston/specs.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://info.y.com/marketing/projects/boston/specs.html</span></code></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/stuff/marketing/projects/boston/specs.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://info.y.com/marketing/projects/boston/specs.html</span></code></p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.y.com/engineering/marketing/requirements.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://engineering.y.com/marketing/requirements.html</span></code></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.y.com/engineering/marketing/requirements.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://engineering.y.com/marketing/requirements.html</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -402,25 +394,25 @@ the target:</p>
 </pre></div>
 </div>
 <p>These rules result in the following translation.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="46%" />
-<col width="54%" />
+<col style="width: 46%" />
+<col style="width: 54%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.g.com/stuff/a.gif</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://external.g.com/stuff/a.gif</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.g.com/stuff/a.gif</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://external.g.com/stuff/a.gif</span></code></p></td>
 </tr>
 </tbody>
 </table>
 <p>In the above examples, the second rule is never applied because all URLs
 that match the second rule also match the first rule. The first rule
-takes precedence because it appears earlier in the <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+takes precedence because it appears earlier in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 file.</p>
 <p>This is different if one rule does not have a host. For example consider these rules using the <a class="reference internal" href="#match-all">Match-All</a> rule:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
@@ -428,22 +420,22 @@ file.</p>
 </pre></div>
 </div>
 <p>These rules are set up to redirect requests to another local process. Using them will result in</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="49%" />
-<col width="51%" />
+<col style="width: 49%" />
+<col style="width: 51%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://example.com/a.gif</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/a.gif</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://example.com/a.gif</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/a.gif</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">http://example.com/dist_get_user</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/denied.html</span></code></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://example.com/dist_get_user</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8001/denied.html</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -467,22 +459,22 @@ the target and replacement:</p>
 </pre></div>
 </div>
 <p>This rule results in the following translation.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="43%" />
-<col width="57%" />
+<col style="width: 43%" />
+<col style="width: 57%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/b/c/d/doc.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://server.h.com/customers/x/y/c/d/doc.html</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/b/c/d/doc.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.h.com/customers/x/y/c/d/doc.html</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/index.html</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">Translation</span> <span class="pre">fails</span></code></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.h.com/a/index.html</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Translation</span> <span class="pre">fails</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -492,45 +484,45 @@ the target and replacement:</p>
 </pre></div>
 </div>
 <p>These rules result in the following translations.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="46%" />
-<col width="54%" />
+<col style="width: 46%" />
+<col style="width: 54%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets</span></code></p></td>
 </tr>
 </tbody>
 </table>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="32%" />
-<col width="39%" />
-<col width="29%" />
+<col style="width: 32%" />
+<col style="width: 39%" />
+<col style="width: 29%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Client Request</th>
-<th class="head">Origin Server Header</th>
-<th class="head">Translated Request</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Client Request</p></th>
+<th class="head"><p>Origin Server Header</p></th>
+<th class="head"><p>Translated Request</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets/</span></code></td>
-<td><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/</span></code></td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://server.hoster.com/x/Widgets/</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">http://www.x.com/Widgets/</span></code></p></td>
 </tr>
 </tbody>
 </table>
 <p>When acting as a reverse proxy for multiple servers, Traffic Server is
 unable to route to URLs from older browsers that do not send the
 <code class="docutils literal notranslate"><span class="pre">Host:</span></code> header. As a solution, set the variable <a class="reference internal" href="records.config.en.html#proxy-config-header-parse-no-host-url-redirect" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.header.parse.no_host_url_redirect</span></code></a>
-in the <a class="reference internal" href="records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file to the URL to which Traffic Server will redirect
+in the <a class="reference internal" href="records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file to the URL to which Traffic Server will redirect
 requests without host headers.</p>
 </div>
 <div class="section" id="redirect-mapping-rules">
@@ -553,16 +545,16 @@ requests without host headers.</p>
 <p>Regular expressions can be specified in remapping rules, with the
 limitations below:</p>
 <ul class="simple">
-<li>Only the <code class="docutils literal notranslate"><span class="pre">host</span></code> field can contain a regex; the <code class="docutils literal notranslate"><span class="pre">scheme</span></code>,
+<li><p>Only the <code class="docutils literal notranslate"><span class="pre">host</span></code> field can contain a regex; the <code class="docutils literal notranslate"><span class="pre">scheme</span></code>,
 <code class="docutils literal notranslate"><span class="pre">port</span></code>, and other fields cannot. For path manipulation via regexes,
-use the <a class="reference internal" href="../plugins/regex_remap.en.html#admin-plugins-regex-remap"><span class="std std-ref">Regex Remap Plugin</span></a>.</li>
-<li>The number of capturing subpatterns is limited to 9. This means that
+use the <a class="reference internal" href="../plugins/regex_remap.en.html#admin-plugins-regex-remap"><span class="std std-ref">Regex Remap Plugin</span></a>.</p></li>
+<li><p>The number of capturing subpatterns is limited to 9. This means that
 <code class="docutils literal notranslate"><span class="pre">$0</span></code> through <code class="docutils literal notranslate"><span class="pre">$9</span></code> can be used as subtraction placeholders (<code class="docutils literal notranslate"><span class="pre">$0</span></code>
-will be the entire input string).</li>
-<li>The number of substitutions in the expansion string is limited to 10.</li>
-<li>There is no <code class="docutils literal notranslate"><span class="pre">regex_</span></code> equivalent to <code class="docutils literal notranslate"><span class="pre">reverse_remap</span></code>, so when using
+will be the entire input string).</p></li>
+<li><p>The number of substitutions in the expansion string is limited to 10.</p></li>
+<li><p>There is no <code class="docutils literal notranslate"><span class="pre">regex_</span></code> equivalent to <code class="docutils literal notranslate"><span class="pre">reverse_remap</span></code>, so when using
 <code class="docutils literal notranslate"><span class="pre">regex_map</span></code> you should make sure the reverse path is clear by
-setting (<a class="reference internal" href="records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a>)</li>
+setting (<a class="reference internal" href="records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a>)</p></li>
 </ul>
 <div class="section" id="id1">
 <h3>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
@@ -612,7 +604,7 @@ be verified for validity.  If the “~” symbol was specified before referer
 regular expression, it means that the request with a matching referer header
 will be redirected to redirectURL. It can be used to create a so-called
 negative referer list.  If “*” was used as a referer regular expression -
-all referers are allowed.  Various combinations of “*” and “~” in a referer
+all referrers are allowed.  Various combinations of “*” and “~” in a referer
 list can be used to create different filtering rules.</p>
 <div class="section" id="map-with-referer-examples">
 <h3>map_with_referer Examples<a class="headerlink" href="#map-with-referer-examples" title="Permalink to this headline">¶</a></h3>
@@ -623,7 +615,7 @@ list can be used to create different filtering rules.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">y</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">games</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">new_games</span> <span class="o">*</span> <span class="o">~.*</span>\<span class="o">.</span><span class="n">evil</span>\<span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
-<p>Explanation: Referer header must be in the request but all referers are allowed except “.*.evil.com”.</p>
+<p>Explanation: Referer header must be in the request but all referrers are allowed except “.*.evil.com”.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">map_with_referer</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">y</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">yy</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">games</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">error</span> <span class="o">~*</span> <span class="o">*</span> <span class="o">~.*</span>\<span class="o">.</span><span class="n">evil</span>\<span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
@@ -649,7 +641,7 @@ the results from one in to the next (unless a plugin returns 0, then the
 <div class="section" id="acl-filters">
 <span id="remap-config-named-filters"></span><h2>Acl Filters<a class="headerlink" href="#acl-filters" title="Permalink to this headline">¶</a></h2>
 <p>Acl filters can be created to control access of specific remap lines. The markup
-is very similar to that of <a class="reference internal" href="ip_allow.yaml.en.html#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a>, with slight changes to
+is very similar to that of <a class="reference internal" href="ip_allow.yaml.en.html#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a>, with slight changes to
 accommodate remap markup</p>
 <div class="section" id="id4">
 <h3>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
@@ -724,15 +716,15 @@ at the point of inclusion. This means that and filters named in the
 included files are global in scope, and that additional <code class="docutils literal notranslate"><span class="pre">.include</span></code>
 directives are allowed.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Included remap files are not currently tracked by the configuration
+<p class="admonition-title">Note</p>
+<p>Included remap files are not currently tracked by the configuration
 subsystem. Changes to included remap files will not be noticed
-by online configuration changes applied by <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
-unless <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> has also changed.</p>
+by online configuration changes applied by <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+unless <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> has also changed.</p>
 </div>
 <div class="section" id="id6">
 <h3>Examples<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<p>In this example, a top-level <a class="reference internal" href="#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file simply
+<p>In this example, a top-level <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file simply
 references additional mapping rules files</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">include</span> <span class="n">filters</span><span class="o">.</span><span class="n">config</span>
 <span class="o">.</span><span class="n">include</span> <span class="n">one</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">config</span> <span class="n">two</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">config</span>

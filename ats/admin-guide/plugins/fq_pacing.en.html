@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -233,7 +233,7 @@ requests, a hook is set to deactivate the pacing when the current transaction co
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <p>First, enable the FQ qdisc by setting <code class="docutils literal notranslate"><span class="pre">net.core.default_qdisc=fq</span></code> in <code class="docutils literal notranslate"><span class="pre">/etc/sysctl.conf</span></code> and rebooting.</p>
 <p>The <cite>FQ Pacing</cite> plugin is a <a class="reference internal" href="../../appendices/glossary.en.html#term-remap-plugin"><span class="xref std std-term">remap plugin</span></a>.  Enable it by adding
-<code class="docutils literal notranslate"><span class="pre">fq_pacing.so</span></code> to your <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.  Provide a <code class="docutils literal notranslate"><span class="pre">--rate=BytesPerSec</span></code> option to set
+<code class="docutils literal notranslate"><span class="pre">fq_pacing.so</span></code> to your <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.  Provide a <code class="docutils literal notranslate"><span class="pre">--rate=BytesPerSec</span></code> option to set
 the maximum rate of a TCP connection matching that remap line.</p>
 <p>Here is an example remap.config entry:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">reverse</span><span class="o">-</span><span class="n">fqdn</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">.</span><span class="n">com</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">fq_pacing</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">rate</span><span class="o">=</span><span class="mi">100000</span>

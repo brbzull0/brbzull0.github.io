@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -227,21 +227,21 @@ its basic form, a continuation represents a handler function and a
 mutex.</p>
 <p>This chapter covers the following topics:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#mutexes-and-data">Mutexes and Data</a></li>
-<li><a class="reference internal" href="activating-continuations.en.html#developer-plugins-continuations-activate"><span class="std std-ref">Activating Continuations</span></a></li>
-<li><a class="reference internal" href="writing-handler-functions.en.html#developer-plugins-continuations-handler-functions"><span class="std std-ref">Writing Handler Functions</span></a></li>
+<li><p><a class="reference internal" href="#mutexes-and-data">Mutexes and Data</a></p></li>
+<li><p><a class="reference internal" href="activating-continuations.en.html#developer-plugins-continuations-activate"><span class="std std-ref">Activating Continuations</span></a></p></li>
+<li><p><a class="reference internal" href="writing-handler-functions.en.html#developer-plugins-continuations-handler-functions"><span class="std std-ref">Writing Handler Functions</span></a></p></li>
 </ul>
 <div class="section" id="mutexes-and-data">
 <h2>Mutexes and Data<a class="headerlink" href="#mutexes-and-data" title="Permalink to this headline">¶</a></h2>
 <p>A continuation must be created with a mutex if your continuation does
 one of the following:</p>
 <ul class="simple">
-<li>is registered globally (<code class="docutils literal notranslate"><span class="pre">TSHttpHookAdd</span></code> or <code class="docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd</span></code>) to
-an HTTP hook and uses <code class="docutils literal notranslate"><span class="pre">TSContDataSet/Get</span></code></li>
-<li>is registered locally (<code class="docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd</span></code>), but for multiple
-transactions uses <code class="docutils literal notranslate"><span class="pre">TSContDataSet/Get</span></code></li>
-<li>uses <code class="docutils literal notranslate"><span class="pre">TSCacheXXX</span></code>, <code class="docutils literal notranslate"><span class="pre">TSNetXXX</span></code>, <code class="docutils literal notranslate"><span class="pre">TSHostLookup</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">TSContScheduleOnPool</span></code> APIs</li>
+<li><p>is registered globally (<code class="docutils literal notranslate"><span class="pre">TSHttpHookAdd</span></code> or <code class="docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd</span></code>) to
+an HTTP hook and uses <code class="docutils literal notranslate"><span class="pre">TSContDataSet/Get</span></code></p></li>
+<li><p>is registered locally (<code class="docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd</span></code>), but for multiple
+transactions uses <code class="docutils literal notranslate"><span class="pre">TSContDataSet/Get</span></code></p></li>
+<li><p>uses <code class="docutils literal notranslate"><span class="pre">TSCacheXXX</span></code>, <code class="docutils literal notranslate"><span class="pre">TSNetXXX</span></code>, <code class="docutils literal notranslate"><span class="pre">TSHostLookup</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">TSContScheduleOnPool</span></code> APIs</p></li>
 </ul>
 <p>Before being activated, a caller must grab the continuation’s mutex.
 This requirement makes it possible for a continuation’s handler function
@@ -260,14 +260,14 @@ is possible that <code class="docutils literal notranslate"><span class="pre">co
 <code class="docutils literal notranslate"><span class="pre">TSCacheRead</span></code> returns.</p>
 <p>Caveats that could cause issues include the following:</p>
 <ul class="simple">
-<li>a continuation has data associated with it (<code class="docutils literal notranslate"><span class="pre">TSContDataGet</span></code>).</li>
-<li>the reentrant call passes itself as a continuation to the reentrant
+<li><p>a continuation has data associated with it (<code class="docutils literal notranslate"><span class="pre">TSContDataGet</span></code>).</p></li>
+<li><p>the reentrant call passes itself as a continuation to the reentrant
 API. In this case, the continuation should not try to access its data
 after calling the reentrant API. The reason for this is that data may be
 modified by the section of code in the continuation’s handler that
 handles the event sent by the API. It is recommended that you always
 return after a reentrant call to avoid accessing something that has been
-deallocated.</li>
+deallocated.</p></li>
 </ul>
 <p>Below is an example, followed by an explanation.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">continuation_handler</span> <span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">edata</span><span class="p">)</span> <span class="p">{</span>

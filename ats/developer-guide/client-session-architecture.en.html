@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -273,8 +273,8 @@ plugin allocated objects are appropriately reclaimed.</p>
 cause use-after-free and other related memory corruption errors.</p>
 <p>To ensure that sessions and transactions are correctly shutdown the following assertions are maintained.</p>
 <ul class="simple">
-<li>The Session object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until all child transaction objects are fully shutdown (i.e. TXN_CLOSE hooks are called and the transaction objects have been freed).</li>
-<li>The Transaction object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until the associated HttpSM has been shutdown.  In <code class="code docutils literal notranslate"><span class="pre">HttpSM::kill_this()</span></code>, the HttpSM will call <code class="code docutils literal notranslate"><span class="pre">ProxyTransaction::transaction_done()</span></code> on the ua_session object.  If the user agent initiates the termination, the ProxyTransaction object will send a WRITE_COMPLETE, EOS, or ERROR event on the open VIO object.  This should signal to the HttpSM object to shut itself down.</li>
+<li><p>The Session object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until all child transaction objects are fully shutdown (i.e. TXN_CLOSE hooks are called and the transaction objects have been freed).</p></li>
+<li><p>The Transaction object will not call <code class="code docutils literal notranslate"><span class="pre">::destroy()</span></code> on itself until the associated HttpSM has been shutdown.  In <code class="code docutils literal notranslate"><span class="pre">HttpSM::kill_this()</span></code>, the HttpSM will call <code class="code docutils literal notranslate"><span class="pre">ProxyTransaction::transaction_done()</span></code> on the ua_session object.  If the user agent initiates the termination, the ProxyTransaction object will send a WRITE_COMPLETE, EOS, or ERROR event on the open VIO object.  This should signal to the HttpSM object to shut itself down.</p></li>
 </ul>
 </div>
 </div>

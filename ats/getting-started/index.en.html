@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -227,34 +227,34 @@ browsing.</p>
 <h3>Terminology<a class="headerlink" href="#terminology" title="Permalink to this headline">¶</a></h3>
 <p>This guide uses some terms which may be unfamiliar to administrators new to
 proxy servers.</p>
-<dl class="docutils">
-<dt>Origin Server</dt>
-<dd>The server which generates the content you wish to proxy (and optionally
+<dl class="simple">
+<dt>Origin Server</dt><dd><p>The server which generates the content you wish to proxy (and optionally
 cache) with Traffic Server. In a forward proxy configuration, the origin server may be
 any remote server to which a proxied client attempts to connect. In a
 reverse proxy configuration, the origin servers are typically a known set of
 servers for which you are using Traffic Server as a performance-enhancing caching
-layer.</dd>
-<dt>Reverse Proxy</dt>
-<dd>A reverse proxy appears to outside users as if it were the origin server,
+layer.</p>
+</dd>
+<dt>Reverse Proxy</dt><dd><p>A reverse proxy appears to outside users as if it were the origin server,
 though it does not generate the content itself. Instead, it intercepts the
 requests and, based on the configured rules and contents of its cache, will
 either serve a cached copy of the requested content itself, or forward the
 request to the origin server, possibly caching the content returned for use
-with future requests.</dd>
-<dt>Forward Proxy</dt>
-<dd>A forward proxy brokers access to external resources, intercepting all
+with future requests.</p>
+</dd>
+<dt>Forward Proxy</dt><dd><p>A forward proxy brokers access to external resources, intercepting all
 matching outbound traffic from a network. Forward proxies may be used to
 speed up external access for locations with slow connections (by caching the
 external resources and using those cached copies to service requests
 directly in the future), or may be used to restrict or monitor external
-access.</dd>
-<dt>Transparent Proxy</dt>
-<dd>A transparent proxy may be either a reverse or forward proxy (though nearly
+access.</p>
+</dd>
+<dt>Transparent Proxy</dt><dd><p>A transparent proxy may be either a reverse or forward proxy (though nearly
 all reverse proxies are deployed transparently), the defining feature being
 the use of network routing to send requests through the proxy without any
 need for clients to configure themselves to do so, and often without the
-ability for those clients to bypass the proxy.</dd>
+ability for those clients to bypass the proxy.</p>
+</dd>
 </dl>
 <p>For a more complete list of definitions, please see the <a class="reference internal" href="../appendices/glossary.en.html#glossary"><span class="std std-ref">Glossary</span></a>.</p>
 </div>
@@ -311,26 +311,26 @@ for your system. Once you have EPEL installed, you may install Traffic Server it
 <p>To install from source code, you will need to have the following tools and
 libraries on the machine used to build Traffic Server:</p>
 <ul class="simple">
-<li>pkgconfig</li>
-<li>libtool</li>
-<li>gcc (&gt;= 4.3 or clang &gt; 3.0)</li>
-<li>GNU make</li>
-<li>openssl</li>
-<li>pcre</li>
-<li>libcap</li>
-<li>flex (for TPROXY)</li>
-<li>hwloc</li>
-<li>lua</li>
-<li>zlib</li>
-<li>curses (for traffic_top)</li>
-<li>curl (for traffic_top)</li>
+<li><p>pkgconfig</p></li>
+<li><p>libtool</p></li>
+<li><p>gcc (&gt;= 4.3 or clang &gt; 3.0)</p></li>
+<li><p>GNU make</p></li>
+<li><p>openssl</p></li>
+<li><p>pcre</p></li>
+<li><p>libcap</p></li>
+<li><p>flex (for TPROXY)</p></li>
+<li><p>hwloc</p></li>
+<li><p>lua</p></li>
+<li><p>zlib</p></li>
+<li><p>curses (for traffic_top)</p></li>
+<li><p>curl (for traffic_top)</p></li>
 </ul>
 <p>To build Traffic Server from a Git clone (the method we will be using in this guide), you
 will also need the following:</p>
 <ul class="simple">
-<li>git</li>
-<li>autoconf</li>
-<li>automake</li>
+<li><p>git</p></li>
+<li><p>autoconf</p></li>
+<li><p>automake</p></li>
 </ul>
 <p>In this guide, Traffic Server will be built to use the default <code class="docutils literal notranslate"><span class="pre">nobody</span></code> user and group
 and will be installed to <code class="docutils literal notranslate"><span class="pre">/opt/ts</span></code>. It is assumed that all of the dependencies
@@ -338,41 +338,41 @@ are located in standard paths. If this is not the case, you may need to use the
 appropriate <code class="docutils literal notranslate"><span class="pre">--with-&lt;package&gt;</span></code> options as detailed in the output of
 <code class="docutils literal notranslate"><span class="pre">./configure</span> <span class="pre">--help</span></code>.</p>
 <ol class="arabic">
-<li><p class="first">Clone the repository (you may skip this if you have downloaded an archive of
+<li><p>Clone the repository (you may skip this if you have downloaded an archive of
 the source code to build a specific official release of Traffic Server instead of the
 HEAD from source control):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">git</span><span class="o">-</span><span class="n">wip</span><span class="o">-</span><span class="n">us</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">asf</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Change to the cloned (or unarchived) directory:</p>
+<li><p>Change to the cloned (or unarchived) directory:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">trafficserver</span><span class="o">/</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">If you have cloned the repository from Git, you will need to generate the
+<li><p>If you have cloned the repository from Git, you will need to generate the
 <code class="docutils literal notranslate"><span class="pre">configure</span></code> script before proceeding:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">autoreconf</span> <span class="o">-</span><span class="k">if</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure the source tree:</p>
+<li><p>Configure the source tree:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">prefix</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">ts</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Build Traffic Server with the generated Makefiles, and test the results:</p>
+<li><p>Build Traffic Server with the generated Makefiles, and test the results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span>
 <span class="n">make</span> <span class="n">check</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Install Traffic Server to the configured location:</p>
+<li><p>Install Traffic Server to the configured location:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">make</span> <span class="n">install</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Optionally, you may find it prudent to run the regression tests on your newly
+<li><p>Optionally, you may find it prudent to run the regression tests on your newly
 installed Traffic Server:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ts</span>
 <span class="n">sudo</span> <span class="nb">bin</span><span class="o">/</span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">R</span> <span class="mi">1</span>
@@ -407,7 +407,7 @@ run Traffic Server on an entirely different host, even connected to entirely dif
 networks, as long as Traffic Server is able to reach the origin host.</p>
 <div class="section" id="enable-reverse-proxying">
 <h4>Enable Reverse Proxying<a class="headerlink" href="#enable-reverse-proxying" title="Permalink to this headline">¶</a></h4>
-<p>Within the <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> configuration file, ensure that the following
+<p>Within the <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> configuration file, ensure that the following
 settings have been configured as shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">http</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">reverse_proxy</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">1</span>
@@ -416,24 +416,24 @@ settings have been configured as shown below:</p>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">server_ports</span> <span class="n">STRING</span> <span class="mi">8080</span> <span class="mi">8080</span><span class="p">:</span><span class="n">ipv6</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a></dt>
-<dd>Enables caching of proxied HTTP requests.</dd>
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a></dt>
-<dd>Enables reverse proxying support.</dd>
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a></dt>
-<dd>This setting requires that a remap rule exist before Traffic Server will proxy the
+<dl class="simple">
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a></dt><dd><p>Enables caching of proxied HTTP requests.</p>
+</dd>
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a></dt><dd><p>Enables reverse proxying support.</p>
+</dd>
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a></dt><dd><p>This setting requires that a remap rule exist before Traffic Server will proxy the
 request and ensures that your proxy cannot be used to access the content of
 arbitrary websites (allowing someone of malicious intent to potentially
-mask their identity to an unknowing third party).</dd>
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a></dt>
-<dd>This setting causes Traffic Server to keep the <code class="docutils literal notranslate"><span class="pre">Host:</span></code> client request header intact
+mask their identity to an unknowing third party).</p>
+</dd>
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a></dt><dd><p>This setting causes Traffic Server to keep the <code class="docutils literal notranslate"><span class="pre">Host:</span></code> client request header intact
 which is necessary in cases where your origin servers may be performing
 domain-based virtual hosting, or taking other actions dependent upon the
-contents of that header.</dd>
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a></dt>
-<dd>This configures Traffic Server to bind itself to the port <code class="docutils literal notranslate"><span class="pre">8080</span></code> for HTTP traffic,
-for both IPv4 and IPv6.</dd>
+contents of that header.</p>
+</dd>
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a></dt><dd><p>This configures Traffic Server to bind itself to the port <code class="docutils literal notranslate"><span class="pre">8080</span></code> for HTTP traffic,
+for both IPv4 and IPv6.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="configure-origin-location">
@@ -443,7 +443,7 @@ it), but now Traffic Server needs to know what to proxy. This is achieved by wri
 remap rules, which make use of the core <a class="reference internal" href="../admin-guide/plugins/conf_remap.en.html#admin-plugins-conf-remap"><span class="std std-ref">Configuration Remap Plugin</span></a>. For
 our Getting Started guide’s Acme Widgets example scenario, we have very simple needs
 and want little more than to proxy all requests to our single origin server.
-This is accomplished with the following rule added to the <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+This is accomplished with the following rule added to the <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 configuration:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">80</span><span class="o">/</span>
 </pre></div>
@@ -499,7 +499,7 @@ rules like:</p>
 </pre></div>
 </div>
 <p>This will require installing a certificate, and adding a line to
-<a class="reference internal" href="../admin-guide/files/ssl_multicert.config.en.html#std:configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a>. Assuming the cert has the static.acme.com alternate
+<a class="reference internal" href="../admin-guide/files/ssl_multicert.config.en.html#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a>. Assuming the cert has the static.acme.com alternate
 name, and that cert should be presented by default:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_ip</span><span class="o">=*</span> <span class="n">ssl_cert_name</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">secret</span><span class="o">/</span><span class="n">privatekey</span><span class="o">/</span><span class="n">acme</span><span class="o">.</span><span class="n">rsa</span>
 </pre></div>
@@ -512,16 +512,16 @@ section of the documentation.</p>
 <p>The default Traffic Server configuration will provide a 256 MB disk cache, located in
 <code class="docutils literal notranslate"><span class="pre">var/trafficserver/</span></code> underneath your install prefix. You may wish to adjust
 either or both of the size and location of this cache. This is done with the
-<a class="reference internal" href="../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> configuration file. In our example, Acme Widgets has dedicated
+<a class="reference internal" href="../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> configuration file. In our example, Acme Widgets has dedicated
 a large storage pool on their cache server which is mounted at <code class="docutils literal notranslate"><span class="pre">/cache</span></code>. To
 use this, and to disable the default cache storage setting, the following will
-be the sole entry in <a class="reference internal" href="../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>:</p>
+be the sole entry in <a class="reference internal" href="../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">cache</span><span class="o">/</span><span class="n">trafficserver</span> <span class="mi">500</span><span class="n">G</span>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Changes to the cache configuration require a restart of Traffic Server.</p>
+<p class="admonition-title">Note</p>
+<p>Changes to the cache configuration require a restart of Traffic Server.</p>
 </div>
 <p>You may also wish to use raw devices, or partition your cache storage. Details
 on these features may be found in the <a class="reference internal" href="../admin-guide/configuration/index.en.html#admin-configuration"><span class="std std-ref">Proxy Cache Configuration</span></a> section of
@@ -531,7 +531,7 @@ the Administrator’s Guide.</p>
 <h4>Final Configurations<a class="headerlink" href="#final-configurations" title="Permalink to this headline">¶</a></h4>
 <p>Once completed, the following configuration files for Acme Widgets contain the following
 entries:</p>
-<p><a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<p><a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">http</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">reverse_proxy</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">remap_required</span> <span class="n">INT</span> <span class="mi">1</span>
@@ -539,7 +539,7 @@ entries:</p>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">server_ports</span> <span class="n">STRING</span> <span class="mi">80</span> <span class="mi">80</span><span class="p">:</span><span class="n">ipv6</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<p><a class="reference internal" href="../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">-</span><span class="n">origin</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
 <span class="nb">map</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">api</span><span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">-</span><span class="n">origin</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
 <span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span>
@@ -548,11 +548,11 @@ entries:</p>
 <span class="nb">map</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">static</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">-</span><span class="n">static</span><span class="o">.</span><span class="n">acme</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>:</p>
+<p><a class="reference internal" href="../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">cache</span><span class="o">/</span><span class="n">trafficserver</span> <span class="mi">500</span><span class="n">G</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="../admin-guide/files/ssl_multicert.config.en.html#std:configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a>:</p>
+<p><a class="reference internal" href="../admin-guide/files/ssl_multicert.config.en.html#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssl_cert_name</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">secret</span><span class="o">/</span><span class="n">acme</span><span class="o">.</span><span class="n">rsa</span>
 </pre></div>
 </div>
@@ -571,18 +571,18 @@ configuration.</p>
 <p>Contrary to a reverse proxy, where you have a defined list of origin servers for
 which you wish to proxy (and optionally cache), a forward proxy is used to
 proxy (and optionally cache) for arbitrary remote hosts. As such, the following
-settings in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> are the base configuration for a minimal
+settings in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> are the base configuration for a minimal
 forward proxy:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">remap_required</span> <span class="n">INT</span> <span class="mi">0</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">http</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a></dt>
-<dd>Disables the requirement for a remap rule to exist and match the incoming
-request before Traffic Server will proxy the request to the remote host.</dd>
-<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a></dt>
-<dd>Enables caching of proxied HTTP requests.</dd>
+<dl class="simple">
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a></dt><dd><p>Disables the requirement for a remap rule to exist and match the incoming
+request before Traffic Server will proxy the request to the remote host.</p>
+</dd>
+<dt><a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a></dt><dd><p>Enables caching of proxied HTTP requests.</p>
+</dd>
 </dl>
 <p>If your installation will be strictly a forwarding proxy, then reverse proxying
 should be explicitly disabled:</p>

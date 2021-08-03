@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -129,7 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -205,23 +205,23 @@
             
   <div class="section" id="ip-allow-yaml">
 <h1>ip_allow.yaml<a class="headerlink" href="#ip-allow-yaml" title="Permalink to this headline">¶</a></h1>
-<p id="std:configfile-ip_allow.yaml">The <a class="reference internal" href="#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> file controls client access to Traffic Server and Traffic Server connections to upstream servers.
+<p id="std-configfile-ip_allow.yaml"><span id="std:configfile-ip_allow.yaml"></span>The <a class="reference internal" href="#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> file controls client access to Traffic Server and Traffic Server connections to upstream servers.
 This control is specified via rules. Each rule has:</p>
 <ul class="simple">
-<li>A direction (inbound or out).</li>
-<li>A range of IP address to which the rule applies.</li>
-<li>An action, either accept or deny.</li>
-<li>A list of HTTP methods.</li>
+<li><p>A direction (inbound or out).</p></li>
+<li><p>A range of IP address to which the rule applies.</p></li>
+<li><p>An action, either accept or deny.</p></li>
+<li><p>A list of HTTP methods.</p></li>
 </ul>
 <p>Inbound rules control access to Traffic Server from user agents. Outbound rules control access to upstream destinations
 from Traffic Server. The IP addresses always apply to the remote address for Traffic Server. That is, the user agent IP address
 for inbound rules and the upstream destination address for outbound rules. The rule can apply at the connection
 level or just to specific methods.</p>
-<p>Traffic Server can be updated for changes to the rules in <a class="reference internal" href="#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> file, by running the
-<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>.</p>
+<p>Traffic Server can be updated for changes to the rules in <a class="reference internal" href="#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> file, by running the
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> is YAML format. The default configuration is:</p>
+<p><a class="reference internal" href="#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> is YAML format. The default configuration is:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># YAML</span>
 <span class="nt">ip_allow</span><span class="p">:</span>
   <span class="p p-Indicator">-</span> <span class="nt">apply</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">in</span>
@@ -251,28 +251,28 @@ level or just to specific methods.</p>
 <p>Each rule is a mapping. The YAML data must have a top level key of “ip_allow” and its value must
 be a mapping or a sequence of mappings, each of those being one rule.</p>
 <p>The keys in a rule are:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">apply</span></code></dt>
-<dd>This is where the rule is applied, either <code class="docutils literal notranslate"><span class="pre">in</span></code> or <code class="docutils literal notranslate"><span class="pre">out</span></code>. Inbound application means
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">apply</span></code></dt><dd><p>This is where the rule is applied, either <code class="docutils literal notranslate"><span class="pre">in</span></code> or <code class="docutils literal notranslate"><span class="pre">out</span></code>. Inbound application means
 the rule is applied to inbound user agent connections. Outbound application means the rule is
-applied to outbound connections from Traffic Server to an upstream destination. This is a required key.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ip_addrs</span></code></dt>
-<dd>IP addresses to match for the rule to be applied. This can be either an address range or an
-array of address ranges. This is a required key.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt>
-<dd>The action, which must be <code class="docutils literal notranslate"><span class="pre">allow</span></code> or <code class="docutils literal notranslate"><span class="pre">deny</span></code>. This is a required key.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">methods</span></code></dt>
-<dd>This is optional. If not present, the rule action applies to all methods. If present, the rule
+applied to outbound connections from Traffic Server to an upstream destination. This is a required key.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ip_addrs</span></code></dt><dd><p>IP addresses to match for the rule to be applied. This can be either an address range or an
+array of address ranges. This is a required key.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p>The action, which must be <code class="docutils literal notranslate"><span class="pre">allow</span></code> or <code class="docutils literal notranslate"><span class="pre">deny</span></code>. This is a required key.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">methods</span></code></dt><dd><p>This is optional. If not present, the rule action applies to all methods. If present, the rule
 action is applied to connections using those methods and its opposite to all other connections. The
 keyword “ALL” means all methods, making the specification of any other method redundant. All
-methods comparisons are case insensitive. This is an optional key.</dd>
+methods comparisons are case insensitive. This is an optional key.</p>
+</dd>
 </dl>
 <p>An IP address range can be specified in several ways. A range is always IPv4 or IPv6, it is not
 allowed to have a range that contains addresses from different IP address families.</p>
 <ul class="simple">
-<li>A single address, which specifies a range of size 1, e.g. “127.0.0.1”.</li>
-<li>A minimum and maximum address separated by a dash, e.g. “10.1.0.0-10.1.255.255”.</li>
-<li>A CIDR based value, e.g. “10.1.0.0/16”, which is a range containing exactly the specified network.</li>
+<li><p>A single address, which specifies a range of size 1, e.g. “127.0.0.1”.</p></li>
+<li><p>A minimum and maximum address separated by a dash, e.g. “10.1.0.0-10.1.255.255”.</p></li>
+<li><p>A CIDR based value, e.g. “10.1.0.0/16”, which is a range containing exactly the specified network.</p></li>
 </ul>
 <p>A rule must have the <code class="docutils literal notranslate"><span class="pre">apply</span></code>, <code class="docutils literal notranslate"><span class="pre">ip_addrs</span></code>, and <code class="docutils literal notranslate"><span class="pre">action</span></code> keys. Rules match based on
 IP addresses only and are then applied to all matching sessions. If the rule is an <code class="docutils literal notranslate"><span class="pre">allow</span></code> rule,
@@ -289,13 +289,13 @@ inbound connections are denied and therefore if there is no rule that matches, t
 denied. Outbound rules allow by default, so the absence of rules in the default configuration
 enables all methods for all outbound connections.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Be aware that ip_allow rules will not, and indeed cannot, be applied to TLS
+<p class="admonition-title">Note</p>
+<p>Be aware that ip_allow rules will not, and indeed cannot, be applied to TLS
 connections which are tunneled via <code class="docutils literal notranslate"><span class="pre">tunnel_route</span></code> to the upstream target.
 Such connections are not decrypted and thus are not processed by Traffic Server. This
 applies as well to TLS connections which are forwarded via <code class="docutils literal notranslate"><span class="pre">forward_route</span></code>
 since, while those are decrypted, they are not processed by Traffic Server.  For
-details, see <a class="reference internal" href="../layer-4-routing.en.html#sni-routing"><span class="std std-ref">SNI Routing</span></a> and <a class="reference internal" href="sni.yaml.en.html#std:configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a>.</p>
+details, see <a class="reference internal" href="../layer-4-routing.en.html#sni-routing"><span class="std std-ref">SNI Routing</span></a> and <a class="reference internal" href="sni.yaml.en.html#std-configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a>.</p>
 </div>
 </div>
 <div class="section" id="examples">
@@ -399,8 +399,8 @@ denied.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For ATS 9.0, this file is (almost) backwards compatible. If the first line is a single ‘#’
+<p class="admonition-title">Note</p>
+<p>For ATS 9.0, this file is (almost) backwards compatible. If the first line is a single ‘#’
 character, or contains only “# ats”, then the file will be read in the version 8.0 format. This
 is true for the default format and so if that has not been changed it should still work. This
 allows a grace period before ATS 10.0 which will drop the old format entirely.</p>

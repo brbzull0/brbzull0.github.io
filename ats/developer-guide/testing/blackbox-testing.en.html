@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -223,10 +223,10 @@ If all packages are available, it will install a virtual environment using the p
 <h2>Manual Setup<a class="headerlink" href="#manual-setup" title="Permalink to this headline">¶</a></h2>
 <p>To run autest manually, the recommended way is to follow these steps:</p>
 <ol class="arabic simple">
-<li><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code>: create the virtual environment(only needed once).</li>
-<li><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code>: enter a shell in the virtual environment(type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave the shell).</li>
-<li><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">gold_tests</span></code>: enter the directory containing the test files.</li>
-<li><code class="docutils literal notranslate"><span class="pre">autest</span> <span class="pre">--ats-bin</span> <span class="pre">user_ats_bin</span></code>: run autest where user_ats_bin is the bin directory in the user’s ats directory.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code>: create the virtual environment(only needed once).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code>: enter a shell in the virtual environment(type <code class="docutils literal notranslate"><span class="pre">exit</span></code> to leave the shell).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">gold_tests</span></code>: enter the directory containing the test files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">autest</span> <span class="pre">--ats-bin</span> <span class="pre">user_ats_bin</span></code>: run autest where user_ats_bin is the bin directory in the user’s ats directory.</p></li>
 </ol>
 </div>
 <div class="section" id="advanced-setup">
@@ -235,13 +235,12 @@ If all packages are available, it will install a virtual environment using the p
 By doing this, it is often easier to debug issues with the testing system, or the tests.
 There are two ways this can be done.</p>
 <ol class="arabic simple">
-<li>Run the bootstrap script then source the path with a <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">./env-test/bin/activate</span></code> command. At this point autest command should run without the wrapper script.</li>
-<li><dl class="first docutils">
-<dt>Make sure you install python 3.5 or better on your system. From there install these python packages (e.g. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>):</dt>
-<dd><ul class="first last">
-<li>hyper</li>
-<li>git+https://bitbucket.org/autestsuite/reusable-gold-testing-system.git</li>
-<li><a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplay/src/master/">traffic-replay</a> (This will automatically install <a class="reference external" href="https://bitbucket.org/autestsuite/microdns/src/master/">MicroDNS</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/microserver/src/master/">MicroServer</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplaylibrary/src/master/">TrafficReplayLibrary</a>, and dnslib as part of the dependencies.)</li>
+<li><p>Run the bootstrap script then source the path with a <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">./env-test/bin/activate</span></code> command. At this point autest command should run without the wrapper script.</p></li>
+<li><dl class="simple">
+<dt>Make sure you install python 3.5 or better on your system. From there install these python packages (e.g. <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>):</dt><dd><ul class="simple">
+<li><p>hyper</p></li>
+<li><p>git+https://bitbucket.org/autestsuite/reusable-gold-testing-system.git</p></li>
+<li><p><a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplay/src/master/">traffic-replay</a> (This will automatically install <a class="reference external" href="https://bitbucket.org/autestsuite/microdns/src/master/">MicroDNS</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/microserver/src/master/">MicroServer</a>, <a class="reference external" href="https://bitbucket.org/autestsuite/trafficreplaylibrary/src/master/">TrafficReplayLibrary</a>, and dnslib as part of the dependencies.)</p></li>
 </ul>
 </dd>
 </dl>
@@ -263,47 +262,49 @@ This can be used to easily setup other commands that should run under same envir
 <h4>TrafficServer<a class="headerlink" href="#trafficserver" title="Permalink to this headline">¶</a></h4>
 <p>For TrafficServer, we have defined the following functions and objects in <code class="docutils literal notranslate"><span class="pre">tests/gold_tests/autest-site/trafficserver.test.ext</span></code>:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">MakeATSProcess(obj,</span> <span class="pre">name,</span> <span class="pre">command='traffic_server',</span> <span class="pre">select_ports=True,</span> <span class="pre">enable_tls=False)</span></code><ul>
-<li>name - A name for this instance of ATS</li>
-<li>command - optional argument defining what process to use. Defaults to <code class="docutils literal notranslate"><span class="pre">traffic_server</span></code></li>
-<li>select_ports - have Autest automatically select a nonSSL port to use</li>
-<li>enable_tls - have Autest automatically select SSL port (<code class="docutils literal notranslate"><span class="pre">select_ports</span></code> must be <strong>True</strong>)</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MakeATSProcess(obj,</span> <span class="pre">name,</span> <span class="pre">command='traffic_server',</span> <span class="pre">select_ports=True,</span> <span class="pre">enable_tls=False)</span></code></p>
+<ul>
+<li><p>name - A name for this instance of ATS</p></li>
+<li><p>command - optional argument defining what process to use. Defaults to <code class="docutils literal notranslate"><span class="pre">traffic_server</span></code></p></li>
+<li><p>select_ports - have Autest automatically select a nonSSL port to use</p></li>
+<li><p>enable_tls - have Autest automatically select SSL port (<code class="docutils literal notranslate"><span class="pre">select_ports</span></code> must be <strong>True</strong>)</p></li>
 </ul>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">CopyConfig(file,</span> <span class="pre">targetname=None,</span> <span class="pre">process=None)</span></code><ul>
-<li>file - name of the file to copy. Relative paths are relative from the test file location</li>
-<li>targetname - the name of the file when copied to the correct configuration location</li>
-<li>process - optional process object to use for getting path location to copy to. Only needed if the Setup object call is not in the scope of the process object created with the MakeATSProcess(…) API.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CopyConfig(file,</span> <span class="pre">targetname=None,</span> <span class="pre">process=None)</span></code></p>
+<ul>
+<li><p>file - name of the file to copy. Relative paths are relative from the test file location</p></li>
+<li><p>targetname - the name of the file when copied to the correct configuration location</p></li>
+<li><p>process - optional process object to use for getting path location to copy to. Only needed if the Setup object call is not in the scope of the process object created with the MakeATSProcess(…) API.</p></li>
 </ul>
 </li>
 </ul>
 <p>This function copies a given configuration file to the location of the Traffic Server sandbox used in a test. Given a test might have more than on Traffic Server instance, it can be difficult to understand the correct location to copy to. This function will deal with the details correctly.</p>
 <p>When automatically selected, the following ports will be allocated for TS:</p>
 <ul class="simple">
-<li>port</li>
-<li>portv6</li>
-<li>ssl_port</li>
-<li>admin_port - this is set even if select_port is <strong>False</strong></li>
+<li><p>port</p></li>
+<li><p>portv6</p></li>
+<li><p>ssl_port</p></li>
+<li><p>admin_port - this is set even if select_port is <strong>False</strong></p></li>
 </ul>
 <p>A number of file objects are also defined to help test TrafficServer. Files that are currently defined are:</p>
 <ul class="simple">
-<li>squid.log</li>
-<li>error.log</li>
-<li>diags.log</li>
-<li>records.config</li>
-<li>cache.config</li>
-<li>hosting.config</li>
-<li>ip_allow.yaml</li>
-<li>logging.yaml</li>
-<li>parent.config</li>
-<li>plugin.config</li>
-<li>remap.config</li>
-<li>sni.yaml</li>
-<li>socks.config</li>
-<li>splitdns.config</li>
-<li>ssl_multicert.config</li>
-<li>storage.config</li>
-<li>volume.config</li>
+<li><p>squid.log</p></li>
+<li><p>error.log</p></li>
+<li><p>diags.log</p></li>
+<li><p>records.config</p></li>
+<li><p>cache.config</p></li>
+<li><p>hosting.config</p></li>
+<li><p>ip_allow.yaml</p></li>
+<li><p>logging.yaml</p></li>
+<li><p>parent.config</p></li>
+<li><p>plugin.config</p></li>
+<li><p>remap.config</p></li>
+<li><p>sni.yaml</p></li>
+<li><p>socks.config</p></li>
+<li><p>splitdns.config</p></li>
+<li><p>ssl_multicert.config</p></li>
+<li><p>storage.config</p></li>
+<li><p>volume.config</p></li>
 </ul>
 <div class="section" id="example">
 <h5>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h5>
@@ -317,16 +318,17 @@ This can be used to easily setup other commands that should run under same envir
 <div class="section" id="origin-server">
 <h4>Origin Server<a class="headerlink" href="#origin-server" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">Test.MakeOriginServer(name,</span> <span class="pre">port,</span> <span class="pre">s_port,</span> <span class="pre">ip,</span> <span class="pre">delay,</span> <span class="pre">ssl,</span> <span class="pre">lookup_key,</span> <span class="pre">clientcert,</span> <span class="pre">clientkey)</span></code><ul>
-<li>name - A name for this instance of origin server.</li>
-<li>port - option to specify the nonSSL port. If left unspecified, the port will be autoselected.</li>
-<li>s_port - option to specify the SSL port. If left unspecified, the port will be autoselected (SSL has to be True).</li>
-<li>ip - option to specify IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</li>
-<li>delay - option to have MicroServer delay for set amount of seconds before returning response. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
-<li>ssl - option to enable SSL</li>
-<li>lookup_key - option to change the unique identifier that MicroServer uses to identify each transaction. Defaults to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</li>
-<li>clientcert - path to cert used for SSL. Defaults to the included cert in <code class="docutils literal notranslate"><span class="pre">tests/tools/microserver/ssl</span></code>.</li>
-<li>clientkey - path to key used for SSL. Same default as above.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Test.MakeOriginServer(name,</span> <span class="pre">port,</span> <span class="pre">s_port,</span> <span class="pre">ip,</span> <span class="pre">delay,</span> <span class="pre">ssl,</span> <span class="pre">lookup_key,</span> <span class="pre">clientcert,</span> <span class="pre">clientkey)</span></code></p>
+<ul>
+<li><p>name - A name for this instance of origin server.</p></li>
+<li><p>port - option to specify the nonSSL port. If left unspecified, the port will be autoselected.</p></li>
+<li><p>s_port - option to specify the SSL port. If left unspecified, the port will be autoselected (SSL has to be True).</p></li>
+<li><p>ip - option to specify IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code>.</p></li>
+<li><p>delay - option to have MicroServer delay for set amount of seconds before returning response. Defaults to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
+<li><p>ssl - option to enable SSL</p></li>
+<li><p>lookup_key - option to change the unique identifier that MicroServer uses to identify each transaction. Defaults to <code class="docutils literal notranslate"><span class="pre">PATH</span></code>.</p></li>
+<li><p>clientcert - path to cert used for SSL. Defaults to the included cert in <code class="docutils literal notranslate"><span class="pre">tests/tools/microserver/ssl</span></code>.</p></li>
+<li><p>clientkey - path to key used for SSL. Same default as above.</p></li>
 </ul>
 </li>
 </ul>
@@ -336,10 +338,11 @@ Microserver needs to be setup for the tests that require an origin server behind
 The server reads a JSON-formatted data file that contains request headers and the corresponding response headers.
 Microserver responds with payload if the response header contains Content-Length or Transfer-Encoding specified.</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">Test.addResponse(filename,</span> <span class="pre">request_header,</span> <span class="pre">response_header)</span></code><ul>
-<li>filename - name of the file where the request header and response header will be written to in JSON format</li>
-<li>request_header - dictionary of request header</li>
-<li>response_header - dictionary of response header corresponding to the request header.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Test.addResponse(filename,</span> <span class="pre">request_header,</span> <span class="pre">response_header)</span></code></p>
+<ul>
+<li><p>filename - name of the file where the request header and response header will be written to in JSON format</p></li>
+<li><p>request_header - dictionary of request header</p></li>
+<li><p>response_header - dictionary of response header corresponding to the request header.</p></li>
 </ul>
 </li>
 </ul>
@@ -362,18 +365,20 @@ The key-fields required for the header dictionary are ‘headers’, ‘timestam
 <div class="section" id="dns">
 <h4>DNS<a class="headerlink" href="#dns" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">Test.MakeDNServer(name,</span> <span class="pre">filename,</span> <span class="pre">port,</span> <span class="pre">ip,</span> <span class="pre">rr,</span> <span class="pre">default)</span></code><ul>
-<li>name - A name for this instance of MicroDNS.</li>
-<li>filename - file containing zone information for MicroDNS to read from. Defaults to <code class="docutils literal notranslate"><span class="pre">dns_file.json</span></code></li>
-<li>port - option for the DNS port. Autoselected if left unspecified.</li>
-<li>ip - option for IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></li>
-<li>rr - option to enable round robin IP. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></li>
-<li>default - option to specify a default IP response when MicroDNS can’t find a domain:IP pair.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Test.MakeDNServer(name,</span> <span class="pre">filename,</span> <span class="pre">port,</span> <span class="pre">ip,</span> <span class="pre">rr,</span> <span class="pre">default)</span></code></p>
+<ul>
+<li><p>name - A name for this instance of MicroDNS.</p></li>
+<li><p>filename - file containing zone information for MicroDNS to read from. Defaults to <code class="docutils literal notranslate"><span class="pre">dns_file.json</span></code></p></li>
+<li><p>port - option for the DNS port. Autoselected if left unspecified.</p></li>
+<li><p>ip - option for IP address. Defaults to <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code></p></li>
+<li><p>rr - option to enable round robin IP. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
+<li><p>default - option to specify a default IP response when MicroDNS can’t find a domain:IP pair.</p></li>
 </ul>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">dns.addRecords(records,</span> <span class="pre">jsonFile)</span></code><ul>
-<li>records - a dictionary of domain:IP mappings in the form of <code class="docutils literal notranslate"><span class="pre">{&quot;domain</span> <span class="pre">A&quot;:</span> <span class="pre">[IP1,</span> <span class="pre">IP2],</span> <span class="pre">&quot;domain</span> <span class="pre">B&quot;:</span> <span class="pre">[IP3,</span> <span class="pre">IP4]}</span></code></li>
-<li>jsonFile - a JSON file containing domain:IP mappings</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dns.addRecords(records,</span> <span class="pre">jsonFile)</span></code></p>
+<ul>
+<li><p>records - a dictionary of domain:IP mappings in the form of <code class="docutils literal notranslate"><span class="pre">{&quot;domain</span> <span class="pre">A&quot;:</span> <span class="pre">[IP1,</span> <span class="pre">IP2],</span> <span class="pre">&quot;domain</span> <span class="pre">B&quot;:</span> <span class="pre">[IP3,</span> <span class="pre">IP4]}</span></code></p></li>
+<li><p>jsonFile - a JSON file containing domain:IP mappings</p></li>
 </ul>
 </li>
 </ul>
@@ -404,44 +409,44 @@ The key-fields required for the header dictionary are ‘headers’, ‘timestam
 <h5>Condition Testing<a class="headerlink" href="#condition-testing" title="Permalink to this headline">¶</a></h5>
 <blockquote>
 <div><ul class="simple">
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasCurlFeature(feature)</span></code></dt>
-<dd>This function tests Curl for possible features it has been compiled with. Consult Curl documentation for possible features.</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasCurlFeature(feature)</span></code></dt><dd><p>This function tests Curl for possible features it has been compiled with. Consult Curl documentation for possible features.</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">Condition.PluginExists(pluginname)</span></code></dt>
-<dd>This function tests for the existence of a certain plugin in ATS.</dd>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.PluginExists(pluginname)</span></code></dt><dd><p>This function tests for the existence of a certain plugin in ATS.</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasATSFeature(feature)</span></code></dt>
-<dd>This function tests TrafficServer for possible features it has been compiled with. Current features you can test for are:<ul class="last">
-<li>TS_HAS_LIBZ</li>
-<li>TS_HAS_LZMA</li>
-<li>TS_HAS_JEMALLOC</li>
-<li>TS_HAS_TCMALLOC</li>
-<li>TS_HAS_IN6_IS_ADDR_UNSPECIFIED</li>
-<li>TS_HAS_BACKTRACE</li>
-<li>TS_HAS_PROFILER</li>
-<li>TS_USE_FAST_SDK</li>
-<li>TS_USE_DIAGS</li>
-<li>TS_USE_EPOLL</li>
-<li>TS_USE_KQUEUE</li>
-<li>TS_USE_PORT</li>
-<li>TS_USE_POSIX_CAP</li>
-<li>TS_USE_TPROXY</li>
-<li>TS_HAS_SO_MARK</li>
-<li>TS_HAS_IP_TOS</li>
-<li>TS_USE_HWLOC</li>
-<li>TS_USE_SET_RBIO</li>
-<li>TS_USE_QUIC</li>
-<li>TS_USE_LINUX_NATIVE_AIO</li>
-<li>TS_HAS_SO_PEERCRED</li>
-<li>TS_USE_REMOTE_UNWINDING</li>
-<li>TS_HAS_128BIT_CAS</li>
-<li>TS_HAS_TESTS</li>
-<li>TS_HAS_WCCP</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Condition.HasATSFeature(feature)</span></code></dt><dd><p>This function tests TrafficServer for possible features it has been compiled with. Current features you can test for are:</p>
+<ul>
+<li><p>TS_HAS_LIBZ</p></li>
+<li><p>TS_HAS_LZMA</p></li>
+<li><p>TS_HAS_JEMALLOC</p></li>
+<li><p>TS_HAS_TCMALLOC</p></li>
+<li><p>TS_HAS_IN6_IS_ADDR_UNSPECIFIED</p></li>
+<li><p>TS_HAS_BACKTRACE</p></li>
+<li><p>TS_HAS_PROFILER</p></li>
+<li><p>TS_USE_FAST_SDK</p></li>
+<li><p>TS_USE_DIAGS</p></li>
+<li><p>TS_USE_EPOLL</p></li>
+<li><p>TS_USE_KQUEUE</p></li>
+<li><p>TS_USE_PORT</p></li>
+<li><p>TS_USE_POSIX_CAP</p></li>
+<li><p>TS_USE_TPROXY</p></li>
+<li><p>TS_HAS_SO_MARK</p></li>
+<li><p>TS_HAS_IP_TOS</p></li>
+<li><p>TS_USE_HWLOC</p></li>
+<li><p>TS_USE_SET_RBIO</p></li>
+<li><p>TS_USE_QUIC</p></li>
+<li><p>TS_USE_LINUX_NATIVE_AIO</p></li>
+<li><p>TS_HAS_SO_PEERCRED</p></li>
+<li><p>TS_USE_REMOTE_UNWINDING</p></li>
+<li><p>TS_HAS_128BIT_CAS</p></li>
+<li><p>TS_HAS_TESTS</p></li>
+<li><p>TS_HAS_WCCP</p></li>
 </ul>
 </dd>
 </dl>

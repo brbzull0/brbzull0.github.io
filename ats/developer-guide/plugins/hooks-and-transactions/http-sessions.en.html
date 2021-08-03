@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -236,25 +236,25 @@ begins when the client opens the connection and ends when the connection
 closes.</p>
 <p>The HTTP session hooks are:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_HTTP_SSN_START_HOOK</span></code> Called when an HTTP session is started (a
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_SSN_START_HOOK</span></code> Called when an HTTP session is started (a
 session starts when a client connects to Traffic Server). This hook
-must be added as a global hook.</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_HTTP_SSN_CLOSE_HOOK</span></code> Called when an HTTP session ends (a
+must be added as a global hook.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_SSN_CLOSE_HOOK</span></code> Called when an HTTP session ends (a
 session ends when the client connection is closed). This hook must be
 added as a global hook.  The relative order of invocation between the
 <code class="docutils literal notranslate"><span class="pre">TS_VCONN_CLOSE_HOOK</span></code> and <code class="docutils literal notranslate"><span class="pre">TS_HTTP_SSN_CLOSE_HOOK</span></code> is undefined.  In
 most cases the <code class="docutils literal notranslate"><span class="pre">TS_VCONN_CLOSE_HOOK</span></code> will execute first, but that is
-not guaranteed.</li>
+not guaranteed.</p></li>
 </ul>
 <p>Use the session hooks to get a handle to a session (an <code class="docutils literal notranslate"><span class="pre">TSHttpSsn</span></code>
 object). If you want your plugin to be called back for each transaction
 within the session, then use <code class="docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd</span></code>.</p>
-<p><strong>Note:</strong> you must reenable the session with <code class="docutils literal notranslate"><span class="pre">TSHttpSsnReenable</span></code> after
+<p><strong>Note:</strong> you must re-enable the session with <code class="docutils literal notranslate"><span class="pre">TSHttpSsnReenable</span></code> after
 processing a session hook.</p>
 <p>The session hook functions are listed below:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSHttpHookAdd.en.html#c.TSHttpSsnHookAdd" title="TSHttpSsnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSHttpSsnReenable.en.html#c.TSHttpSsnReenable" title="TSHttpSsnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnReenable()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSHttpHookAdd.en.html#c.TSHttpSsnHookAdd" title="TSHttpSsnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnHookAdd()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSHttpSsnReenable.en.html#c.TSHttpSsnReenable" title="TSHttpSsnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnReenable()</span></code></a></p></li>
 </ul>
 </div>
 

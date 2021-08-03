@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -431,61 +434,61 @@
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This set of API is obsoleted as of ATS v9.0.0, and will be removed with ATS v10.0.0!
+<p class="admonition-title">Note</p>
+<p>This set of API is obsoleted as of ATS v9.0.0, and will be removed with ATS v10.0.0!
 For details of the new APIs, see <a class="reference internal" href="TSUserArgs.en.html#tsuserargs"><span class="std std-ref">TSUserArgs</span></a>.</p>
 </div>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnArgIndexReserve">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnArgIndexReserve</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, const char *<em>&nbsp;description</em>, int *<em>&nbsp;arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexReserve" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnArgIndexReserve</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, <em class="property">const</em> char *<em>description</em>, int *<em>arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexReserve" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnArgIndexNameLookup">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnArgIndexNameLookup</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, int *<em>&nbsp;arg__idx</em>, const char **<em>&nbsp;description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexNameLookup" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnArgIndexNameLookup</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, int *<em>arg__idx</em>, <em class="property">const</em> char **<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexNameLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnArgIndexLookup">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnArgIndexLookup</code><span class="sig-paren">(</span>int<em>&nbsp;arg_idx</em>, const char **<em>&nbsp;name</em>, const char **<em>&nbsp;description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexLookup" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnArgIndexLookup</code><span class="sig-paren">(</span>int <em>arg_idx</em>, <em class="property">const</em> char **<em>name</em>, <em class="property">const</em> char **<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgIndexLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnArgIndexReserve">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpSsnArgIndexReserve</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, const char *<em>&nbsp;description</em>, int *<em>&nbsp;arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexReserve" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpSsnArgIndexReserve</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, <em class="property">const</em> char *<em>description</em>, int *<em>arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexReserve" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnArgIndexNameLookup">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpSsnArgIndexNameLookup</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, int *<em>&nbsp;arg__idx</em>, const char **<em>&nbsp;description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexNameLookup" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpSsnArgIndexNameLookup</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, int *<em>arg__idx</em>, <em class="property">const</em> char **<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexNameLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnArgIndexLookup">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpSsnArgIndexLookup</code><span class="sig-paren">(</span>int<em>&nbsp;arg_idx</em>, const char **<em>&nbsp;name</em>, const char **<em>&nbsp;description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexLookup" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpSsnArgIndexLookup</code><span class="sig-paren">(</span>int <em>arg_idx</em>, <em class="property">const</em> char **<em>name</em>, <em class="property">const</em> char **<em>description</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgIndexLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnArgSet">
-void <code class="descname">TSHttpTxnArgSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, int<em>&nbsp;arg_idx</em>, void *<em>&nbsp;arg</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgSet" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSHttpTxnArgSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, int <em>arg_idx</em>, void *<em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnArgGet">
-void * <code class="descname">TSHttpTxnArgGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, int<em>&nbsp;arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgGet" title="Permalink to this definition">¶</a></dt>
+void *<code class="sig-name descname">TSHttpTxnArgGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, int <em>arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnArgGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnArgSet">
-void <code class="descname">TSHttpSsnArgSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a><em>&nbsp;ssnp</em>, int<em>&nbsp;arg_idx</em>, void *<em>&nbsp;arg</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgSet" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSHttpSsnArgSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssnp</em>, int <em>arg_idx</em>, void *<em>arg</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpSsnArgGet">
-void * <code class="descname">TSHttpSsnArgGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a><em>&nbsp;ssnp</em>, int<em>&nbsp;arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgGet" title="Permalink to this definition">¶</a></dt>
+void *<code class="sig-name descname">TSHttpSsnArgGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssnp</em>, int <em>arg_idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnArgGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -501,14 +504,14 @@ session or transaction has completed.</p>
 <p>To avoid collisions between plugins a plugin should first <em>reserve</em> an index in the array. A
 transaction based plugin argument is reserved by calling <a class="reference internal" href="#c.TSHttpTxnArgIndexReserve" title="TSHttpTxnArgIndexReserve"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnArgIndexReserve()</span></code></a>. A session
 base plugin argument is reserved by calling <a class="reference internal" href="#c.TSHttpSsnArgIndexReserve" title="TSHttpSsnArgIndexReserve"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnArgIndexReserve()</span></code></a>. Both functions have the arguments</p>
-<dl class="docutils">
-<dt><em>name</em></dt>
-<dd>An identifying name for the plugin that reserved the index. Required.</dd>
-<dt><em>description</em></dt>
-<dd>An optional description of the use of the arg. This can be <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>.</dd>
-<dt><em>arg_idx</em></dt>
-<dd>A pointer to an <code class="code docutils literal notranslate"><span class="pre">int</span></code>. If an index is successfully reserved, the <code class="code docutils literal notranslate"><span class="pre">int</span></code> pointed at by this is
-set to the reserved index. It is not modified if the call is unsuccessful.</dd>
+<dl class="simple">
+<dt><em>name</em></dt><dd><p>An identifying name for the plugin that reserved the index. Required.</p>
+</dd>
+<dt><em>description</em></dt><dd><p>An optional description of the use of the arg. This can be <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>.</p>
+</dd>
+<dt><em>arg_idx</em></dt><dd><p>A pointer to an <code class="code docutils literal notranslate"><span class="pre">int</span></code>. If an index is successfully reserved, the <code class="code docutils literal notranslate"><span class="pre">int</span></code> pointed at by this is
+set to the reserved index. It is not modified if the call is unsuccessful.</p>
+</dd>
 </dl>
 <p>The functions return <code class="code docutils literal notranslate"><span class="pre">TS_SUCCESS</span></code> if an index was reserved,
 <code class="code docutils literal notranslate"><span class="pre">TS_ERROR</span></code> if not (most likely because all of the indices have already been reserved).
@@ -534,12 +537,12 @@ transaction. Similarly <a class="reference internal" href="#c.TSHttpSsnArgSet" t
 be retrieved with <a class="reference internal" href="#c.TSHttpTxnArgGet" title="TSHttpTxnArgGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnArgGet()</span></code></a> for transactions and <a class="reference internal" href="#c.TSHttpSsnArgGet" title="TSHttpSsnArgGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpSsnArgGet()</span></code></a> for sessions,
 which return the specified value. Values that have not been set are <code class="code docutils literal notranslate"><span class="pre">NULL</span></code>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Session arguments persist for the entire session, which means potentially across all transactions in that session.</p>
+<p class="admonition-title">Note</p>
+<p>Session arguments persist for the entire session, which means potentially across all transactions in that session.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Following arg index reservations is conventional, it is not enforced.</p>
+<p class="admonition-title">Note</p>
+<p>Following arg index reservations is conventional, it is not enforced.</p>
 </div>
 </div>
 </div>

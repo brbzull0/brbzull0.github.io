@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -225,97 +225,96 @@ number.  If <code class="docutils literal notranslate"><span class="pre">n</span
 decremented by 1.  <code class="docutils literal notranslate"><span class="pre">=n</span></code> may be omitted, in which case the <code class="docutils literal notranslate"><span class="pre">X-Debug</span></code> header will
 not be modified or deleted.</p>
 <p><cite>XDebug</cite> is a global plugin. It is installed by adding it to the
-<a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> file. It currently takes a single, optional
+<a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> file. It currently takes a single, optional
 configuration option, <code class="docutils literal notranslate"><span class="pre">--header</span></code>. E.g.</p>
 <blockquote>
-<div>–header=ATS-My-Debug</div></blockquote>
+<div><p>–header=ATS-My-Debug</p>
+</div></blockquote>
 <p>This overrides the default <code class="docutils literal notranslate"><span class="pre">X-Debug</span></code> header name.</p>
 <div class="section" id="debugging-headers">
 <h2>Debugging Headers<a class="headerlink" href="#debugging-headers" title="Permalink to this headline">¶</a></h2>
 <p>The <cite>XDebug</cite> plugin is able to generate the following debugging headers:</p>
-<dl class="docutils">
-<dt>Via</dt>
-<dd>If the <code class="docutils literal notranslate"><span class="pre">Via</span></code> header is requested, the <cite>XDebug</cite> plugin sets the
+<dl>
+<dt>Via</dt><dd><p>If the <code class="docutils literal notranslate"><span class="pre">Via</span></code> header is requested, the <cite>XDebug</cite> plugin sets the
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-response-via-str" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_response_via_str</span></code></a> configuration variable
-to <code class="docutils literal notranslate"><span class="pre">3</span></code> for the request.</dd>
-<dt>Diags</dt>
-<dd>If the <code class="docutils literal notranslate"><span class="pre">Diags</span></code> header is requested, the <cite>XDebug</cite> plugin enables the
+to <code class="docutils literal notranslate"><span class="pre">3</span></code> for the request.</p>
+</dd>
+<dt>Diags</dt><dd><p>If the <code class="docutils literal notranslate"><span class="pre">Diags</span></code> header is requested, the <cite>XDebug</cite> plugin enables the
 transaction specific diagnostics for the transaction. This also requires
-that <a class="reference internal" href="../files/records.config.en.html#proxy-config-diags-debug-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.debug.enabled</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</dd>
-<dt>Probe</dt>
-<dd><p class="first">All request and response headers are written to the response body. Because
+that <a class="reference internal" href="../files/records.config.en.html#proxy-config-diags-debug-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.debug.enabled</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+</dd>
+<dt>Probe</dt><dd><p>All request and response headers are written to the response body. Because
 the body is altered, it disables writing to cache.
 In conjunction with the <cite>fwd</cite> tag, the response body will contain a
 chronological log of all headers for all transactions used for this
 response.</p>
 <p>Layout:</p>
-<ul class="last simple">
-<li>Request Headers from Client  -&gt; Proxy A</li>
-<li>Request Headers from Proxy A -&gt; Proxy B</li>
-<li>Original content body</li>
-<li>Response Headers from Proxy B -&gt; Proxy A</li>
-<li>Response Headers from Proxy A -&gt; Client</li>
+<ul class="simple">
+<li><p>Request Headers from Client  -&gt; Proxy A</p></li>
+<li><p>Request Headers from Proxy A -&gt; Proxy B</p></li>
+<li><p>Original content body</p></li>
+<li><p>Response Headers from Proxy B -&gt; Proxy A</p></li>
+<li><p>Response Headers from Proxy A -&gt; Client</p></li>
 </ul>
 </dd>
-<dt>X-Cache-Key</dt>
-<dd>The <code class="docutils literal notranslate"><span class="pre">X-Cache-Key</span></code> header contains the URL that identifies the HTTP object in the
+<dt>X-Cache-Key</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">X-Cache-Key</span></code> header contains the URL that identifies the HTTP object in the
 Traffic Server cache. This header is particularly useful if a custom cache
-key is being used.</dd>
-<dt>X-Cache</dt>
-<dd><p class="first">The <code class="docutils literal notranslate"><span class="pre">X-Cache</span></code> header contains the results of any cache lookups.</p>
-<table border="1" class="docutils">
+key is being used.</p>
+</dd>
+<dt>X-Cache</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">X-Cache</span></code> header contains the results of any cache lookups.</p>
+<table class="docutils align-default">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col style="width: 16%" />
+<col style="width: 84%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>none</td>
-<td>No cache lookup was attempted.</td>
+<tbody>
+<tr class="row-even"><td><p>none</p></td>
+<td><p>No cache lookup was attempted.</p></td>
 </tr>
-<tr class="row-odd"><td>miss</td>
-<td>The object was not found in the cache.</td>
+<tr class="row-odd"><td><p>miss</p></td>
+<td><p>The object was not found in the cache.</p></td>
 </tr>
-<tr class="row-even"><td>hit-stale</td>
-<td>The object was found in the cache, but it was stale.</td>
+<tr class="row-even"><td><p>hit-stale</p></td>
+<td><p>The object was found in the cache, but it was stale.</p></td>
 </tr>
-<tr class="row-odd"><td>hit-fresh</td>
-<td>The object was fresh in the cache.</td>
+<tr class="row-odd"><td><p>hit-fresh</p></td>
+<td><p>The object was fresh in the cache.</p></td>
 </tr>
-<tr class="row-even"><td>skipped</td>
-<td>The cache lookup was skipped.</td>
+<tr class="row-even"><td><p>skipped</p></td>
+<td><p>The cache lookup was skipped.</p></td>
 </tr>
 </tbody>
 </table>
-<p class="last">If a request goes through multiple proxies, each one appends its X-Cache header content
+<p>If a request goes through multiple proxies, each one appends its X-Cache header content
 the end of the existing X-Cache header. This is the same order as for the
 <code class="docutils literal notranslate"><span class="pre">Via</span></code> header.</p>
 </dd>
-<dt>X-Cache-Generation</dt>
-<dd>The cache generation ID for this transaction, as specified by the
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-generation" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.generation</span></code></a> configuration variable.</dd>
-<dt>X-Milestones</dt>
-<dd>The <code class="docutils literal notranslate"><span class="pre">X-Milestones</span></code> header contains detailed information about
+<dt>X-Cache-Generation</dt><dd><p>The cache generation ID for this transaction, as specified by the
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-generation" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.generation</span></code></a> configuration variable.</p>
+</dd>
+<dt>X-Milestones</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">X-Milestones</span></code> header contains detailed information about
 how long the transaction took to traverse portions of the HTTP
 state machine. The timing information is obtained from the
 <a class="reference internal" href="../../developer-guide/api/functions/TSHttpTxnMilestoneGet.en.html#c.TSHttpTxnMilestoneGet" title="TSHttpTxnMilestoneGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnMilestoneGet()</span></code></a> API. Each milestone value is a
 fractional number of seconds since the beginning of the
-transaction.</dd>
-<dt>X-Transaction-ID</dt>
-<dd>A unique transaction ID, which identifies this request / transaction. This
-matches the log field format that is also available, %&lt;cruuid&gt;.</dd>
-<dt>X-Remap</dt>
-<dd>If the URL was remapped for a request, this header gives the <em>to</em> and <em>from</em> field from the line in remap.config that caused
-the URL to be remapped.</dd>
-<dt>X-ParentSelection-Key</dt>
-<dd>The <code class="docutils literal notranslate"><span class="pre">X-ParentSelection-Key</span></code> header contains the URL that is used to
+transaction.</p>
+</dd>
+<dt>X-Transaction-ID</dt><dd><p>A unique transaction ID, which identifies this request / transaction. This
+matches the log field format that is also available, %&lt;cruuid&gt;.</p>
+</dd>
+<dt>X-Remap</dt><dd><p>If the URL was remapped for a request, this header gives the <em>to</em> and <em>from</em> field from the line in remap.config that caused
+the URL to be remapped.</p>
+</dd>
+<dt>X-ParentSelection-Key</dt><dd><p>The <code class="docutils literal notranslate"><span class="pre">X-ParentSelection-Key</span></code> header contains the URL that is used to
 determine parent selection for an object in the Traffic Server. This
 header is particularly useful if a custom parent selection key is
-being used.</dd>
+being used.</p>
+</dd>
 </dl>
 </div>
 </div>

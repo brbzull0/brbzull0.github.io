@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -244,20 +244,20 @@ are no special steps necessary for its installation.</p>
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>This plugin can be used as either global plugin or remap plugin.
 It can be enabled globally for Traffic Server by adding the following to your
-<a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compress</span><span class="o">.</span><span class="n">so</span>
 </pre></div>
 </div>
 <p>With no further options, this will enable the following default behavior:</p>
 <ul class="simple">
-<li>Enable caching of both compressed and uncompressed versions of origin
-responses as <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a>.</li>
-<li>Compress objects with <cite>text/*</cite> content types for every origin.</li>
-<li>Don’t hide <cite>Accept</cite> encoding headers from origin servers (for an offloading
-reverse proxy).</li>
-<li>No URLs are disallowed from compression.</li>
-<li>Disable flush (flush compressed content to client).</li>
-<li>Only objects greater than 1Kb will be compressed</li>
+<li><p>Enable caching of both compressed and uncompressed versions of origin
+responses as <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a>.</p></li>
+<li><p>Compress objects with <cite>text/*</cite> content types for every origin.</p></li>
+<li><p>Don’t hide <cite>Accept</cite> encoding headers from origin servers (for an offloading
+reverse proxy).</p></li>
+<li><p>No URLs are disallowed from compression.</p></li>
+<li><p>Disable flush (flush compressed content to client).</p></li>
+<li><p>Only objects greater than 1Kb will be compressed</p></li>
 </ul>
 <p>Alternatively, a configuration may be specified (shown here using the sample
 configuration provided with the plugin’s source):</p>
@@ -265,7 +265,7 @@ configuration provided with the plugin’s source):</p>
 </pre></div>
 </div>
 <p>This can be used as remap plugin by pointing to config file in remap rule
-<a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">compress</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">config</span>
 </pre></div>
 </div>
@@ -333,9 +333,9 @@ and BROTLI_OPERATION_FLUSH for brotli) to send compressed data early.</p>
 <code class="docutils literal notranslate"><span class="pre">Accept-Encoding</span></code> header when contacting the origin server. Setting this option to <code class="docutils literal notranslate"><span class="pre">false</span></code>
 will leave the header intact if the client provided it.</p>
 <ul class="simple">
-<li>To ease the load on the origins.</li>
-<li>For when the proxy parses responses, and the resulting compression and
-decompression is wasteful.</li>
+<li><p>To ease the load on the origins.</p></li>
+<li><p>For when the proxy parses responses, and the resulting compression and
+decompression is wasteful.</p></li>
 </ul>
 </div>
 <div class="section" id="supported-algorithms">
@@ -412,7 +412,7 @@ compressible-content-type image/x-icon
 </pre></div>
 </div>
 <p>Assuming the above options are in a file at <code class="docutils literal notranslate"><span class="pre">/etc/trafficserver/compress.config</span></code>
-the plugin would be enabled for Traffic Server in <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> as:</p>
+the plugin would be enabled for Traffic Server in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> as:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compress</span><span class="o">.</span><span class="n">so</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">compress</span><span class="o">.</span><span class="n">config</span>
 </pre></div>
 </div>

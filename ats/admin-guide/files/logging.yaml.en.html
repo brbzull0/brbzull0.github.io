@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -129,7 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -204,12 +204,12 @@
            <div itemprop="articleBody">
             
   <div class="section" id="logging-yaml">
-<span id="std:configfile-logging.yaml"></span><h1>logging.yaml<a class="headerlink" href="#logging-yaml" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> file defines all custom log file formats, filters,
+<span id="std-configfile-logging.yaml"></span><span id="std:configfile-logging.yaml"></span><h1>logging.yaml<a class="headerlink" href="#logging-yaml" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> file defines all custom log file formats, filters,
 and processing options.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">This configuration file replaces the XML based logs_xml.config, as well as
+<p class="admonition-title">Important</p>
+<p>This configuration file replaces the XML based logs_xml.config, as well as
 the Lua based logging.config from past Traffic Server releases. If you are upgrading
 from a Traffic Server release which used either the XML or the Lua configuration file
 format, and you have created custom log formats, filters, and destinations,
@@ -229,7 +229,7 @@ summaries ends up.</p>
 <div class="section" id="formats">
 <span id="admin-custom-logs-formats"></span><h3>Formats<a class="headerlink" href="#formats" title="Permalink to this headline">¶</a></h3>
 <p>Custom logging formats may be provided directly to a log definition, or they
-may be defined as a reusable variable in your <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> for ease
+may be defined as a reusable variable in your <a class="reference internal" href="#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> for ease
 of reference, particularly when you may have more than one log using the same
 format. Which approach you use is entirely up to you, though it’s strongly
 recommended to create an explicit format object if you intend to reuse the same
@@ -238,18 +238,18 @@ format for multiple log files.</p>
 format, and a <code class="docutils literal notranslate"><span class="pre">format</span></code> string, which defines the output format string for
 every event. An optional <code class="docutils literal notranslate"><span class="pre">interval</span></code> attribute can be specified to define the
 aggregation interval for summary logs.</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A one-line-per-event format that just prints event timestamps.</span>
-<span class="n">formats</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">myformat</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;cqtq&gt;&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># A one-line-per-event format that just prints event timestamps.</span>
+<span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">myformat</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;cqtq&gt;&#39;</span>
 
 <span class="c1"># An aggregation/summary format that prints the last event timestamp from</span>
 <span class="c1"># the interval along with the total count of events in the same interval.</span>
 <span class="c1"># (Doing so every 30 seconds.)</span>
-<span class="n">formats</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">mysummaryformat</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;LAST(cqtq)&gt; %&lt;COUNT(*)&gt;&#39;</span>
-  <span class="n">interval</span><span class="p">:</span> <span class="mi">30</span>
+<span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysummaryformat</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;LAST(cqtq)&gt;</span><span class="nv"> </span><span class="s">%&lt;COUNT(*)&gt;&#39;</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
 </pre></div>
 </div>
 <p>You may define as many and as varied a collection of format objects as you
@@ -328,10 +328,10 @@ be in the following format:</p>
 </div>
 <p>For example, the following snippet defines a filter that matches all POST
 requests:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">postfilter</span>
-  <span class="n">action</span><span class="p">:</span> <span class="n">accept</span>
-  <span class="n">condition</span><span class="p">:</span> <span class="n">cqhm</span> <span class="n">MATCH</span> <span class="n">POST</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">filters</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postfilter</span>
+  <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">accept</span>
+  <span class="nt">condition</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">cqhm MATCH POST</span>
 </pre></div>
 </div>
 <div class="section" id="filter-fields">
@@ -345,19 +345,19 @@ in any additional markup.</p>
 <h4>Filter Operators<a class="headerlink" href="#filter-operators" title="Permalink to this headline">¶</a></h4>
 <p>The operators describe how to perform the matching in the filter rule, and may
 be any one of the following:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">MATCH</span></code></dt>
-<dd>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
-Case-sensitive.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_MATCH</span></code></dt>
-<dd>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
-Case-insensitive.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CONTAIN</span></code></dt>
-<dd>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
-substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-sensitive.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_CONTAIN</span></code></dt>
-<dd>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
-substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-insensitive.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">MATCH</span></code></dt><dd><p>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
+Case-sensitive.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_MATCH</span></code></dt><dd><p>True if the values of <code class="docutils literal notranslate"><span class="pre">field</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> are identical.
+Case-insensitive.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CONTAIN</span></code></dt><dd><p>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
+substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-sensitive.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">CASE_INSENSITIVE_CONTAIN</span></code></dt><dd><p>True if the value of <code class="docutils literal notranslate"><span class="pre">field</span></code> contains <code class="docutils literal notranslate"><span class="pre">value</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">value</span></code> is a
+substring of the contents of <code class="docutils literal notranslate"><span class="pre">field</span></code>). Case-insensitive.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="filter-values">
@@ -380,8 +380,8 @@ the last of the range with a single <code class="docutils literal notranslate"><
 which gives the ranges for the 10/8 network. Other network notations are not
 supported at this time.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It may be tempting to attach multiple Filters to a log object
+<p class="admonition-title">Note</p>
+<p>It may be tempting to attach multiple Filters to a log object
 reject multiple log fields (in lieu of providing a single comma separated list
 to a single Filter). Avoid this temptation and use a comma separated list of reject objects
 instead. Remember that you may not have multiple accept filter objects.
@@ -403,93 +403,96 @@ discussion of the merits of each is covered elsewhere, in
 <a class="reference internal" href="../logging/destinations.en.html#admin-logging-ascii-v-binary"><span class="std std-ref">Deciding Between ASCII or Binary Output</span></a>.</p>
 <p>The following subsections cover the attributes you should specify when creating
 your logging object. Only <code class="docutils literal notranslate"><span class="pre">filename</span></code> and <code class="docutils literal notranslate"><span class="pre">format</span></code> are required.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="27%" />
-<col width="13%" />
-<col width="60%" />
+<col style="width: 27%" />
+<col style="width: 13%" />
+<col style="width: 60%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Name</th>
-<th class="head">Type</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>filename</td>
-<td>string</td>
-<td>The name of the logfile relative to the default
+<tbody>
+<tr class="row-even"><td><p>filename</p></td>
+<td><p>string</p></td>
+<td><p>The name of the logfile relative to the default
 logging directory (set with
-<a class="reference internal" href="records.config.en.html#proxy-config-log-logfile-dir" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logfile_dir</span></code></a>).</td>
+<a class="reference internal" href="records.config.en.html#proxy-config-log-logfile-dir" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logfile_dir</span></code></a>). If
+this is set to <code class="docutils literal notranslate"><span class="pre">stdout</span></code> or <code class="docutils literal notranslate"><span class="pre">stderr</span></code>,
+then the stdout or stderr stream will be
+logged to, respectively.</p></td>
 </tr>
-<tr class="row-odd"><td>format</td>
-<td>string</td>
-<td>a string with a valid named format specification.</td>
+<tr class="row-odd"><td><p>format</p></td>
+<td><p>string</p></td>
+<td><p>a string with a valid named format specification.</p></td>
 </tr>
-<tr class="row-even"><td>header</td>
-<td>string</td>
-<td>If present, emitted as the first line of each
-new log file.</td>
+<tr class="row-even"><td><p>header</p></td>
+<td><p>string</p></td>
+<td><p>If present, emitted as the first line of each
+new log file.</p></td>
 </tr>
-<tr class="row-odd"><td>rolling_enabled</td>
-<td><em>see below</em></td>
-<td>Determines the type of log rolling to use (or
+<tr class="row-odd"><td><p>rolling_enabled</p></td>
+<td><p><em>see below</em></p></td>
+<td><p>Determines the type of log rolling to use (or
 whether to disable rolling). Overrides
-<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>.</td>
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td>rolling_interval_sec</td>
-<td>number</td>
-<td>Interval in seconds between log file rolling.
+<tr class="row-even"><td><p>rolling_interval_sec</p></td>
+<td><p>number</p></td>
+<td><p>Interval in seconds between log file rolling.
 Overrides
-<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-interval-sec" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_interval_sec</span></code></a>.</td>
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-interval-sec" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_interval_sec</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td>rolling_offset_hr</td>
-<td>number</td>
-<td>Specifies an hour (from 0 to 23) at which log
+<tr class="row-odd"><td><p>rolling_offset_hr</p></td>
+<td><p>number</p></td>
+<td><p>Specifies an hour (from 0 to 23) at which log
 rolling is guaranteed to align. Only has an
 effect if RollingIntervalSec is set to greater
 than one hour. Overrides
-<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-offset-hr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_offset_hr</span></code></a>.</td>
+<a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-offset-hr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_offset_hr</span></code></a>.</p></td>
 </tr>
-<tr class="row-even"><td>rolling_size_mb</td>
-<td>number</td>
-<td>Size, in megabytes, at which log files are
-rolled.</td>
+<tr class="row-even"><td><p>rolling_size_mb</p></td>
+<td><p>number</p></td>
+<td><p>Size, in megabytes, at which log files are
+rolled.</p></td>
 </tr>
-<tr class="row-odd"><td>rolling_min_count</td>
-<td>number</td>
-<td>Specifies the minimum number of rolled logs to
-keep.</td>
+<tr class="row-odd"><td><p>rolling_min_count</p></td>
+<td><p>number</p></td>
+<td><p>Specifies the minimum number of rolled logs to
+keep.</p></td>
 </tr>
-<tr class="row-even"><td>filters</td>
-<td>array of
-filters</td>
-<td>The optional list of filter objects which
+<tr class="row-even"><td><p>filters</p></td>
+<td><p>array of
+filters</p></td>
+<td><p>The optional list of filter objects which
 restrict the individual events logged. The array
-may only contain one accept filter.</td>
+may only contain one accept filter.</p></td>
 </tr>
 </tbody>
 </table>
-<p>Enabling log rolling may be done globally in <a class="reference internal" href="records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, or on a
+<p>Enabling log rolling may be done globally in <a class="reference internal" href="records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, or on a
 per-log basis by passing appropriate values for the <code class="docutils literal notranslate"><span class="pre">rolling_enabled</span></code> key. The
 latter method may also be used to effect different rolling settings for
 individual logs. The numeric values that may be passed are the same as used by
 <a class="reference internal" href="records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>. For convenience and readability,
-the following predefined variables may also be used in <a class="reference internal" href="#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>:</p>
-<dl class="docutils">
-<dt>log.roll.none</dt>
-<dd>Disable log rolling.</dd>
-<dt>log.roll.time</dt>
-<dd>Roll at a certain time frequency, specified by RollingIntervalSec and
-RollingOffsetHr.</dd>
-<dt>log.roll.size</dt>
-<dd>Roll when the size exceeds RollingSizeMb.</dd>
-<dt>log.roll.both</dt>
-<dd>Roll when either the specified rolling time is reached or the specified
-file size is reached.</dd>
-<dt>log.roll.any</dt>
-<dd>Roll the log file when the specified rolling time is reached if the size of
-the file equals or exceeds the specified size.</dd>
+the following predefined variables may also be used in <a class="reference internal" href="#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>:</p>
+<dl class="simple">
+<dt>log.roll.none</dt><dd><p>Disable log rolling.</p>
+</dd>
+<dt>log.roll.time</dt><dd><p>Roll at a certain time frequency, specified by RollingIntervalSec and
+RollingOffsetHr.</p>
+</dd>
+<dt>log.roll.size</dt><dd><p>Roll when the size exceeds RollingSizeMb.</p>
+</dd>
+<dt>log.roll.both</dt><dd><p>Roll when either the specified rolling time is reached or the specified
+file size is reached.</p>
+</dd>
+<dt>log.roll.any</dt><dd><p>Roll the log file when the specified rolling time is reached if the size of
+the file equals or exceeds the specified size.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -497,45 +500,45 @@ the file equals or exceeds the specified size.</dd>
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The following is an example of a format that collects information using three
 common fields:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">formats</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">minimalfmt</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;chi&gt; , %&lt;cqu&gt; , %&lt;pssc&gt;&#39;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">minimalfmt</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;chi&gt;</span><span class="nv"> </span><span class="s">,</span><span class="nv"> </span><span class="s">%&lt;cqu&gt;</span><span class="nv"> </span><span class="s">,</span><span class="nv"> </span><span class="s">%&lt;pssc&gt;&#39;</span>
 </pre></div>
 </div>
 <p>The following is an example of a format that uses aggregate operators to
 produce a summary log:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">formats</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">summaryfmt</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;LAST(cqts)&gt;:%&lt;COUNT(*)&gt;:%&lt;SUM(psql)&gt;&#39;</span>
-  <span class="n">interval</span><span class="p">:</span> <span class="mi">10</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">summaryfmt</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;LAST(cqts)&gt;:%&lt;COUNT(*)&gt;:%&lt;SUM(psql)&gt;&#39;</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
 </pre></div>
 </div>
 <p>The following is an example of a filter that will cause only REFRESH_HIT events
 to be logged:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">filters</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">refreshhitfilter</span>
-  <span class="n">action</span><span class="p">:</span> <span class="n">accept</span>
-  <span class="n">condition</span><span class="p">:</span> <span class="n">pssc</span> <span class="n">MATCH</span> <span class="n">REFRESH_HIT</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">filters</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">refreshhitfilter</span>
+  <span class="nt">action</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">accept</span>
+  <span class="nt">condition</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pssc MATCH REFRESH_HIT</span>
 </pre></div>
 </div>
 <p>The following is an example of a log specification that creates a local log
 file for the minimal format defined earlier. The log filename will be
 <code class="docutils literal notranslate"><span class="pre">minimal.log</span></code> because we select the ASCII logging format.</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">mode</span><span class="p">:</span> <span class="n">ascii</span>
-  <span class="n">filename</span><span class="p">:</span> <span class="n">minimal</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="n">minimalfmt</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">minimal</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">minimalfmt</span>
 </pre></div>
 </div>
 <p>The following is an example of a log specification that creates a local log
 file using the summary format from earlier, and only includes events that
 matched the REFRESH_HIT filter we created.</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logs</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">mode</span><span class="p">:</span> <span class="n">ascii</span>
-  <span class="n">filename</span><span class="p">:</span> <span class="n">refreshhit_summary</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="n">summaryfmt</span>
-  <span class="n">filters</span><span class="p">:</span>
-  <span class="o">-</span> <span class="n">refreshhitfilter</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logs</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ascii</span>
+  <span class="nt">filename</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">refreshhit_summary</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">summaryfmt</span>
+  <span class="nt">filters</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">refreshhitfilter</span>
 </pre></div>
 </div>
 </div>

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -433,14 +436,14 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSVConnProtocolEnable">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSVConnProtocolEnable</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn">TSVConn</a><em>&nbsp;vconn</em>, const char*<em>&nbsp;protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSVConnProtocolEnable" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSVConnProtocolEnable</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn">TSVConn</a> <em>vconn</em>, <em class="property">const</em> char *<em>protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSVConnProtocolEnable" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSVConnProtocolDisable">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSVConnProtocolDisable</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn">TSVConn</a><em>&nbsp;vconn</em>, const char*<em>&nbsp;protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSVConnProtocolDisable" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSVConnProtocolDisable</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn">TSVConn</a> <em>vconn</em>, <em class="property">const</em> char *<em>protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSVConnProtocolDisable" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -448,13 +451,13 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="#c.TSVConnProtocolEnable" title="TSVConnProtocolEnable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnProtocolEnable()</span></code></a> will enable the protocol specified by <em>protocol</em> to be advertised in the TLS protocol negotiation.</p>
 <p>Similarly, <a class="reference internal" href="#c.TSVConnProtocolDisable" title="TSVConnProtocolDisable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnProtocolDisable()</span></code></a> will remove the protocol specified by <em>protocol</em> from the TLS protocol negotiation.</p>
-<p>To be effective, these calls must be made from the early TLS negotiation hooks like <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_SSL_CLIENT_HELLO_HOOK" title="TS_SSL_CLIENT_HELLO_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_CLIENT_HELLO_HOOK</span></code></a> or <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_SSL_SERVERNAME_HOOK" title="TS_SSL_SERVERNAME_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_SERVERNAME_HOOK</span></code></a>.</p>
+<p>To be effective, these calls must be made from the early TLS negotiation hooks like <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_SSL_CLIENT_HELLO_HOOK" title="TS_SSL_CLIENT_HELLO_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_CLIENT_HELLO_HOOK</span></code></a> or <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_SSL_SERVERNAME_HOOK" title="TS_SSL_SERVERNAME_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_SERVERNAME_HOOK</span></code></a>.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The example below is excerpted from <cite>example/plugins/c-api/disable_http2/disable_http2.cc</cite>
 in the Traffic Server source distribution. It shows how the <a class="reference internal" href="#c.TSVConnProtocolDisable" title="TSVConnProtocolDisable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnProtocolDisable()</span></code></a> function
-can be used in a plugin called from the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_SSL_SERVERNAME_HOOK" title="TS_SSL_SERVERNAME_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_SERVERNAME_HOOK</span></code></a>.</p>
+can be used in a plugin called from the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_SSL_SERVERNAME_HOOK" title="TS_SSL_SERVERNAME_HOOK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_SSL_SERVERNAME_HOOK</span></code></a>.</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span>
 <span class="nf">CB_SNI</span><span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">cb_data</span><span class="p">)</span>
 <span class="p">{</span>

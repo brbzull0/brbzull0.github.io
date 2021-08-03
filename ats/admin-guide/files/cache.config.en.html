@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -130,7 +130,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -205,17 +205,17 @@
            <div itemprop="articleBody">
             
   <div class="section" id="cache-config">
-<span id="std:configfile-cache.config"></span><h1>cache.config<a class="headerlink" href="#cache-config" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file allows you to overrule the origin’s cache
+<span id="std-configfile-cache.config"></span><span id="std:configfile-cache.config"></span><h1>cache.config<a class="headerlink" href="#cache-config" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference internal" href="#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file allows you to overrule the origin’s cache
 policies. You can add caching rules to specify the following:</p>
 <ul class="simple">
-<li>Not to cache objects from specific IP addresses.</li>
-<li>How long to pin particular objects in the cache.</li>
-<li>How long to consider cached objects as fresh.</li>
-<li>Whether to ignore no-cache directives from the server.</li>
+<li><p>Not to cache objects from specific IP addresses.</p></li>
+<li><p>How long to pin particular objects in the cache.</p></li>
+<li><p>How long to consider cached objects as fresh.</p></li>
+<li><p>Whether to ignore no-cache directives from the server.</p></li>
 </ul>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="admonition-title">Important</p>
 <p>Generally, using this file to define cache policies is an antipattern.
 It’s usually better to have the origin specify the cache policy via the
 <a class="reference external" href="https://tools.ietf.org/html/rfc7234#section-5.2">Cache-Control:</a> header.
@@ -224,12 +224,12 @@ origin is in a much better position to know which content can be safely
 cached, and for how long. It can make fine grained decisions, changing
 Cache-Control: header value per object. This file allows for some overrides
 but, is relatively crude compared to what the origin can provide.</p>
-<p class="last">After modifying <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, run <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+<p>After modifying <a class="reference internal" href="#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, run <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
 to apply changes.</p>
 </div>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>Each line in the <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file contains a caching rule. Traffic Server
+<p>Each line in the <a class="reference internal" href="#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> file contains a caching rule. Traffic Server
 recognizes three space-delimited tags:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">primary_destination</span><span class="o">=</span><span class="n">value</span> <span class="n">secondary_specifier</span><span class="o">=</span><span class="n">value</span> <span class="n">action</span><span class="o">=</span><span class="n">value</span>
 </pre></div>
@@ -241,28 +241,28 @@ possible primary destinations with allowed values.</p>
 <h3>Primary Destinations<a class="headerlink" href="#primary-destinations" title="Permalink to this headline">¶</a></h3>
 <p>The primary destination field on each line is used to restrict the requests to
 which the caching rule will apply.</p>
-<dl class="docutils" id="cache-config-format-dest-domain">
-<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt>
-<dd>A requested domain name. Traffic Server matches the host name of the destination from
-the URL in the request.</dd>
+<dl class="simple" id="cache-config-format-dest-domain">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_domain</span></code></dt><dd><p>A requested domain name. Traffic Server matches the host name of the destination from
+the URL in the request.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-dest-host">
-<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt>
-<dd>Alias for <code class="docutils literal notranslate"><span class="pre">dest_domain</span></code>.</dd>
+<dl class="simple" id="cache-config-format-dest-host">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_host</span></code></dt><dd><p>Alias for <code class="docutils literal notranslate"><span class="pre">dest_domain</span></code>.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-dest-ip">
-<dt><code class="docutils literal notranslate"><span class="pre">dest_ip</span></code></dt>
-<dd>A requested IP address. Traffic Server matches the IP address of the destination in
-the request.</dd>
+<dl class="simple" id="cache-config-format-dest-ip">
+<dt><code class="docutils literal notranslate"><span class="pre">dest_ip</span></code></dt><dd><p>A requested IP address. Traffic Server matches the IP address of the destination in
+the request.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-dest-host-regex">
-<dt><code class="docutils literal notranslate"><span class="pre">host_regex</span></code></dt>
-<dd>A regular expression to be tested against the destination host name in the
-request.</dd>
+<dl class="simple" id="cache-config-format-dest-host-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">host_regex</span></code></dt><dd><p>A regular expression to be tested against the destination host name in the
+request.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-url-regex">
-<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt>
-<dd>A regular expression to be tested against the URL in the request.</dd>
+<dl class="simple" id="cache-config-format-url-regex">
+<dt><code class="docutils literal notranslate"><span class="pre">url_regex</span></code></dt><dd><p>A regular expression to be tested against the URL in the request.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="secondary-specifiers">
@@ -272,40 +272,40 @@ which requests are impacted by the caching rule. Multiple secondary specifiers
 may be used within a single rule, though each type of specifier can appear at
 most one time. In other words, you may have both a <code class="docutils literal notranslate"><span class="pre">port</span></code> and <code class="docutils literal notranslate"><span class="pre">scheme</span></code> in
 the same rule, but you may not have two <code class="docutils literal notranslate"><span class="pre">port</span></code>s.</p>
-<dl class="docutils" id="cache-config-format-port">
-<dt><code class="docutils literal notranslate"><span class="pre">port</span></code></dt>
-<dd>Request URL port.</dd>
+<dl class="simple" id="cache-config-format-port">
+<dt><code class="docutils literal notranslate"><span class="pre">port</span></code></dt><dd><p>Request URL port.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-scheme">
-<dt><code class="docutils literal notranslate"><span class="pre">scheme</span></code></dt>
-<dd>Request URL protocol (http or https).</dd>
+<dl class="simple" id="cache-config-format-scheme">
+<dt><code class="docutils literal notranslate"><span class="pre">scheme</span></code></dt><dd><p>Request URL protocol (http or https).</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-prefix">
-<dt><code class="docutils literal notranslate"><span class="pre">prefix</span></code></dt>
-<dd>Prefix in the path part of a URL.</dd>
+<dl class="simple" id="cache-config-format-prefix">
+<dt><code class="docutils literal notranslate"><span class="pre">prefix</span></code></dt><dd><p>Prefix in the path part of a URL.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-suffix">
-<dt><code class="docutils literal notranslate"><span class="pre">suffix</span></code></dt>
-<dd>File suffix in the URL.</dd>
+<dl class="simple" id="cache-config-format-suffix">
+<dt><code class="docutils literal notranslate"><span class="pre">suffix</span></code></dt><dd><p>File suffix in the URL.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-method">
-<dt><code class="docutils literal notranslate"><span class="pre">method</span></code></dt>
-<dd>Request URL method (get, put, post, trace, etc.).</dd>
+<dl class="simple" id="cache-config-format-method">
+<dt><code class="docutils literal notranslate"><span class="pre">method</span></code></dt><dd><p>Request URL method (get, put, post, trace, etc.).</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-time">
-<dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt>
-<dd>A time range, such as 08:00-14:00. Specified using a 24-hour clock in the
-timezone of the Traffic Server server.</dd>
+<dl class="simple" id="cache-config-format-time">
+<dt><code class="docutils literal notranslate"><span class="pre">time</span></code></dt><dd><p>A time range, such as 08:00-14:00. Specified using a 24-hour clock in the
+timezone of the Traffic Server server.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-src-ip">
-<dt><code class="docutils literal notranslate"><span class="pre">src_ip</span></code></dt>
-<dd>Client IP address.</dd>
+<dl class="simple" id="cache-config-format-src-ip">
+<dt><code class="docutils literal notranslate"><span class="pre">src_ip</span></code></dt><dd><p>Client IP address.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-internal">
-<dt><code class="docutils literal notranslate"><span class="pre">internal</span></code></dt>
-<dd>A boolean value, <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>, specifying if the rule should
+<dl class="simple" id="cache-config-format-internal">
+<dt><code class="docutils literal notranslate"><span class="pre">internal</span></code></dt><dd><p>A boolean value, <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>, specifying if the rule should
 match (or not match) a transaction originating from an internal API. This
-is useful to differentiate transactions originating from a Traffic Server plugin.</dd>
+is useful to differentiate transactions originating from a Traffic Server plugin.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="actions">
@@ -313,50 +313,48 @@ is useful to differentiate transactions originating from a Traffic Server plugin
 <p>The final component of a caching rule is the action, which determines what Traffic Server
 will do with all objects matching the primary destinations and secondary
 specifiers of the rule in question.</p>
-<dl class="docutils" id="cache-config-format-action">
-<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt>
-<dd><p class="first">One of the following values:</p>
-<table border="1" class="last docutils">
+<dl id="cache-config-format-action">
+<dt><code class="docutils literal notranslate"><span class="pre">action</span></code></dt><dd><p>One of the following values:</p>
+<table class="docutils align-default">
 <colgroup>
-<col width="36%" />
-<col width="64%" />
+<col style="width: 36%" />
+<col style="width: 64%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Effect</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Effect</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">never-cache</span></code></td>
-<td>Never cache specified objects, it will be
-overwritten by <code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code>.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">never-cache</span></code></p></td>
+<td><p>Never cache specified objects, it will be
+overwritten by <code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ignore-no-cache</span></code></td>
-<td>Ignore all <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ignore-no-cache</span></code></p></td>
+<td><p>Ignore all <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ignore-client-no-cache</span></code></td>
-<td>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
-client requests.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ignore-client-no-cache</span></code></p></td>
+<td><p>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
+client requests.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ignore-server-no-cache</span></code></td>
-<td>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
-origin server responses.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ignore-server-no-cache</span></code></p></td>
+<td><p>Ignore <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code> headers from
+origin server responses.</p></td>
 </tr>
 </tbody>
 </table>
 </dd>
 </dl>
-<dl class="docutils" id="cache-responses-to-cookies">
-<dt><code class="docutils literal notranslate"><span class="pre">cache-responses-to-cookies</span></code></dt>
-<dd>Change the style of caching with regard to cookies. This effectively
+<dl class="simple" id="cache-responses-to-cookies">
+<dt><code class="docutils literal notranslate"><span class="pre">cache-responses-to-cookies</span></code></dt><dd><p>Change the style of caching with regard to cookies. This effectively
 overrides the configuration parameter
 <a class="reference internal" href="records.config.en.html#proxy-config-http-cache-cache-responses-to-cookies" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_responses_to_cookies</span></code></a>
 and uses the same values with the same semantics. The override happens
-only for requests that match.</dd>
+only for requests that match.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-pin-in-cache">
-<dt><code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code></dt>
-<dd><p class="first">Preserves objects in cache, preventing them from being overwritten.
+<dl id="cache-config-format-pin-in-cache">
+<dt><code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code></dt><dd><p>Preserves objects in cache, preventing them from being overwritten.
 Does not affect objects that are determined not to be cacheable. This
 setting can have performance issues, and severely affect the cache.
 For instance, if the primary destination matches all objects, once the
@@ -365,33 +363,33 @@ evicted. Similarly, for each cache-miss, each object would incur extra
 checks to determine if the object it would replace could be overwritten.</p>
 <p>The value is the amount of time you want to keep the object(s) in the cache.
 The following time formats are allowed:</p>
-<ul class="last simple">
-<li><code class="docutils literal notranslate"><span class="pre">d</span></code> for days; for example: 2d</li>
-<li><code class="docutils literal notranslate"><span class="pre">h</span></code> for hours; for example: 10h</li>
-<li><code class="docutils literal notranslate"><span class="pre">m</span></code> for minutes; for example: 5m</li>
-<li><code class="docutils literal notranslate"><span class="pre">s</span></code> for seconds; for example: 20s</li>
-<li>mixed units; for example: 1h15m20s</li>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span></code> for days; for example: 2d</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">h</span></code> for hours; for example: 10h</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">m</span></code> for minutes; for example: 5m</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">s</span></code> for seconds; for example: 20s</p></li>
+<li><p>mixed units; for example: 1h15m20s</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="docutils" id="cache-config-format-revalidate">
-<dt><code class="docutils literal notranslate"><span class="pre">revalidate</span></code></dt>
-<dd>For objects that are in cache, overrides the amount of time the object(s)
-are to be considered fresh. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</dd>
+<dl class="simple" id="cache-config-format-revalidate">
+<dt><code class="docutils literal notranslate"><span class="pre">revalidate</span></code></dt><dd><p>For objects that are in cache, overrides the amount of time the object(s)
+are to be considered fresh. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</p>
+</dd>
 </dl>
-<dl class="docutils" id="cache-config-format-ttl-in-cache">
-<dt><code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code></dt>
-<dd>Forces object(s) to become cached, as if they had a
+<dl class="simple" id="cache-config-format-ttl-in-cache">
+<dt><code class="docutils literal notranslate"><span class="pre">ttl-in-cache</span></code></dt><dd><p>Forces object(s) to become cached, as if they had a
 <code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">max-age:&lt;time&gt;</span></code> header. Can be overruled by requests with
 cookies. The value is the amount of time object(s) are to be kept in the
 cache, regardless of <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> response headers from the origin
-server. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</dd>
+server. Use the same time formats as <code class="docutils literal notranslate"><span class="pre">pin-in-cache</span></code>.</p>
+</dd>
 </dl>
 </div>
 </div>
 <div class="section" id="matching-multiple-rules">
 <h2>Matching Multiple Rules<a class="headerlink" href="#matching-multiple-rules" title="Permalink to this headline">¶</a></h2>
-<p>When multiple rules are specified in <a class="reference internal" href="#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, Traffic Server will check all
+<p>When multiple rules are specified in <a class="reference internal" href="#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>, Traffic Server will check all
 of them in order for each request. Thus, two rules which match the same request
 but have conflicting actions will result in their actions being compounded. In
 other words, Traffic Server does not stop on the first match.</p>

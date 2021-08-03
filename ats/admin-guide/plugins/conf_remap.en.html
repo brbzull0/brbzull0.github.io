@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -219,7 +219,7 @@ remapping rules.</p>
 <div class="section" id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
 <p>Traffic Server provides a plethora of configuration options, but specifying the values of
-those options in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> is global. All requests, regardless of
+those options in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> is global. All requests, regardless of
 the cache object or its origin, will be evaluated within the same collection of
 settings. Sometimes you may want Traffic Server to behave differently for portions of
 your cache.</p>
@@ -255,7 +255,7 @@ This is done by specifying <em>key</em> = <em>value</em> pairs, where the key is
 configuration directive name and the value is its desired setting for the
 remapping rule.</p>
 <p>For example, the enable <a class="reference internal" href="../files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a> for a
-single <cite>map</cite> rule, you would add the following to your <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+single <cite>map</cite> rule, you would add the following to your <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> \
     <span class="nd">@plugin</span><span class="o">=</span><span class="n">conf_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">pristine_host_hdr</span><span class="o">=</span><span class="mi">1</span>
 </pre></div>
@@ -268,15 +268,15 @@ where multiple remapping rules perform the same directive changes. External
 configurations can simplify management of these rules, and help to reduce the
 possibility of transcription errors, or keeping all the directive settings in
 sync across all the remapping rules over time.</p>
-<p>Instead of specifying the directives and their values in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+<p>Instead of specifying the directives and their values in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 as you do with the in-line method, you place all the affected directives in a
 separate text file. The location and name is entirely up to you, but we’ll use
 <cite>/etc/trafficserver/cdn_conf_remap.config</cite> here. The contents of this file
-should mirror how configuration directives are written in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+should mirror how configuration directives are written in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">pristine_host_hdr</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
-<p>Your <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> will then contain remapping rules that point to this
+<p>Your <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> will then contain remapping rules that point to this
 external file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
     <span class="nd">@plugin</span><span class="o">=</span><span class="n">conf_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">cdn_conf_remap</span><span class="o">.</span><span class="n">config</span>

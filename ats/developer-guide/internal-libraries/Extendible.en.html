@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -225,12 +225,11 @@
 In C++, the <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> are strongly typed field handles, which allows you to use Extendible in multiple inheritance, and at many levels of inheritance hierarchy, with compile time type safety.</p>
 <p>Use Case:</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>TSCore</dt>
-<dd>Defines class <code class="docutils literal notranslate"><span class="pre">Host</span></code> as <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a></dd>
-<dt>TSPlugin <code class="docutils literal notranslate"><span class="pre">HealthStatus</span></code></dt>
-<dd><p class="first">Extend the <code class="docutils literal notranslate"><span class="pre">Host</span></code> datatype with field <code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span> <span class="pre">down</span> <span class="pre">reason</span> <span class="pre">code</span></code>. API returns a handle.</p>
-<p class="last">Use <em>Data</em> and <em>handle</em> to read &amp; write fields.</p>
+<div><dl>
+<dt>TSCore</dt><dd><p>Defines class <code class="docutils literal notranslate"><span class="pre">Host</span></code> as <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a></p>
+</dd>
+<dt>TSPlugin <code class="docutils literal notranslate"><span class="pre">HealthStatus</span></code></dt><dd><p>Extend the <code class="docutils literal notranslate"><span class="pre">Host</span></code> datatype with field <code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span> <span class="pre">down</span> <span class="pre">reason</span> <span class="pre">code</span></code>. API returns a handle.</p>
+<p>Use <em>Data</em> and <em>handle</em> to read &amp; write fields.</p>
 </dd>
 </dl>
 </div></blockquote>
@@ -268,9 +267,9 @@ is called, followed by the constructors of each extendible field.</p>
 <p>One block of memory is allocated per <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a>, which include all member variables and extended fields.
 Within the block, memory is arranged in the following order:</p>
 <ol class="arabic simple">
-<li>Derived members (+padding align next field)</li>
-<li>Fields (largest to smallest)</li>
-<li>Packed Bits</li>
+<li><p>Derived members (+padding align next field)</p></li>
+<li><p>Fields (largest to smallest)</p></li>
+<li><p>Packed Bits</p></li>
 </ol>
 <p>When using inheritance, all base cases arranged from most super to most derived,
 then all <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> blocks are arranged from most super to most derived.
@@ -339,9 +338,10 @@ which simplifies the code using it. Also this provides compile errors for common
 </div>
 <div class="section" id="inheritance">
 <h3>Inheritance<a class="headerlink" href="#inheritance" title="Permalink to this headline">¶</a></h3>
-<blockquote>
-<div>Unfortunately it is non-trivial handle multiple <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> super types in the same inheritance tree.
-<a class="reference internal" href="#_CPPv4I0E6createP10Extendiblev" title="create"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">template&lt;&gt;</span> <span class="pre">create()</span></code></a> handles allocation and initialization of the entire <cite>Derived</cite> class, but it is dependent on each class defining <code class="code docutils literal notranslate"><span class="pre">using</span> <span class="pre">super_type</span> <span class="pre">=</span> <span class="pre">*some_super_class*;</span></code> so that it recurse through the classes.</div></blockquote>
+<p>Unfortunately it is non-trivial handle multiple <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> super types in the same inheritance
+tree. <a class="reference internal" href="#_CPPv4I0E6createP10Extendiblev" title="create"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">template&lt;&gt;</span> <span class="pre">create()</span></code></a> handles allocation and initialization of the entire <cite>Derived</cite>
+class, but it is dependent on each class defining <code class="code docutils literal notranslate"><span class="pre">using</span> <span class="pre">super_type</span> <span class="pre">=</span> <span class="pre">*some_super_class*;</span></code> so
+that it recurse through the classes.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nl">A</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Extendible</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="p">{</span>
    <span class="kt">uint16_t</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">};</span>
 <span class="p">};</span>
@@ -378,222 +378,173 @@ memory.</p>
 <div class="section" id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <p>Namespace <cite>ext</cite></p>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv4I00E7FieldId">
-<span id="_CPPv3I00E7FieldId"></span><span id="_CPPv2I00E7FieldId"></span>template&lt;typename <code class="descname">Derived_t</code>, typename <code class="descname">Field_t</code>&gt;<br /><em class="property">class </em><code class="descname">FieldId</code><a class="headerlink" href="#_CPPv4I00E7FieldId" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I00E7FieldId"></span><span id="_CPPv2I00E7FieldId"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">FieldId</code><a class="headerlink" href="#_CPPv4I00E7FieldId" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The handle used to access a field. These are templated to prevent human error, and branching logic.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>Derived_t</strong> – The class that you want to extend at runtime.</li>
-<li><strong>Field_t</strong> – The type of the field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that you want to extend at runtime.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="type">
+<dl class="cpp type">
 <dt id="_CPPv415ExtFieldContext">
-<span id="_CPPv315ExtFieldContext"></span><span id="_CPPv215ExtFieldContext"></span><span id="ExtFieldContext"></span><em class="property">typedef </em><em class="property">const</em> void *<code class="descname">ExtFieldContext</code><a class="headerlink" href="#_CPPv415ExtFieldContext" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv315ExtFieldContext"></span><span id="_CPPv215ExtFieldContext"></span><span id="ExtFieldContext"></span><em class="property">typedef </em><em class="property">const</em> void *<code class="sig-name descname">ExtFieldContext</code><a class="headerlink" href="#_CPPv415ExtFieldContext" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The handle used to access a field through C API. Human error not allowed by convention.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv4I0E10Extendible">
-<span id="_CPPv3I0E10Extendible"></span><span id="_CPPv2I0E10Extendible"></span>template&lt;typename <code class="descname">Derived_t</code>&gt;<br /><em class="property">class </em><code class="descname">Extendible</code><a class="headerlink" href="#_CPPv4I0E10Extendible" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E10Extendible"></span><span id="_CPPv2I0E10Extendible"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">Extendible</code><a class="headerlink" href="#_CPPv4I0E10Extendible" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allocates block of memory, uses <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> and <a class="reference internal" href="#_CPPv46Schema" title="Schema"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Schema</span></code></a> to access slices of memory.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The class that you want to extend at runtime.</td>
-</tr>
-</tbody>
-</table>
-<dl class="member">
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class that you want to extend at runtime.</p>
+</dd>
+</dl>
+<dl class="cpp member">
 <dt id="_CPPv4N10Extendible6schemaE">
-<span id="_CPPv3N10Extendible6schemaE"></span><span id="_CPPv2N10Extendible6schemaE"></span><span id="Extendible::schema__Schema"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv46Schema" title="Schema">Schema</a> <code class="descname">schema</code><a class="headerlink" href="#_CPPv4N10Extendible6schemaE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10Extendible6schemaE"></span><span id="_CPPv2N10Extendible6schemaE"></span><span id="Extendible::schema__Schema"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv46Schema" title="Schema">Schema</a> <code class="sig-name descname">schema</code><a class="headerlink" href="#_CPPv4N10Extendible6schemaE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>one schema instance per <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> to define contained <a class="reference internal" href="#_CPPv49FieldDesc" title="FieldDesc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FieldDesc</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0E6createP10Extendiblev">
-<span id="_CPPv3I0E6createv"></span><span id="_CPPv2I0E6createv"></span>template&lt;typename <code class="descname">Derived_t</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible">Extendible</a> *<code class="descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6createP10Extendiblev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E6createv"></span><span id="_CPPv2I0E6createv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible">Extendible</a> *<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6createP10Extendiblev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>To be used in place of <cite>new Derived_t()</cite>.
 Allocate a block of memory. Construct the base data.
 Recursively construct and initialize <cite>Derived_t::super_type</cite> and its <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> classes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The Derived class to allocate.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The Derived class to allocate.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE">
-<span id="_CPPv3I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="descname">Derived_t</code>, typename <code class="descname">Field_t</code>&gt;<br />bool <code class="descname">fieldAdd</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />bool <code class="sig-name descname">fieldAdd</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Declare a new <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> for Derived_t.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>Derived_t</strong> – The class that uses this field.</li>
-<li><strong>Field_t</strong> – The type of the field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE">
-<span id="_CPPv3I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="descname">Derived_t</code>, typename <code class="descname">Field_t</code>&gt;<br />bool <code class="descname">fieldFind</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />bool <code class="sig-name descname">fieldFind</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Find an existing <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> for Derived_t.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>Derived_t</strong> – The class that uses this field.</li>
-<li><strong>Field_t</strong> – The type of the field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE">
-<span id="_CPPv3I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="descname">T</code>, typename <code class="descname">Derived_t</code>, typename <code class="descname">Field_t</code>&gt;<br />auto <em class="property">const</em> <code class="descname">get</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::T">T</a> <em class="property">const</em>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="sig-name descname">T</code>, typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />auto <em class="property">const</em> <code class="sig-name descname">get</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::T">T</a> <em class="property">const</em>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns T const&amp; value from the field stored in the <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> allocation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>T</strong> – The class passed in.</li>
-<li><strong>Derived_t</strong> – The class that uses this field.</li>
-<li><strong>Field_t</strong> – The type of the field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The class passed in.</p></li>
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="_CPPv4I000E3setDaR1T7FieldIdI9Derived_t7Field_tE">
-<span id="_CPPv3I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="descname">T</code>, typename <code class="descname">Derived_t</code>, typename <code class="descname">Field_t</code>&gt;<br />auto <code class="descname">set</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3setDaR1T7FieldIdI9Derived_t7Field_tE" title="set::T">T</a>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3setDaR1T7FieldIdI9Derived_t7Field_tE" title="set::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3setDaR1T7FieldIdI9Derived_t7Field_tE" title="set::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3setDaR1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dl class="cpp function">
+<dt id="_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE">
+<span id="_CPPv3I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="sig-name descname">T</code>, typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br /><a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::T">T</a> &amp;<code class="sig-name descname">set</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::T">T</a>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Returns T &amp; value from the field stored in <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> allocation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>T</strong> – The class passed in.</li>
-<li><strong>Derived_t</strong> – The class that uses this field.</li>
-<li><strong>Field_t</strong> – The type of the field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The class passed in.</p></li>
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0E6sizeOf6size_tv">
-<span id="_CPPv3I0E6sizeOfv"></span><span id="_CPPv2I0E6sizeOfv"></span>template&lt;typename <code class="descname">Derived_t</code>&gt;<br /><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="descname">sizeOf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6sizeOf6size_tv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E6sizeOfv"></span><span id="_CPPv2I0E6sizeOfv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">sizeOf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6sizeOf6size_tv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Recurse through super classes and sum memory needed for allocation.</p>
 <p>Depends on usage of <cite>super_type</cite> in each class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The class to measure.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to measure.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0E10viewFormatvv">
-<span id="_CPPv3I0E10viewFormatv"></span><span id="_CPPv2I0E10viewFormatv"></span>template&lt;typename <code class="descname">Derived_t</code>&gt;<br />void <code class="descname">viewFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10viewFormatvv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E10viewFormatv"></span><span id="_CPPv2I0E10viewFormatv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br />void <code class="sig-name descname">viewFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10viewFormatvv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Recurse through super classes and prints chart of bytes used within the allocation.</p>
 <p>Depends on usage of <cite>super_type</cite> in each class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The class to analyze.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to analyze.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0E8toStringNSt6stringERK1T">
-<span id="_CPPv3I0E8toStringRK1T"></span><span id="_CPPv2I0E8toStringRK1T"></span>template&lt;typename <code class="descname">T</code>&gt;<br />std::string <code class="descname">toString</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="toString::T">T</a> <em class="property">const</em> &amp;<em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E8toStringRK1T"></span><span id="_CPPv2I0E8toStringRK1T"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br />std::string <code class="sig-name descname">toString</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="toString::T">T</a> <em class="property">const</em> &amp;<em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Convert all extendible fields to std::strings (in a YAML-like format) using the <a class="reference internal" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="serializeField"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">serializeField()</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The class to convert to string.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to convert to string.</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t">
-<span id="_CPPv3I0E14serializeFieldRNSt7ostreamERK7Field_t"></span><span id="_CPPv2I0E14serializeFieldRNSt7ostreamERK7Field_t"></span>template&lt;typename <code class="descname">Field_t</code>&gt;<br />void <code class="descname">serializeField</code><span class="sig-paren">(</span>std::ostream &amp;<em>os</em>, <a class="reference internal" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="serializeField::Field_t">Field_t</a> <em class="property">const</em> &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E14serializeFieldRNSt7ostreamERK7Field_t"></span><span id="_CPPv2I0E14serializeFieldRNSt7ostreamERK7Field_t"></span>template&lt;typename <code class="sig-name descname">Field_t</code>&gt;<br />void <code class="sig-name descname">serializeField</code><span class="sig-paren">(</span>std::ostream &amp;<em>os</em>, <a class="reference internal" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="serializeField::Field_t">Field_t</a> <em class="property">const</em> &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Converts a single field into a std::string (in a YAML-like format).</p>
 <p>Specialize this template or overload the <cite>operator&lt;&lt;</cite> for your field to convert properly.</p>
 <p>This is very useful when debugging.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name" colspan="2">Template Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><strong>Derived_t</strong> – The field data type.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The field data type.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <p>Namespace <cite>ext::details</cite></p>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv49FieldDesc">
-<span id="_CPPv39FieldDesc"></span><span id="_CPPv29FieldDesc"></span><span id="FieldDesc"></span><em class="property">class </em><code class="descname">FieldDesc</code><a class="headerlink" href="#_CPPv49FieldDesc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv39FieldDesc"></span><span id="_CPPv29FieldDesc"></span><span id="FieldDesc"></span><em class="property">class </em><code class="sig-name descname">FieldDesc</code><a class="headerlink" href="#_CPPv49FieldDesc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Defines a span of memory within the allocation, and holds the constructor, destructor and serializer as std::functions.</p>
 <p>Effectively the type-erased version of <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a>.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv46Schema">
-<span id="_CPPv36Schema"></span><span id="_CPPv26Schema"></span><span id="Schema"></span><em class="property">class </em><code class="descname">Schema</code><a class="headerlink" href="#_CPPv46Schema" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36Schema"></span><span id="_CPPv26Schema"></span><span id="Schema"></span><em class="property">class </em><code class="sig-name descname">Schema</code><a class="headerlink" href="#_CPPv46Schema" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Manages a memory layout through a map of <a class="reference internal" href="#_CPPv49FieldDesc" title="FieldDesc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FieldDesc</span></code></a>.</p>
 </dd></dl>
 

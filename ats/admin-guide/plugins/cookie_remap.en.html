@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -215,34 +215,38 @@
   <div class="section" id="cookie-based-routing-inside-trafficserver-using-cookie-remap">
 <span id="admin-plugins-cookie-remap"></span><h1>Cookie Based Routing Inside TrafficServer Using cookie_remap<a class="headerlink" href="#cookie-based-routing-inside-trafficserver-using-cookie-remap" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference external" href="#cookie-based-routing-inside-trafficserver-using-cookie_remap">Cookie Based Routing Inside TrafficServer Using cookie_remap</a><ul>
-<li><a class="reference external" href="#features">Features</a></li>
-<li><a class="reference external" href="#limitations">Limitations</a></li>
-<li><a class="reference external" href="#setup">Setup</a></li>
-<li><a class="reference external" href="#operations">Operations</a><ul>
-<li><a class="reference external" href="#comments">Comments</a></li>
-<li><a class="reference external" href="#cookie-xxy">cookie: X|X.Y</a></li>
-<li><a class="reference external" href="#purl">target: purl</a></li>
-<li><a class="reference external" href="#operation-existsnot-existsstringregexbucket">operation: exists|not exists|string|regex|bucket</a></li>
-<li><a class="reference external" href="#match-str">match: str</a></li>
-<li><a class="reference external" href="#regex-str">regex: str</a></li>
-<li><a class="reference external" href="#buckethash-xy">bucket|hash: X/Y</a></li>
-<li><a class="reference external" href="#sendtourl-url">sendto|url: url</a></li>
-<li><a class="reference external" href="#status-http-status-code">status: HTTP status-code</a></li>
-<li><a class="reference external" href="#else-url-optional">else: url [optional]</a></li>
-<li><a class="reference external" href="#connector-and">connector: and</a></li>
+<li><p><a class="reference external" href="#cookie-based-routing-inside-trafficserver-using-cookie_remap">Cookie Based Routing Inside TrafficServer Using cookie_remap</a></p>
+<ul>
+<li><p><a class="reference external" href="#features">Features</a></p></li>
+<li><p><a class="reference external" href="#limitations">Limitations</a></p></li>
+<li><p><a class="reference external" href="#setup">Setup</a></p></li>
+<li><p><a class="reference external" href="#operations">Operations</a></p>
+<ul>
+<li><p><a class="reference external" href="#comments">Comments</a></p></li>
+<li><p><a class="reference external" href="#cookie-xxy">cookie: X|X.Y</a></p></li>
+<li><p><a class="reference external" href="#purl">target: puri</a></p></li>
+<li><p><a class="reference external" href="#operation-existsnot-existsstringregexbucket">operation: exists|not exists|string|regex|bucket</a></p></li>
+<li><p><a class="reference external" href="#match-str">match: str</a></p></li>
+<li><p><a class="reference external" href="#regex-str">regex: str</a></p></li>
+<li><p><a class="reference external" href="#buckethash-xy">bucket|hash: X/Y</a></p></li>
+<li><p><a class="reference external" href="#sendtourl-url">sendto|url: url</a></p></li>
+<li><p><a class="reference external" href="#status-http-status-code">status: HTTP status-code</a></p></li>
+<li><p><a class="reference external" href="#else-url-optional">else: url [optional]</a></p></li>
+<li><p><a class="reference external" href="#connector-and">connector: and</a></p></li>
 </ul>
 </li>
-<li><a class="reference external" href="#reserved-path-expressions">Reserved path expressions</a><ul>
-<li><a class="reference external" href="#cr_req_url-v-15">$cr_req_url</a></li>
-<li><a class="reference external" href="#cr_urlencode-v-15">$cr_urlencode()</a></li>
-<li><a class="reference external" href="#path">$path</a></li>
-<li><a class="reference external" href="#unmatched_path">$unmatched_path</a></li>
+<li><p><a class="reference external" href="#reserved-path-expressions">Reserved path expressions</a></p>
+<ul>
+<li><p><a class="reference external" href="#cr_req_url-v-15">$cr_req_url</a></p></li>
+<li><p><a class="reference external" href="#cr_urlencode-v-15">$cr_urlencode()</a></p></li>
+<li><p><a class="reference external" href="#path">$path</a></p></li>
+<li><p><a class="reference external" href="#unmatched_path">$unmatched_path</a></p></li>
 </ul>
 </li>
-<li><a class="reference external" href="#an-example-configuration-file">An example configuration file</a></li>
-<li><a class="reference external" href="#debugging-things">Debugging things</a><ul>
-<li><a class="reference external" href="#initial-output">Initial output</a></li>
+<li><p><a class="reference external" href="#an-example-configuration-file">An example configuration file</a></p></li>
+<li><p><a class="reference external" href="#debugging-things">Debugging things</a></p>
+<ul>
+<li><p><a class="reference external" href="#initial-output">Initial output</a></p></li>
 </ul>
 </li>
 </ul>
@@ -253,23 +257,24 @@
 <h2>Features<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <ul class="simple">
-<li>Also supports sub-level cookies<ul>
-<li>K indicates top-level cookie “K”</li>
-<li>K.l indicates top-level cookie “K”, subfield “l”</li>
+<li><p>Also supports sub-level cookies</p>
+<ul>
+<li><p>K indicates top-level cookie “K”</p></li>
+<li><p>K.l indicates top-level cookie “K”, subfield “l”</p></li>
 </ul>
 </li>
-<li>Cookie exists / Cookie doesn’t exist</li>
-<li>Cookie or uri matches string</li>
-<li>Cookie or uri matches regex (with match replacement in the sendto like <a class="reference external" href="http://foo.com/$1/$2">http://foo.com/$1/$2</a>)</li>
-<li>Cookie falls into a hash/bucket range</li>
-<li>Can url encode dynamic data</li>
+<li><p>Cookie exists / Cookie doesn’t exist</p></li>
+<li><p>Cookie or uri matches string</p></li>
+<li><p>Cookie or uri matches regex (with match replacement in the sendto like <a class="reference external" href="http://foo.com/$1/$2">http://foo.com/$1/$2</a>)</p></li>
+<li><p>Cookie falls into a hash/bucket range</p></li>
+<li><p>Can url encode dynamic data</p></li>
 </ul>
 </div>
 <div class="section" id="id3">
 <h2>Limitations<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <ul class="simple">
-<li>Does not support <a class="reference internal" href="../files/remap.config.en.html#remap-config-plugin-chaining"><span class="std std-ref">Plugin Chaining</span></a></li>
+<li><p>Does not support <a class="reference internal" href="../files/remap.config.en.html#remap-config-plugin-chaining"><span class="std std-ref">Plugin Chaining</span></a></p></li>
 </ul>
 </div>
 <div class="section" id="id4">
@@ -285,8 +290,8 @@ map http://foo.com http://bar.com @plugin=/usr/bin/trafficserver/libexec64/cooki
 <p>All operations are specified in a YAML configuration file you pass as &#64;pparam on the plugin configuration line. YAML is very simple syntax. See the example configuration files below.</p>
 <p>Each operation results in a sendto action. That means that, if matched, cookie_remap forwards the request to the given <code class="docutils literal notranslate"><span class="pre">sendto</span></code> url. It can be proxied or redirected. An <code class="docutils literal notranslate"><span class="pre">else</span></code> sendto can be specified, in which case a failure to match will forward the request also. Once a sendto is invoked:</p>
 <ul class="simple">
-<li>cookie_remap will not process any more “operations” from the configuration</li>
-<li>the default destination specified in the remap.config file will not be used; it will be replaced by the <code class="docutils literal notranslate"><span class="pre">sendto</span></code></li>
+<li><p>cookie_remap will not process any more “operations” from the configuration</p></li>
+<li><p>the default destination specified in the remap.config file will not be used; it will be replaced by the <code class="docutils literal notranslate"><span class="pre">sendto</span></code></p></li>
 </ul>
 <p>Each <code class="docutils literal notranslate"><span class="pre">operation</span></code> can have multiple “sub-operations”, connected with an conjunction operator.  Currently, only the <code class="docutils literal notranslate"><span class="pre">and</span></code> operator is supported. So, you can say, “if cookie exists, <code class="docutils literal notranslate"><span class="pre">and</span></code> uri is <code class="docutils literal notranslate"><span class="pre">x</span></code>, then redirect.”</p>
 <div class="section" id="id6">
@@ -299,77 +304,78 @@ map http://foo.com http://bar.com @plugin=/usr/bin/trafficserver/libexec64/cooki
 <hr class="docutils" />
 <p>This sub-operation is testing against the X cookie or X.Y cookie where X.Y denotes the X cookie, sub cookie Y
 e.g</p>
-<pre>
-A=ACOOKIE;B=data&f=fsub&z=zsub;
-A will operate on ACOOKIE
-B will operate on data&f=fsub&z=zsub
-B.f will operate on fsub
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A=ACOOKIE;B=data&amp;f=fsub&amp;z=zsub;
 </pre></div>
-<div class="section" id="target-puri">
-<h3>target: puri<a class="headerlink" href="#target-puri" title="Permalink to this headline">¶</a></h3>
+</div>
+<p>A will operate on <code class="docutils literal notranslate"><span class="pre">ACOOKIE</span></code></p>
+<p>B will operate on <code class="docutils literal notranslate"><span class="pre">data&amp;f=fsub&amp;z=zsub</span></code></p>
+<p>B.f will operate on <code class="docutils literal notranslate"><span class="pre">fsub</span></code></p>
+</div>
+<div class="section" id="id8">
+<h3>target: puri<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>When the cookie key is omitted, the operation is applied to the request uri instead.  If this key and value
 is specified, the uri for the operation will be the pre-remapped, rather than the remapped, uri.</p>
 </div>
-<div class="section" id="id8">
-<h3>operation: exists|not exists|string|regex|bucket<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>operation: exists|not exists|string|regex|bucket<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>This keyword actually denotes a “suboperation” - it can be specified multiple times, connected with <code class="docutils literal notranslate"><span class="pre">and</span></code>, and send the user to a given destination.</p>
 <ul class="simple">
-<li>exists: Test for the existence of a cookie</li>
-<li>not exists: Test for the non-existence of a cookie</li>
-<li>string: string match</li>
-<li>regex: regex matching with $1 - $9 replaced in <code class="docutils literal notranslate"><span class="pre">sendto</span></code></li>
-<li>bucket: Hash the cookie and check if it falls in a bucket</li>
+<li><p>exists: Test for the existence of a cookie</p></li>
+<li><p>not exists: Test for the non-existence of a cookie</p></li>
+<li><p>string: string match</p></li>
+<li><p>regex: regex matching with $1 - $9 replaced in <code class="docutils literal notranslate"><span class="pre">sendto</span></code></p></li>
+<li><p>bucket: Hash the cookie and check if it falls in a bucket</p></li>
 </ul>
 <p>The <code class="docutils literal notranslate"><span class="pre">cookie</span></code> operator must be specified in the YAML file just before the suboperation that will apply to the cookie.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">regex</span></code> and <code class="docutils literal notranslate"><span class="pre">bucket</span></code> operate on the specified cookie, or if no cookie is specified, they will operate on the uri of the request.</p>
 </div>
-<div class="section" id="id9">
-<h3>match: str<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id10">
+<h3>match: str<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Match the cookie data to str.  If no cookie is specified, match to the request uri.</p>
 </div>
-<div class="section" id="id10">
-<h3>regex: str<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id11">
+<h3>regex: str<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Sets the regex to str. Matching is enabled with $1-$9 (replaced in sendto).  Note that only the final regex match in an operation will be used to populate the substitutions $1-$9.  If no cookie is specified, match to the request uri.</p>
 </div>
-<div class="section" id="id11">
-<h3>bucket|hash: X/Y<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id12">
+<h3>bucket|hash: X/Y<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Hashes (bucketizes) the data in Y buckets. If you fall into the first X of them, this suboperation passes. If no cookie is specified, match to the request uri.</p>
 <pre>
 bucket: 1/100
 will effectively bucketize 1% of your users
 </pre></div>
-<div class="section" id="id12">
-<h3>sendto|url: url<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id13">
+<h3>sendto|url: url<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>if the sub-operation(s) all match, send to url</p>
 </div>
-<div class="section" id="id13">
-<h3>status: HTTP status-code<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id14">
+<h3>status: HTTP status-code<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>if the sub-operation(s) all match, set the status code (e.g. set it to 302). In the case of a redirect, the sendto URL becomes the redirect URL.</p>
 </div>
-<div class="section" id="id14">
-<h3>else: url [optional]<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id15">
+<h3>else: url [optional]<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>If one of the sub-operations fails, send to url. This is optional. If there is no ‘else’, we will continue to process operations until either one succeeds, there is an else in one of the operations or we fall through to the default mapping from remap.config</p>
 </div>
-<div class="section" id="id15">
-<h3>connector: and<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id16">
+<h3>connector: and<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>‘and’ is the only supported connector</p>
 </div>
 </div>
-<div class="section" id="id16">
-<h2>Reserved path expressions<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id17">
+<h2>Reserved path expressions<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <p>The following expressions can be used in either the sendto <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">else</span></code> URLs, and will be expanded.</p>
-<div class="section" id="id17">
-<h3>$cr_req_url<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id18">
+<h3>$cr_req_url<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Replaced with the full original url.</p>
 <p>Therefore, a rule like:</p>
@@ -385,8 +391,8 @@ http://bar.com/hello?fruit=bananas
 <pre>
 http://foo.com/?.done=http://bar.com/hello?fruit=bananas
 </pre></div>
-<div class="section" id="id18">
-<h3>$cr_urlencode()<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id19">
+<h3>$cr_urlencode()<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Replaced with a urlencoded version of its argument.  The url argument is aggressively encoded such that all non-alphanumeric characters are converted to % hex notation.  The simple algorithm could probably be refined in the future to be less aggressive (encode fewer characters.)</p>
 <p>Therefore, a rule like:</p>
@@ -402,8 +408,8 @@ http://bar.com/hello?fruit=bananas
 <pre>
 http://foo.com/?.done=http%3A%2F%2Fbar%2Ecom@2Fhello%3Ffruit%3Dbananas
 </pre></div>
-<div class="section" id="id19">
-<h3>$path<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id20">
+<h3>$path<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>$path can be used to replace in either the sendto <strong>or</strong> else URLs the original request path. Therefore a rule like:</p>
 <pre>
@@ -416,8 +422,8 @@ op:
 map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin=cookie_remap.so @pparam=foo.txt
 </pre><p>will become <a class="reference external" href="http://foo.com/photos/what/ever/x/y/z">http://foo.com/photos/what/ever/x/y/z</a></p>
 </div>
-<div class="section" id="id20">
-<h3>$unmatched_path<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id21">
+<h3>$unmatched_path<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>$unmatched_path can be used to gather the URL arguments <strong>beyond</strong> what was matched by the remap rule. Therefore a rule like:</p>
 <pre>
@@ -436,11 +442,11 @@ map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin
 URL, instead use $cr_req_purl, $ppath and $unmatched_ppath, respectively.</p>
 </div>
 </div>
-<div class="section" id="id22">
-<h2>An example configuration file<a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id23">
+<h2>An example configuration file<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <ul class="simple">
-<li>first match “wins” (top down)</li>
+<li><p>first match “wins” (top down)</p></li>
 </ul>
 <pre>
 #comments
@@ -473,15 +479,15 @@ op:
   sendto: http://cnn.com/$1
   else: http://yahoo.com
 </pre></div>
-<div class="section" id="id23">
-<h2>Debugging things<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id24">
+<h2>Debugging things<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
 <hr class="docutils" />
 <p>The easiest way to debug problems with this plugin is to run in the following manner:</p>
 <pre>
 bin/traffic_server -T cookie_remap
 </pre><p>which will produce output on startup, and for each request. Be aware that this mode of running trafficserver is <strong>extremely</strong> inefficient and should only be used for debugging.</p>
-<div class="section" id="id24">
-<h3>Initial output<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id25">
+<h3>Initial output<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <hr class="docutils" />
 <p>Initially, you will notice output describing each operation and how trafficserver interpreted the information from your configuration file:</p>
 <pre>

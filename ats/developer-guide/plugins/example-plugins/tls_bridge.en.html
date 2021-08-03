@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -265,20 +265,20 @@ ingress Traffic Server, and the peer Traffic Server connects to the service. The
 connect on to a further Traffic Server instance, acting as the ingress to that peer, but that doesn’t seem a
 useful case.</p>
 <ol class="arabic">
-<li><p class="first">Disable caching on Traffic Server in <code class="docutils literal notranslate"><span class="pre">records.config</span></code>:</p>
+<li><p>Disable caching on Traffic Server in <code class="docutils literal notranslate"><span class="pre">records.config</span></code>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.cache.http INT 0
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure the ports.</p>
+<li><p>Configure the ports.</p>
 <ul>
-<li><p class="first">The Peer Traffic Server must be listening on an SSL enabled proxy port. For instance, if the proxy port
+<li><p>The Peer Traffic Server must be listening on an SSL enabled proxy port. For instance, if the proxy port
 for the Peer is 4443, then configuration in <code class="docutils literal notranslate"><span class="pre">records.config</span></code> would have:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.server_ports STRING 4443:ssl
 </pre></div>
 </div>
 </li>
-<li><p class="first">The Ingress Traffic Server must allow <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> to the Peer proxy port. This would be set in
+<li><p>The Ingress Traffic Server must allow <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> to the Peer proxy port. This would be set in
 <code class="docutils literal notranslate"><span class="pre">records.config</span></code> by:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.http.connect_ports STRING 4443
 </pre></div>
@@ -288,7 +288,7 @@ to which the Client can connect.</p>
 </li>
 </ul>
 </li>
-<li><p class="first">By default Traffic Server requires remap in order to allow to outbound request to the peer. To disable this
+<li><p>By default Traffic Server requires remap in order to allow to outbound request to the peer. To disable this
 requirement and allow all connections, use the setting</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.url_remap.remap_required INT 0
 </pre></div>
@@ -303,9 +303,9 @@ Traffic Server was named “peer.ats” and it listens on port 4443, then the re
 </div>
 <p>Remapping will be disabled for the user agent connection and so it will not need a rule.</p>
 </li>
-<li><p class="first">If remap is required on the peer to enable the outbound connection from the peer to the service
+<li><p>If remap is required on the peer to enable the outbound connection from the peer to the service
 (e.g. required remapping is not explicitly disabled) the destination port must be
-explicitly stated <a class="footnote-reference" href="#id2" id="id1">[1]</a>. E.g.</p>
+explicitly stated <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. E.g.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>map https://service:4443 https://service:4443
 </pre></div>
 </div>
@@ -314,30 +314,30 @@ because those happen inside what is effectively a tunnel between the client and 
 supported by the two Traffic Server instances. This rule serves to allows the <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> sent from the
 ingress to cause a tunnel connection from the peer to the service.</p>
 </li>
-<li><p class="first">Configure the Ingress Traffic Server to verify the Peer server certificate:</p>
+<li><p>Configure the Ingress Traffic Server to verify the Peer server certificate:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.verify.server.policy STRING ENFORCED
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure Certificate Authority used by the Ingress Traffic Server to verify the Peer server certificate.
+<li><p>Configure Certificate Authority used by the Ingress Traffic Server to verify the Peer server certificate.
 If this is a directory, all of the certificates in the directory are treated as Certificate
 Authorities.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.CA.cert.filename STRING &lt;/path/to/CA_certificate_file_name&gt;
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure the Ingress Traffic Server to provide a client certificate:</p>
+<li><p>Configure the Ingress Traffic Server to provide a client certificate:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.cert.path STRING &lt;/path/to/certificate/dir&gt;
 CONFIG proxy.config.ssl.client.cert.filename STRING &lt;server_certificate_file_name&gt;
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure the Peer Traffic Server to verify the Ingress client certificate:</p>
+<li><p>Configure the Peer Traffic Server to verify the Ingress client certificate:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CONFIG proxy.config.ssl.client.certification_level INT 2
 </pre></div>
 </div>
 </li>
-<li><p class="first">Enable the TLS Bridge plugin in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. The plugin is configured by arguments in
+<li><p>Enable the TLS Bridge plugin in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. The plugin is configured by arguments in
 <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. These are arguments are in pairs of a <em>destination</em> and a <em>peer</em>. The
 destination is an anchored regular expression which is matched against the host name in the Client
 <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>. The destinations are checked in order and the first match is used to select the peer
@@ -417,11 +417,11 @@ Client &lt;--&gt; Service"/>
 </div>
 <p>The key points are</p>
 <ul class="simple">
-<li>Traffic Server does no TLS negotiation at all. The properties of the connection between the Ingress Traffic Server
-and the Service are completely determined by the Client and Server negotiation.</li>
-<li>No packets are modified, the “”CLIENT HELLO”” sent by the Ingress Traffic Server is an exact copy of that
+<li><p>Traffic Server does no TLS negotiation at all. The properties of the connection between the Ingress Traffic Server
+and the Service are completely determined by the Client and Server negotiation.</p></li>
+<li><p>No packets are modified, the “”CLIENT HELLO”” sent by the Ingress Traffic Server is an exact copy of that
 sent to the Ingress Traffic Server by the Client. It is only examined for the SNI data in order to select
-the Service.</li>
+the Service.</p></li>
 </ul>
 </div>
 <div class="section" id="implementation">
@@ -477,10 +477,10 @@ note over ingress : Plugin explicitly moves this data.
 <p>A sequence diagram focusing on the request / response data flow. There is a <code class="code docutils literal notranslate"><span class="pre">NetVConn</span></code> for the
 connection to the Peer Traffic Server which is omitted for clarity.</p>
 <ul class="simple">
-<li>Blue dotted lines are request or response data</li>
-<li>Green lines are network connections.</li>
-<li>Red lines are programmatic interactions.</li>
-<li>Black lines are hook call backs.</li>
+<li><p>Blue dotted lines are request or response data</p></li>
+<li><p>Green lines are network connections.</p></li>
+<li><p>Red lines are programmatic interactions.</p></li>
+<li><p>Black lines are hook call backs.</p></li>
 </ul>
 <p>The <code class="code docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code> sent from the Peer Traffic Server is parsed and consumed by the plugin. An non-<code class="code docutils literal notranslate"><span class="pre">200</span></code> response
 means there was an error and the tunnel is shut down. To deal with the Client response clean up the
@@ -513,12 +513,11 @@ State_3 --&gt; State_0 : *
 <h3>Debugging<a class="headerlink" href="#debugging" title="Permalink to this headline">¶</a></h3>
 <p>Debugging messages for the plugin can be enabled with the “tls_bridge” debug tag.</p>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>This is likely due to a bug in Traffic Server, currently under investigation.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>This is likely due to a bug in Traffic Server, currently under investigation.</p>
+</dd>
+</dl>
 </div>
 </div>
 </div>

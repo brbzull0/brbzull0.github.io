@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -205,8 +205,8 @@
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
 <p><strong class="program">traffic_ctl</strong> [OPTIONS] SUBCOMMAND [OPTIONS]</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><strong class="program">traffic_ctl</strong> now uses a <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> endpoint instead of <code class="docutils literal notranslate"><span class="pre">traffic_manager</span></code>. <code class="docutils literal notranslate"><span class="pre">traffic_manager</span></code> is not
+<p class="admonition-title">Note</p>
+<p><strong class="program">traffic_ctl</strong> now uses a <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> endpoint instead of <code class="docutils literal notranslate"><span class="pre">traffic_manager</span></code>. <code class="docutils literal notranslate"><span class="pre">traffic_manager</span></code> is not
 required. To build this version of <strong class="program">traffic_ctl</strong> <code class="docutils literal notranslate"><span class="pre">--enable-jsonrpc-tc</span></code> should be passed when configure the build.</p>
 </div>
 </div>
@@ -215,57 +215,102 @@ required. To build this version of <strong class="program">traffic_ctl</strong> 
 <p><strong class="program">traffic_ctl</strong> is used to display,manipulate and configure
 a running Traffic Server. <strong class="program">traffic_ctl</strong> includes a number
 of subcommands that control different aspects of Traffic Server:</p>
-<dl class="docutils">
-<dt><strong class="program">traffic_ctl config</strong></dt>
-<dd>Manipulate and display configuration records</dd>
-<dt><strong class="program">traffic_ctl metric</strong></dt>
-<dd>Manipulate performance and status metrics</dd>
-<dt><strong class="program">traffic_ctl server</strong></dt>
-<dd>Stop, restart and examine the server</dd>
-<dt><strong class="program">traffic_ctl storage</strong></dt>
-<dd>Manipulate cache storage</dd>
-<dt><strong class="program">traffic_ctl plugin</strong></dt>
-<dd>Interact with plugins.</dd>
-<dt><strong class="program">traffic_ctl host</strong></dt>
-<dd>Manipulate host status.  parents for now but will be expanded to origins.</dd>
-<dt><strong class="program">traffic_ctl rpc</strong></dt>
-<dd>Interact directly with the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> server in Traffic Server</dd>
+<dl class="simple">
+<dt><strong class="program">traffic_ctl config</strong></dt><dd><p>Manipulate and display configuration records</p>
+</dd>
+<dt><strong class="program">traffic_ctl metric</strong></dt><dd><p>Manipulate performance and status metrics</p>
+</dd>
+<dt><strong class="program">traffic_ctl server</strong></dt><dd><p>Stop, restart and examine the server</p>
+</dd>
+<dt><strong class="program">traffic_ctl storage</strong></dt><dd><p>Manipulate cache storage</p>
+</dd>
+<dt><strong class="program">traffic_ctl plugin</strong></dt><dd><p>Interact with plugins.</p>
+</dd>
+<dt><strong class="program">traffic_ctl host</strong></dt><dd><p>Manipulate host status.  parents for now but will be expanded to origins.</p>
+</dd>
+<dt><strong class="program">traffic_ctl rpc</strong></dt><dd><p>Interact directly with the JSONRPC 2.0 server in Traffic Server</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="options">
 <h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-debug">
-<code class="descname">--debug</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-debug" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-debug">
+<span id="cmdoption-traffic-ctl-debug"></span><code class="sig-name descname">--debug</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-debug" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enable debugging output.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-v">
-<code class="descname">-V</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--version</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-v" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-V">
+<span id="cmdoption-traffic-ctl-v"></span><span id="cmdoption-traffic_ctl-version"></span><span id="cmdoption-traffic-ctl-version"></span><code class="sig-name descname">-V</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-V" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print version information and exit.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-f">
-<code class="descname">-f</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--format</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-f" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specify the output print style. <cite>legacy</cite> and <cite>pretty</cite> are availables.
-<cite>legacy</cite> will honour the old <strong class="program">traffic_ctl</strong> output messages. <cite>pretty</cite> &lt;if available&gt; will print a different output.
-Errors from the server will be display if <code class="docutils literal notranslate"><span class="pre">pretty</span></code> is specified.
-In case of a record request(config, metric) <code class="docutils literal notranslate"><span class="pre">--records</span></code> overrides this flag.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-f">
+<span id="cmdoption-traffic-ctl-f"></span><span id="cmdoption-traffic_ctl-format"></span><span id="cmdoption-traffic-ctl-format"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--format</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-f" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the output print style.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 87%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Options</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">legacy</span></code></p></td>
+<td><p>Will honour the old <strong class="program">traffic_ctl</strong> output messages. This is the default format type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">pretty</span></code></p></td>
+<td><p>&lt;if available&gt; will print a different output, a prettier output. This depends on the implementation,
+it’s not required to always implement a pretty output</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">json</span></code></p></td>
+<td><p>It will show the response message formatted to <a class="reference external" href="https://www.json.org/json-en.html">JSON</a>. This is ideal if you want to redirect the stdout to a different source.
+It will only stream the json response, no other messages.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">data:</span></code></p></td>
+<td><p>This is an addon to the default format style, data can be: <code class="docutils literal notranslate"><span class="pre">{req|resp|all}</span></code> which will make <strong class="program">traffic_ctl</strong>
+to print in json format the request or response or both.</p></td>
+</tr>
+</tbody>
+</table>
+<p>In case of a record request(config) <code class="docutils literal notranslate"><span class="pre">--records</span></code> overrides this flag.</p>
 <p>Default: <code class="docutils literal notranslate"><span class="pre">legacy</span></code></p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">config</span> <span class="n">get</span> <span class="n">variable</span> <span class="o">--</span><span class="nb">format</span> <span class="n">data</span><span class="p">:</span><span class="n">req</span>
+<span class="o">--&gt;</span> <span class="p">{</span><span class="n">request</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl config get variable --format data:resp
+&lt;-- {response}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl config get variable --format data:all
+--&gt; {request}
+&lt;-- {response}
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl config get variable --format json
+{response}
+</pre></div>
+</div>
+<p>There will be no print out beside the json response. This is ideal to redirect to a file.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-r">
-<code class="descname">-r</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">--debugrpc</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-r" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display human readable rpc messages. This will display the request and the response from the server.</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-records">
-<code class="descname">--records</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-records" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-records">
+<span id="cmdoption-traffic-ctl-records"></span><code class="sig-name descname">--records</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option available only for records request.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-run-root">
+<span id="cmdoption-traffic-ctl-run-root"></span><code class="sig-name descname">--run-root</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-run-root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path to the runroot file.</p>
 </dd></dl>
 
 </div>
@@ -274,59 +319,59 @@ In case of a record request(config, metric) <code class="docutils literal notran
 <div class="section" id="traffic-ctl-alarm">
 <span id="traffic-control-command-alarm"></span><h3>traffic_ctl alarm<a class="headerlink" href="#traffic-ctl-alarm" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">Option not available in the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> version.</p>
+<p class="admonition-title">Warning</p>
+<p>Option not available in the JSONRPC 2.0 version.</p>
 </div>
 </div>
 <div class="section" id="traffic-ctl-config">
 <span id="traffic-control-command-config"></span><h3>traffic_ctl config<a class="headerlink" href="#traffic-ctl-config" title="Permalink to this headline">¶</a></h3>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-defaults">
-<code class="descname">defaults</code><code class="descclassname"> [--records]</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-defaults" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-defaults">
+<span id="cmdoption-traffic-ctl-config-arg-defaults"></span><code class="sig-name descname">defaults</code><code class="sig-prename descclassname"> [--records]</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-defaults" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the default values for all configuration records. The <code class="docutils literal notranslate"><span class="pre">--records</span></code> flag has the same
-behavior as <a class="reference internal" href="#cmdoption-traffic-ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span> <span class="pre">--records</span></code></a>.</p>
+behavior as <a class="reference internal" href="#cmdoption-traffic_ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span> <span class="pre">--records</span></code></a>.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-describe">
-<code class="descname">describe</code><code class="descclassname"> RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-describe" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-describe">
+<span id="cmdoption-traffic-ctl-config-arg-describe"></span><code class="sig-name descname">describe</code><code class="sig-prename descclassname"> RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-describe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display all the known information about a configuration record. This includes the current and
 default values, the data type, the record class and syntax checking expression.</p>
 <p>Error output available if  <code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">pretty</span></code> is specified.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-diff">
-<code class="descname">diff</code><code class="descclassname"> [--records]</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-diff" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-diff">
+<span id="cmdoption-traffic-ctl-config-arg-diff"></span><code class="sig-name descname">diff</code><code class="sig-prename descclassname"> [--records]</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-diff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display configuration records that have non-default values. The <code class="docutils literal notranslate"><span class="pre">--records</span></code> flag has the same
-behavior as <a class="reference internal" href="#cmdoption-traffic-ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span> <span class="pre">--records</span></code></a>.</p>
+behavior as <a class="reference internal" href="#cmdoption-traffic_ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span> <span class="pre">--records</span></code></a>.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-get">
-<code class="descname">get</code><code class="descclassname"> [--records] RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-get" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-get">
+<span id="cmdoption-traffic-ctl-config-arg-get"></span><code class="sig-name descname">get</code><code class="sig-prename descclassname"> [--records] RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the current value of a configuration record.</p>
 <p>Error output available if <code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">pretty</span></code> is specified.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-get-records">
-<code class="descname">--records</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-config-get-records" title="Permalink to this definition">¶</a></dt>
-<dd><p>If this flag is provided, <a class="reference internal" href="#cmdoption-traffic-ctl-config-arg-get"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span></code></a> will emit results in
-<a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> format.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-get-records">
+<span id="cmdoption-traffic-ctl-config-get-records"></span><code class="sig-name descname">--records</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-config-get-records" title="Permalink to this definition">¶</a></dt>
+<dd><p>If this flag is provided, <a class="reference internal" href="#cmdoption-traffic_ctl-config-arg-get"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span></code></a> will emit results in
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> format.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-match">
-<code class="descname">match</code><code class="descclassname"> [--records] REGEX [REGEX...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-match" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-match">
+<span id="cmdoption-traffic-ctl-config-arg-match"></span><code class="sig-name descname">match</code><code class="sig-prename descclassname"> [--records] REGEX [REGEX...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-match" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the current values of all configuration variables whose names match the given regular
-expression. The <code class="docutils literal notranslate"><span class="pre">--records</span></code> flag has the same behavior as <a class="reference internal" href="#cmdoption-traffic-ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span>
+expression. The <code class="docutils literal notranslate"><span class="pre">--records</span></code> flag has the same behavior as <a class="reference internal" href="#cmdoption-traffic_ctl-config-get-records"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">get</span>
 <span class="pre">--records</span></code></a>.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-reload">
-<code class="descname">reload</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-reload" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-reload">
+<span id="cmdoption-traffic-ctl-config-arg-reload"></span><code class="sig-name descname">reload</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-reload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initiate a Traffic Server configuration reload. Use this command to update the running
 configuration after any configuration file modification. If no configuration files have been
 modified since the previous configuration load, this command is a no-op.</p>
@@ -334,17 +379,17 @@ modified since the previous configuration load, this command is a no-op.</p>
 <cite>proxy.node.config.reconfigure_time</cite> metric.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-set">
-<code class="descname">set</code><code class="descclassname"> RECORD VALUE</code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the named configuration record to the specified value. Refer to the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-set">
+<span id="cmdoption-traffic-ctl-config-arg-set"></span><code class="sig-name descname">set</code><code class="sig-prename descclassname"> RECORD VALUE</code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the named configuration record to the specified value. Refer to the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
 documentation for a list of the configuration variables you can specify. Note that this is not a
 synchronous operation.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-config-arg-status">
-<code class="descname">status</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-config-arg-status" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-config-arg-status">
+<span id="cmdoption-traffic-ctl-config-arg-status"></span><code class="sig-name descname">status</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-config-arg-status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display detailed status about the Traffic Server configuration system. This includes version
 information, whether the internal configuration store is current and whether any daemon processes
 should be restarted.</p>
@@ -353,35 +398,29 @@ should be restarted.</p>
 </div>
 <div class="section" id="traffic-ctl-metric">
 <span id="traffic-control-command-metric"></span><h3>traffic_ctl metric<a class="headerlink" href="#traffic-ctl-metric" title="Permalink to this headline">¶</a></h3>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-metric-arg-get">
-<code class="descname">get</code><code class="descclassname"> METRIC [METRIC...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-metric-arg-get" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-metric-arg-get">
+<span id="cmdoption-traffic-ctl-metric-arg-get"></span><code class="sig-name descname">get</code><code class="sig-prename descclassname"> METRIC [METRIC...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-metric-arg-get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the current value of the specified statistics.</p>
 <p>Error output available if <code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">pretty</span></code> is specified.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-metric-arg-match">
-<code class="descname">match</code><code class="descclassname"> REGEX [REGEX...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-metric-arg-match" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-metric-arg-match">
+<span id="cmdoption-traffic-ctl-metric-arg-match"></span><code class="sig-name descname">match</code><code class="sig-prename descclassname"> REGEX [REGEX...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-metric-arg-match" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display the current values of all statistics whose names match
 the given regular expression.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-metric-arg-zero">
-<code class="descname">zero</code><code class="descclassname"> METRIC [METRIC...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-metric-arg-zero" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-metric-arg-zero">
+<span id="cmdoption-traffic-ctl-metric-arg-zero"></span><code class="sig-name descname">zero</code><code class="sig-prename descclassname"> METRIC [METRIC...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-metric-arg-zero" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the named statistics to zero.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-metric-arg-describe">
-<code class="descname">describe</code><code class="descclassname"> RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-metric-arg-describe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Display all the known information about a metric record.</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="id1">
-<code class="descname">describe</code><code class="descclassname"> RECORD [RECORD...]</code><a class="headerlink" href="#id1" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-metric-arg-describe">
+<span id="cmdoption-traffic-ctl-metric-arg-describe"></span><code class="sig-name descname">describe</code><code class="sig-prename descclassname"> RECORD [RECORD...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-metric-arg-describe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Display all the known information about a metric record.</p>
 <p>Error output available if <code class="docutils literal notranslate"><span class="pre">--format</span> <span class="pre">pretty</span></code> is specified.</p>
 </dd></dl>
@@ -389,53 +428,53 @@ the given regular expression.</p>
 </div>
 <div class="section" id="traffic-ctl-server">
 <span id="traffic-control-command-server"></span><h3>traffic_ctl server<a class="headerlink" href="#traffic-ctl-server" title="Permalink to this headline">¶</a></h3>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-arg-restart">
-<code class="descname">restart</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-arg-restart" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-arg-restart">
+<span id="cmdoption-traffic-ctl-server-arg-restart"></span><code class="sig-name descname">restart</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-arg-restart" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option not yet available</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-restart-drain">
-<code class="descname">--drain</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-restart-drain" title="Permalink to this definition">¶</a></dt>
-<dd><p>This option modifies the behavior of <a class="reference internal" href="#cmdoption-traffic-ctl-server-arg-restart"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">server</span> <span class="pre">restart</span></code></a> such that
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-restart-drain">
+<span id="cmdoption-traffic-ctl-server-restart-drain"></span><code class="sig-name descname">--drain</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-restart-drain" title="Permalink to this definition">¶</a></dt>
+<dd><p>This option modifies the behavior of <a class="reference internal" href="#cmdoption-traffic_ctl-server-arg-restart"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">server</span> <span class="pre">restart</span></code></a> such that
 <strong class="program">traffic_server</strong> is not shut down until the number of active client connections drops to
 the number given by the <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-restart-active-client-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.restart.active_client_threshold</span></code></a> configuration
 variable.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-arg-start">
-<code class="descname">start</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-arg-start" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-arg-start">
+<span id="cmdoption-traffic-ctl-server-arg-start"></span><code class="sig-name descname">start</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-arg-start" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option not yet available</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-arg-status">
-<code class="descname">status</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-arg-status" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-arg-status">
+<span id="cmdoption-traffic-ctl-server-arg-status"></span><code class="sig-name descname">status</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-arg-status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option not yet available</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-arg-stop">
-<code class="descname">stop</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-arg-stop" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-arg-stop">
+<span id="cmdoption-traffic-ctl-server-arg-stop"></span><code class="sig-name descname">stop</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-arg-stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option not yet available</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-server-arg-backtrace">
-<code class="descname">backtrace</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-server-arg-backtrace" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-server-arg-backtrace">
+<span id="cmdoption-traffic-ctl-server-arg-backtrace"></span><code class="sig-name descname">backtrace</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-server-arg-backtrace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Option not yet available</p>
 </dd></dl>
 
 </div>
 <div class="section" id="traffic-ctl-storage">
 <span id="traffic-control-command-storage"></span><h3>traffic_ctl storage<a class="headerlink" href="#traffic-ctl-storage" title="Permalink to this headline">¶</a></h3>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-storage-arg-offline">
-<code class="descname">offline</code><code class="descclassname"> PATH [PATH ...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-storage-arg-offline" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-storage-arg-offline">
+<span id="cmdoption-traffic-ctl-storage-arg-offline"></span><code class="sig-name descname">offline</code><code class="sig-prename descclassname"> PATH [PATH ...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-storage-arg-offline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark a cache storage device as offline. The storage is identified by <em>PATH</em> which must match
-exactly a path specified in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. This removes the storage from the cache and
+exactly a path specified in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. This removes the storage from the cache and
 redirects requests that would have used this storage to other storage. This has exactly the same
 effect as a disk failure for that storage. This does not persist across restarts of the
 <strong class="program">traffic_server</strong> process.</p>
@@ -444,9 +483,9 @@ effect as a disk failure for that storage. This does not persist across restarts
 </div>
 <div class="section" id="traffic-ctl-plugin">
 <span id="traffic-control-command-plugin"></span><h3>traffic_ctl plugin<a class="headerlink" href="#traffic-ctl-plugin" title="Permalink to this headline">¶</a></h3>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-plugin-arg-msg">
-<code class="descname">msg</code><code class="descclassname"> TAG DATA</code><a class="headerlink" href="#cmdoption-traffic-ctl-plugin-arg-msg" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-plugin-arg-msg">
+<span id="cmdoption-traffic-ctl-plugin-arg-msg"></span><code class="sig-name descname">msg</code><code class="sig-prename descclassname"> TAG DATA</code><a class="headerlink" href="#cmdoption-traffic_ctl-plugin-arg-msg" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send a message to plugins. All plugins that have hooked the
 <code class="docutils literal notranslate"><span class="pre">TSLifecycleHookID::TS_LIFECYCLE_MSG_HOOK</span></code> will receive a callback for that hook.
 The <em>TAG</em> and <em>DATA</em> will be available to the plugin hook processing. It is expected
@@ -462,73 +501,73 @@ that plugins will use <em>TAG</em> to select relevant messages and determine the
 representation of the status. This contains the overall status and the status for each reason.  The
 stats may be viewed using the <strong class="program">traffic_ctl metric</strong> command or through the <cite>stats_over_http</cite>
 endpoint.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-host-time">
-<code class="descname">--time</code><code class="descclassname"> count</code><a class="headerlink" href="#cmdoption-traffic-ctl-host-time" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-host-time">
+<span id="cmdoption-traffic-ctl-host-time"></span><code class="sig-name descname">--time</code><code class="sig-prename descclassname"> count</code><a class="headerlink" href="#cmdoption-traffic_ctl-host-time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the duration of an operation to <code class="docutils literal notranslate"><span class="pre">count</span></code> seconds. A value of <code class="docutils literal notranslate"><span class="pre">0</span></code> means no duration, the
 condition persists until explicitly changed. The default is <code class="docutils literal notranslate"><span class="pre">0</span></code> if an operation requires a time
 and none is provided by this option.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-host-reason">
-<code class="descname">--reason</code><code class="descclassname"> active | local | manual</code><a class="headerlink" href="#cmdoption-traffic-ctl-host-reason" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-host-reason">
+<span id="cmdoption-traffic-ctl-host-reason"></span><code class="sig-name descname">--reason</code><code class="sig-prename descclassname"> active | local | manual</code><a class="headerlink" href="#cmdoption-traffic_ctl-host-reason" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the reason for the operation.</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">active</span></code></dt>
-<dd>Set the active health check reason.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">local</span></code></dt>
-<dd>Set the local health check reason.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">manual</span></code></dt>
-<dd>Set the administrative reason. This is the default reason if a reason is needed and not
-provided by this option.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">active</span></code></dt><dd><p>Set the active health check reason.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">local</span></code></dt><dd><p>Set the local health check reason.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">manual</span></code></dt><dd><p>Set the administrative reason. This is the default reason if a reason is needed and not
+provided by this option.</p>
+</dd>
 </dl>
 <p>Internally the reason can be <code class="docutils literal notranslate"><span class="pre">self_detect</span></code> if
 <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-self-detect" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.self_detect</span></code></a> is set to the value 2 (the default). This is
 used to prevent parent selection from creating a loop by selecting itself as the upstream by
 marking this reason as “down” in that case.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The up / down status values are independent, and a host is consider available if and only if
+<p class="admonition-title">Note</p>
+<p>The up / down status values are independent, and a host is consider available if and only if
 all of the statuses are “up”.</p>
 </div>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-host-arg-status">
-<code class="descname">status</code><code class="descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-host-arg-status" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-host-arg-status">
+<span id="cmdoption-traffic-ctl-host-arg-status"></span><code class="sig-name descname">status</code><code class="sig-prename descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-host-arg-status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the current status of the specified hosts with respect to their use as targets for parent
 selection. This returns the same information as the per host stat.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-host-arg-down">
-<code class="descname">down</code><code class="descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-host-arg-down" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-host-arg-down">
+<span id="cmdoption-traffic-ctl-host-arg-down"></span><code class="sig-name descname">down</code><code class="sig-prename descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-host-arg-down" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks the listed hosts as down so that they will not be chosen as a next hop parent. If
-<a class="reference internal" href="#cmdoption-traffic-ctl-host-time"><code class="xref std std-option docutils literal notranslate"><span class="pre">--time</span></code></a> is included the host is marked down for the specified number of seconds after
+<a class="reference internal" href="#cmdoption-traffic_ctl-host-time"><code class="xref std std-option docutils literal notranslate"><span class="pre">--time</span></code></a> is included the host is marked down for the specified number of seconds after
 which the host will automatically be marked up. A host is not marked up until all reason codes
 are cleared by marking up the host for the specified reason code.</p>
-<p>Supports <a class="reference internal" href="#cmdoption-traffic-ctl-host-time"><code class="xref std std-option docutils literal notranslate"><span class="pre">--time</span></code></a>, <a class="reference internal" href="#cmdoption-traffic-ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a>.</p>
+<p>Supports <a class="reference internal" href="#cmdoption-traffic_ctl-host-time"><code class="xref std std-option docutils literal notranslate"><span class="pre">--time</span></code></a>, <a class="reference internal" href="#cmdoption-traffic_ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a>.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-host-arg-up">
-<code class="descname">up</code><code class="descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic-ctl-host-arg-up" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-host-arg-up">
+<span id="cmdoption-traffic-ctl-host-arg-up"></span><code class="sig-name descname">up</code><code class="sig-prename descclassname"> HOSTNAME [HOSTNAME ...]</code><a class="headerlink" href="#cmdoption-traffic_ctl-host-arg-up" title="Permalink to this definition">¶</a></dt>
 <dd><p>Marks the listed hosts as up so that they will be available for use as a next hop parent. Use
-<a class="reference internal" href="#cmdoption-traffic-ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a> to mark the host reason code. The ‘self_detect’ is an internal reason code
+<a class="reference internal" href="#cmdoption-traffic_ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a> to mark the host reason code. The ‘self_detect’ is an internal reason code
 used by parent selection to mark down a parent when it is identified as itself and</p>
-<p>Supports <a class="reference internal" href="#cmdoption-traffic-ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a>.</p>
+<p>Supports <a class="reference internal" href="#cmdoption-traffic_ctl-host-reason"><code class="xref std std-option docutils literal notranslate"><span class="pre">--reason</span></code></a>.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="traffic-ctl-rpc">
-<span id="id2"></span><h3>traffic_ctl rpc<a class="headerlink" href="#traffic-ctl-rpc" title="Permalink to this headline">¶</a></h3>
-<p>A mechanism to interact directly with the Traffic Server <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> endpoint. This means that this is not tied to any particular API
+<span id="id1"></span><h3>traffic_ctl rpc<a class="headerlink" href="#traffic-ctl-rpc" title="Permalink to this headline">¶</a></h3>
+<p>A mechanism to interact directly with the Traffic Server JSONRPC 2.0 endpoint. This means that this is not tied to any particular API
 but rather to the rpc endpoint, so you can directly send requests and receive responses from the server.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-rpc-arg-file">
-<code class="descname">file</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-rpc-arg-file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Reads a file or a set of files from the disc, use the content of the files as message(s) to the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> endpoint. All jsonrpc messages
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-rpc-arg-file">
+<span id="cmdoption-traffic-ctl-rpc-arg-file"></span><code class="sig-name descname">file</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-rpc-arg-file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads a file or a set of files from the disc, use the content of the files as message(s) to the JSONRPC 2.0 endpoint. All jsonrpc messages
 will be validated before sending them. If the file contains invalid  json|yaml format the message will not be send, in
 case of a set of files, if a particular file is not a proper json/yaml format then that particular file will be skipped.</p>
 <p>Example:</p>
@@ -537,9 +576,9 @@ case of a set of files, if a particular file is not a proper json/yaml format th
 </div>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-rpc-arg-get-api">
-<code class="descname">get-api</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-rpc-arg-get-api" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-rpc-arg-get-api">
+<span id="cmdoption-traffic-ctl-rpc-arg-get-api"></span><code class="sig-name descname">get-api</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-rpc-arg-get-api" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request the entire admin api. This will retrieve all the registered methods and notifications on the server side.</p>
 <p>Example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl rpc get-api
@@ -562,23 +601,23 @@ Notifications:
 </div>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-rpc-arg-input">
-<code class="descname">input</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-rpc-arg-input" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-rpc-arg-input">
+<span id="cmdoption-traffic-ctl-rpc-arg-input"></span><code class="sig-name descname">input</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-rpc-arg-input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Input mode, traffic_ctl will provide a control input from a stream buffer. Once the content is written the terminal <strong class="program">traffic_ctl</strong>
 will wait for the user to press Control-D to send the request to the rpc endpoint.
 This feature allows you to directly interact with the jsonrpc endpoint and test your API easily and without the need to know the low level
 implementation details of the transport layer.
 <strong class="program">traffic_ctl</strong> will validate the input format, not the message content. The message content will be validated by the server.
 See example <a class="reference internal" href="#input-example-2">input_example_2</a>.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-ctl-rpc-raw">
-<code class="descname">--raw</code><code class="descclassname"></code><code class="descclassname">, </code><code class="descname">-r</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-ctl-rpc-raw" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_ctl-rpc-raw">
+<span id="cmdoption-traffic-ctl-rpc-raw"></span><span id="cmdoption-traffic_ctl-rpc-r"></span><span id="cmdoption-traffic-ctl-rpc-r"></span><code class="sig-name descname">--raw</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">-r</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_ctl-rpc-raw" title="Permalink to this definition">¶</a></dt>
 <dd><p>No json/yaml parse validation will take place, the input content will be directly send to the server.</p>
 </dd></dl>
 
 <p>Example:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl rpc input
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl rpc input
 &gt;&gt; Ctrl-D to fire the request
 {
    &quot;id&quot;:&quot;86e59b43-185b-4a0b-b1c1-babb1a3d5401&quot;,
@@ -633,8 +672,8 @@ See example <a class="reference internal" href="#input-example-2">input_example_
 
 <blockquote id="input-example-2">
 <div><p>Example 2:</p>
-<p>You can see a valid  json <code class="docutils literal notranslate"><span class="pre">{}</span></code> but an invalid <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> message. In this case the server is responding.</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl rpc input
+<p>You can see a valid  json <code class="docutils literal notranslate"><span class="pre">{}</span></code> but an invalid JSONRPC 2.0 message. In this case the server is responding.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ traffic_ctl rpc input
 &gt;&gt; Ctrl-D to fire the request
 {}
 &lt;pressed Ctrl-D&gt;
@@ -684,13 +723,13 @@ for the <cite>manual</cite> reason, <cite>MANUAL:DOWN:1556896844:0</cite>, at th
 <h2>Autest<a class="headerlink" href="#autest" title="Permalink to this headline">¶</a></h2>
 <p>If you want to interact with Traffic Server under a unit test, then a few things need to be considered.</p>
 <ul>
-<li><p class="first">Runroot needs to be configured in order to  let <cite>traffic_ctl</cite> knows where to find the socket.</p>
+<li><p>Runroot needs to be configured in order to  let <cite>traffic_ctl</cite> knows where to find the socket.</p>
 <blockquote>
 <div><p>There are currently two ways to do this:</p>
 <ol class="arabic">
-<li><p class="first">Using <cite>run-root</cite> param.</p>
+<li><p>Using <cite>run-root</cite> param.</p>
 <ol class="arabic simple">
-<li>Let <cite>Test.MakeATSProcess</cite> to create the runroot file under the Traffic Server config directory. This can be done by passing <cite>dump_runroot=True</cite> to the above function:</li>
+<li><p>Let <cite>Test.MakeATSProcess</cite> to create the runroot file under the Traffic Server config directory. This can be done by passing <cite>dump_runroot=True</cite> to the above function:</p></li>
 </ol>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">MakeATSProcess</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">dump_runroot</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -699,14 +738,14 @@ for the <cite>manual</cite> reason, <cite>MANUAL:DOWN:1556896844:0</cite>, at th
 </div></blockquote>
 <p><cite>dump_runroot</cite> will write out some of the keys inside the runroot file, in this case the <cite>runtimedir</cite>.</p>
 <ol class="arabic" start="2">
-<li><p class="first">Then you should specify the <code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">--run-root</span></code> when invoking the command:</p>
+<li><p>Then you should specify the <a class="reference internal" href="#cmdoption-traffic_ctl-run-root"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">--run-root</span></code></a> when invoking the command:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span><span class="o">.</span><span class="n">Processes</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">Command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;traffic_ctl config reload --run-root </span><span class="si">{</span><span class="n">ts</span><span class="o">.</span><span class="n">Disk</span><span class="o">.</span><span class="n">runroot_yaml</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
 </li>
 </ol>
 </li>
-<li><p class="first">Setting up the <cite>TS_RUNROOT</cite> environment variable.
+<li><p>Setting up the <cite>TS_RUNROOT</cite> environment variable.
 This is very similar to <cite>1</cite> but, instead of passing the <cite>–run-root</cite> param to <cite>traffic_ctl</cite>, you just need to specify the
 <cite>TS_RUNROOT</cite> environment variable. To do that, just do as 1.1 shows and then:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">SetRunRootEnv</span><span class="p">()</span>

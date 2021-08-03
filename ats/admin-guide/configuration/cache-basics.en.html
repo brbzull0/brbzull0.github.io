@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -130,7 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -224,26 +224,23 @@ proxy caching</em>, in which the user’s client software must be configured
 to send requests directly to the Traffic Server proxy. The following
 overview illustrates how Traffic Server serves a request.</p>
 <ol class="arabic">
-<li><p class="first">Traffic Server receives a client request for a web object.</p>
-</li>
-<li><p class="first">Using the object address, Traffic Server tries to locate the
-requested object in its object database (<em>cache</em>).</p>
-</li>
-<li><p class="first">If the object is in the cache, then Traffic Server checks to see if
+<li><p>Traffic Server receives a client request for a web object.</p></li>
+<li><p>Using the object address, Traffic Server tries to locate the
+requested object in its object database (<em>cache</em>).</p></li>
+<li><p>If the object is in the cache, then Traffic Server checks to see if
 the object is fresh enough to serve. If it is fresh, then Traffic
 Server serves it to the client as a <em>cache hit</em> (see the figure
 below).</p>
 <div class="figure align-center" id="id4">
 <img alt="A cache hit" src="../../_images/cache_hit.jpg" />
-<p class="caption"><span class="caption-text">A cache hit</span></p>
+<p class="caption"><span class="caption-text">A cache hit</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 </li>
-<li><p class="first">If the data in the cache is stale, then Traffic Server connects to
+<li><p>If the data in the cache is stale, then Traffic Server connects to
 the origin server and checks if the object is still fresh (a
 <a class="reference internal" href="../../appendices/glossary.en.html#term-revalidation"><span class="xref std std-term">revalidation</span></a>). If it is, then Traffic Server immediately sends
-the cached copy to the client.</p>
-</li>
-<li><p class="first">If the object is not in the cache (a <em>cache miss</em>) or if the server
+the cached copy to the client.</p></li>
+<li><p>If the object is not in the cache (a <em>cache miss</em>) or if the server
 indicates the cached copy is no longer valid, then Traffic Server
 obtains the object from the origin server. The object is then
 simultaneously streamed to the client and the Traffic Server local
@@ -251,7 +248,7 @@ cache (see the figure below). Subsequent requests for the object can
 be served faster because the object is retrieved directly from cache.</p>
 <div class="figure align-center" id="id5">
 <img alt="A cache miss" src="../../_images/cache_miss.jpg" />
-<p class="caption"><span class="caption-text">A cache miss</span></p>
+<p class="caption"><span class="caption-text">A cache miss</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </li>
 </ol>
@@ -277,13 +274,13 @@ server to see if an object is still fresh.</p>
 <p>Traffic Server determines whether an HTTP object in the cache is fresh
 by checking the following conditions in order:</p>
 <ul>
-<li><p class="first"><strong>Checking the</strong> <code class="docutils literal notranslate"><span class="pre">Expires</span></code> <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">max-age</span></code> <strong>header</strong></p>
+<li><p><strong>Checking the</strong> <code class="docutils literal notranslate"><span class="pre">Expires</span></code> <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">max-age</span></code> <strong>header</strong></p>
 <p>Some HTTP objects contain <code class="docutils literal notranslate"><span class="pre">Expires</span></code> headers or <code class="docutils literal notranslate"><span class="pre">max-age</span></code> headers
 that explicitly define how long the object can be cached. Traffic
 Server compares the current time with the expiration time to
 determine if the object is still fresh.</p>
 </li>
-<li><p class="first"><strong>Checking the</strong> <code class="docutils literal notranslate"><span class="pre">Last-Modified</span></code> <strong>/</strong> <code class="docutils literal notranslate"><span class="pre">Date</span></code> <strong>header</strong></p>
+<li><p><strong>Checking the</strong> <code class="docutils literal notranslate"><span class="pre">Last-Modified</span></code> <strong>/</strong> <code class="docutils literal notranslate"><span class="pre">Date</span></code> <strong>header</strong></p>
 <p>If an HTTP object has no <code class="docutils literal notranslate"><span class="pre">Expires</span></code> header or <code class="docutils literal notranslate"><span class="pre">max-age</span></code> header,
 then Traffic Server can calculate a freshness limit using the
 following formula:</p>
@@ -299,18 +296,18 @@ can be increased or reduced to better suit your needs. Refer to
 <p>The computed freshness limit is bound by a minimum and maximum value.
 Refer to <a class="reference internal" href="#setting-absolute-freshness-limits">Setting Absolute Freshness Limits</a> for more information.</p>
 </li>
-<li><p class="first"><strong>Checking the absolute freshness limit</strong></p>
+<li><p><strong>Checking the absolute freshness limit</strong></p>
 <p>For HTTP objects that do not have <code class="docutils literal notranslate"><span class="pre">Expires</span></code> headers or do not have
 both <code class="docutils literal notranslate"><span class="pre">Last-Modified</span></code> and <code class="docutils literal notranslate"><span class="pre">Date</span></code> headers, Traffic Server uses a
 maximum and minimum freshness limit. Refer to
 <a class="reference internal" href="#setting-absolute-freshness-limits">Setting Absolute Freshness Limits</a>.</p>
 </li>
-<li><p class="first"><strong>Checking revalidate rules in</strong> <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a></p>
+<li><p><strong>Checking revalidate rules in</strong> <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a></p>
 <p>Revalidate rules apply freshness limits to specific HTTP objects. You
 can set freshness limits for objects originating from particular
 domains or IP addresses, objects with URLs that contain specified
 regular expressions, objects requested by particular clients, and so
-on. Refer to <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p>
+on. Refer to <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p>
 </li>
 </ul>
 </div>
@@ -323,8 +320,8 @@ the time that elapsed since it last changed. You can increase or reduce
 the percentage according to your needs.</p>
 <p>To modify the aging factor for freshness computations:</p>
 <ol class="arabic simple">
-<li>Change the value for <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-heuristic-lm-factor" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_lm_factor</span></code></a>.</li>
-<li>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</li>
+<li><p>Change the value for <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-heuristic-lm-factor" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_lm_factor</span></code></a>.</p></li>
+<li><p>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="setting-absolute-freshness-limits">
@@ -335,10 +332,10 @@ objects are considered fresh in the cache, specify an <em>absolute
 freshness limit</em>.</p>
 <p>To specify an absolute freshness limit:</p>
 <ol class="arabic simple">
-<li>Edit the variables <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-heuristic-min-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_min_lifetime</span></code></a>
+<li><p>Edit the variables <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-heuristic-min-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_min_lifetime</span></code></a>
 and <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-heuristic-max-lifetime" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.heuristic_max_lifetime</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</li>
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="specifying-header-requirements">
@@ -353,9 +350,9 @@ noticeably reduced (since very few objects will have explicit expiration
 information).</p>
 <p>To configure Traffic Server to cache objects with specific headers:</p>
 <ol class="arabic simple">
-<li>Change the value for <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-required-headers" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.required_headers</span></code></a>
-in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</li>
+<li><p>Change the value for <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-required-headers" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.required_headers</span></code></a>
+in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="cache-control-headers">
@@ -369,24 +366,24 @@ cannot have been cached for more than 10 minutes.</p>
 headers that appear in both client requests and server responses. The following
 <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> headers affect whether objects are served from cache:</p>
 <ul class="simple">
-<li>The <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> header, sent by clients, tells Traffic Server that
+<li><p>The <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> header, sent by clients, tells Traffic Server that
 it should not serve any objects directly from the cache. When present in a
 client request, Traffic Server will always obtain the object from the
 origin server. You can configure Traffic Server to ignore client
 <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> headers. Refer to <a class="reference internal" href="#configuring-traffic-server-to-ignore-client-no-cache-headers">Configuring Traffic Server to Ignore Client no-cache Headers</a>
-for more information.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">max-age</span></code> header, sent by servers, is compared to the object
+for more information.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">max-age</span></code> header, sent by servers, is compared to the object
 age. If the age is less than <code class="docutils literal notranslate"><span class="pre">max-age</span></code>, then the object is fresh
-and can be served from the Traffic Server cache.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">min-fresh</span></code> header, sent by clients, is an <em>acceptable
+and can be served from the Traffic Server cache.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">min-fresh</span></code> header, sent by clients, is an <em>acceptable
 freshness tolerance</em>. This means that the client wants the object to
 be at least this fresh. Unless a cached object remains fresh at least
-this long in the future, it is revalidated.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">max-stale</span></code> header, sent by clients, permits Traffic Server to
+this long in the future, it is revalidated.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">max-stale</span></code> header, sent by clients, permits Traffic Server to
 serve stale objects provided they are not too old. Some browsers
 might be willing to take slightly stale objects in exchange for
 improved performance, especially during periods of poor Internet
-availability.</li>
+availability.</p></li>
 </ul>
 <p>Traffic Server applies <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> servability criteria after HTTP
 freshness criteria. For example, an object might be considered fresh but will
@@ -399,37 +396,37 @@ Traffic Server revalidates the object. A <em>revalidation</em> is a query to
 the origin server to check if the object is unchanged. The result of a
 revalidation is one of the following:</p>
 <ul class="simple">
-<li>If the object is still fresh, then Traffic Server resets its
-freshness limit and serves the object.</li>
-<li>If a new copy of the object is available, then Traffic Server caches
+<li><p>If the object is still fresh, then Traffic Server resets its
+freshness limit and serves the object.</p></li>
+<li><p>If a new copy of the object is available, then Traffic Server caches
 the new object (thereby replacing the stale copy) and simultaneously
-serves the object to the client.</li>
-<li>If the object no longer exists on the origin server, then Traffic
-Server does not serve the cached copy.</li>
-<li>If the origin server does not respond to the revalidation query, then
+serves the object to the client.</p></li>
+<li><p>If the object no longer exists on the origin server, then Traffic
+Server does not serve the cached copy.</p></li>
+<li><p>If the origin server does not respond to the revalidation query, then
 Traffic Server serves the stale object along with a
-<code class="docutils literal notranslate"><span class="pre">111</span> <span class="pre">Revalidation</span> <span class="pre">Failed</span></code> warning.</li>
+<code class="docutils literal notranslate"><span class="pre">111</span> <span class="pre">Revalidation</span> <span class="pre">Failed</span></code> warning.</p></li>
 </ul>
 <p>By default, Traffic Server revalidates a requested HTTP object in the
 cache if it considers the object to be stale. Traffic Server evaluates
 object freshness as described in <a class="reference internal" href="#http-object-freshness">HTTP Object Freshness</a>.
 You can reconfigure how Traffic Server evaluates freshness by selecting
 one of the following options:</p>
-<dl class="docutils">
-<dt><em>Traffic Server considers all HTTP objects in the cache to be stale:</em></dt>
-<dd>Always revalidate HTTP objects in the cache with the origin server.</dd>
-<dt><em>Traffic Server considers all HTTP objects in the cache to be fresh:</em></dt>
-<dd>Never revalidate HTTP objects in the cache with the origin server.</dd>
-<dt><em>Traffic Server considers all HTTP objects without</em> <code class="docutils literal notranslate"><span class="pre">Expires</span></code> <em>or</em> <code class="docutils literal notranslate"><span class="pre">Cache-control</span></code> <em>headers to be stale:</em></dt>
-<dd>Revalidate all HTTP objects without <code class="docutils literal notranslate"><span class="pre">Expires</span></code> or <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> headers.</dd>
+<dl class="simple">
+<dt><em>Traffic Server considers all HTTP objects in the cache to be stale:</em></dt><dd><p>Always revalidate HTTP objects in the cache with the origin server.</p>
+</dd>
+<dt><em>Traffic Server considers all HTTP objects in the cache to be fresh:</em></dt><dd><p>Never revalidate HTTP objects in the cache with the origin server.</p>
+</dd>
+<dt><em>Traffic Server considers all HTTP objects without</em> <code class="docutils literal notranslate"><span class="pre">Expires</span></code> <em>or</em> <code class="docutils literal notranslate"><span class="pre">Cache-control</span></code> <em>headers to be stale:</em></dt><dd><p>Revalidate all HTTP objects without <code class="docutils literal notranslate"><span class="pre">Expires</span></code> or <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> headers.</p>
+</dd>
 </dl>
 <p>To configure how Traffic Server revalidates objects in the cache, you
-can set specific revalidation rules in <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p>
+can set specific revalidation rules in <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p>
 <p>To configure revalidation options</p>
 <ol class="arabic simple">
-<li>Edit the variable <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-when-to-revalidate" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.when_to_revalidate</span></code></a>
-in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</li>
+<li><p>Edit the variable <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-when-to-revalidate" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.when_to_revalidate</span></code></a>
+in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> command to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -443,16 +440,14 @@ without client requests.</p>
 <p>Before you can deliver content into your cache using HTTP <code class="docutils literal notranslate"><span class="pre">PUSH</span></code>, you
 must configure Traffic Server to accept <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> requests.</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/ip_allow.yaml.en.html#std:configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> to allow <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> from the appropriate addresses.</p>
-</li>
-<li><p class="first">Update <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-push-method-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.push_method_enabled</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<li><p>Edit <a class="reference internal" href="../files/ip_allow.yaml.en.html#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> to allow <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> from the appropriate addresses.</p></li>
+<li><p>Update <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-push-method-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.push_method_enabled</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">push_method_enabled</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="understanding-http-push">
@@ -473,8 +468,8 @@ place in the cache. The following is an example of a <code class="docutils liter
 </pre></div>
 </div>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Your <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> headers must include <code class="docutils literal notranslate"><span class="pre">Content-length</span></code>, the value for which
+<p class="admonition-title">Important</p>
+<p>Your <code class="docutils literal notranslate"><span class="pre">PUSH</span></code> headers must include <code class="docutils literal notranslate"><span class="pre">Content-length</span></code>, the value for which
 must include both headers and body byte counts. The value is not optional,
 and an improper (too large or too small) value will result in undesirable
 behavior.</p>
@@ -497,19 +492,18 @@ observes <code class="docutils literal notranslate"><span class="pre">Cache-Cont
 if it is indeed cacheable.</p>
 <p>To set cache pinning rules:</p>
 <ol class="arabic">
-<li><p class="first">Enable <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-permit-pinning" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.permit.pinning</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<li><p>Enable <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-permit-pinning" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.permit.pinning</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">permit</span><span class="o">.</span><span class="n">pinning</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Add a rule in <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> for each URL you want Traffic Server to
+<li><p>Add a rule in <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a> for each URL you want Traffic Server to
 pin in the cache. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>url_regex=^https?://(www.)?apache.org/dev/ pin-in-cache=12h
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="caching-http-objects">
@@ -526,15 +520,13 @@ and files.</p>
 <p>By default, Traffic Server does not cache objects with the following
 request headers:</p>
 <ul>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Authorization</span></code></p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-store</span></code></p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">Authorization</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-store</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code></p>
 <p>To configure Traffic Server to ignore this request header, refer to
 <a class="reference internal" href="#configuring-traffic-server-to-ignore-client-no-cache-headers">Configuring Traffic Server to Ignore Client no-cache Headers</a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cookie</span></code> (for text objects)</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cookie</span></code> (for text objects)</p>
 <p>By default, Traffic Server caches objects served in response to
 requests that contain cookies (even if the object is text). You can
 configure Traffic Server to not cache cookied content of any type,
@@ -552,14 +544,13 @@ Traffic Server to ignore client <code class="docutils literal notranslate"><span
 ignores <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> headers from client requests and serves the object
 from its cache.</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-client-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_client_no_cache</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-client-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_client_no_cache</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">ignore_client_no_cache</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -568,22 +559,18 @@ from its cache.</p>
 <p>By default, Traffic Server does not cache objects with the following response
 headers:</p>
 <ul>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-store</span></code></p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">private</span></code></p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">WWW-Authenticate</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-store</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">private</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WWW-Authenticate</span></code></p>
 <p>To configure Traffic Server to ignore <code class="docutils literal notranslate"><span class="pre">WWW-Authenticate</span></code> headers,
 refer to <a class="reference internal" href="#configuring-traffic-server-to-ignore-www-authenticate-headers">Configuring Traffic Server to Ignore WWW-Authenticate Headers</a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Set-Cookie</span></code></p>
-</li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code></p>
+<li><p><code class="docutils literal notranslate"><span class="pre">Set-Cookie</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Cache-Control:</span> <span class="pre">no-cache</span></code></p>
 <p>To configure Traffic Server to ignore <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> headers, refer to
 <a class="reference internal" href="#configuring-traffic-server-to-ignore-server-no-cache-headers">Configuring Traffic Server to Ignore Server no-cache Headers</a>.</p>
 </li>
-<li><p class="first"><code class="docutils literal notranslate"><span class="pre">Expires</span></code> header with a value of 0 (zero) or a past date.</p>
-</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Expires</span></code> header with a value of 0 (zero) or a past date.</p></li>
 </ul>
 <div class="section" id="configuring-traffic-server-to-ignore-server-no-cache-headers">
 <h4>Configuring Traffic Server to Ignore Server no-cache Headers<a class="headerlink" href="#configuring-traffic-server-to-ignore-server-no-cache-headers" title="Permalink to this headline">¶</a></h4>
@@ -596,14 +583,13 @@ default behavior of observing <code class="docutils literal notranslate"><span c
 in most cases.</p>
 <p>To configure Traffic Server to ignore server <code class="docutils literal notranslate"><span class="pre">no-cache</span></code> headers:</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-server-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_server_no_cache</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-server-no-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_server_no_cache</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">ignore_server_no_cache</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="configuring-traffic-server-to-ignore-www-authenticate-headers">
@@ -622,14 +608,13 @@ about HTTP 1.1.</p>
 <p>To configure Traffic Server to ignore server <code class="docutils literal notranslate"><span class="pre">WWW-Authenticate</span></code>
 headers:</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-authentication" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_authentication</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-authentication" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_authentication</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">ignore_authentication</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -640,30 +625,29 @@ responds to directives you specify through configuration options and
 files.</p>
 <p>You can configure Traffic Server to do the following:</p>
 <ul class="simple">
-<li>Not cache any HTTP objects. Refer to <a class="reference internal" href="#disabling-http-object-caching">Disabling HTTP Object Caching</a>.</li>
-<li>Cache <em>dynamic content</em>. That is, objects with URLs that end in <code class="docutils literal notranslate"><span class="pre">.asp</span></code> or
+<li><p>Not cache any HTTP objects. Refer to <a class="reference internal" href="#disabling-http-object-caching">Disabling HTTP Object Caching</a>.</p></li>
+<li><p>Cache <em>dynamic content</em>. That is, objects with URLs that end in <code class="docutils literal notranslate"><span class="pre">.asp</span></code> or
 contain a question mark (<code class="docutils literal notranslate"><span class="pre">?</span></code>), semicolon (<code class="docutils literal notranslate"><span class="pre">;</span></code>), or <code class="docutils literal notranslate"><span class="pre">cgi</span></code>. For more
-information, refer to <a class="reference internal" href="#caching-dynamic-content">Caching Dynamic Content</a>.</li>
-<li>Cache objects served in response to the <code class="docutils literal notranslate"><span class="pre">Cookie:</span></code> header. Refer to
-<a class="reference internal" href="#caching-cookied-objects">Caching Cookied Objects</a>.</li>
-<li>Observe <code class="docutils literal notranslate"><span class="pre">never-cache</span></code> rules in <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</li>
+information, refer to <a class="reference internal" href="#caching-dynamic-content">Caching Dynamic Content</a>.</p></li>
+<li><p>Cache objects served in response to the <code class="docutils literal notranslate"><span class="pre">Cookie:</span></code> header. Refer to
+<a class="reference internal" href="#caching-cookied-objects">Caching Cookied Objects</a>.</p></li>
+<li><p>Observe <code class="docutils literal notranslate"><span class="pre">never-cache</span></code> rules in <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>.</p></li>
 </ul>
 <div class="section" id="disabling-http-object-caching">
 <h4>Disabling HTTP Object Caching<a class="headerlink" href="#disabling-http-object-caching" title="Permalink to this headline">¶</a></h4>
 <p>By default, Traffic Server caches all HTTP objects except those for
 which you have set <code class="docutils literal notranslate"><span class="pre">never-cache</span></code> as <a class="reference internal" href="../files/cache.config.en.html#cache-config-format-action"><span class="std std-ref">action rules</span></a>
-in <a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>. You can disable HTTP object caching so that all HTTP
+in <a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>. You can disable HTTP object caching so that all HTTP
 objects are served directly from the origin server and never cached, as
 detailed below.</p>
 <p>To disable HTTP object caching manually:</p>
 <ol class="arabic">
-<li><p class="first">Set <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a> to <code class="docutils literal notranslate"><span class="pre">0</span></code> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<li><p>Set <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-http" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.http</span></code></a> to <code class="docutils literal notranslate"><span class="pre">0</span></code> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">http</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="caching-dynamic-content">
@@ -677,15 +661,14 @@ appropriate <code class="docutils literal notranslate"><span class="pre">Cache-C
 <p>To configure Traffic Server’s cache behaviour in regard to dynamic
 content:</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-cache-urls-that-look-dynamic" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_urls_that_look_dynamic</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. To disable caching, set the variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>,
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-cache-urls-that-look-dynamic" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_urls_that_look_dynamic</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. To disable caching, set the variable to <code class="docutils literal notranslate"><span class="pre">0</span></code>,
 and to explicitly permit caching use <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">cache_urls_that_look_dynamic</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="caching-cookied-objects">
@@ -698,15 +681,15 @@ values could be saved with the object. With non-text objects, it is
 unlikely that personalized headers are delivered or used.</p>
 <p>You can reconfigure Traffic Server to:</p>
 <ul class="simple">
-<li>Not cache cookied content of any type.</li>
-<li>Cache cookied content that is of image type only.</li>
-<li>Cache all cookied content regardless of type.</li>
+<li><p>Not cache cookied content of any type.</p></li>
+<li><p>Cache cookied content that is of image type only.</p></li>
+<li><p>Cache all cookied content regardless of type.</p></li>
 </ul>
 <p>To configure how Traffic Server caches cookied content:</p>
 <ol class="arabic simple">
-<li>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-cache-responses-to-cookies" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_responses_to_cookies</span></code></a> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</li>
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-cache-responses-to-cookies" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.cache_responses_to_cookies</span></code></a> in
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -718,14 +701,13 @@ URLs) for a specified duration, regardless of <code class="docutils literal notr
 headers.</p>
 <p>To force document caching:</p>
 <ol class="arabic">
-<li><p class="first">Add a rule for each URL you want Traffic Server to pin to the cache
-<a class="reference internal" href="../files/cache.config.en.html#std:configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>:</p>
+<li><p>Add a rule for each URL you want Traffic Server to pin to the cache
+<a class="reference internal" href="../files/cache.config.en.html#std-configfile-cache.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">cache.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>url_regex=^https?://(www.)?apache.org/dev/ ttl-in-cache=6h
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 <div class="section" id="caching-http-alternates">
@@ -743,21 +725,20 @@ alternate versions of an object allowed in the cache.</p>
 <p>You can limit the number of alternates Traffic Server can cache per
 object (the default is 3).</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Large numbers of alternates can affect Traffic Server
+<p class="admonition-title">Important</p>
+<p>Large numbers of alternates can affect Traffic Server
 cache performance because all alternates have the same URL. Although
 Traffic Server can look up the URL in the index very quickly, it must
 scan sequentially through available alternates in the object store.</p>
 </div>
 <p>To alter the limit on the number of alternates:</p>
 <ol class="arabic">
-<li><p class="first">Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-limits-http-max-alts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.limits.http.max_alts</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<li><p>Edit <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-limits-http-max-alts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.limits.http.max_alts</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">limits</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">max_alts</span> <span class="n">INT</span> <span class="mi">5</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -789,37 +770,37 @@ granularity of transaction buffering control is limited to a similar precision.<
 any buffers associated with <a class="reference internal" href="../../developer-guide/plugins/http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">transform plugins</span></a>.</p>
 <p>Transaction buffering control can be enabled globally by using configuration
 variables or by <a class="reference internal" href="../../developer-guide/api/functions/TSHttpOverridableConfig.en.html#c.TSHttpTxnConfigIntSet" title="TSHttpTxnConfigIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnConfigIntSet()</span></code></a> in a plugin.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="41%" />
-<col width="45%" />
+<col style="width: 14%" />
+<col style="width: 41%" />
+<col style="width: 45%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Variable</th>
-<th class="head"><a class="reference internal" href="../../developer-guide/api/functions/TSHttpOverridableConfig.en.html#c.TSHttpTxnConfigIntSet" title="TSHttpTxnConfigIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnConfigIntSet()</span></code></a> key</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Variable</p></th>
+<th class="head"><p><a class="reference internal" href="../../developer-guide/api/functions/TSHttpOverridableConfig.en.html#c.TSHttpTxnConfigIntSet" title="TSHttpTxnConfigIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnConfigIntSet()</span></code></a> key</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>Enable buffering</td>
-<td><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.enabled</span></code></a></td>
-<td><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED" title="TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED</span></code></a></td>
+<tbody>
+<tr class="row-even"><td><p>Enable buffering</p></td>
+<td><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.enabled</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED" title="TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_ENABLED</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td>Set high water</td>
-<td><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-high-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.high_water</span></code></a></td>
-<td><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK</span></code></a></td>
+<tr class="row-odd"><td><p>Set high water</p></td>
+<td><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-high-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.high_water</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_HIGH_WATER_MARK</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td>Set low water</td>
-<td><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-low-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.low_water</span></code></a></td>
-<td><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK</span></code></a></td>
+<tr class="row-even"><td><p>Set low water</p></td>
+<td><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-flow-control-low-water" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.flow_control.low_water</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../developer-guide/api/types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK" title="TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK"><code class="xref c c-member docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_FLOW_CONTROL_LOW_WATER_MARK</span></code></a></p></td>
 </tr>
 </tbody>
 </table>
 <p>Be careful to always have the low water mark equal or less than the high water
 mark. If you set only one, the other will be set to the same value.</p>
 <p>If using <a class="reference internal" href="../../developer-guide/api/functions/TSHttpOverridableConfig.en.html#c.TSHttpTxnConfigIntSet" title="TSHttpTxnConfigIntSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnConfigIntSet()</span></code></a>, it must be called no later than
-<a class="reference internal" href="../../developer-guide/api/types/TSHttpHookID.en.html#c.TS_HTTP_READ_RESPONSE_HDR_HOOK" title="TS_HTTP_READ_RESPONSE_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_READ_RESPONSE_HDR_HOOK</span></code></a>.</p>
+<a class="reference internal" href="../../developer-guide/api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_READ_RESPONSE_HDR_HOOK" title="TS_HTTP_READ_RESPONSE_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_READ_RESPONSE_HDR_HOOK</span></code></a>.</p>
 </div>
 <div class="section" id="reducing-origin-server-requests-avoiding-the-thundering-herd">
 <span id="admin-configuration-reducing-origin-requests"></span><h2>Reducing Origin Server Requests (Avoiding the Thundering Herd)<a class="headerlink" href="#reducing-origin-server-requests-avoiding-the-thundering-herd" title="Permalink to this headline">¶</a></h2>
@@ -844,7 +825,7 @@ whether a response is going to be cacheable.</p>
 content being unique to different client requests, ATS will not enable
 read-while-writer functionality until it has determined that it will be able
 to cache the object.</p>
-<p>The following settings must be made in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> to enable
+<p>The following settings must be made in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> to enable
 read-while-writer functionality in ATS:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">enable_read_while_writer</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">background_fill_active_timeout</span> <span class="n">INT</span> <span class="mi">0</span>
@@ -854,11 +835,11 @@ read-while-writer functionality in ATS:</p>
 </div>
 <p>All four configurations are required, for the following reasons:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-enable-read-while-writer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.enable_read_while_writer</span></code></a> being set to <code class="docutils literal notranslate"><span class="pre">1</span></code> turns
-the feature on, as it is off (<code class="docutils literal notranslate"><span class="pre">0</span></code>) by default.</li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-enable-read-while-writer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.enable_read_while_writer</span></code></a> being set to <code class="docutils literal notranslate"><span class="pre">1</span></code> turns
+the feature on, as it is off (<code class="docutils literal notranslate"><span class="pre">0</span></code>) by default.</p></li>
 </ul>
 <ul id="background-fill">
-<li><p class="first">The background fill feature (both
+<li><p>The background fill feature (both
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a> and
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-completed-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_completed_threshold</span></code></a>) should be
 allowed to kick in for every possible request. This is necessary in the event
@@ -868,10 +849,9 @@ take over the writer.</p>
 <p>As such, you should set the background fill timeouts and threshold to zero;
 this assures they never time out and are always allowed to kick in.</p>
 </li>
-<li><p class="first">The <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-max-doc-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.max_doc_size</span></code></a> should be unlimited (set to 0),
+<li><p>The <a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-max-doc-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.max_doc_size</span></code></a> should be unlimited (set to 0),
 since the object size may be unknown, and going over this limit would cause
-a disconnect on the objects being served.</p>
-</li>
+a disconnect on the objects being served.</p></li>
 </ul>
 <p>Once these are enabled, you have something that is very close, but not quite
 the same, to Squid’s Collapsed Forwarding.</p>
@@ -900,8 +880,8 @@ if they are set to <code class="docutils literal notranslate"><span class="pre">
 50ms for a response to come back from origin from a previous request, until
 this request is allowed through.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">These settings are inappropriate when objects are uncacheable. In those
+<p class="admonition-title">Important</p>
+<p>These settings are inappropriate when objects are uncacheable. In those
 cases, requests for an object effectively become serialized. The subsequent
 requests would await at least <code class="docutils literal notranslate"><span class="pre">open_read_retry_time</span></code> milliseconds before
 being proxied to the origin.</p>

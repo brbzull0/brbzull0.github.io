@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -235,49 +235,46 @@ served from cache. Since we can predict the <strong>next object</strong> fetched
 able to dramatically increase the chance of it being a cache hit.</p>
 <p>This is primarily useful for:</p>
 <ul class="simple">
-<li>less popular content. Popular movies’ segments are constantly being refreshed
-in cache by user requests. Less popular content is less likely to be in cache.</li>
-<li>device failures. There can be a significant time gap between a seeding request
+<li><p>less popular content. Popular movies’ segments are constantly being refreshed
+in cache by user requests. Less popular content is less likely to be in cache.</p></li>
+<li><p>device failures. There can be a significant time gap between a seeding request
 and the user request. During this time, devices can fail, which cause cache
 misses. The time gap between the plugin’s request and the user’s request can be
-used to smooth over the failures.</li>
+used to smooth over the failures.</p></li>
 </ul>
 <div class="section" id="why-do-this-isn-t-seeding-sufficient">
 <h3>Why do this? Isn’t seeding sufficient?<a class="headerlink" href="#why-do-this-isn-t-seeding-sufficient" title="Permalink to this headline">¶</a></h3>
 <p>In practice the cache hit rate for the user facing HLS video content is never perfect 100%.
 This plugin should increase the cache hit rate.</p>
 <ul class="simple">
-<li>The caches will eventually wrap. The unpopular content/tiers will be evicted,
-and not repopulated.</li>
-<li>Disks fail. Content on these disk will become cache misses at least at that layer.</li>
-<li><dl class="first docutils">
-<dt>Machines fail.</dt>
-<dd><ul class="first last">
-<li>Content seeded on those machines will become misses</li>
-<li>Content seeded while a machine is down will be seeded to the “wrong” machine</li>
+<li><p>The caches will eventually wrap. The unpopular content/tiers will be evicted,
+and not repopulated.</p></li>
+<li><p>Disks fail. Content on these disk will become cache misses at least at that layer.</p></li>
+<li><dl class="simple">
+<dt>Machines fail.</dt><dd><ul>
+<li><p>Content seeded on those machines will become misses</p></li>
+<li><p>Content seeded while a machine is down will be seeded to the “wrong” machine</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Bugs.</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt>The content is usually managed by another organization which could have</dt>
-<dd><ul class="first last">
-<li>issues determining all the content (especially international)</li>
-<li>issues getting every asset on the storage service (i.e. AWS S3)</li>
-<li>issues sending us the assets in time</li>
+<li><dl class="simple">
+<dt>Bugs.</dt><dd><ul>
+<li><dl class="simple">
+<dt>The content is usually managed by another organization which could have</dt><dd><ul>
+<li><p>issues determining all the content (especially international)</p></li>
+<li><p>issues getting every asset on the storage service (i.e. AWS S3)</p></li>
+<li><p>issues sending us the assets in time</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li>ATS has had 5xx errors preventing seeding of assets</li>
+<li><p>ATS has had 5xx errors preventing seeding of assets</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li>The process of seeding sometimes wastes significantly more resources then the normal usage.</li>
+<li><p>The process of seeding sometimes wastes significantly more resources then the normal usage.</p></li>
 </ul>
 </div>
 <div class="section" id="how-well-it-works">
@@ -287,13 +284,13 @@ and not repopulated.</li>
 It is worth mentioning that a small percentage of the requests did not follow a predictable pattern and were not handled by the plugin.</p>
 <div class="figure align-center" id="id1">
 <img alt="prefetch plugin initial deployment" src="../../_images/prefetch_plugin_deployment.png" />
-<p class="caption"><span class="caption-text">Prefetch plugin initial deployment.</span></p>
+<p class="caption"><span class="caption-text">Prefetch plugin initial deployment.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <ul class="simple">
-<li>All POPs were seeded periodically except for POP #1 and the plugin was deployed in the following order: POP #0, #1, #2, #3 and then to the rest at once.</li>
-<li>POP #0 was the first plugin deployment and was used to tune its configuration for better results.</li>
-<li>POP #1 was a “testing ground” for the “worst case” (no seeding at all, imperfect conditions like low traffic and poorer connectivity to origin) and relying only on the Prefetch plugin.</li>
-<li>POP #2 and POP #3 experienced seeding problems (at times it reached ~60%, not shown here).</li>
+<li><p>All POPs were seeded periodically except for POP #1 and the plugin was deployed in the following order: POP #0, #1, #2, #3 and then to the rest at once.</p></li>
+<li><p>POP #0 was the first plugin deployment and was used to tune its configuration for better results.</p></li>
+<li><p>POP #1 was a “testing ground” for the “worst case” (no seeding at all, imperfect conditions like low traffic and poorer connectivity to origin) and relying only on the Prefetch plugin.</p></li>
+<li><p>POP #2 and POP #3 experienced seeding problems (at times it reached ~60%, not shown here).</p></li>
 </ul>
 </div>
 <div class="section" id="how-does-it-work">
@@ -321,27 +318,26 @@ same parent that got the pre-fetch request, and be served from its cache.</p>
 <div class="section" id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>Dual-tiered usage - the plugin runs in 2 modes (2 instances)</dt>
-<dd><ul class="first last">
-<li>the <strong>front-tier</strong> instance decides if the “next” object needs prefetching
-based on the pre-fetch policy and only sends a signal to the <strong>back-tier</strong></li>
-<li>the <strong>back-tier</strong> instance responds quickly w/o returning any objects to
-the <strong>front-tier</strong> and actually performs the background fetch.</li>
+<li><dl class="simple">
+<dt>Dual-tiered usage - the plugin runs in 2 modes (2 instances)</dt><dd><ul>
+<li><p>the <strong>front-tier</strong> instance decides if the “next” object needs prefetching
+based on the pre-fetch policy and only sends a signal to the <strong>back-tier</strong></p></li>
+<li><p>the <strong>back-tier</strong> instance responds quickly w/o returning any objects to
+the <strong>front-tier</strong> and actually performs the background fetch.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li>Single-tier usage - the plugin runs on the first user facing tier.</li>
+<li><p>Single-tier usage - the plugin runs on the first user facing tier.</p></li>
 </ul>
 </div>
 <div class="section" id="how-the-next-object-path-is-calculated">
 <h3>How the “next” object path is calculated<a class="headerlink" href="#how-the-next-object-path-is-calculated" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>The cache key of an incoming URL is checked against the fetching policy defined by <code class="docutils literal notranslate"><span class="pre">--fetch-policy</span></code>.</li>
-<li>If the <strong>next object</strong> is to be pre-fetched the <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern=/regex/capture/</span></code> is used to transform the <strong>incoming</strong> URL path into the <strong>next</strong></li>
-<li>The number of prefetched objects is specified by <code class="docutils literal notranslate"><span class="pre">—fetch-count</span></code></li>
-<li>The hostname of the prefetch request can be replaced by using <code class="docutils literal notranslate"><span class="pre">--replace-host</span></code></li>
+<li><p>The cache key of an incoming URL is checked against the fetching policy defined by <code class="docutils literal notranslate"><span class="pre">--fetch-policy</span></code>.</p></li>
+<li><p>If the <strong>next object</strong> is to be pre-fetched the <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern=/regex/capture/</span></code> is used to transform the <strong>incoming</strong> URL path into the <strong>next</strong></p></li>
+<li><p>The number of prefetched objects is specified by <code class="docutils literal notranslate"><span class="pre">—fetch-count</span></code></p></li>
+<li><p>The hostname of the prefetch request can be replaced by using <code class="docutils literal notranslate"><span class="pre">--replace-host</span></code></p></li>
 </ul>
 <p>Let say we have the following setup</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>map http://example.com http://origin.com \
@@ -374,14 +370,14 @@ subtracting integer numbers.</p>
 <p>The plugin uses more CDN resources to improve the user experience. The plugin
 attempts to minimize the extraneous resources used.</p>
 <ul class="simple">
-<li>The prefetch policy (LRU) attempts to minimize the URLs fetched. The popular video segments
+<li><p>The prefetch policy (LRU) attempts to minimize the URLs fetched. The popular video segments
 (which represent the majority of the requests) will quickly populate the LRU,
-preventing their pre-fetching.</li>
-<li>If the original request is for the last segment in the video, the plugin will
+preventing their pre-fetching.</p></li>
+<li><p>If the original request is for the last segment in the video, the plugin will
 make our system have a frivolous request to origin for the next non-existent
-segment.</li>
-<li>If the user stops watching the video, the plugin may (if not popular) make a
-request for a single segment that goes un-requested.</li>
+segment.</p></li>
+<li><p>If the user stops watching the video, the plugin may (if not popular) make a
+request for a single segment that goes un-requested.</p></li>
 </ul>
 </div>
 <div class="section" id="minimizing-next-object-prefetch-overhead">
@@ -389,28 +385,28 @@ request for a single segment that goes un-requested.</li>
 <p>The current implementation relies on the following assumptions and engineering
 compromises:</p>
 <ul class="simple">
-<li><strong>First match the next object pattern</strong> defined by <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code>
-plugin parameter, not matching requests are ignored (prefetch is never triggered)</li>
-<li><strong>Define a prefetch policy</strong> which tries to suppress unnecessary <strong>next object</strong>
+<li><p><strong>First match the next object pattern</strong> defined by <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code>
+plugin parameter, not matching requests are ignored (prefetch is never triggered)</p></li>
+<li><p><strong>Define a prefetch policy</strong> which tries to suppress unnecessary <strong>next object</strong>
 prefetches for the most recently used requests which are assumed should be already
 in cache. Currently only <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy is supported, it is using an URI-hash LRU
 cache which evicts the least recently used elements first. Every request’s <strong>cache key</strong>
 is checked against it and if found the <strong>next object</strong> prefetch is skipped/cancelled.
 (<strong>side note</strong>: the <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> <strong>is not</strong> the same as cache_promote plugin <cite>lru</cite>,
-the latter is rather a frequency divider for the most recently used URIs).</li>
-<li><strong>Always use request’s cache key</strong> instead of request’s URI and also <strong>remove
+the latter is rather a frequency divider for the most recently used URIs).</p></li>
+<li><p><strong>Always use request’s cache key</strong> instead of request’s URI and also <strong>remove
 the query parameters</strong> from the key which guarantees that multiple different
 requests which would result in using the same <strong>cache key</strong> are not considered as
 separate requests (which could bloat/dilute the LRU cache
-if not normalized)</li>
-<li><strong>Check if the fetch request is unique</strong>. A <code class="docutils literal notranslate"><span class="pre">simple</span></code> prefetching policy is
+if not normalized)</p></li>
+<li><p><strong>Check if the fetch request is unique</strong>. A <code class="docutils literal notranslate"><span class="pre">simple</span></code> prefetching policy is
 always used to make sure prefetches for the same object (same cache key) are
-never triggered simultaneously.</li>
-<li><strong>Check if already cached</strong>. Before triggering the prefetch request to the
+never triggered simultaneously.</p></li>
+<li><p><strong>Check if already cached</strong>. Before triggering the prefetch request to the
 next tier it is always checked if the <strong>incoming</strong> object is already cached,
 assuming that if already cached there is a good change the <strong>next
-object</strong> would be cached as well.</li>
-<li><strong>Don’t fetch the response body</strong> and <strong>never cache</strong> at the <strong>front-tier</strong>.
+object</strong> would be cached as well.</p></li>
+<li><p><strong>Don’t fetch the response body</strong> and <strong>never cache</strong> at the <strong>front-tier</strong>.
 The <strong>front-tier</strong> marks the prefetch request with a special API header defined
 by <code class="docutils literal notranslate"><span class="pre">--api-header</span></code> plugin parameter. When received the  <strong>back-tier</strong> responds
 right away before actually fetching the object (without a body), it just
@@ -418,9 +414,9 @@ schedules the real prefetch at the <strong>back-tier</strong>. <code class="docu
 is used to make sure the prefetch request response is never cached at the <strong>front-tier</strong>.
 In such a way resources are saved (time, memory, CPU, bandwidth, etc) and also
 unnecessary caching at the <strong>front-tier</strong> is avoided (where currently cache_promote
-plugin is already being used to alleviate the load on the disks).</li>
-<li><strong>Throttle the prefetch activity</strong> - if necessary a limit can by imposed on the
-number of concurrent prefetch requests by using <code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code> plugin parameter.</li>
+plugin is already being used to alleviate the load on the disks).</p></li>
+<li><p><strong>Throttle the prefetch activity</strong> - if necessary a limit can by imposed on the
+number of concurrent prefetch requests by using <code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code> plugin parameter.</p></li>
 </ul>
 </div>
 </div>
@@ -428,84 +424,77 @@ number of concurrent prefetch requests by using <code class="docutils literal no
 <div class="section" id="plugin-parameters">
 <h2>Plugin parameters<a class="headerlink" href="#plugin-parameters" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--front</span></code>
+<li><p><code class="docutils literal notranslate"><span class="pre">--front</span></code>
 - <code class="docutils literal notranslate"><span class="pre">true</span></code> - configures the plugin run on the <strong>front-tier</strong>,
-- <code class="docutils literal notranslate"><span class="pre">false</span></code> - to be run on the <strong>back-tier</strong>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--api-header</span></code> - the header used by the plugin internally, also used to mark a prefetch request to the next tier in dual-tier usage.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--fetch-policy</span></code> - fetch policy
+- <code class="docutils literal notranslate"><span class="pre">false</span></code> - to be run on the <strong>back-tier</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--api-header</span></code> - the header used by the plugin internally, also used to mark a prefetch request to the next tier in dual-tier usage.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fetch-policy</span></code> - fetch policy
 - <code class="docutils literal notranslate"><span class="pre">simple</span></code> - this policy just makes sure there are no same concurrent prefetches triggered (default and always used in combination with any other policy)
-- <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> - this policy uses LRU to identify “hot” objects and triggers prefetch if the object is not found. <cite>n</cite> is the size of the LRU</li>
-<li><code class="docutils literal notranslate"><span class="pre">--fetch-count</span></code> - how many objects to be prefetched.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code> - regex/capture pattern that would transform the <strong>incoming</strong> into the <strong>next object</strong> path.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code> - maximum concurrent fetches allowed, this would allow to throttle the prefetch activity if necessary</li>
-<li><code class="docutils literal notranslate"><span class="pre">--replace-host</span></code> - allows the prefetch requests to be forwarded to a different host or remap rule (replaces the host in the prefetch request)</li>
-<li><code class="docutils literal notranslate"><span class="pre">--name-space</span></code> - by default all plugin instances used for all remap use a single background fetch state, this parameter allows to specify a separate state per remap rule of per group of remap rules.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--metrics-prefix</span></code> - prefix for the metrics generated by the plugin.</li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">--exact-match</span></code></dt>
-<dd><ul class="first last">
-<li>if <code class="docutils literal notranslate"><span class="pre">false</span></code> (default) the fetch policy would use the <strong>incoming</strong> URL’s cache key to find out if the <strong>next object</strong> should be prefetched or not,</li>
-<li>if <code class="docutils literal notranslate"><span class="pre">true</span></code> the fetch policy would use the <strong>next</strong> URL’s cache key that to find out if the <strong>next object</strong> should be prefetched or not</li>
+- <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> - this policy uses LRU to identify “hot” objects and triggers prefetch if the object is not found. <cite>n</cite> is the size of the LRU</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fetch-count</span></code> - how many objects to be prefetched.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code> - regex/capture pattern that would transform the <strong>incoming</strong> into the <strong>next object</strong> path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code> - maximum concurrent fetches allowed, this would allow to throttle the prefetch activity if necessary</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--replace-host</span></code> - allows the prefetch requests to be forwarded to a different host or remap rule (replaces the host in the prefetch request)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--name-space</span></code> - by default all plugin instances used for all remap use a single background fetch state, this parameter allows to specify a separate state per remap rule of per group of remap rules.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--metrics-prefix</span></code> - prefix for the metrics generated by the plugin.</p></li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--exact-match</span></code></dt><dd><ul>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">false</span></code> (default) the fetch policy would use the <strong>incoming</strong> URL’s cache key to find out if the <strong>next object</strong> should be prefetched or not,</p></li>
+<li><p>if <code class="docutils literal notranslate"><span class="pre">true</span></code> the fetch policy would use the <strong>next</strong> URL’s cache key that to find out if the <strong>next object</strong> should be prefetched or not</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">--log-name</span></code> - specifies a custom log name (if not specified a log is not created)</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--log-name</span></code> - specifies a custom log name (if not specified a log is not created)</p></li>
 </ul>
 </div>
 <div class="section" id="metrics">
 <h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h2>
 <p>The plugin maintains the following metrics:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>Prefetch request status related</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">fetch.active</span></code> - number of currently active prefetch requests (counter)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.completed</span></code>- number of successfully completed prefetch requests (counter)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.errors</span></code> - number of failed prefetch requests (counter)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.timeouts</span></code> - number of timed-out prefetch requests (counter)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.throttled</span></code> - number of throttled prefetch requests (counter), throttle limit defined by <code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.total</span></code>- total number of prefetch requests (counter).</li>
+<li><dl class="simple">
+<dt>Prefetch request status related</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.active</span></code> - number of currently active prefetch requests (counter)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.completed</span></code>- number of successfully completed prefetch requests (counter)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.errors</span></code> - number of failed prefetch requests (counter)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.timeouts</span></code> - number of timed-out prefetch requests (counter)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.throttled</span></code> - number of throttled prefetch requests (counter), throttle limit defined by <code class="docutils literal notranslate"><span class="pre">--fetch-max</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.total</span></code>- total number of prefetch requests (counter).</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Fetch policy related:</dt>
-<dd><ul class="first last">
-<li><dl class="first docutils">
-<dt>all <strong>incoming</strong> request URIs are first matched against the next object pattern defined in <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code></dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">fetch.match.yes</span></code> - number of requests matched the pattern (counter), eligible for triggering prefetch request</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.match.no</span></code> - number of requests not matching the pattern (counter), ignored by the plugin, will never trigger prefetch request</li>
+<li><dl class="simple">
+<dt>Fetch policy related:</dt><dd><ul>
+<li><dl class="simple">
+<dt>all <strong>incoming</strong> request URIs are first matched against the next object pattern defined in <code class="docutils literal notranslate"><span class="pre">--fetch-path-pattern</span></code></dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.match.yes</span></code> - number of requests matched the pattern (counter), eligible for triggering prefetch request</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.match.no</span></code> - number of requests not matching the pattern (counter), ignored by the plugin, will never trigger prefetch request</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>prefetch policy related (i.e. <code class="docutils literal notranslate"><span class="pre">--fetch-policy=lru:n</span></code>)</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">fetch.policy.yes</span></code> - number of times (counter) the policy allowed scheduling of the prefetch request (for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy cachekey <strong>was not</strong> found in the LRU)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.policy.no</span></code> - number of times (counter) the policy disallowed scheduling of the prefetch request (for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy cachekey <strong>was</strong> found in the LRU)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.policy.maxsize</span></code> - size of the prefetch policy (gauge, i.e for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy the max size is <code class="docutils literal notranslate"><span class="pre">n</span></code>)</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.policy.size</span></code> - current size of the prefetch policy (gauge, i.e for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy the max size is a number &lt;= <code class="docutils literal notranslate"><span class="pre">n</span></code>)</li>
+<li><dl class="simple">
+<dt>prefetch policy related (i.e. <code class="docutils literal notranslate"><span class="pre">--fetch-policy=lru:n</span></code>)</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.policy.yes</span></code> - number of times (counter) the policy allowed scheduling of the prefetch request (for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy cachekey <strong>was not</strong> found in the LRU)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.policy.no</span></code> - number of times (counter) the policy disallowed scheduling of the prefetch request (for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy cachekey <strong>was</strong> found in the LRU)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.policy.maxsize</span></code> - size of the prefetch policy (gauge, i.e for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy the max size is <code class="docutils literal notranslate"><span class="pre">n</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.policy.size</span></code> - current size of the prefetch policy (gauge, i.e for <code class="docutils literal notranslate"><span class="pre">lru:n</span></code> policy the max size is a number &lt;= <code class="docutils literal notranslate"><span class="pre">n</span></code>)</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>before sending any new prefetch request plugin makes sure the object is not currently being prefetched (unique).</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">fetch.unique.yes</span></code> - number of unique requests (counter), for which there are no current prefetch requests for the same object (cache key is used for this check).</li>
-<li><code class="docutils literal notranslate"><span class="pre">fetch.unique.no</span></code> - number of not unique request (counter), for which there is currently prefetch running for the same object (cache key is used for this check).</li>
+<li><dl class="simple">
+<dt>before sending any new prefetch request plugin makes sure the object is not currently being prefetched (unique).</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.unique.yes</span></code> - number of unique requests (counter), for which there are no current prefetch requests for the same object (cache key is used for this check).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.unique.no</span></code> - number of not unique request (counter), for which there is currently prefetch running for the same object (cache key is used for this check).</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>before sending any new prefetch request plugin makes sure the object is not already cached.</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">fetch.already_cached</span></code> - number of prefetch requests not sent (cancelled) because the object was already in cache (likely no prefetch needed)</li>
+<li><dl class="simple">
+<dt>before sending any new prefetch request plugin makes sure the object is not already cached.</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">fetch.already_cached</span></code> - number of prefetch requests not sent (cancelled) because the object was already in cache (likely no prefetch needed)</p></li>
 </ul>
 </dd>
 </dl>
@@ -517,8 +506,8 @@ number of concurrent prefetch requests by using <code class="docutils literal no
 </ul>
 <p>The exact metric name is defined by the following plugin parameters:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">—metrics-prefix=&lt;sample-prefix&gt;</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">—name-space=&lt;sample-name-space&gt;</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">—metrics-prefix=&lt;sample-prefix&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">—name-space=&lt;sample-name-space&gt;</span></code></p></li>
 </ul>
 <p>For instance the final <code class="docutils literal notranslate"><span class="pre">fetch.active</span></code> metric will be called <code class="docutils literal notranslate"><span class="pre">&lt;sample-prefix&gt;.&lt;sample-name-space&gt;.fetch.active</span></code></p>
 </div>

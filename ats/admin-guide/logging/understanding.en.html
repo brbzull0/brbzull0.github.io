@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -122,7 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -213,30 +213,30 @@ day or when they reach a certain size.</p>
 <p>By default, Traffic Server creates both error and event log files and
 records system information in system log files. You can disable event
 logging and/or error logging by setting the configuration variable
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-log-logging-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logging_enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-log-logging-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logging_enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
 to one of the following values:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="6%" />
-<col width="94%" />
+<col style="width: 6%" />
+<col style="width: 94%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">0</span></code></td>
-<td>Disable both event and error logging.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Disable both event and error logging.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">1</span></code></td>
-<td>Enable error logging only.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>Enable error logging only.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">2</span></code></td>
-<td>Enable event logging only.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">2</span></code></p></td>
+<td><p>Enable event logging only.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">3</span></code></td>
-<td>Enable both event and error logging.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p></td>
+<td><p>Enable both event and error logging.</p></td>
 </tr>
 </tbody>
 </table>
@@ -280,7 +280,7 @@ logged by Traffic Server.</p>
 each transaction Traffic Server processes and form the true bulk of logging output in
 Traffic Server installations. Most of the remaining documentation in this chapter applies
 to creating, formatting, rotating, and filtering event logs.</p>
-<p>Individual event log outputs are configured in <a class="reference internal" href="../files/logging.yaml.en.html#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> and as
+<p>Individual event log outputs are configured in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> and as
 such, the documentation provided in that configuration file’s section should be
 consulted in concert with the sections of this chapter.</p>
 </div>
@@ -293,48 +293,48 @@ all of the same fields as event logs, with the restriction that every field
 must be used within an aggregating function. Summary logs may not mix both
 aggregated and unaggregated fields.</p>
 <p>The aggregating functions available are:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Function</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">AVG</span></code></td>
-<td>Average (mean) of the given field’s value from all events within
-the interval. May only be used on numeric fields.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AVG</span></code></p></td>
+<td><p>Average (mean) of the given field’s value from all events within
+the interval. May only be used on numeric fields.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">COUNT</span></code></td>
-<td>The total count of events which occurred within the interval. No
-field name is necessary (<code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> may be used instead).</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">COUNT</span></code></p></td>
+<td><p>The total count of events which occurred within the interval. No
+field name is necessary (<code class="docutils literal notranslate"><span class="pre">COUNT(*)</span></code> may be used instead).</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">FIRST</span></code></td>
-<td>The value of the first event, chronologically, which was observed
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">FIRST</span></code></p></td>
+<td><p>The value of the first event, chronologically, which was observed
 within the interval. May be used with any type of field; numeric or
-otherwise.</td>
+otherwise.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">LAST</span></code></td>
-<td>The value of the last event, chronologically, which was observed
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">LAST</span></code></p></td>
+<td><p>The value of the last event, chronologically, which was observed
 within the interval. May be used with any type of field; numeric or
-otherwise.</td>
+otherwise.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SUM</span></code></td>
-<td>Sum of the given field’s value from all events within the interval.
-May only be used on numeric fields.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SUM</span></code></p></td>
+<td><p>Sum of the given field’s value from all events within the interval.
+May only be used on numeric fields.</p></td>
 </tr>
 </tbody>
 </table>
-<p>Summary logs are defined in <a class="reference internal" href="../files/logging.yaml.en.html#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> just like regular event
+<p>Summary logs are defined in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a> just like regular event
 logs, with the only two differences being the exclusive use of the
 aforementioned aggregate functions and the specification of an interval, as so:</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">formats</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">mysummary</span>
-  <span class="nb">format</span><span class="p">:</span> <span class="s1">&#39;%&lt;operator(field)&gt; , %&lt;operator(field)&gt;&#39;</span>
-  <span class="n">interval</span><span class="p">:</span> <span class="n">n</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">formats</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">mysummary</span>
+  <span class="nt">format</span><span class="p">:</span> <span class="s">&#39;%&lt;operator(field)&gt;</span><span class="nv"> </span><span class="s">,</span><span class="nv"> </span><span class="s">%&lt;operator(field)&gt;&#39;</span>
+  <span class="nt">interval</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">n</span>
 </pre></div>
 </div>
 <p>The interval itself is given with <em>n</em> as the number of seconds for each period

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -130,7 +130,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -206,7 +206,7 @@
             
   <div class="section" id="hosting-config">
 <h1>hosting.config<a class="headerlink" href="#hosting-config" title="Permalink to this headline">¶</a></h1>
-<p id="std:configfile-hosting.config">The <a class="reference internal" href="#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file (by default, located in
+<p id="std-configfile-hosting.config"><span id="std:configfile-hosting.config"></span>The <a class="reference internal" href="#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file (by default, located in
 <code class="docutils literal notranslate"><span class="pre">/usr/local/etc/trafficserver/</span></code>) allows you to assign cache volumes to
 specific origin servers and/or domains so that you can manage cache
 space efficiently and restrict disk usage. For step-by-step instructions
@@ -214,13 +214,13 @@ on partitioning the cache according to origin servers and/or domains,
 refer to <a class="reference internal" href="../storage/index.en.html#partitioning-the-cache"><span class="std std-ref">Partitioning the Cache</span></a>.</p>
 <p>Before you can assign cache volumes to specific
 origin servers and/or domains, you must first partition your cache
-according to size and protocol in the <a class="reference internal" href="volume.config.en.html#std:configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>
+according to size and protocol in the <a class="reference internal" href="volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>
 file.</p>
 <p>After you modify hosting.config, navigate to the Traffic Server bin
-directory and run <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply your changes.</p>
+directory and run <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply your changes.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>Each line in the <a class="reference internal" href="#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file must have one of the following
+<p>Each line in the <a class="reference internal" href="#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file must have one of the following
 formats:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hostname</span><span class="o">=</span><span class="n">HOST</span> <span class="n">volume</span><span class="o">=</span><span class="n">NUMBERS</span>
 <span class="n">domain</span><span class="o">=</span><span class="n">DOMAIN</span> <span class="n">volume</span><span class="o">=</span><span class="n">NUMBERS</span>
@@ -233,16 +233,16 @@ want to store on a particular partition (for example, <code class="docutils lite
 and <code class="docutils literal notranslate"><span class="pre">NUMBERS</span></code> is a comma-separated list of the partitions on
 which you want to store the content that belongs to the origin server or
 domain listed. The partition numbers must be valid numbers listed in the
-<a class="reference internal" href="volume.config.en.html#std:configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>.</p>
+<a class="reference internal" href="volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a>.</p>
 <p><strong>Note:</strong> To allocate more than one partition to an origin server or
 domain, you must enter the partitions in a comma-separated list on one
 line, as shown in the example below. The
-<a class="reference internal" href="#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file cannot contain multiple entries
+<a class="reference internal" href="#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file cannot contain multiple entries
 for the same origin server or domain.</p>
 </div>
 <div class="section" id="generic-partition">
 <h2>Generic Partition<a class="headerlink" href="#generic-partition" title="Permalink to this headline">¶</a></h2>
-<p>When configuring the <a class="reference internal" href="#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file, you must assign a generic
+<p>When configuring the <a class="reference internal" href="#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> file, you must assign a generic
 volume to use for content that does not belong to any of the origin
 servers or domains listed. If all volumes for a particular origin
 server become corrupt, Traffic Server will also use the generic

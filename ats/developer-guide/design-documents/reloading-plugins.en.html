@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -204,22 +204,22 @@ configuration reload, i.e.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">config</span> <span class="n">reload</span>
 </pre></div>
 </div>
-<p>This feature is enabled by default. It can be turned off by setting the configuration variable <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-plugin-dynamic-reload-mode" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.plugin.dynamic_reload_mode</span></code></a> to <code class="docutils literal notranslate"><span class="pre">0</span></code> in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. When the feature is turned off, once ATS is started one will be able load only one version of a plugin, and re-loading the same plugin would do nothing.</p>
+<p>This feature is enabled by default. It can be turned off by setting the configuration variable <a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-plugin-dynamic-reload-mode" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.plugin.dynamic_reload_mode</span></code></a> to <code class="docutils literal notranslate"><span class="pre">0</span></code> in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. When the feature is turned off, once ATS is started one will be able load only one version of a plugin, and re-loading the same plugin would do nothing.</p>
 <p>Although plugin reloading should be transparent to plugin developers, the following are some design considerations
 and implementation details for this feature.</p>
 <div class="section" id="design-considerations">
 <h2>Design Considerations<a class="headerlink" href="#design-considerations" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li>The mechanism of the plugin reload should be transparent to the plugin developers. Plugin developers should be
-concerned only with properly initializing and cleaning up after the plugin and its instances.</li>
-<li>With the current Traffic Server implementation, new version plugin (re)load is only triggered by a configuration
-(re)load. Hence the configuration should always be coupled with the set of plugins it loaded.</li>
-<li>Due to its asynchronous nature, Traffic Server should allow running different newer and older versions of the same plugin at the same time.</li>
-<li>Old plugin versions should be unloaded after the Traffic Server process no longer needs them after reload.</li>
-<li>Running different versions of the configuration and plugin versions at the same time requires maintaining
-a “current active set” to be used by new transactions, new continuations, etc. and also multiple “previous inactive” sets as well.</li>
-<li>The result of the plugin reloading should be consistent across operating systems, file systems, and dynamic loader
-implementations.</li>
+<li><p>The mechanism of the plugin reload should be transparent to the plugin developers. Plugin developers should be
+concerned only with properly initializing and cleaning up after the plugin and its instances.</p></li>
+<li><p>With the current Traffic Server implementation, new version plugin (re)load is only triggered by a configuration
+(re)load. Hence the configuration should always be coupled with the set of plugins it loaded.</p></li>
+<li><p>Due to its asynchronous nature, Traffic Server should allow running different newer and older versions of the same plugin at the same time.</p></li>
+<li><p>Old plugin versions should be unloaded after the Traffic Server process no longer needs them after reload.</p></li>
+<li><p>Running different versions of the configuration and plugin versions at the same time requires maintaining
+a “current active set” to be used by new transactions, new continuations, etc. and also multiple “previous inactive” sets as well.</p></li>
+<li><p>The result of the plugin reloading should be consistent across operating systems, file systems, and dynamic loader
+implementations.</p></li>
 </ol>
 <p>Currently only loading of “remap” plugins (<cite>remap.config</cite>) is supported but (re)loading of “global” plugins
 (<cite>plugin.config</cite>) could use same ideas and reuse some of the classes below.</p>
@@ -228,20 +228,20 @@ implementations.</li>
 <p>The following are some of the problems noticed during initial experimentation:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>There is an internal reference counting of the DSOs implemented inside the dynamic loader.
+<li><p>There is an internal reference counting of the DSOs implemented inside the dynamic loader.
 If an older version of the plugin DSO is still loaded, then loading of a newer version of the DSO by using
-the same filename does not load the new version.</li>
-<li>If the filename used by the dynamic loader reference counting contains symbolic links the results are not
-consistent across different operating/file systems and dynamic loader implementations.</li>
+the same filename does not load the new version.</p></li>
+<li><p>If the filename used by the dynamic loader reference counting contains symbolic links the results are not
+consistent across different operating/file systems and dynamic loader implementations.</p></li>
 </ol>
 </div></blockquote>
 <p>The following possible solutions were considered:</p>
 <blockquote>
 <div><ol class="loweralpha simple">
-<li>maintaining different plugin filenames for each version - this would put unnecessary burden on the
-configuration management tools</li>
-<li>experiments with Linux specific <a class="reference external" href="http://man7.org/linux/man-pages/man3/dlopen.3.html">dlmopen</a> yielded
-good results but it was not available on all supported platforms</li>
+<li><p>maintaining different plugin filenames for each version - this would put unnecessary burden on the
+configuration management tools</p></li>
+<li><p>experiments with Linux specific <a class="reference external" href="http://man7.org/linux/man-pages/man3/dlopen.3.html">dlmopen</a> yielded
+good results but it was not available on all supported platforms</p></li>
 </ol>
 </div></blockquote>
 <p>A less efficient but more reliable solution was chosen: DSO files are temporarily copied to and consequently
@@ -293,12 +293,12 @@ can be used by plugins to store information. To avoid collisions between plugins
 <h3>PluginFactory<a class="headerlink" href="#pluginfactory" title="Permalink to this headline">¶</a></h3>
 <p><cite>PluginFactory</cite> creates and holds all plugin instances corresponding to a single configuration (re)load.</p>
 <ol class="arabic simple">
-<li>Instantiates and initializes ‘remap’ plugins, eventually signals plugin unload/destruction, and makes sure each plugin
-version is loaded only once per configuration (re)load by maintaining a list of DSOs already loaded.</li>
-<li>Initializes and keeps track of all resulting plugin instances and eventually signals each instance destruction.</li>
-<li>Handles multiple plugin search paths.</li>
-<li>Sets a common runtime path for all plugins loaded in a single configuration (re)load to guarantee
-<a class="reference internal" href="#consistent-re-loading-behavior">consistent (re)loading behavior</a>.</li>
+<li><p>Instantiates and initializes ‘remap’ plugins, eventually signals plugin unload/destruction, and makes sure each plugin
+version is loaded only once per configuration (re)load by maintaining a list of DSOs already loaded.</p></li>
+<li><p>Initializes and keeps track of all resulting plugin instances and eventually signals each instance destruction.</p></li>
+<li><p>Handles multiple plugin search paths.</p></li>
+<li><p>Sets a common runtime path for all plugins loaded in a single configuration (re)load to guarantee
+<a class="reference internal" href="#consistent-re-loading-behavior">consistent (re)loading behavior</a>.</p></li>
 </ol>
 </div>
 <div class="section" id="remapplugininfo">

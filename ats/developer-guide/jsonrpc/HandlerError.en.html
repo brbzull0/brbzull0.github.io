@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -118,8 +118,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-api.en.html">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-node.en.html">JSONRPC Endpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">Handler implementation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control Development Guide</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">API Handler error codes</a></li>
 </ul>
@@ -205,47 +207,48 @@ A good approach could be the following. This required coordination among all the
 <span class="p">};</span>
 </pre></div>
 </div>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv45Codes">
-<span id="_CPPv35Codes"></span><span id="_CPPv25Codes"></span><span id="Codes"></span><em class="property">class </em><code class="descname">Codes</code><a class="headerlink" href="#_CPPv45Codes" title="Permalink to this definition">¶</a><br /></dt>
-<dd><dl class="enumerator">
+<span id="_CPPv35Codes"></span><span id="_CPPv25Codes"></span><span id="Codes"></span><em class="property">class </em><code class="sig-name descname">Codes</code><a class="headerlink" href="#_CPPv45Codes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATIONE">
-<span id="_CPPv3N5Codes13CONFIGURATIONE"></span><span id="_CPPv2N5Codes13CONFIGURATIONE"></span><em class="property">enumerator </em><code class="descname">CONFIGURATION</code> = 1<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATIONE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATIONE"></span><span id="_CPPv2N5Codes13CONFIGURATIONE"></span><em class="property">enumerator </em><code class="sig-name descname">CONFIGURATION</code> = 1<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATIONE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><blockquote>
-<div>Errors during configuration api handling.</div></blockquote>
-<dl class="enumerator">
+<div><p>Errors during configuration api handling.</p>
+</div></blockquote>
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION6METRICE">
-<span id="_CPPv3N5Codes13CONFIGURATION6METRICE"></span><span id="_CPPv2N5Codes13CONFIGURATION6METRICE"></span><em class="property">enumerator </em><code class="descname">METRIC</code> = 1000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6METRICE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION6METRICE"></span><span id="_CPPv2N5Codes13CONFIGURATION6METRICE"></span><em class="property">enumerator </em><code class="sig-name descname">METRIC</code> = 1000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6METRICE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during metrics api handling.</p>
 </dd></dl>
 
-<dl class="enumerator">
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION6RECORDE">
-<span id="_CPPv3N5Codes13CONFIGURATION6RECORDE"></span><span id="_CPPv2N5Codes13CONFIGURATION6RECORDE"></span><em class="property">enumerator </em><code class="descname">RECORD</code> = 2000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6RECORDE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION6RECORDE"></span><span id="_CPPv2N5Codes13CONFIGURATION6RECORDE"></span><em class="property">enumerator </em><code class="sig-name descname">RECORD</code> = 2000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6RECORDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during record api handling.</p>
 </dd></dl>
 
-<dl class="enumerator">
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION6SERVERE">
-<span id="_CPPv3N5Codes13CONFIGURATION6SERVERE"></span><span id="_CPPv2N5Codes13CONFIGURATION6SERVERE"></span><em class="property">enumerator </em><code class="descname">SERVER</code> = 3000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6SERVERE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION6SERVERE"></span><span id="_CPPv2N5Codes13CONFIGURATION6SERVERE"></span><em class="property">enumerator </em><code class="sig-name descname">SERVER</code> = 3000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6SERVERE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during server api handling.</p>
 </dd></dl>
 
-<dl class="enumerator">
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION7STORAGEE">
-<span id="_CPPv3N5Codes13CONFIGURATION7STORAGEE"></span><span id="_CPPv2N5Codes13CONFIGURATION7STORAGEE"></span><em class="property">enumerator </em><code class="descname">STORAGE</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7STORAGEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION7STORAGEE"></span><span id="_CPPv2N5Codes13CONFIGURATION7STORAGEE"></span><em class="property">enumerator </em><code class="sig-name descname">STORAGE</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7STORAGEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during storage api handling.</p>
 </dd></dl>
 
-<dl class="enumerator">
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION6PLUGINE">
-<span id="_CPPv3N5Codes13CONFIGURATION6PLUGINE"></span><span id="_CPPv2N5Codes13CONFIGURATION6PLUGINE"></span><em class="property">enumerator </em><code class="descname">PLUGIN</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6PLUGINE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION6PLUGINE"></span><span id="_CPPv2N5Codes13CONFIGURATION6PLUGINE"></span><em class="property">enumerator </em><code class="sig-name descname">PLUGIN</code> = 4000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION6PLUGINE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during plugion api handling.</p>
 </dd></dl>
 
-<dl class="enumerator">
+<dl class="cpp enumerator">
 <dt id="_CPPv4N5Codes13CONFIGURATION7GENERICE">
-<span id="_CPPv3N5Codes13CONFIGURATION7GENERICE"></span><span id="_CPPv2N5Codes13CONFIGURATION7GENERICE"></span><em class="property">enumerator </em><code class="descname">GENERIC</code> = 30000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7GENERICE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Codes13CONFIGURATION7GENERICE"></span><span id="_CPPv2N5Codes13CONFIGURATION7GENERICE"></span><em class="property">enumerator </em><code class="sig-name descname">GENERIC</code> = 30000<a class="headerlink" href="#_CPPv4N5Codes13CONFIGURATION7GENERICE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Errors during generic api handling, general errors.</p>
 </dd></dl>
 

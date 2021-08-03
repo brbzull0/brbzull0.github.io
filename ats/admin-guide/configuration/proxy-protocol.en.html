@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -122,7 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -205,8 +205,8 @@ information from the previous hop connecting to Traffic Server and not the actua
 originating client connection information.  This can be done over either HTTP or
 TLS connections.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The current implementation doesn’t support TLV fields of Version 2.</p>
+<p class="admonition-title">Note</p>
+<p>The current implementation doesn’t support TLV fields of Version 2.</p>
 </div>
 <p>The Proxy Protocol must be enabled on each port.  See
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> for information on how to enable the
@@ -217,20 +217,20 @@ dropped.</p>
 configured with <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-proxy-protocol-allowlist" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.proxy_protocol_allowlist</span></code></a>.</p>
 <blockquote>
 <div><div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">If the allowlist is configured, requests will only be accepted from these
+<p class="admonition-title">Important</p>
+<p>If the allowlist is configured, requests will only be accepted from these
 IP addresses and must be prefaced with the PROXY v1/v2 header.</p>
 </div>
 </div></blockquote>
 <ol class="arabic simple">
-<li>HTTP Forwarded Header</li>
+<li><p>HTTP Forwarded Header</p></li>
 </ol>
 <p>The client IP address in the PROXY protocol header is passed to the origin server via an HTTP <a class="reference external" href="https://tools.ietf.org/html/rfc7239">Forwarded:</a> header. See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a> for configuration information.
 Detection of the PROXY protocol header is automatic.  If the PROXY header
 precludes the request, it will automatically be parse and made available to the
 Forwarded: request header sent to the origin server.</p>
 <ol class="arabic simple" start="2">
-<li>Outbound PROXY protocol</li>
+<li><p>Outbound PROXY protocol</p></li>
 </ol>
 <p>See <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-proxy-protocol-out" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.proxy_protocol_out</span></code></a> for configuration information.</p>
 <div class="section" id="example">
@@ -238,7 +238,7 @@ Forwarded: request header sent to the origin server.</p>
 <p>As an example, consider the following topology:</p>
 <div class="figure align-center" id="id3">
 <img alt="PROXY protocol transformed into a Forwarded: header" src="../../_images/proxy-protocol.png" />
-<p class="caption"><span class="caption-text">PROXY protocol header flow</span></p>
+<p class="caption"><span class="caption-text">PROXY protocol header flow</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>Without the PROXY protocol header, the client IP would only be reported
 accurately to the Load Balancer.  Traffic Server would only see the connection from the
@@ -260,8 +260,8 @@ header to determine the TLS connection originated from the client at <code class
 <div class="section" id="references">
 <h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><a class="reference external" href="https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt">The PROXY protocol Versions 1 &amp; 2</a></li>
-<li><a class="reference external" href="https://tools.ietf.org/html/rfc7239#page-6">Forwarded HTTP Extension</a></li>
+<li><p><a class="reference external" href="https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt">The PROXY protocol Versions 1 &amp; 2</a></p></li>
+<li><p><a class="reference external" href="https://tools.ietf.org/html/rfc7239#page-6">Forwarded HTTP Extension</a></p></li>
 </ul>
 </div>
 </div>

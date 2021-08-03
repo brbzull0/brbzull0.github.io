@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -233,10 +233,10 @@ when building Traffic Server:</p>
 <p>Or use <strong class="program">tsxs</strong> to compile the plugin against your current Traffic Server build.
 To do this, you must ensure that:</p>
 <ol class="arabic simple">
-<li>Development packages for Traffic Server are installed.</li>
-<li>The <strong class="program">tsxs</strong> binary is in your path.</li>
-<li>The version of this plugin you are building, and the version of Traffic Server against
-which you are building it are compatible.</li>
+<li><p>Development packages for Traffic Server are installed.</p></li>
+<li><p>The <strong class="program">tsxs</strong> binary is in your path.</p></li>
+<li><p>The version of this plugin you are building, and the version of Traffic Server against
+which you are building it are compatible.</p></li>
 </ol>
 <p>Once those conditions are satisfied, enter the source directory for the plugin
 and perform the following:</p>
@@ -250,12 +250,12 @@ and perform the following:</p>
 <p>This plugin can function as a per remap plugin or a global plugin, and it takes two optional
 arguments for specifying the delay between successive retries and a max
 number of retries.</p>
-<p>To activate the plugin in per remap mode, in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, simply append the
+<p>To activate the plugin in per remap mode, in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, simply append the
 below to the specific remap line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">collapsed_forwarding</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">delay</span><span class="o">=&lt;</span><span class="n">delay</span><span class="o">&gt;</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">retries</span><span class="o">=&lt;</span><span class="n">retries</span><span class="o">&gt;</span>
 </pre></div>
 </div>
-<p>To activate the plugin globally, in <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>, add the following line:</p>
+<p>To activate the plugin globally, in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>, add the following line:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">collapsed_forwarding</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">delay</span><span class="o">=&lt;</span><span class="n">delay</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">retries</span><span class="o">=&lt;</span><span class="n">retries</span><span class="o">&gt;</span>
 </pre></div>
 </div>
@@ -273,12 +273,12 @@ read-while-writer feature to start downloading the object to all waiting
 clients. The following config parameters are assumed to be set for this
 plugin to work:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-open-write-fail-action" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.open_write_fail_action</span></code></a>        <code class="docutils literal notranslate"><span class="pre">1</span></code></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-enable-read-while-writer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.enable_read_while_writer</span></code></a>           <code class="docutils literal notranslate"><span class="pre">1</span></code></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-number-of-redirections" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.number_of_redirections</span></code></a>             <code class="docutils literal notranslate"><span class="pre">10</span></code></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-redirect-use-orig-cache-key" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.redirect_use_orig_cache_key</span></code></a>         <code class="docutils literal notranslate"><span class="pre">1</span></code></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a>      <code class="docutils literal notranslate"><span class="pre">0</span></code></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-completed-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_completed_threshold</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-open-write-fail-action" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.open_write_fail_action</span></code></a>        <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-enable-read-while-writer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.enable_read_while_writer</span></code></a>           <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-number-of-redirections" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.number_of_redirections</span></code></a>             <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-redirect-use-orig-cache-key" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.redirect_use_orig_cache_key</span></code></a>         <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a>      <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-completed-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_completed_threshold</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
 </ul>
 <p>Additionally, given that collapsed forwarding works based on cache write
 lock failure detection, the plugin requires cache to be enabled and ready.

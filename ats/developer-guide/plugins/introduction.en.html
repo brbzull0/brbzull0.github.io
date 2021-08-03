@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -220,16 +220,16 @@
 <p>This chapter provides a foundation for designing and writing plugins.
 Reading this chapter will help you to understand:</p>
 <ul class="simple">
-<li>The asynchronous event mode. This is the design paradigm used
+<li><p>The asynchronous event mode. This is the design paradigm used
 throughout Traffic Server; plugins must also follow this design. It
 includes the callback mechanism for Traffic Server to “wake up” your
-plugin and put it to work.</li>
-<li>Traffic Server’s HTTP processing, with an overview of the HTTP state
-machine.</li>
-<li>How plugins can hook onto and modify/extend Traffic Server’s HTTP
-processing.</li>
-<li>A <a class="reference internal" href="#developer-plugins-roadmap"><span class="std std-ref">Roadmap</span></a> with an overview of the functionality
-provided by the Traffic Server API.</li>
+plugin and put it to work.</p></li>
+<li><p>Traffic Server’s HTTP processing, with an overview of the HTTP state
+machine.</p></li>
+<li><p>How plugins can hook onto and modify/extend Traffic Server’s HTTP
+processing.</p></li>
+<li><p>A <a class="reference internal" href="#developer-plugins-roadmap"><span class="std std-ref">Roadmap</span></a> with an overview of the functionality
+provided by the Traffic Server API.</p></li>
 </ul>
 <div class="section" id="roadmap">
 <span id="developer-plugins-roadmap"></span><h2>Roadmap<a class="headerlink" href="#roadmap" title="Permalink to this headline">¶</a></h2>
@@ -238,51 +238,51 @@ processing, API hooks, and the asynchronous event model. Next, you must
 understand the capabilities of Traffic Server API functions. These are
 quite broad:</p>
 <ul>
-<li><p class="first"><strong>HTTP header manipulation functions</strong></p>
+<li><p><strong>HTTP header manipulation functions</strong></p>
 <p>Obtain information about and manipulate HTTP headers, URLs, &amp; MIME
 headers.</p>
 </li>
-<li><p class="first"><strong>HTTP transaction functions</strong></p>
+<li><p><strong>HTTP transaction functions</strong></p>
 <p>Get information about and modify HTTP transactions (for example: get
 the client IP associated to the transaction; get the server IP; get
 parent proxy information)</p>
 </li>
-<li><p class="first"><strong>IO functions</strong></p>
+<li><p><strong>IO functions</strong></p>
 <p>Manipulate vconnections (virtual connections, used for network and
 disk I/O)</p>
 </li>
-<li><p class="first"><strong>Network connection functions</strong></p>
+<li><p><strong>Network connection functions</strong></p>
 <p>Open connections to remote servers.</p>
 </li>
-<li><p class="first"><strong>Statistics functions</strong></p>
+<li><p><strong>Statistics functions</strong></p>
 <p>Define and compute statistics for your plugin’s activity.</p>
 </li>
-<li><p class="first"><strong>Traffic Server management functions</strong></p>
+<li><p><strong>Traffic Server management functions</strong></p>
 <p>Obtain values for Traffic Server configuration and statistics
 variables.</p>
 </li>
 </ul>
 <p>Below are some guidelines for creating a plugin:</p>
 <ol class="arabic simple">
-<li>Decide what you want your plugin to do, based on the capabilities of
+<li><p>Decide what you want your plugin to do, based on the capabilities of
 the API and Traffic Server. The two kinds of example plugins
 provided with this SDK are HTTP-based (includes header-based and
 response transform plugins), and non-HTTP-based (a protocol plugin).
-These examples are discussed in the following chapters.</li>
-<li>Determine where your plugin needs to hook on to Traffic Server’s HTTP
-processing (view the <a class="reference internal" href="hooks-and-transactions/index.en.html#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a>).</li>
-<li>Read <a class="reference internal" href="example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a> to learn the basics of
+These examples are discussed in the following chapters.</p></li>
+<li><p>Determine where your plugin needs to hook on to Traffic Server’s HTTP
+processing (view the <a class="reference internal" href="hooks-and-transactions/index.en.html#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a>).</p></li>
+<li><p>Read <a class="reference internal" href="example-plugins/index.en.html#developer-plugins-header-based-examples"><span class="std std-ref">Header-Based Plugin Examples</span></a> to learn the basics of
 writing plugins: creating continuations and setting up hooks. If you
 want to write a plugin that transforms data, then read
-<a class="reference internal" href="http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a>.</li>
-<li>Figure out what parts of the Traffic Server API you need to use and
+<a class="reference internal" href="http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transformations</span></a>.</p></li>
+<li><p>Figure out what parts of the Traffic Server API you need to use and
 then read about the details of those APIs in this manual’s reference
-chapters.</li>
-<li>Compile and load your plugin (see <a class="reference internal" href="getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a>).</li>
-<li>Depending on your plugin’s functionality, you might start testing it
+chapters.</p></li>
+<li><p>Compile and load your plugin (see <a class="reference internal" href="getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a>).</p></li>
+<li><p>Depending on your plugin’s functionality, you might start testing it
 by issuing requests by hand and checking for the desired behavior in
 Traffic Server log files. See the <strong>*Traffic Server Administrator’s
-Guide*</strong> for information about Traffic Server logs.</li>
+Guide*</strong> for information about Traffic Server logs.</p></li>
 </ol>
 </div>
 <div class="section" id="asynchronous-event-model">
@@ -290,12 +290,12 @@ Guide*</strong> for information about Traffic Server logs.</li>
 <p>Traffic Server is a multi-threaded process. There are two main reasons
 why a server might use multiple threads:</p>
 <ul class="simple">
-<li>To take advantage of the concurrency available with multiple CPUs and
-multiple I/O devices.</li>
-<li>To manage concurrency from having many simultaneous client
+<li><p>To take advantage of the concurrency available with multiple CPUs and
+multiple I/O devices.</p></li>
+<li><p>To manage concurrency from having many simultaneous client
 connections. For example, a server could create one thread for each
 connection, allowing the operating system (OS) to control switching
-between threads.</li>
+between threads.</p></li>
 </ul>
 <p>Traffic Server uses multiple threads for the first reason. However,
 Traffic Server does not use a separate OS thread per transaction because
@@ -321,18 +321,18 @@ continuation by sending it an event. When a continuation receives an
 event, it wakes up, does some work, and either destroys itself or goes
 back to sleep &amp; waits for the next event.</p>
 <p><strong>Traffic Server Internals</strong></p>
-<div class="figure" id="id1">
+<div class="figure align-default" id="id1">
 <span id="tsinternals"></span><img alt="Traffic Server Internals" src="../../_images/event_sys80.jpg" />
-<p class="caption"><span class="caption-text">Traffic Server Internals</span></p>
+<p class="caption"><span class="caption-text">Traffic Server Internals</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>Plugins are typically implemented as continuations. All of the sample
 code plugins (except <code class="docutils literal notranslate"><span class="pre">hello_world</span></code>) are continuations that are created
 when Traffic Server starts up; they then wait for events that trigger
 them into activity.</p>
 <p><strong>Traffic Server with Plugins</strong></p>
-<div class="figure" id="id2">
+<div class="figure align-default" id="id2">
 <span id="tswithplugins"></span><img alt="Traffic Server with Plugins" src="../../_images/evt_plugin120.jpg" />
-<p class="caption"><span class="caption-text">Traffic Server with Plugins</span></p>
+<p class="caption"><span class="caption-text">Traffic Server with Plugins</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>A plugin may consist of just one static continuation that is called
 whenever certain events happen. Examples of such plugins include
@@ -383,9 +383,9 @@ origin server. The following diagram shows some states in a typical
 transaction - specifically, the scenario wherein content is served from
 cache.</p>
 <p><strong>Simplified HTTP Transaction</strong></p>
-<div class="figure" id="id3">
+<div class="figure align-default" id="id3">
 <span id="simplifiedhttptransaction"></span><img alt="Simplified HTTP Transaction" src="../../_images/transact75.jpg" />
-<p class="caption"><span class="caption-text">Simplified HTTP Transaction</span></p>
+<p class="caption"><span class="caption-text">Simplified HTTP Transaction</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>In the diagram above, Traffic Server accepts the client connection,
 reads the request headers, looks up the origin server’s IP address, and
@@ -403,9 +403,9 @@ state and sends a reply. If the reply is an error, then the transaction
 closes. If the reply is not an error, then Traffic Server first sends
 the response content before it closes the transaction.</p>
 <p><strong>API Hooks Corresponding to States</strong></p>
-<div class="figure" id="id4">
+<div class="figure align-default" id="id4">
 <span id="apihookscorrespondingtostates"></span><img alt="API Hooks Corresponding to States Listed in" src="../../_images/transact_hook75.jpg" />
-<p class="caption"><span class="caption-text">API Hooks Corresponding to States Listed in</span></p>
+<p class="caption"><span class="caption-text">API Hooks Corresponding to States Listed in</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>You use hooks as triggers to start your plugin. The name of a hook
 reflects the Traffic Server state that was <em>just completed</em>. For
@@ -415,9 +415,9 @@ the requested origin server, this hook is the right one to use. The
 Denylist plugin works in this manner, as shown in the <a class="reference internal" href="#denylistplugin"><span class="std std-ref">Denylist Plugin</span></a>
 diagram below.</p>
 <p><strong>Denylist Plugin</strong></p>
-<div class="figure" id="id5">
+<div class="figure align-default" id="id5">
 <span id="denylistplugin"></span><img alt="Denylist Plugin" src="../../_images/denylist.jpg" />
-<p class="caption"><span class="caption-text">Denylist Plugin</span></p>
+<p class="caption"><span class="caption-text">Denylist Plugin</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>Traffic Server calls the Denylist plugin right after the origin server
 DNS lookup. The plugin checks the requested host against a list of

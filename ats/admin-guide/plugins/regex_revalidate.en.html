@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -228,6 +228,7 @@ cache revalidation settings (such as fuzz times) used by other plugins.</p>
 regular expression against your origin URLs permits. Thus, individual cache
 objects may have rules created for them, or entire path prefixes, or even any
 cache objects with a particular file extension.</p>
+<p>Revalidate count  stats for MISS and STALE are recorded under plugins</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -239,7 +240,7 @@ building Traffic Server:</p>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>This plugin is enabled via the <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> configuration file, with
+<p>This plugin is enabled via the <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> configuration file, with
 two required arguments: the path to a rules file, and the path to a log file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_revalidate</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">rules</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">log</span><span class="o">&gt;</span>
 </pre></div>
@@ -256,13 +257,24 @@ config file changes are checked are only when <code class="docutils literal notr
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_revalidate</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">rules</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">log</span><span class="o">&gt;</span>
 </pre></div>
 </div>
+<p>The configuration parameter <cite>–state-file</cite> or <cite>-f</cite> may be used to configure
+the plugin to maintain a state file with the last loaded configuration.
+Normally when ATS restarts the epoch times of all rules are reset to
+the first config file load time which will cause all matching assets to
+issue new IMS requests to their parents for mathing rules.</p>
+<p>This option allows the revalidate rule “epoch” times to be retained between ATS
+restarts.  This state file by default is placed in var/trafficserver/&lt;filename&gt;
+but an absolute path may be specified as well. Syntax is as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">regex_revalidate</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">d</span> <span class="o">-</span><span class="n">c</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">rules</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">f</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">state</span> <span class="n">file</span><span class="o">&gt;</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="revalidation-rules">
 <h2>Revalidation Rules<a class="headerlink" href="#revalidation-rules" title="Permalink to this headline">¶</a></h2>
 <p>Inside your revalidation rules configuration, each rule line is defined as a
 regular expression followed by an integer which expresses the epoch time at
 which the rule will expire:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">regular</span> <span class="n">expression</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rule</span> <span class="n">expiry</span><span class="p">,</span> <span class="k">as</span> <span class="n">seconds</span> <span class="n">since</span> <span class="n">epoch</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">regular</span> <span class="n">expression</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rule</span> <span class="n">expiry</span><span class="p">,</span> <span class="k">as</span> <span class="n">seconds</span> <span class="n">since</span> <span class="n">epoch</span><span class="o">&gt;</span> <span class="p">[</span><span class="nb">type</span> <span class="n">MISS</span> <span class="ow">or</span> <span class="n">default</span> <span class="n">STALE</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Blank lines and lines beginning with a <code class="docutils literal notranslate"><span class="pre">#</span></code> character are ignored.</p>
@@ -279,6 +291,15 @@ expressed as an integer of seconds since epoch (equivalent to the return value
 of <em class="manpage">time(2)</em>), after which the forced revalidation will no longer
 occur.</p>
 </div>
+<div class="section" id="type">
+<h3>Type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h3>
+<p>By default any matching asset will have its cache lookup status changed
+from HIT_FRESH to HIT_STALE.  By adding an extra keyword MISS at the end
+of a line the asset will be marked MISS instead, forcing a refetch from
+the parent. <em>Use with care</em> as this will increase bandwidth to the parent.
+During configuration reload, any rule which changes it type will be
+reloaded and treated as a new rule.</p>
+</div>
 </div>
 <div class="section" id="caveats">
 <h2>Caveats<a class="headerlink" href="#caveats" title="Permalink to this headline">¶</a></h2>
@@ -287,7 +308,7 @@ occur.</p>
 <p>The regular expressions in revalidation rules see only the final, remapped URL
 in a transaction. As such, they cannot be used to distinguish between two
 client-facing URLs which are mapped to the same origin object. This is due to
-the fact that the plugin uses <a class="reference internal" href="../../developer-guide/api/types/TSHttpHookID.en.html#c.TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK" title="TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK</span></code></a>.</p>
+the fact that the plugin uses <a class="reference internal" href="../../developer-guide/api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK" title="TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK</span></code></a>.</p>
 </div>
 <div class="section" id="removing-rules">
 <h3>Removing Rules<a class="headerlink" href="#removing-rules" title="Permalink to this headline">¶</a></h3>
@@ -296,6 +317,13 @@ the fact that the plugin uses <a class="reference internal" href="../../develope
 currently lead to that rule being removed from the running plugin. In these
 cases, if the rule must be taken out of service, a service restart may be
 necessary.</p>
+</div>
+<div class="section" id="state-file">
+<h3>State File<a class="headerlink" href="#state-file" title="Permalink to this headline">¶</a></h3>
+<p>The state file is not meant to be edited but is of the format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">regular</span> <span class="n">expression</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rule</span> <span class="n">epoch</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">rule</span> <span class="n">expiry</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nb">type</span><span class="o">&gt;</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="examples">
@@ -307,6 +335,10 @@ in Traffic Server until 6:47:27 AM on Saturday, November 14th, 2015 (UTC):</p>
 </pre></div>
 </div>
 <p>Note the escaping of the <code class="docutils literal notranslate"><span class="pre">.</span></code> metacharacter in the rule’s regular expression.</p>
+<p>Alternatively the following rule would case a refetch from the parent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span>\<span class="o">.</span><span class="n">tld</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">foo</span>\<span class="o">.</span><span class="n">jpg</span> <span class="mi">1447483647</span> <span class="n">MISS</span>
+</pre></div>
+</div>
 </div>
 </div>
 

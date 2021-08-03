@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -433,9 +436,9 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSContScheduleOnPool">
-<a class="reference internal" href="TSTypes.en.html#c.TSAction" title="TSAction">TSAction</a> <code class="descname">TSContScheduleOnPool</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a><em>&nbsp;contp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSHRTime" title="TSHRTime">TSHRTime</a><em>&nbsp;timeout</em>, <a class="reference internal" href="../types/TSThreadPool.en.html#c.TSThreadPool" title="TSThreadPool">TSThreadPool</a><em>&nbsp;tp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSContScheduleOnPool" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSAction" title="TSAction">TSAction</a> <code class="sig-name descname">TSContScheduleOnPool</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSHRTime" title="TSHRTime">TSHRTime</a> <em>timeout</em>, <a class="reference internal" href="../types/TSThreadPool.en.html#c.TSThreadPool" title="TSThreadPool">TSThreadPool</a> <em>tp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSContScheduleOnPool" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -450,28 +453,28 @@ not be effective. Note that <em>contp</em> is required to have a mutex, which is
 as indicated by <em>tp</em>. If <em>contp</em> already has an thread affinity set, and the thread
 type of thread affinity is the same as <em>tp</em>, then <em>contp</em> will be scheduled on the
 thread specified by thread affinity.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="24%" />
-<col width="76%" />
+<col style="width: 24%" />
+<col style="width: 76%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Pool</th>
-<th class="head">Properties</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Pool</p></th>
+<th class="head"><p>Properties</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_NET</span></code></td>
-<td>Transaction processing threads. Continuations on these threads must not block.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_NET</span></code></p></td>
+<td><p>Transaction processing threads. Continuations on these threads must not block.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_TASK</span></code></td>
-<td>Background threads. Continuations can perform blocking operations.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_TASK</span></code></p></td>
+<td><p>Background threads. Continuations can perform blocking operations.</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_DNS</span></code></td>
-<td>DNS request processing. May not exist depending on configuration. Not recommended.</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_DNS</span></code></p></td>
+<td><p>DNS request processing. May not exist depending on configuration. Not recommended.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_UDP</span></code></td>
-<td>UDP processing.</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_UDP</span></code></p></td>
+<td><p>UDP processing.</p></td>
 </tr>
 </tbody>
 </table>
@@ -539,8 +542,8 @@ types and thread pointers.</p>
 “contp” on thread “A”. And, as discussed, there is really no reason why one may want to schedule
 the same continuation on two different threads of the same type.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In scenario 3 &amp; 4, it doesn’t matter which thread the plugin is calling the API from.</p>
+<p class="admonition-title">Note</p>
+<p>In scenario 3 &amp; 4, it doesn’t matter which thread the plugin is calling the API from.</p>
 </div>
 </div>
 </div>

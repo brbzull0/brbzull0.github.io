@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -124,7 +124,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -212,25 +212,23 @@ establish, and when appropriate forward the request on to its destination
 website. The response will return through your proxy, where it may optionally
 be cached and/or modified, and then returned to the original client.</p>
 <p>There are two modes in which your forward proxy may operate:</p>
-<dl class="docutils">
-<dt>Forward Proxy</dt>
-<dd><p class="first">Each client must be configured explicitly to use the forward proxy. Client
+<dl>
+<dt>Forward Proxy</dt><dd><p>Each client must be configured explicitly to use the forward proxy. Client
 browsers will be aware of the fact they are using a proxy and will form their
 HTTP requests appropriately. This results in the initial HTTP command being
 issued with fully qualified URIs that contain the destination hostname:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>GET http://example.com/index.php?id=123 HTTP/1.1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET http://example.com/index.php?id=123 HTTP/1.1
 </pre></div>
 </div>
 </dd>
-<dt>Transparent Proxy</dt>
-<dd><p class="first">The use of a transparent proxy is typically done in concert with network
+<dt>Transparent Proxy</dt><dd><p>The use of a transparent proxy is typically done in concert with network
 routing rules which redirect all outbound HTTP traffic through your proxy.
 Clients will behave, and form their HTTP requests, as if they are contacting
 the remote site directly, and will not be aware of the existence of a proxy
 server in between themselves and the remote servers. HTTP requests will be
 generated per their usual form, with only paths in the command and a
 separate Host request header:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span>GET /index?id=123 HTTP/1.1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>GET /index?id=123 HTTP/1.1
 Host: example.com
 </pre></div>
 </div>
@@ -243,16 +241,16 @@ a transparent proxy simultaneously.</p>
 <p>Configuring basic forward proxy operation in Traffic Server is quite simple
 and straightforward.</p>
 <ol class="arabic">
-<li><p class="first">Permit Traffic Server to process requests for hosts not explicitly configured
+<li><p>Permit Traffic Server to process requests for hosts not explicitly configured
 in the remap rules, by modifying <a class="reference internal" href="../files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a>
-in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">url_remap</span><span class="o">.</span><span class="n">remap_required</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first"><em>Optional</em>: If Traffic Server will be operating strictly as a forward proxy,
+<li><p><em>Optional</em>: If Traffic Server will be operating strictly as a forward proxy,
 you will want to disable reverse proxy support by modifying
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">reverse_proxy</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
@@ -260,15 +258,15 @@ you will want to disable reverse proxy support by modifying
 </ol>
 <p>You may also want to consider some of these configuration options:</p>
 <ul class="simple">
-<li>Setting <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-no-dns-just-forward-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.no_dns_just_forward_to_parent</span></code></a> determines which
-host will be used for DNS resolution.</li>
-<li>Proxy Authentication can be enabled or disabled with
+<li><p>Setting <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-no-dns-just-forward-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.no_dns_just_forward_to_parent</span></code></a> determines which
+host will be used for DNS resolution.</p></li>
+<li><p>Proxy Authentication can be enabled or disabled with
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-forward-proxy-auth-to-parent" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.forward.proxy_auth_to_parent</span></code></a> should you also be
-employing a proxy cache.</li>
-<li>The client request header X-Forwarded-For may be toggled with
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-squid-x-forwarded-for" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_squid_x_forwarded_for</span></code></a>.</li>
-<li>The client request header Forwarded may be configured with
-<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a>.</li>
+employing a proxy cache.</p></li>
+<li><p>The client request header X-Forwarded-For may be toggled with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-squid-x-forwarded-for" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_squid_x_forwarded_for</span></code></a>.</p></li>
+<li><p>The client request header Forwarded may be configured with
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-insert-forwarded" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.insert_forwarded</span></code></a>.</p></li>
 </ul>
 </div>
 <div class="section" id="client-configuration">

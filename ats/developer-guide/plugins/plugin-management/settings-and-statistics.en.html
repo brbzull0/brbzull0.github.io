@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -218,20 +218,20 @@
 <span id="developer-plugins-management-settings-and-statistics"></span><h1>Settings and Statistics<a class="headerlink" href="#settings-and-statistics" title="Permalink to this headline">¶</a></h1>
 <p>Your plugin might need to know information about Traffic Server’s
 current configuration and performance. The functions described in this
-section read this information from the Traffic Server <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+section read this information from the Traffic Server <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
 file. Configuration settings are stored in <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> variables and
 statistics are stored in <code class="docutils literal notranslate"><span class="pre">PROCESS</span></code> variables.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">Not all <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> and <code class="docutils literal notranslate"><span class="pre">PROCESS</span></code> variables in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> are
+<p class="admonition-title">Caution</p>
+<p>Not all <code class="docutils literal notranslate"><span class="pre">CONFIG</span></code> and <code class="docutils literal notranslate"><span class="pre">PROCESS</span></code> variables in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> are
 relevant to Traffic Server’s configuration and statistics. Therefore,
-retrieve only the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> variables that are documented in
+retrieve only the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> variables that are documented in
 the <a class="reference internal" href="../../../admin-guide/index.en.html#admin-guide"><span class="std std-ref">Administrator’s Guide</span></a>.</p>
 </div>
 <p>To retrieve a variable, you need to know its type (<code class="docutils literal notranslate"><span class="pre">int</span></code>, <code class="docutils literal notranslate"><span class="pre">counter</span></code>,
-<code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code>). Plugins store the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> values
+<code class="docutils literal notranslate"><span class="pre">float</span></code>, or <code class="docutils literal notranslate"><span class="pre">string</span></code>). Plugins store the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> values
 as an <code class="docutils literal notranslate"><span class="pre">TSMgmtInt</span></code>, <code class="docutils literal notranslate"><span class="pre">TSMgmtCounter</span></code>, <code class="docutils literal notranslate"><span class="pre">TSMgmtFloat</span></code>, or
-<code class="docutils literal notranslate"><span class="pre">TSMgmtString</span></code>. You can look up <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> variable types in
+<code class="docutils literal notranslate"><span class="pre">TSMgmtString</span></code>. You can look up <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> variable types in
 the <a class="reference internal" href="../../../admin-guide/index.en.html#admin-guide"><span class="std std-ref">Administrator’s Guide</span></a>.</p>
 <p>Depending on the result type, you’ll use <code class="docutils literal notranslate"><span class="pre">TSMgmtIntGet</span></code>,
 <code class="docutils literal notranslate"><span class="pre">TSMgmtCounterGet</span></code>, <code class="docutils literal notranslate"><span class="pre">TSMgmtFloatGet</span></code>, or <code class="docutils literal notranslate"><span class="pre">TSMgmtStringGet</span></code> to
@@ -239,10 +239,10 @@ obtain the variable value (see the example for
 <a class="reference internal" href="../../api/functions/TSMgmtIntGet.en.html#c.TSMgmtIntGet" title="TSMgmtIntGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtIntGet()</span></code></a>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">TSMgmt*Get</span></code> functions are:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSMgmtCounterGet.en.html#c.TSMgmtCounterGet" title="TSMgmtCounterGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtCounterGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSMgmtFloatGet.en.html#c.TSMgmtFloatGet" title="TSMgmtFloatGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtFloatGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSMgmtIntGet.en.html#c.TSMgmtIntGet" title="TSMgmtIntGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtIntGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSMgmtStringGet.en.html#c.TSMgmtStringGet" title="TSMgmtStringGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtStringGet()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSMgmtCounterGet.en.html#c.TSMgmtCounterGet" title="TSMgmtCounterGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtCounterGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSMgmtFloatGet.en.html#c.TSMgmtFloatGet" title="TSMgmtFloatGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtFloatGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSMgmtIntGet.en.html#c.TSMgmtIntGet" title="TSMgmtIntGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtIntGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSMgmtStringGet.en.html#c.TSMgmtStringGet" title="TSMgmtStringGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtStringGet()</span></code></a></p></li>
 </ul>
 </div>
 

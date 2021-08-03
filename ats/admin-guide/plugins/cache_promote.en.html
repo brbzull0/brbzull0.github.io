@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -215,63 +215,71 @@
   <div class="section" id="cache-promote-plugin">
 <span id="admin-plugins-cache-promote"></span><h1>Cache Promote Plugin<a class="headerlink" href="#cache-promote-plugin" title="Permalink to this headline">¶</a></h1>
 <p>The <strong class="program">cache_promote</strong> plugin provides a means to control when an object should
-be allowed to enter the cache. This is orthogonal from normal Cache-Control
+be allowed to enter the cache. This is orthogonal from normal <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code>
 directives, providing a different set of policies to apply. The typical use
 case for this plugin is when you have a very large data set, where you want to
 avoid churning the ATS cache for the long tail content.</p>
-<p>All configuration is done via <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, and the following options
+<p>All configuration is done via <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, and the following options
 are available:</p>
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-cache-promote-policy">
-<code class="descname">--policy</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-policy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--policy</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-policy" title="Permalink to this definition">¶</a></dt>
 <dd><p>The promotion policy. The values <code class="docutils literal notranslate"><span class="pre">lru</span></code> and <code class="docutils literal notranslate"><span class="pre">chance</span></code> are supported.</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-cache-promote-sample">
-<code class="descname">--sample</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-sample" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--sample</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>The sampling rate for the request to be considered</p>
 </dd></dl>
 
 <p>If <a class="reference internal" href="#cmdoption-cache-promote-policy"><code class="xref std std-option docutils literal notranslate"><span class="pre">--policy</span></code></a> is set to <code class="docutils literal notranslate"><span class="pre">lru</span></code> the following options are also available:</p>
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-cache-promote-label">
-<code class="descname">--label</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-label" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--label</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-label" title="Permalink to this definition">¶</a></dt>
 <dd><p>An optional label for this LRU, to allow sharing an LRU across multiple remap
 rules. Note: In order for an LRU to be used by multiple remap rules, not only
 must the label match, both the <a class="reference internal" href="#cmdoption-cache-promote-hits"><code class="xref std std-option docutils literal notranslate"><span class="pre">--hits</span></code></a> and  <a class="reference internal" href="#cmdoption-cache-promote-buckets"><code class="xref std std-option docutils literal notranslate"><span class="pre">--buckets</span></code></a>
 options must be identical.</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-cache-promote-hits">
-<code class="descname">--hits</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-hits" title="Permalink to this definition">¶</a></dt>
-<dd><p>The minimum number of hits before promotion.</p>
+<code class="sig-name descname">--hits</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>The minimum number of requests before promotion.</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
+<dt id="cmdoption-cache-promote-bytes">
+<code class="sig-name descname">--bytes</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-bytes" title="Permalink to this definition">¶</a></dt>
+<dd><p>In addition to requests, also count bytes that are cache misses. If specified,
+default is <code class="docutils literal notranslate"><span class="pre">0</span></code>, whichever triggers first of bytes and requests (hits) will
+cause promotion.</p>
+</dd></dl>
+
+<dl class="std option">
 <dt id="cmdoption-cache-promote-buckets">
-<code class="descname">--buckets</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-buckets" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--buckets</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-buckets" title="Permalink to this definition">¶</a></dt>
 <dd><p>The size (number of entries) of the LRU.</p>
 </dd></dl>
 
-<dl class="option">
+<dl class="std option">
 <dt id="cmdoption-cache-promote-stats-enable-with-id">
-<code class="descname">--stats-enable-with-id</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-stats-enable-with-id" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--stats-enable-with-id</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-cache-promote-stats-enable-with-id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Enables collecting statistics.  The option requires an argument, the
 remap-identifier.  The remap-identifier is a string that is concatenated
 to the stat name.  The following stats are collected.</p>
 </dd></dl>
 
 <ul class="simple">
-<li><strong>plugin.cache_promote.${remap-identifier}.cache_hits</strong> - Cache hit total, available for all policies.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.freelist_size</strong> - Size of the freelist when using the LRU policy.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.lru_size</strong> - Size of the LRU when using the LRU policy.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.lru_hit</strong> - LRU hit count when using the LRU policy.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.lru_miss</strong> - LRU miss count when using the LRU policy.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.lru_vacated</strong> - count of LRU entries removed to make room for a new request.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.promoted</strong> - count requests promoted, available in all policies.</li>
-<li><strong>plugin.cache_promote.${remap-identifier}.total_requests</strong> - count of all requests.</li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.cache_hits</strong> - Cache hit total, available for all policies.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.freelist_size</strong> - Size of the freelist when using the LRU policy.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.lru_size</strong> - Size of the LRU when using the LRU policy.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.lru_hit</strong> - LRU hit count when using the LRU policy.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.lru_miss</strong> - LRU miss count when using the LRU policy.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.lru_vacated</strong> - count of LRU entries removed to make room for a new request.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.promoted</strong> - count requests promoted, available in all policies.</p></li>
+<li><p><strong>plugin.cache_promote.${remap-identifier}.total_requests</strong> - count of all requests.</p></li>
 </ul>
 <p>These two options combined with your usage patterns will control how likely a
 URL is to become promoted to enter the cache.</p>

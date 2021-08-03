@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -256,8 +256,8 @@ other hooks, this alternate selection callout is non-blocking; the
 expectation is that the quality value for the alternate will be changed
 by a call to <code class="docutils literal notranslate"><span class="pre">TSHttpAltInfoQualitySet</span></code>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">HTTP SM does not have to be reenabled using <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> or any
+<p class="admonition-title">Note</p>
+<p>HTTP SM does not have to be re-enabled using <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> or any
 other APIs; just return from the function.</p>
 </div>
 <p>The sample code below shows how to call the alternate APIs.</p>
@@ -359,16 +359,16 @@ other APIs; just return from the function.</p>
 <p>Traffic Server augments the alternate selection through these callouts
 using the following algorithm:</p>
 <ol class="arabic simple">
-<li>Traffic Server computes its own quality value for the alternate,
+<li><p>Traffic Server computes its own quality value for the alternate,
 taking into account the quality of the accept match, the encoding
-match, and the language match.</li>
-<li>Traffic Server then calls out each of the continuations on the global
-<code class="docutils literal notranslate"><span class="pre">TS_HTTP_SELECT_ALT_HOOK</span></code>’s list.</li>
-<li>It multiplies its quality value with the value returned by each
+match, and the language match.</p></li>
+<li><p>Traffic Server then calls out each of the continuations on the global
+<code class="docutils literal notranslate"><span class="pre">TS_HTTP_SELECT_ALT_HOOK</span></code>’s list.</p></li>
+<li><p>It multiplies its quality value with the value returned by each
 callout. Since all of the values are clamped to be between 0 and 1,
-the final value will be between 0 and 1 as well.</li>
-<li>This algorithm also ensures that a single callout can block the usage
-of a given alternate by specifying a quality value of 0.</li>
+the final value will be between 0 and 1 as well.</p></li>
+<li><p>This algorithm also ensures that a single callout can block the usage
+of a given alternate by specifying a quality value of 0.</p></li>
 </ol>
 <p>A common usage for the alternate selection mechanism is when a plugin
 transforms a document for some clients and not for others, but wants to
@@ -378,10 +378,10 @@ will then determine if the alternate matches this specification and then
 set the appropriate quality level for the alternate.</p>
 <p>The HTTP alternate selection functions are:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#af4f3a56716e3e97afd582c7fdb14bcb7">TSHttpAltInfoCachedReqGet</a></li>
-<li><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#aff5861ae4a4a7a6ce7b2d669c113b3bb">TSHttpAltInfoCachedRespGet</a></li>
-<li><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#a74d494c6442b6012d8385e92f0e14dee">TSHttpAltInfoClientReqGet</a></li>
-<li><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#a978b7160a048491d5698e0f4c0c79aad">TSHttpAltInfoQualitySet</a></li>
+<li><p><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#af4f3a56716e3e97afd582c7fdb14bcb7">TSHttpAltInfoCachedReqGet</a></p></li>
+<li><p><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#aff5861ae4a4a7a6ce7b2d669c113b3bb">TSHttpAltInfoCachedRespGet</a></p></li>
+<li><p><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#a74d494c6442b6012d8385e92f0e14dee">TSHttpAltInfoClientReqGet</a></p></li>
+<li><p><a class="reference external" href="http://people.apache.org/~amc/ats/doc/html/ts_8h.html#a978b7160a048491d5698e0f4c0c79aad">TSHttpAltInfoQualitySet</a></p></li>
 </ul>
 </div>
 

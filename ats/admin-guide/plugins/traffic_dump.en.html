@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -226,49 +226,47 @@
 </div>
 <div class="section" id="plugin-configuration">
 <h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">traffic_dump.so</span></code></dt>
-<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> is a global plugin and is configured via <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
-<blockquote class="last">
-<div><dl class="option">
-<dt id="cmdoption-traffic-dump-so-logdir">
-<code class="descname">--logdir</code><code class="descclassname"> &lt;path_to_dump&gt;</code><a class="headerlink" href="#cmdoption-traffic-dump-so-logdir" title="Permalink to this definition">¶</a></dt>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">traffic_dump.so</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> is a global plugin and is configured via <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
+<blockquote>
+<div><dl class="std option">
+<dt id="cmdoption-traffic_dump.so-logdir">
+<span id="cmdoption-traffic-dump-so-logdir"></span><code class="sig-name descname">--logdir</code><code class="sig-prename descclassname"> &lt;path_to_dump&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-logdir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the directory for writing all dump files. If the path is relative it is considered relative to the Traffic Server directory. The plugin will use the first three characters of the client’s IP to create subdirs in an attempt to spread dumps evenly and avoid too many files in a single directory.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-dump-so-sample">
-<code class="descname">--sample</code><code class="descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic-dump-so-sample" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sample">
+<span id="cmdoption-traffic-dump-so-sample"></span><code class="sig-name descname">--sample</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sample" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the sampling ratio N. Traffic Dump will capture every one out of N sessions. This ratio can also be changed via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> without restarting ATS.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-dump-so-limit">
-<code class="descname">--limit</code><code class="descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic-dump-so-limit" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-limit">
+<span id="cmdoption-traffic-dump-so-limit"></span><code class="sig-name descname">--limit</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-limit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the max disk usage to N bytes (approximate). Traffic Dump will stop capturing new sessions once disk usage exceeds this limit.</p>
-<dl class="option">
-<dt id="cmdoption-traffic-dump-so-sensitive-fields">
-<code class="descname">--sensitive-fields</code><code class="descclassname"> &lt;field1,field2,...,fieldn&gt;</code><a class="headerlink" href="#cmdoption-traffic-dump-so-sensitive-fields" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sensitive-fields">
+<span id="cmdoption-traffic-dump-so-sensitive-fields"></span><code class="sig-name descname">--sensitive-fields</code><code class="sig-prename descclassname"> &lt;field1,field2,...,fieldn&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sensitive-fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>) - A comma separated list of HTTP case-insensitive field names whose values are considered sensitive information. Traffic Dump will not dump the incoming field values for any of these fields but will instead dump a generic value for them of the same length as the original. If this option is not used, a default list of “Cookie,Set-Cookie” is used. Providing this option overwrites that default list with whatever values the user provides. Pass a quoted empty string as the argument to specify that no fields are sensitive,</p>
-<dl class="option">
-<dt id="cmdoption-traffic-dump-so-sni-filter">
-<code class="descname">--sni-filter</code><code class="descclassname"> &lt;SNI_Name&gt;</code><a class="headerlink" href="#cmdoption-traffic-dump-so-sni-filter" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sni-filter">
+<span id="cmdoption-traffic-dump-so-sni-filter"></span><code class="sig-name descname">--sni-filter</code><code class="sig-prename descclassname"> &lt;SNI_Name&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sni-filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>) - An SNI with which to filter sessions. Only HTTPS sessions with the provided SNI will be dumped. The sample option will apply a sampling rate to these filtered sessions. Thus, with a sample value of 2, 1/2 of all sessions with the specified SNI will be dumped.</p>
 </div></blockquote>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> &lt;command&gt;</dt>
-<dd><p class="first"><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> can be dynamically configured via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>.</p>
-<blockquote class="last">
+<dt><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> &lt;command&gt;</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> can be dynamically configured via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>.</p>
+<blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.sample</span> <span class="pre">N</span></code> - changes the sampling ratio N as mentioned above.</li>
-<li><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.reset</span></code> - resets the disk usage counter.</li>
-<li><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.limit</span> <span class="pre">N</span></code> - changes the max disk usage to N bytes as mentioned above.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.sample</span> <span class="pre">N</span></code> - changes the sampling ratio N as mentioned above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.reset</span></code> - resets the disk usage counter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.limit</span> <span class="pre">N</span></code> - changes the max disk usage to N bytes as mentioned above.</p></li>
 </ul>
 </div></blockquote>
 </dd>
@@ -278,11 +276,11 @@
 <h2>Replay Format<a class="headerlink" href="#replay-format" title="Permalink to this headline">¶</a></h2>
 <p>This replay files contain the following information:</p>
 <ul class="simple">
-<li>Each sampled session and all the transactions for those sessions.</li>
-<li>Timestamps of each transaction.</li>
-<li>The four sets of HTTP message headers (user agent request, proxy request, origin server response, proxy response).</li>
-<li>The protocol stacks for the user agent and the origin server connections.</li>
-<li>The number of body bytes for each message.</li>
+<li><p>Each sampled session and all the transactions for those sessions.</p></li>
+<li><p>Timestamps of each transaction.</p></li>
+<li><p>The four sets of HTTP message headers (user agent request, proxy request, origin server response, proxy response).</p></li>
+<li><p>The protocol stacks for the user agent and the origin server connections.</p></li>
+<li><p>The number of body bytes for each message.</p></li>
 </ul>
 <p>For details, see the schema: <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/tests/tools/lib/replay_schema.json">tests/tools/lib/replay_schema.json</a></p>
 </div>
@@ -290,9 +288,9 @@
 <h2>Post Processing<a class="headerlink" href="#post-processing" title="Permalink to this headline">¶</a></h2>
 <p>Traffic Dump comes with a post processing script located at <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/plugins/experimental/traffic_dump/post_process.py">plugins/experimental/traffic_dump/post_process.py</a>. This filters out incomplete sessions and transactions and merges a specifiable amount of sessions from a client into single replay files. It also optionally formats the single-line JSON files into a human readable format. It takes the following arguments:</p>
 <ul class="simple">
-<li>The first positional argument is the input directory containing the replay files captured by traffic_dump as described above.</li>
-<li>The second positional argument is the output directory containing the processed replay files.</li>
-<li><code class="docutils literal notranslate"><span class="pre">-n</span></code> is an optional argument specifying how many sessions will be attempted to be merged into single replay files. The default is 10.</li>
+<li><p>The first positional argument is the input directory containing the replay files captured by traffic_dump as described above.</p></li>
+<li><p>The second positional argument is the output directory containing the processed replay files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n</span></code> is an optional argument specifying how many sessions will be attempted to be merged into single replay files. The default is 10.</p></li>
 </ul>
 <p>There are other options. Use <code class="docutils literal notranslate"><span class="pre">--help</span></code> for a description of these.</p>
 </div>

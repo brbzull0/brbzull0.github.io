@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -126,7 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -228,7 +228,7 @@ intercept connections between clients and servers without being visible.</p>
 shown in the following figure.</p>
 <div class="figure align-center" id="id1">
 <img alt="ATS basic traffic flow of Transparent Proxy" src="../../_images/ats-basic-traffic.png" />
-<p class="caption"><span class="caption-text">ATS basic traffic flow of Transparent Proxy</span></p>
+<p class="caption"><span class="caption-text">ATS basic traffic flow of Transparent Proxy</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 <p>There must be a gateway device through which all network traffic passes
 from the client to the Internet (or external cloud). The gateway is
@@ -252,17 +252,17 @@ proxy, i.e. a connection initiated by the proxy to an origin server
 not required. Traffic Server supports transparency independently on the two
 sides.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
+<p class="admonition-title">Important</p>
 <p>It is critical to note that any transparency requires specialized
 routing and cannot be done solely by configuring ATS. ATS transparency
 also requires support from the Linux kernel and therefore currently only
 works on sufficiently recent Linux kernels that support the following
 features:</p>
 <ul class="simple">
-<li>TPROXY</li>
-<li>POSIX capabilities</li>
+<li><p>TPROXY</p></li>
+<li><p>POSIX capabilities</p></li>
 </ul>
-<p class="last">In addition the specialized routing will require using <code class="docutils literal notranslate"><span class="pre">iptables</span></code> and
+<p>In addition the specialized routing will require using <code class="docutils literal notranslate"><span class="pre">iptables</span></code> and
 in some cases <code class="docutils literal notranslate"><span class="pre">ebtables</span></code>.</p>
 </div>
 <p>Standard build procedures should work for transparency support but if
@@ -274,22 +274,22 @@ client side is transparent. That should be fixed in a future patch.</p>
 <p>In the first case use the attribute character (replacing the default
 ‘X’)</p>
 <p><strong>Attribute</strong> <strong>Transparency Style</strong> <strong>Reverse Proxy</strong></p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">=</span></code></dt>
-<dd>Full transparency: either</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></dt>
-<dd>Inbound (client) transparency: enabled</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></dt>
-<dd>Outbound (origin server) transparency: either</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">=</span></code></dt><dd><p>Full transparency: either</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></dt><dd><p>Inbound (client) transparency: enabled</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></dt><dd><p>Outbound (origin server) transparency: either</p>
+</dd>
 </dl>
 <p>In the outbound transparent case clients must connect directly to ATS
 either through an explicit proxy mechanism or by advertising the IP
 address of the ATS server via DNS as the origin server address.</p>
 <p>Some tested scenarios –</p>
 <ul class="simple">
-<li><a class="reference internal" href="transparent-proxy/bridge.en.html"><span class="doc">Inline on a Linux Bridge</span></a></li>
-<li><a class="reference internal" href="transparent-proxy/router-inline.en.html"><span class="doc">Inline on a Linux router</span></a></li>
-<li><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html"><span class="doc">WCCP Configuration</span></a></li>
+<li><p><a class="reference internal" href="transparent-proxy/bridge.en.html"><span class="doc">Inline on a Linux Bridge</span></a></p></li>
+<li><p><a class="reference internal" href="transparent-proxy/router-inline.en.html"><span class="doc">Inline on a Linux router</span></a></p></li>
+<li><p><a class="reference internal" href="transparent-proxy/wccp-configuration.en.html"><span class="doc">WCCP Configuration</span></a></p></li>
 </ul>
 </div>
 

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -229,20 +229,20 @@ combination with the ESI module, since they share common code.</p>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>The arguments in the <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> line in order represent</p>
+<p>The arguments in the <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> line in order represent</p>
 <ol class="arabic simple">
-<li>The path that should triggers combo handler (defaults to
-“admin/v1/combo”)</li>
-<li>The name of the key used for signature verification (disabled by
-default)</li>
-<li>A colon separated list of headers which, if present on at least one response, will be
-added to the combo response.</li>
-<li>The path of a config file with allowed content types of objects to be combined, one per
+<li><p>The path that should triggers combo handler (defaults to
+“admin/v1/combo”)</p></li>
+<li><p>The name of the key used for signature verification (disabled by
+default)</p></li>
+<li><p>A colon separated list of headers which, if present on at least one response, will be
+added to the combo response.</p></li>
+<li><p>The path of a config file with allowed content types of objects to be combined, one per
 line, without parameters. (Blank lines and comments starting with “#” are ignored.)
 Parameters in the Content-Type field value will be ignored when
 checking if they appear in the allowed types.  If the path does not start with “/”, the
 config file must be located in the ATS config directory.  By default, all content types
-are allowed, but if this file is specified, it must contain at least one content type.</li>
+are allowed, but if this file is specified, it must contain at least one content type.</p></li>
 </ol>
 <p>A “-” can be supplied as a value for any of these arguments to request
 default value be applied.</p>
@@ -283,13 +283,13 @@ changed or cleared (set to an empty string). For example, the query</p>
 <h2>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h2>
 <p>Combohandler follows a few rules for the “Cache-Control” header:</p>
 <ol class="arabic simple">
-<li>All requested documents must have “immutable” for the combo’d
-response to also have “immutable”.</li>
-<li>If one or more requested documents has “private” set, then the combo’d
+<li><p>All requested documents must have “immutable” for the combo’d
+response to also have “immutable”.</p></li>
+<li><p>If one or more requested documents has “private” set, then the combo’d
 response will also have “private”. If no requested documents have a
-publicity setting, then the default is “public”.</li>
-<li>The “max-age” value will be set to the smallest of all the requested “max-age”
-values. If no documents has “max-age” set, then the default is 10 years.</li>
+publicity setting, then the default is “public”.</p></li>
+<li><p>The “max-age” value will be set to the smallest of all the requested “max-age”
+values. If no documents has “max-age” set, then the default is 10 years.</p></li>
 </ol>
 </div>
 </div>

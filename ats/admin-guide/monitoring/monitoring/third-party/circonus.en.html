@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
 
@@ -122,7 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -216,7 +216,7 @@ suffice for this guide.</p>
 <h3>Enable Stats Over HTTP<a class="headerlink" href="#enable-stats-over-http" title="Permalink to this headline">¶</a></h3>
 <p>Follow the directions in the <a class="reference internal" href="../../../plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a> chapter to
 configure the plugin. At a bare minimum, you will need to add the plugin to
-<a class="reference internal" href="../../../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>. For this guide, we will assume the following entry:</p>
+<a class="reference internal" href="../../../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>. For this guide, we will assume the following entry:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span> <span class="n">_statistics</span>
 </pre></div>
 </div>
@@ -232,13 +232,13 @@ more details.</p>
 domain <code class="docutils literal notranslate"><span class="pre">trafficserver.example.com</span></code>. You should adjust these to match your
 environment.</p>
 <ol class="arabic">
-<li><p class="first">Begin the new check creation process from within your Circonus account by
+<li><p>Begin the new check creation process from within your Circonus account by
 clicking the <em>New Check</em> button near the top-right of the checks screen.</p>
 <div class="figure align-center">
 <img alt="Circonus New Check button" src="../../../../_images/new-check-button.png" />
 </div>
 </li>
-<li><p class="first">For the check type, you should select <em>JSON</em> under the <em>Custom</em> list, and
+<li><p>For the check type, you should select <em>JSON</em> under the <em>Custom</em> list, and
 then choose the <em>Pull</em> type. The broker you choose to use is entirely up to
 you and will depend largely on whether you are using on-site Circonus or the
 hosted service, as well as the geographic location of your Traffic Server instance(s).</p>
@@ -246,9 +246,8 @@ hosted service, as well as the geographic location of your Traffic Server instan
 <img alt="Choosing a check type" src="../../../../_images/check-config-1.png" />
 </div>
 </li>
-<li><p class="first">Click on <em>Configure Check</em> to proceed.</p>
-</li>
-<li><p class="first">Click on the <em>Show Advanced Configuration</em> link to expand the check options.
+<li><p>Click on <em>Configure Check</em> to proceed.</p></li>
+<li><p>Click on the <em>Show Advanced Configuration</em> link to expand the check options.
 Enter your Traffic Server instance’s externally-accessible domain for <em>Host</em> and make
 sure to set <em>URI</em> to the path at which the statistics are available. Adjust
 any of the other options to match your environment if necessary (for this
@@ -257,9 +256,8 @@ guide, only <em>Host</em> and <em>URI</em> will need to be entered).</p>
 <img alt="Advanced check configuration" src="../../../../_images/check-config-2.png" />
 </div>
 </li>
-<li><p class="first">Click on <em>Test Check</em> to proceed.</p>
-</li>
-<li><p class="first">If all is well, you should see a long list (several hundred entries) of Traffic Server
+<li><p>Click on <em>Test Check</em> to proceed.</p></li>
+<li><p>If all is well, you should see a long list (several hundred entries) of Traffic Server
 statistics, with their associated values. If you do not, verify that Traffic Server is
 running and use <code class="docutils literal notranslate"><span class="pre">curl</span></code> to manually fetch the statistics data from your
 server.</p>
@@ -267,15 +265,13 @@ server.</p>
 <img alt="Check test" src="../../../../_images/check-config-3.png" />
 </div>
 </li>
-<li><p class="first">You may want to limit the metrics you actually track from Traffic Server, since so
+<li><p>You may want to limit the metrics you actually track from Traffic Server, since so
 many are made available. If so, simply uncheck those you aren’t interested
 in from the list. If you only want to track a few metrics, click
 <em>Select None</em> and then check the ones you want. You can filter the results
-to easily find metrics in the list.</p>
-</li>
-<li><p class="first">Save your new check.</p>
-</li>
-<li><p class="first">Verify the collected metrics in Circonus by opening your new check and
+to easily find metrics in the list.</p></li>
+<li><p>Save your new check.</p></li>
+<li><p>Verify the collected metrics in Circonus by opening your new check and
 clicking on <em>Metrics Grid</em> for an overview visualization of all the data
 being collected.</p>
 <div class="figure align-center">
@@ -291,7 +287,7 @@ additional Traffic Server instances you have running.</p>
 <div class="section" id="further-reading">
 <h2>Further Reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://www.circonus.com/">Official Circonus Website</a></li>
+<li><p><a class="reference external" href="http://www.circonus.com/">Official Circonus Website</a></p></li>
 </ul>
 </div>
 </div>

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -232,21 +232,21 @@ TLS hooks.</p>
 <div class="section" id="tls-hooks">
 <h2>TLS Hooks<a class="headerlink" href="#tls-hooks" title="Permalink to this headline">¶</a></h2>
 <p>In all cases, the hook callback has the following signature.</p>
-<dl class="function">
+<dl class="py function">
 <dt>
-<code class="descname">int SSL_callback(TSCont contp, TSEvent event, void * edata)</code></dt>
+<code class="sig-name descname">int SSL_callback(TSCont contp, TSEvent event, void * edata)</code></dt>
 <dd></dd></dl>
 
 <p>The edata parameter is a TSVConn object.</p>
 <p>The following actions are valid from these callbacks.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Fetch the SSL object associated with the connection - <a class="reference internal" href="../../api/functions/TSVConnSslConnectionGet.en.html#c.TSVConnSslConnectionGet" title="TSVConnSslConnectionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnSslConnectionGet()</span></code></a></li>
-<li>Set a connection to blind tunnel - <a class="reference internal" href="../../api/functions/TSVConnTunnel.en.html#c.TSVConnTunnel" title="TSVConnTunnel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnTunnel()</span></code></a></li>
-<li>Reenable the ssl connection - <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a></li>
-<li>Find SSL context by name - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByName" title="TSSslContextFindByName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByName()</span></code></a></li>
-<li>Find SSL context by address - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByAddr" title="TSSslContextFindByAddr"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByAddr()</span></code></a></li>
-<li>Determine whether the TSVConn is really representing a SSL connection - <a class="reference internal" href="../../api/functions/TSVConnIsSsl.en.html#c.TSVConnIsSsl" title="TSVConnIsSsl"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnIsSsl()</span></code></a></li>
+<li><p>Fetch the SSL object associated with the connection - <a class="reference internal" href="../../api/functions/TSVConnSslConnectionGet.en.html#c.TSVConnSslConnectionGet" title="TSVConnSslConnectionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnSslConnectionGet()</span></code></a></p></li>
+<li><p>Set a connection to blind tunnel - <a class="reference internal" href="../../api/functions/TSVConnTunnel.en.html#c.TSVConnTunnel" title="TSVConnTunnel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnTunnel()</span></code></a></p></li>
+<li><p>Re-enable the ssl connection - <a class="reference internal" href="../../api/functions/TSVConnReenable.en.html#c.TSVConnReenable" title="TSVConnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReenable()</span></code></a></p></li>
+<li><p>Find SSL context by name - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByName" title="TSSslContextFindByName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByName()</span></code></a></p></li>
+<li><p>Find SSL context by address - <a class="reference internal" href="../../api/functions/TSSslContext.en.html#c.TSSslContextFindByAddr" title="TSSslContextFindByAddr"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslContextFindByAddr()</span></code></a></p></li>
+<li><p>Determine whether the TSVConn is really representing a SSL connection - <a class="reference internal" href="../../api/functions/TSVConnIsSsl.en.html#c.TSVConnIsSsl" title="TSVConnIsSsl"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnIsSsl()</span></code></a></p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -264,7 +264,7 @@ from within the hook callback or from another piece of code.</p>
 <div class="section" id="ts-vconn-close-hook">
 <h2>TS_VCONN_CLOSE_HOOK<a class="headerlink" href="#ts-vconn-close-hook" title="Permalink to this headline">¶</a></h2>
 <p>This hook is invoked after the SSL handshake is done and when the IO is closing. The TSVConnArgs
-should be cleaned up here. A callback at this point must reenable.</p>
+should be cleaned up here. A callback at this point must re-enable.</p>
 </div>
 <div class="section" id="ts-ssl-client-hello-hook">
 <h2>TS_SSL_CLIENT_HELLO_HOOK<a class="headerlink" href="#ts-ssl-client-hello-hook" title="Permalink to this headline">¶</a></h2>
@@ -330,7 +330,7 @@ from within the hook callback or from another piece of code.</p>
 <div class="section" id="ts-vconn-outbound-close-hook">
 <h2>TS_VCONN_OUTBOUND_CLOSE_HOOK<a class="headerlink" href="#ts-vconn-outbound-close-hook" title="Permalink to this headline">¶</a></h2>
 <p>This hook is invoked after the SSL handshake is done and right before the outbound connection
-closes.  A callback at this point must reenable.</p>
+closes.  A callback at this point must re-enable.</p>
 </div>
 <div class="section" id="tls-inbound-hook-state-diagram">
 <h2>TLS Inbound Hook State Diagram<a class="headerlink" href="#tls-inbound-hook-state-diagram" title="Permalink to this headline">¶</a></h2>

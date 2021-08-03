@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -219,24 +219,24 @@ HTTP responses of various sizes and receiving POST bodies. The size
 and cacheability of the response is specified by the first two components
 of the requested URL path. This plugin supports the <code class="docutils literal notranslate"><span class="pre">GET</span></code>, <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">POST</span></code> HTTP methods.</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="19%" />
-<col width="81%" />
+<col style="width: 19%" />
+<col style="width: 81%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Path component</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Path component</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>1</td>
-<td><code class="docutils literal notranslate"><span class="pre">cache</span></code> or <code class="docutils literal notranslate"><span class="pre">nocache</span></code>. If <code class="docutils literal notranslate"><span class="pre">cache</span></code> is specified, the
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">cache</span></code> or <code class="docutils literal notranslate"><span class="pre">nocache</span></code>. If <code class="docutils literal notranslate"><span class="pre">cache</span></code> is specified, the
 <cite>Generator</cite> plugin will respond with <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> headers
-marking the response as cacheable.</td>
+marking the response as cacheable.</p></td>
 </tr>
-<tr class="row-odd"><td>2</td>
-<td>Integral number of bytes to return in the response.</td>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>Integral number of bytes to return in the response.</p></td>
 </tr>
 </tbody>
 </table>
@@ -244,41 +244,41 @@ marking the response as cacheable.</td>
 trailing path components can be manipulated to create unique URLs
 following any convenient convention.</p>
 <p>The <cite>Generator</cite> plugin inspects the following HTTP client request headers:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="29%" />
-<col width="71%" />
+<col style="width: 29%" />
+<col style="width: 71%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Header</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Header</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Generator-Delay</span></code></td>
-<td>The number of milliseconds to wait before sending a
-response. The default is to not wait.</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Generator-Delay</span></code></p></td>
+<td><p>The number of milliseconds to wait before sending a
+response. The default is to not wait.</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Generator-MaxAge</span></code></td>
-<td>The number of seconds that a response should be cached
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Generator-MaxAge</span></code></p></td>
+<td><p>The number of seconds that a response should be cached
 for. This is used in the <code class="docutils literal notranslate"><span class="pre">max-age</span></code> field of the
-response’s <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> header.</td>
+response’s <code class="docutils literal notranslate"><span class="pre">Cache-Control</span></code> header.</p></td>
 </tr>
 </tbody>
 </table>
 <p>The <cite>Generator</cite> plugin publishes the following metrics:</p>
 <blockquote>
-<div><dl class="docutils">
-<dt>generator.response_bytes:</dt>
-<dd>The total number of bytes emitted</dd>
-<dt>generator.response_count:</dt>
-<dd>The number of HTTP responses generated by the plugin</dd>
+<div><dl class="simple">
+<dt>generator.response_bytes:</dt><dd><p>The total number of bytes emitted</p>
+</dd>
+<dt>generator.response_count:</dt><dd><p>The number of HTTP responses generated by the plugin</p>
+</dd>
 </dl>
 </div></blockquote>
 <div class="section" id="examples">
 <h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The most common way to use the <cite>Generator</cite> plugin is to configure
-it as a remap plugin in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+it as a remap plugin in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">workload</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">/</span> \
   <span class="nd">@plugin</span><span class="o">=</span><span class="n">generator</span><span class="o">.</span><span class="n">so</span>
 </pre></div>

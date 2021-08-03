@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -122,7 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -217,12 +217,12 @@ processing moderately high levels of traffic may want to start by rolling logs
 every six hours, and adjusting from there.</p>
 <p>Log file rolling offers the following benefits:</p>
 <ul class="simple">
-<li>It defines a consistent interval over which log analysis can be performed.</li>
-<li>It keeps any single log file from becoming too large and helps to
-keep the logging system within the specified space limits.</li>
-<li>It provides an easy way to identify files that are no longer being
+<li><p>It defines a consistent interval over which log analysis can be performed.</p></li>
+<li><p>It keeps any single log file from becoming too large and helps to
+keep the logging system within the specified space limits.</p></li>
+<li><p>It provides an easy way to identify files that are no longer being
 used so that an automated script can clean the logging directory and
-run log analysis programs.</li>
+run log analysis programs.</p></li>
 </ul>
 <div class="section" id="rolled-log-filename-format">
 <h3>Rolled Log Filename Format<a class="headerlink" href="#rolled-log-filename-format" title="Permalink to this headline">¶</a></h3>
@@ -231,9 +231,9 @@ to easily identify log files. When Traffic Server rolls a log file, it saves and
 the old file before it starts a new file. Traffic Server renames the old file to include
 the following information:</p>
 <ul class="simple">
-<li>The original log file’s name (such as <code class="docutils literal notranslate"><span class="pre">access.log</span></code>).</li>
-<li>The hostname of the Traffic Server node that generated the log file.</li>
-<li>Two timestamps separated by a hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>). The first timestamp is
+<li><p>The original log file’s name (such as <code class="docutils literal notranslate"><span class="pre">access.log</span></code>).</p></li>
+<li><p>The hostname of the Traffic Server node that generated the log file.</p></li>
+<li><p>Two timestamps separated by a hyphen (<code class="docutils literal notranslate"><span class="pre">-</span></code>). The first timestamp is
 a <em>lower bound</em> for the timestamp of the first record in the log
 file. The lower bound is the time when the new buffer for log records
 is created. Under low load, the first timestamp in the filename can
@@ -241,51 +241,51 @@ be different from the timestamp of the first entry. Under normal
 load, the first timestamp in the filename and the timestamp of the
 first entry are similar. The second timestamp is an <em>upper bound</em>
 for the timestamp of the last record in the log file (this is
-normally the rolling time).</li>
-<li>The suffix <code class="docutils literal notranslate"><span class="pre">.old</span></code>, which makes it easy for automated scripts to
-find rolled log files.</li>
+normally the rolling time).</p></li>
+<li><p>The suffix <code class="docutils literal notranslate"><span class="pre">.old</span></code>, which makes it easy for automated scripts to
+find rolled log files.</p></li>
 </ul>
 <p>Timestamps have the following format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">Y</span><span class="o">%</span><span class="n">M</span><span class="o">%</span><span class="n">D</span><span class="o">.%</span><span class="n">Hh</span><span class="o">%</span><span class="n">Mm</span><span class="o">%</span><span class="n">Ss</span><span class="o">-%</span><span class="n">Y</span><span class="o">%</span><span class="n">M</span><span class="o">%</span><span class="n">D</span><span class="o">.%</span><span class="n">Hh</span><span class="o">%</span><span class="n">Mm</span><span class="o">%</span><span class="n">Ss</span>
 </pre></div>
 </div>
 <p>The following table describes the format:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="11%" />
-<col width="79%" />
-<col width="11%" />
+<col style="width: 11%" />
+<col style="width: 79%" />
+<col style="width: 11%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Format</th>
-<th class="head">Description</th>
-<th class="head">Sample</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Sample</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%Y</span></code></td>
-<td>The year in four-digit format.</td>
-<td>2000</td>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">%Y</span></code></p></td>
+<td><p>The year in four-digit format.</p></td>
+<td><p>2000</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%M</span></code></td>
-<td>The month in two-digit format, from 01-12.</td>
-<td>07</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">%M</span></code></p></td>
+<td><p>The month in two-digit format, from 01-12.</p></td>
+<td><p>07</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%D</span></code></td>
-<td>The day in two-digit format, from 01-31.</td>
-<td>19</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">%D</span></code></p></td>
+<td><p>The day in two-digit format, from 01-31.</p></td>
+<td><p>19</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%H</span></code></td>
-<td>The hour in two-digit format, from 00-23.</td>
-<td>21</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">%H</span></code></p></td>
+<td><p>The hour in two-digit format, from 00-23.</p></td>
+<td><p>21</p></td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">%M</span></code></td>
-<td>The minute in two-digit format, from 00-59.</td>
-<td>52</td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">%M</span></code></p></td>
+<td><p>The minute in two-digit format, from 00-59.</p></td>
+<td><p>52</p></td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">%S</span></code></td>
-<td>The second in two-digit format, from 00-59.</td>
-<td>36</td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">%S</span></code></p></td>
+<td><p>The second in two-digit format, from 00-59.</p></td>
+<td><p>36</p></td>
 </tr>
 </tbody>
 </table>
@@ -318,10 +318,10 @@ appear to overlap.</p>
 <p>Log files are rolled at specific intervals relative to a given hour of the day.
 Three options may be used to control when log files are rolled:</p>
 <ul class="simple">
-<li>A file size threshold, which will prevent any individual log from growing
-too large.</li>
-<li>The offset hour, which is an hour between <code class="docutils literal notranslate"><span class="pre">0</span></code> (midnight) and <code class="docutils literal notranslate"><span class="pre">23</span></code>.</li>
-<li>The rolling interval.</li>
+<li><p>A file size threshold, which will prevent any individual log from growing
+too large.</p></li>
+<li><p>The offset hour, which is an hour between <code class="docutils literal notranslate"><span class="pre">0</span></code> (midnight) and <code class="docutils literal notranslate"><span class="pre">23</span></code>.</p></li>
+<li><p>The rolling interval.</p></li>
 </ul>
 <p>Both the offset hour and the rolling interval determine when log file rolling
 starts. Rolling occurs every <em>rolling interval</em> and at the <em>offset</em> hour. For
@@ -331,44 +331,43 @@ example, if the rolling interval is six hours and the offset hour is <code class
 <code class="docutils literal notranslate"><span class="pre">3</span></code>, then logs will roll at 03:00 and 15:00 each day.</p>
 <p>To set log file rolling options and/or configure Traffic Server to roll log files when
 they reach a certain size, adjust the following settings in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>:</p>
 <ol class="arabic">
-<li><p class="first">Enable log rolling with <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>.</p>
+<li><p>Enable log rolling with <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_enabled</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">rolling_enabled</span> <span class="n">INT</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Configure the upper limit on log file size with
+<li><p>Configure the upper limit on log file size with
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-size-mb" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_size_mb</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">rolling_size_mb</span> <span class="n">INT</span> <span class="mi">1024</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Set the offset hour with <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-offset-hr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_offset_hr</span></code></a>.</p>
+<li><p>Set the offset hour with <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-offset-hr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_offset_hr</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">rolling_offset_hr</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Set the interval (in seconds) with
+<li><p>Set the interval (in seconds) with
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-interval-sec" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_interval_sec</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">rolling_interval_sec</span> <span class="n">INT</span> <span class="mi">21600</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Set the minimum number of rolled files with
+<li><p>Set the minimum number of rolled files with
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-log-rolling-min-count" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.rolling_min_count</span></code></a>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log</span><span class="o">.</span><span class="n">rolling_min_count</span> <span class="n">INT</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
-changes.</p>
-</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
+changes.</p></li>
 </ol>
 <p>You can fine-tune log file rolling settings for individual log files in the
-<code class="docutils literal notranslate"><span class="pre">log.*</span></code> specification in <a class="reference internal" href="../files/logging.yaml.en.html#std:configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>. The custom log file uses the
+<code class="docutils literal notranslate"><span class="pre">log.*</span></code> specification in <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>. The custom log file uses the
 rolling settings provided in the relevant <code class="docutils literal notranslate"><span class="pre">log</span></code> function call, which override
-the default settings you specify in Traffic Manager or <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+the default settings you specify in Traffic Manager or <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
 described above.</p>
 </div>
 </div>
@@ -381,7 +380,7 @@ Traffic Server continues to monitor the space in the logging directory. When the
 space dwindles to the headroom limit, it enters a low space state and takes the
 following actions:</p>
 <ul class="simple">
-<li>If the autodelete option is enabled, then Traffic Server identifies previously-rolled
+<li><p>If the autodelete option is enabled, then Traffic Server identifies previously-rolled
 log files (log files with the <code class="docutils literal notranslate"><span class="pre">.old</span></code> extension). It starts deleting files
 one by one, beginning with the oldest file with largest ratio between current
 number of files and the minimum rolling count, until it emerges from the low
@@ -390,8 +389,8 @@ ratio calculation. Hence the <cite>rolling_min_count</cite> is not guaranteed to
 reserved; instead, it is used as a reference to decide the priority of log
 files to delete. In low space state, even when all log files are below minimum
 count, Traffic Server still tries to delete files until it emerges from the low state.
-Traffic Server logs a record of all deleted files in the system error log.</li>
-<li>If the autodelete option is disabled or there are not enough old log files
+Traffic Server logs a record of all deleted files in the system error log.</p></li>
+<li><p>If the autodelete option is disabled or there are not enough old log files
 to delete for the system to emerge from its low space state, then Traffic Server
 issues a warning and continues logging until the allocated log space is
 exhausted (which, if configured appropriately, will be well before your
@@ -400,7 +399,7 @@ At this point, event logging stops even though proxy traffic is still served
 without client-visible interruption. Traffic Server resumes event logging when enough
 space becomes available for it to exit the low space state. To make space
 available, either explicitly increase the logging space limit or remove
-files from the logging directory manually.</li>
+files from the logging directory manually.</p></li>
 </ul>
 <p>You can run a <em class="manpage">cron(8)</em> script in conjunction with Traffic Server to
 automatically remove old log files from the logging directory before Traffic Server
@@ -422,13 +421,14 @@ partition.</p>
 <h3>Setting Log File Management Options<a class="headerlink" href="#setting-log-file-management-options" title="Permalink to this headline">¶</a></h3>
 <p>To set log management options, follow the steps below:</p>
 <ol class="arabic simple">
-<li>In the <a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file, edit the following variables<ul>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-max-space-mb-for-logs" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.max_space_mb_for_logs</span></code></a></li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-max-space-mb-headroom" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.max_space_mb_headroom</span></code></a></li>
+<li><p>In the <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file, edit the following variables</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-max-space-mb-for-logs" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.max_space_mb_for_logs</span></code></a></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-log-max-space-mb-headroom" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.max_space_mb_headroom</span></code></a></p></li>
 </ul>
 </li>
-<li>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
-changes.</li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
+changes.</p></li>
 </ol>
 </div>
 <div class="section" id="retaining-logs-for-no-more-than-a-specified-period">

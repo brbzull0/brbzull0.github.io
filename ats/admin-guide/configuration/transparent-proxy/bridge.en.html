@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -126,7 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -211,8 +211,8 @@ arrives on one interface is immediately routed out another bridge
 interface.</p>
 <p>Linux packages required:</p>
 <ul class="simple">
-<li>bridge-utils</li>
-<li>ebtables</li>
+<li><p>bridge-utils</p></li>
+<li><p>ebtables</p></li>
 </ul>
 <p>In our example of setting up bridge mode we will use a local address of
 192.168.1.11/24 and interfaces <code class="docutils literal notranslate"><span class="pre">eth0</span></code> and <code class="docutils literal notranslate"><span class="pre">eth1</span></code> as the bridge
@@ -240,7 +240,7 @@ bridge is functional.</p>
 of interest.</p>
 <div class="figure align-center" id="id3">
 <img alt="Picture of traffic flow through a bridge with ATS" src="../../../_images/ats-traffic-bridge.png" />
-<p class="caption"><span class="caption-text">Picture of traffic flow through a bridge with ATS</span></p>
+<p class="caption"><span class="caption-text">Picture of traffic flow through a bridge with ATS</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>The green arrows are packets originating from the client and the red
 arrows are packets originating from the origin server. All traffic not
@@ -256,7 +256,7 @@ Although it looks like this will intercept all port 80 traffic it will
 only affect the two flows described above. <code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">redirect</span></code> marks the
 packet as being diverted to the bridge and not forwarded, and the
 <code class="docutils literal notranslate"><span class="pre">DROP</span></code> target puts the packets in the normal <code class="docutils literal notranslate"><span class="pre">iptables</span></code> routing so
-that we can use standard device tests on them <a class="footnote-reference" href="#id2" id="id1">[1]</a>. Although this
+that we can use standard device tests on them <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. Although this
 example handles only port 80, other ports are the same except for the
 port value. Note also the port here is the port from the point of view
 of the clients and origin servers, not the Traffic Server server port.</p>
@@ -299,16 +299,16 @@ the loopback interface via a policy routing table.:</p>
 <code class="docutils literal notranslate"><span class="pre">iptables</span></code> and the routing rule. The table number must be in the range
 1..253.</p>
 <p>To configure Traffic Server set the following values in
-<a class="reference internal" href="../../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
+<a class="reference internal" href="../../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
 <ul class="simple">
-<li><a class="reference internal" href="../../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code> (see below)</li>
-<li><a class="reference internal" href="../../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> <code class="docutils literal notranslate"><span class="pre">1</span></code></li>
-<li><a class="reference internal" href="../../files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></li>
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-http-server-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></a> <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code> (see below)</p></li>
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a> <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../../files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
 </ul>
 <div class="section" id="additional-troubleshooting">
 <h2>Additional troubleshooting<a class="headerlink" href="#additional-troubleshooting" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p class="first">Check to make sure that <code class="docutils literal notranslate"><span class="pre">iptables</span></code> is not filtering (blocking)
+<li><p>Check to make sure that <code class="docutils literal notranslate"><span class="pre">iptables</span></code> is not filtering (blocking)
 incoming HTTP connections.</p>
 <blockquote>
 <div><p>It is frequently the case that the default tables prevent incoming HTTP. You can clear all filters with the
@@ -325,7 +325,7 @@ set is too restrictive.</p>
 allowing HTTP traffic through.</p>
 </div></blockquote>
 </li>
-<li><p class="first">Verify that IP packet forwarding is enabled.</p>
+<li><p>Verify that IP packet forwarding is enabled.</p>
 <blockquote>
 <div><p>You can check this with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">sys</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">ipv4</span><span class="o">/</span><span class="n">ip_forward</span>
@@ -344,14 +344,13 @@ can set it with:</p>
 </li>
 </ul>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="id2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>The <code class="docutils literal notranslate"><span class="pre">--redirect-target</span></code> can be omitted, but then the <code class="docutils literal notranslate"><span class="pre">iptables</span></code>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">--redirect-target</span></code> can be omitted, but then the <code class="docutils literal notranslate"><span class="pre">iptables</span></code>
 rules would need to use <code class="docutils literal notranslate"><span class="pre">--physdev</span></code> instead of just <code class="docutils literal notranslate"><span class="pre">-i</span></code>. The
-actual packet processing is identical.</td></tr>
-</tbody>
-</table>
+actual packet processing is identical.</p>
+</dd>
+</dl>
 </div>
 </div>
 

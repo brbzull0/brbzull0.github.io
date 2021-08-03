@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -123,7 +123,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -224,7 +224,7 @@ Traffic Server supports parent caching for both HTTP and HTTPS requests.</p>
 <p>If you do not want all requests to go to the parent cache, then simply configure
 Traffic Server to route certain requests (such as requests containing specific
 URLs) directly to the origin server. This may be achieved by setting parent
-proxy rules in <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>.</p>
+proxy rules in <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>.</p>
 <p>The figure below illustrates a simple cache hierarchy with a Traffic
 Server node configured to use a parent cache. In the following scenario,
 a client sends a request to a Traffic Server node that is a child in the
@@ -237,7 +237,7 @@ can now be served directly from the Traffic Server cache (until the data
 is stale or expired).</p>
 <div class="figure align-center" id="id2">
 <img alt="Parent caching" src="../../_images/cachehrc.jpg" />
-<p class="caption"><span class="caption-text">Parent caching</span></p>
+<p class="caption"><span class="caption-text">Parent caching</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>If the request is a cache miss on the parent, then the parent retrieves the
 content from the origin server (or from another cache, depending on the parent’s
@@ -249,45 +249,45 @@ Server (its child), where it is cached and served to the client.</p>
 node.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Consistent Hash. The child node chooses a specific parent for each URI. This effectively
+<li><p>Consistent Hash. The child node chooses a specific parent for each URI. This effectively
 makes the parent’s cache size the sum total of each of the individual parent cache
-sizes.</li>
-<li>Round Robin. The child node cycles through the parents. The child can select the parent
-based on the client IP (“true”), or in a strict cycling (“strict”).</li>
-<li>(Unnamed). The child node chooses the first live parent listed. There are two variants to this
+sizes.</p></li>
+<li><p>Round Robin. The child node cycles through the parents. The child can select the parent
+based on the client IP (“true”), or in a strict cycling (“strict”).</p></li>
+<li><p>(Unnamed). The child node chooses the first live parent listed. There are two variants to this
 strategy.  When the strategy is set to “false,” the child will use the first listed parent
 (for clarity called p1) until it is marked down, when the child will switch to the second
 listed parent (p2). Then, when the p1 is retested and found live, the child
 will restart using p1. When the selection strategy is set to “latched,” the child will use
 p1 until it is marked down, when it will switch to p2. When p1 is retested and found live,
-the child will continue using p2 until it is marked down.</li>
+the child will continue using p2 until it is marked down.</p></li>
 </ul>
 </div></blockquote>
 </div>
 <div class="section" id="interaction-with-remap-config">
 <h3>Interaction with Remap.config<a class="headerlink" href="#interaction-with-remap-config" title="Permalink to this headline">¶</a></h3>
 <p>If remap rules are required (<a class="reference internal" href="../files/records.config.en.html#proxy-config-reverse-proxy-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></a>),
-when a request comes in to a child node, its <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is evaluated before
+when a request comes in to a child node, its <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> is evaluated before
 parent selection. This means that the client request is translated according to the
 remap rule, and therefore, any parent selection should be made against the remapped
 host name. This is true regardless of pristine host headers
 (<a class="reference internal" href="../files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a>) being enabled or not. The parent node
 will receive the translated request (and thus needs to be configured to accept it).</p>
-<p><a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> now also allows an alternative configuration that supports all the
-<strong>Parent Selection</strong> policies and failover mentioned here using a new <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> tag,
+<p><a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> now also allows an alternative configuration that supports all the
+<strong>Parent Selection</strong> policies and failover mentioned here using a new <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> tag,
 <strong>&#64;strategy</strong>. This eliminates the need for a second lookup against the remapped host name
-required when using <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>.  See using NextHop strategies with <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>,
+required when using <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>.  See using NextHop strategies with <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>,
 <a class="reference internal" href="../files/strategies.yaml.en.html"><span class="doc">strategies.yaml</span></a></p>
 <div class="section" id="example">
 <h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
 <p>The client makes a request to Traffic Server for <a class="reference external" href="http://example.com">http://example.com</a>. The origin server
 for the request is <a class="reference external" href="http://origin.example.com">http://origin.example.com</a>; the parent node is <code class="docutils literal notranslate"><span class="pre">parent1.example.com</span></code>,
 and the child node is configured as a reverse proxy.</p>
-<p>If the child’s <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> contains</p>
+<p>If the child’s <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> contains</p>
 <p><code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">http://example.com</span> <span class="pre">http://origin.example.com</span></code></p>
-<p>with the child’s <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a> containing</p>
+<p>with the child’s <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a> containing</p>
 <p><code class="docutils literal notranslate"><span class="pre">dest_domain=origin.example.com</span> <span class="pre">method=get</span> <span class="pre">parent=&quot;parent1.example.com:80</span></code> )</p>
-<p>and parent cache (parent1.example.com) would need to have a <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+<p>and parent cache (parent1.example.com) would need to have a <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 line similar to</p>
 <p><code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">http://origin.example.com</span> <span class="pre">http://origin.example.com</span></code></p>
 <p>With this example, if parent1.example.com is down, the child node would automatically
@@ -303,7 +303,7 @@ client requests.</p>
 cache, Traffic Server detects when a parent is not available and sends
 missed requests to another parent cache. If you specify more than two
 parent caches, then the order in which the parent caches are queried
-depends upon the parent proxy rules configured in the <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>
+depends upon the parent proxy rules configured in the <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>
 configuration file. By default, the parent caches are queried in the
 order they are listed in the configuration file.</p>
 </div>
@@ -312,22 +312,22 @@ order they are listed in the configuration file.</p>
 <p>To configure Traffic Server to use one or more parent caches, you must perform
 the configuration adjustments detailed below.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You need to configure the child cache only. Assuming the parent nodes are
+<p class="admonition-title">Note</p>
+<p>You need to configure the child cache only. Assuming the parent nodes are
 configured to serve the child’s origin server, no additional configuration is
 needed for the nodes acting as Traffic Server parent caches.</p>
 </div>
 <ol class="arabic simple">
-<li>Identify the parent cache you want to use to service missed requests. To
+<li><p>Identify the parent cache you want to use to service missed requests. To
 use parent failover, you must identify more than one parent cache so that
 when a parent cache is unavailable, requests are sent to another parent
-cache.</li>
-<li>Edit <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a> to set parent proxy rules which will specify the
+cache.</p></li>
+<li><p>Edit <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a> to set parent proxy rules which will specify the
 parent cache to which you want missed requests to be forwarded.  Or as an
-alternative to <a class="reference internal" href="../files/parent.config.en.html#std:configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>, edit <a class="reference internal" href="../files/strategies.yaml.en.html#std:configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> to
-specify next hop parent proxy rules and hosts.  Then in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
+alternative to <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a>, edit <a class="reference internal" href="../files/strategies.yaml.en.html#std-configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> to
+specify next hop parent proxy rules and hosts.  Then in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 use the <strong>&#64;strategy</strong> tag to select the next hop parent proxy rules. See
-<a class="reference internal" href="../files/strategies.yaml.en.html"><span class="doc">strategies.yaml</span></a></li>
+<a class="reference internal" href="../files/strategies.yaml.en.html"><span class="doc">strategies.yaml</span></a></p></li>
 </ol>
 <p>The following example configures Traffic Server to route all requests
 containing the regular expression <code class="docutils literal notranslate"><span class="pre">politics</span></code> and the path
@@ -345,7 +345,7 @@ address.:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_host</span><span class="o">=</span><span class="n">host1</span> <span class="n">scheme</span><span class="o">=</span><span class="n">http</span> <span class="n">parent</span><span class="o">=</span><span class="s2">&quot;parent1;parent2&quot;</span> <span class="nb">round</span><span class="o">-</span><span class="n">robin</span><span class="o">=</span><span class="n">strict</span>
 </pre></div>
 </div>
-<p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
+<p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p>
 </div>
 </div>
 </div>

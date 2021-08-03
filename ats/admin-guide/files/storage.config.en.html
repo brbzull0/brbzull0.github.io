@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -129,7 +129,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -205,43 +205,44 @@
             
   <div class="section" id="storage-config">
 <h1>storage.config<a class="headerlink" href="#storage-config" title="Permalink to this headline">¶</a></h1>
-<p id="std:configfile-storage.config">The <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file (by default, located in
+<p id="std-configfile-storage.config"><span id="std:configfile-storage.config"></span>The <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file (by default, located in
 <code class="docutils literal notranslate"><span class="pre">/usr/local/etc/trafficserver/</span></code>) lists all the files, directories, and/or
 hard disk partitions that make up the Traffic Server cache. After you
-modify the <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file the new settings will not be effective until Traffic Server is restarted.</p>
+modify the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file the new settings will not be effective until Traffic Server is restarted.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>The format of the <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file is a series of lines of the form</p>
+<p>The format of the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file is a series of lines of the form</p>
 <blockquote>
-<div><em>pathname</em> <em>size</em> [ <code class="docutils literal notranslate"><span class="pre">volume=</span></code><em>number</em> ] [ <code class="docutils literal notranslate"><span class="pre">id=</span></code><em>string</em> ]</div></blockquote>
+<div><p><em>pathname</em> <em>size</em> [ <code class="docutils literal notranslate"><span class="pre">volume=</span></code><em>number</em> ] [ <code class="docutils literal notranslate"><span class="pre">id=</span></code><em>string</em> ]</p>
+</div></blockquote>
 <p>where <em>pathname</em> is the name of a partition, directory or file, <em>size</em> is the size of the
 named partition, directory or file (in bytes), and <em>volume</em> is the volume number used in the
-files <a class="reference internal" href="volume.config.en.html#std:configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> and <a class="reference internal" href="hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>. <em>id</em> is used for seeding the
+files <a class="reference internal" href="volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> and <a class="reference internal" href="hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>. <em>id</em> is used for seeding the
 <a class="reference internal" href="#assignment-table"><span class="std std-ref">Assignment Table</span></a>. You must specify a size for directories; size is optional for files and raw
 partitions. <em>volume</em> and arg:<cite>seed</cite> are optional.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <em>volume</em> option is independent of the <em>seed</em> option and either can be used with or without the other,
+<p class="admonition-title">Note</p>
+<p>The <em>volume</em> option is independent of the <em>seed</em> option and either can be used with or without the other,
 and their ordering on the line is irrelevant.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If the <em>id</em> option is used every use must have a unique value for <em>string</em>.</p>
+<p class="admonition-title">Note</p>
+<p>If the <em>id</em> option is used every use must have a unique value for <em>string</em>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Any change to this files can (and almost always will) invalidate the existing cache in its entirety.</p>
+<p class="admonition-title">Note</p>
+<p>Any change to this files can (and almost always will) invalidate the existing cache in its entirety.</p>
 </div>
 <p>You can use any partition of any size. For best performance:</p>
 <ul class="simple">
-<li>Use raw disk partitions.</li>
-<li>For each disk, make all partitions the same size.</li>
-<li>For each node, use the same number of partitions on all disks.</li>
-<li>Group similar kinds of storage into different volumes. For example
-split out SSD’s or RAM drives into their own volume.</li>
+<li><p>Use raw disk partitions.</p></li>
+<li><p>For each disk, make all partitions the same size.</p></li>
+<li><p>For each node, use the same number of partitions on all disks.</p></li>
+<li><p>Group similar kinds of storage into different volumes. For example
+split out SSD’s or RAM drives into their own volume.</p></li>
 </ul>
 <p>Specify pathnames according to your operating system requirements. See
-the following examples. In the <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file, a formatted or
+the following examples. In the <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> file, a formatted or
 raw disk must be at least 128 MB.</p>
 <p>When using raw disk or partitions, you should make sure the <a class="reference internal" href="records.config.en.html#proxy-config-admin-user-id" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">Traffic</span>
 <span class="pre">Server</span> <span class="pre">user</span></code></a> used by the Traffic Server process
@@ -254,15 +255,15 @@ more information.</p>
 supported. They include</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">K</span></code> Kilobytes (1024 bytes)</li>
-<li><code class="docutils literal notranslate"><span class="pre">M</span></code> Megabytes (1024^2 or 1,048,576 bytes)</li>
-<li><code class="docutils literal notranslate"><span class="pre">G</span></code> Gigabytes (1024^3 or 1,073,741,824 bytes)</li>
-<li><code class="docutils literal notranslate"><span class="pre">T</span></code> Terabytes (1024^4 or 1,099,511,627,776 bytes)</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">K</span></code> Kilobytes (1024 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M</span></code> Megabytes (1024^2 or 1,048,576 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">G</span></code> Gigabytes (1024^3 or 1,073,741,824 bytes)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code> Terabytes (1024^4 or 1,099,511,627,776 bytes)</p></li>
 </ul>
 </div></blockquote>
 <div class="section" id="assignment-table">
 <span id="id1"></span><h3>Assignment Table<a class="headerlink" href="#assignment-table" title="Permalink to this headline">¶</a></h3>
-<p>Each storage element defined in <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> is divided in to <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">stripes</span></a>. The
+<p>Each storage element defined in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> is divided in to <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">stripes</span></a>. The
 assignment table maps from an object URL to a specific stripe. The table is initialized based on a
 pseudo-random process which is seeded by hashing a string for each stripe. This string is composed
 of a base string, an offset (the start of the stripe on the storage element), and the length of the
@@ -293,8 +294,8 @@ cache file with:</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When using on-filesystem cache disk storage, you can only have one such
+<p class="admonition-title">Note</p>
+<p>When using on-filesystem cache disk storage, you can only have one such
 directory specified. This will be addressed in a future version.</p>
 </div>
 <div class="section" id="solaris-example">
@@ -305,14 +306,14 @@ directory specified. This will be addressed in a future version.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Size is optional. If not specified, the entire partition is used.</p>
+<p class="admonition-title">Note</p>
+<p>Size is optional. If not specified, the entire partition is used.</p>
 </div>
 </div>
 <div class="section" id="linux-example">
 <h3>Linux Example<a class="headerlink" href="#linux-example" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
+<p class="admonition-title">Note</p>
 <p>Rather than refer to disk devices like <code class="docutils literal notranslate"><span class="pre">/dev/sda</span></code>, <code class="docutils literal notranslate"><span class="pre">/dev/sdb</span></code>, etc.,
 modern Linux supports <a class="reference external" href="https://wiki.archlinux.org/index.php/persistent_block_device_naming#by-id_and_by-path">alternative symlinked names for disk devices</a> in the <code class="docutils literal notranslate"><span class="pre">/dev/disk</span></code>
 directory structure. As noted for the <a class="reference internal" href="#assignment-table"><span class="std std-ref">Assignment Table</span></a> the path used for the disk can effect
@@ -322,7 +323,7 @@ that path to change because the new drive will have a different physical ID or p
 be kept by adding <em>id</em> or <em>path</em> with the original path to the storage line.</p>
 <p>If this is not sufficient then the <em>id</em> or <em>path</em> argument should be used to create a more permanent
 assignment table. An example would be:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sde</span> <span class="nb">id</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">disk</span><span class="o">.</span><span class="mi">0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sde</span> <span class="nb">id</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">disk</span><span class="o">.</span><span class="mi">0</span>
 <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdg</span> <span class="nb">id</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">disk</span><span class="o">.</span><span class="mi">1</span>
 </pre></div>
 </div>
@@ -367,8 +368,8 @@ following rules are stored in <em class="manpage">devfs.conf(5)</em>:</p>
 </div>
 <div class="section" id="advanced">
 <h3>Advanced<a class="headerlink" href="#advanced" title="Permalink to this headline">¶</a></h3>
-<p>Because relative paths in <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> are relative to the base prefix, when using customized runroot
-it may be necessary to adjust such paths in <a class="reference internal" href="#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> or adjust <code class="docutils literal notranslate"><span class="pre">runroot.yaml</span></code> itself.
+<p>Because relative paths in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> are relative to the base prefix, when using customized runroot
+it may be necessary to adjust such paths in <a class="reference internal" href="#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> or adjust <code class="docutils literal notranslate"><span class="pre">runroot.yaml</span></code> itself.
 Despite the name, the cachedir value is not used for this file.</p>
 </div>
 </div>

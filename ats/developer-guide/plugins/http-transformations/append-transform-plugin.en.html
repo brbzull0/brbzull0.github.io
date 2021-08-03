@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -232,7 +232,7 @@ transformation, it adds text to the response.</p>
 they appear in the source code. Below each entry is a description of
 what the function does:</p>
 <ul>
-<li><p class="first"><strong>``my_data_alloc``</strong></p>
+<li><p><strong>``my_data_alloc``</strong></p>
 <p>Allocates and initializes a <code class="docutils literal notranslate"><span class="pre">MyData</span></code> structure. The plugin defines
 a struct, <code class="docutils literal notranslate"><span class="pre">MyData</span></code>, as follows:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
@@ -248,77 +248,77 @@ transformation (vconnection) needs. The transformation’s data pointer
 is set to a <code class="docutils literal notranslate"><span class="pre">MyData</span></code> pointer using <code class="docutils literal notranslate"><span class="pre">TSContDataSet</span></code> in the
 <code class="docutils literal notranslate"><span class="pre">handle_transform</span></code> routine.</p>
 </li>
-<li><p class="first"><strong>``my_data_destroy``</strong></p>
+<li><p><strong>``my_data_destroy``</strong></p>
 <p>Destroys objects of type <code class="docutils literal notranslate"><span class="pre">MyData</span></code>. To deallocate the transform’s
 data, the <code class="docutils literal notranslate"><span class="pre">append_transform</span></code> routine (see below) calls
 <code class="docutils literal notranslate"><span class="pre">my_data_destroy</span></code> when the transformation is complete.</p>
 </li>
-<li><p class="first"><strong>``handle_transform``</strong></p>
+<li><p><strong>``handle_transform``</strong></p>
 <p>This function does the actual data transformation. The transformation
 is created in <code class="docutils literal notranslate"><span class="pre">transform_add</span></code> (see below). <code class="docutils literal notranslate"><span class="pre">handle_transform</span></code> is
 called by <code class="docutils literal notranslate"><span class="pre">append_transform</span></code>.</p>
 </li>
-<li><p class="first"><strong>``append_transform``</strong></p>
+<li><p><strong>``append_transform``</strong></p>
 <p>This is the handler function for the transformation vconnection
 created in <code class="docutils literal notranslate"><span class="pre">transform_add</span></code>. It is the implementation of the
 vconnection.</p>
 <ul class="simple">
-<li>If the transformation vconnection has been closed, then
+<li><p>If the transformation vconnection has been closed, then
 <code class="docutils literal notranslate"><span class="pre">append_transform</span></code> calls <code class="docutils literal notranslate"><span class="pre">my_data_destroy</span></code> to destroy the
-vconnection.</li>
-<li>If <code class="docutils literal notranslate"><span class="pre">append_transform</span></code> receives an error event, then it calls
+vconnection.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">append_transform</span></code> receives an error event, then it calls
 back the continuation to let it know it has completed the write
-operation.</li>
-<li>If it receives a <code class="docutils literal notranslate"><span class="pre">WRITE_COMPLETE</span></code> event, then it shuts down the
-write portion of its vconnection.</li>
-<li>If it receives a <code class="docutils literal notranslate"><span class="pre">WRITE_READY</span></code> or any other event (such as
+operation.</p></li>
+<li><p>If it receives a <code class="docutils literal notranslate"><span class="pre">WRITE_COMPLETE</span></code> event, then it shuts down the
+write portion of its vconnection.</p></li>
+<li><p>If it receives a <code class="docutils literal notranslate"><span class="pre">WRITE_READY</span></code> or any other event (such as
 <code class="docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code>), then it calls
-<code class="docutils literal notranslate"><span class="pre">handle_transform</span></code> to attempt to transform more data.</li>
+<code class="docutils literal notranslate"><span class="pre">handle_transform</span></code> to attempt to transform more data.</p></li>
 </ul>
 </li>
-<li><p class="first"><strong>``transformable``</strong></p>
+<li><p><strong>``transformable``</strong></p>
 <p>The plugin transforms only documents that have a content type of
 <code class="docutils literal notranslate"><span class="pre">text/html</span></code>. This function examines the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> MIME
 header field in the response header. If the value of the MIME field
 is <code class="docutils literal notranslate"><span class="pre">text/html</span></code>, then the function returns 1; otherwise, it returns
 zero.</p>
 </li>
-<li><p class="first"><strong>``transform_add``</strong></p>
+<li><p><strong>``transform_add``</strong></p>
 <p>Creates the transformation for the current transaction and sets up a
 transformation hook. The handler function for the transformation is
 <code class="docutils literal notranslate"><span class="pre">append_transform</span></code>.</p>
 </li>
-<li><p class="first"><strong>``transform_plugin``</strong></p>
+<li><p><strong>``transform_plugin``</strong></p>
 <p>This is the handler function for the main continuation for the
 plugin. Traffic Server calls this function whenever it reads an HTTP
 response header. <code class="docutils literal notranslate"><span class="pre">transform_plugin</span></code> does the following:</p>
 <ul class="simple">
-<li>Gets a handle to the HTTP transaction being processed</li>
-<li>Calls <code class="docutils literal notranslate"><span class="pre">transformable</span></code> to determine whether the response document
-content is of type <code class="docutils literal notranslate"><span class="pre">text/html</span></code></li>
-<li>If the content is transformable, then it calls <code class="docutils literal notranslate"><span class="pre">transform_add</span></code>
-to create the transformation.</li>
-<li>Calls <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> to continue the transaction</li>
+<li><p>Gets a handle to the HTTP transaction being processed</p></li>
+<li><p>Calls <code class="docutils literal notranslate"><span class="pre">transformable</span></code> to determine whether the response document
+content is of type <code class="docutils literal notranslate"><span class="pre">text/html</span></code></p></li>
+<li><p>If the content is transformable, then it calls <code class="docutils literal notranslate"><span class="pre">transform_add</span></code>
+to create the transformation.</p></li>
+<li><p>Calls <code class="docutils literal notranslate"><span class="pre">TSHttpTxnReenable</span></code> to continue the transaction</p></li>
 </ul>
 </li>
-<li><p class="first"><strong>``load``</strong></p>
+<li><p><strong>``load``</strong></p>
 <p>Opens the file containing the text to be appended and loads the
 contents of the file into an <code class="docutils literal notranslate"><span class="pre">TSIOBuffer</span></code> called <code class="docutils literal notranslate"><span class="pre">append_buffer</span></code>.</p>
 </li>
-<li><p class="first"><strong>``TSPluginInit``</strong></p>
+<li><p><strong>``TSPluginInit``</strong></p>
 <p>Does the following:</p>
 <ul class="simple">
-<li>Checks to make sure that the required configuration information
+<li><p>Checks to make sure that the required configuration information
 (the append text filename) is entered in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>
-correctly.</li>
-<li>If there is a filename, then <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> calls load to load
-the text.</li>
-<li>Creates a continuation for the plugin. The handler for this
-continuation is <code class="docutils literal notranslate"><span class="pre">transform_plugin</span></code>.</li>
-<li>Adds the plugin’s continuation to
+correctly.</p></li>
+<li><p>If there is a filename, then <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> calls load to load
+the text.</p></li>
+<li><p>Creates a continuation for the plugin. The handler for this
+continuation is <code class="docutils literal notranslate"><span class="pre">transform_plugin</span></code>.</p></li>
+<li><p>Adds the plugin’s continuation to
 <code class="docutils literal notranslate"><span class="pre">TS_HTTP_READ_RESPONSE_HDR_HOOK</span></code>. In other words, it sets up a
 callback of the plugin’s continuation when Traffic Server reads
-HTTP response headers.</li>
+HTTP response headers.</p></li>
 </ul>
 </li>
 </ul>

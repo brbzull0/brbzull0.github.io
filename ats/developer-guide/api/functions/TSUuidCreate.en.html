@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -434,49 +437,49 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidCreate">
-<a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <code class="descname">TSUuidCreate</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidCreate" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <code class="sig-name descname">TSUuidCreate</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidCreate" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidInitialize">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSUuidInitialize</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;uuid</em>, <a class="reference internal" href="TSTypes.en.html#c.TSUuidVersion" title="TSUuidVersion">TSUuidVersion</a><em>&nbsp;v</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidInitialize" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSUuidInitialize</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>uuid</em>, <a class="reference internal" href="TSTypes.en.html#c.TSUuidVersion" title="TSUuidVersion">TSUuidVersion</a> <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidInitialize" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidDestroy">
-void <code class="descname">TSUuidDestroy</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidDestroy" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSUuidDestroy</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidDestroy" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidCopy">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSUuidCopy</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;dest</em>, const <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;src</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidCopy" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSUuidCopy</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>dest</em>, <em class="property">const</em> <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>src</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidCopy" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidStringGet">
-const char * <code class="descname">TSUuidStringGet</code><span class="sig-paren">(</span>const <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidStringGet" title="Permalink to this definition">¶</a></dt>
+<em class="property">const</em> char *<code class="sig-name descname">TSUuidStringGet</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidStringGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidVersionGet">
-<a class="reference internal" href="TSTypes.en.html#c.TSUuidVersion" title="TSUuidVersion">TSUuidVersion</a> <code class="descname">TSUuidVersionGet</code><span class="sig-paren">(</span>const <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidVersionGet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSUuidVersion" title="TSUuidVersion">TSUuidVersion</a> <code class="sig-name descname">TSUuidVersionGet</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>uuid</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidVersionGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSUuidStringParse">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSUuidStringParse</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a><em>&nbsp;uuid</em>, const char *<em>&nbsp;uuid_str</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidStringParse" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSUuidStringParse</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <em>uuid</em>, <em class="property">const</em> char *<em>uuid_str</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSUuidStringParse" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSProcessUuidGet">
-const <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <code class="descname">TSProcessUuidGet</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#c.TSProcessUuidGet" title="Permalink to this definition">¶</a></dt>
+<em class="property">const</em> <a class="reference internal" href="../types/TSUuid.en.html#c.TSUuid" title="TSUuid">TSUuid</a> <code class="sig-name descname">TSProcessUuidGet</code><span class="sig-paren">(</span>void<span class="sig-paren">)</span><a class="headerlink" href="#c.TSProcessUuidGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSClientRequestUuidGet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSClientRequestUuidGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, char*<em>&nbsp;uuid_str</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSClientRequestUuidGet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSClientRequestUuidGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, char *<em>uuid_str</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSClientRequestUuidGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>

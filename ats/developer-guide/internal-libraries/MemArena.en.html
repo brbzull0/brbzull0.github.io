@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -221,9 +221,9 @@ memory in large blocks and allocates pieces of those blocks when memory is reque
 destruction all of the reserved memory is released which also destroys all of the allocated memory.
 This is useful when the goal is any (or all) of trying to</p>
 <ul class="simple">
-<li>amortize allocation costs for many small allocations.</li>
-<li>create better memory locality for containers.</li>
-<li>de-allocate memory in bulk.</li>
+<li><p>amortize allocation costs for many small allocations.</p></li>
+<li><p>create better memory locality for containers.</p></li>
+<li><p>de-allocate memory in bulk.</p></li>
 </ul>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
@@ -248,9 +248,9 @@ is to coalesce (or garbage collect) all of the in use memory in the arena into a
 internal reserved block. This improves memory efficiency and memory locality. This coalescence is
 done by</p>
 <ol class="arabic simple">
-<li>Freezing the arena.</li>
-<li>Copying all objects back in to the arena.</li>
-<li>Thawing the arena.</li>
+<li><p>Freezing the arena.</p></li>
+<li><p>Copying all objects back in to the arena.</p></li>
+<li><p>Thawing the arena.</p></li>
 </ol>
 <p>Because the default reservation hint is large enough for all of the previously allocated memory, all
 of the copied objects will be put in the same new internal block. If this for some reason this
@@ -283,12 +283,12 @@ internal block, a block just for that allocation will be created. This is useful
 </div>
 <div class="section" id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv48MemArena">
-<span id="_CPPv38MemArena"></span><span id="_CPPv28MemArena"></span><span id="MemArena"></span><em class="property">class </em><code class="descname">MemArena</code><a class="headerlink" href="#_CPPv48MemArena" title="Permalink to this definition">¶</a><br /></dt>
-<dd><dl class="function">
+<span id="_CPPv38MemArena"></span><span id="_CPPv28MemArena"></span><span id="MemArena"></span><em class="property">class </em><code class="sig-name descname">MemArena</code><a class="headerlink" href="#_CPPv48MemArena" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="cpp function">
 <dt id="_CPPv4N8MemArena8MemArenaE6size_t">
-<span id="_CPPv3N8MemArena8MemArenaE6size_t"></span><span id="_CPPv2N8MemArena8MemArenaE6size_t"></span><span id="MemArena::MemArena__s"></span><code class="descname">MemArena</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena8MemArenaE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8MemArena8MemArenaE6size_t"></span><span id="_CPPv2N8MemArena8MemArenaE6size_t"></span><span id="MemArena::MemArena__s"></span><code class="sig-name descname">MemArena</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena8MemArenaE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct a memory arena. <em>n</em> is optional. Initially not memory is reserved. If <em>n</em>
 is provided this is a hint that the first internal memory reservation should provide roughly
 and at least <em>n</em> bytes of free space. Otherwise the internal default hint is used. A call
@@ -296,16 +296,16 @@ to <code class="code docutils literal notranslate"><span class="pre">alloc(0)</s
 if this should be done immediately rather than lazily.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N8MemArena5allocE6size_t">
-<span id="_CPPv3N8MemArena5allocE6size_t"></span><span id="_CPPv2N8MemArena5allocE6size_t"></span><span id="MemArena::alloc__s"></span><a class="reference internal" href="MemSpan.en.html#_CPPv47MemSpan" title="MemSpan">MemSpan</a> <code class="descname">alloc</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena5allocE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8MemArena5allocE6size_t"></span><span id="_CPPv2N8MemArena5allocE6size_t"></span><span id="MemArena::alloc__s"></span><a class="reference internal" href="MemSpan.en.html#_CPPv47MemSpan" title="MemSpan">MemSpan</a> <code class="sig-name descname">alloc</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena5allocE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allocate memory of size <em>n</em> bytes in the arena. If <em>n</em> is zero then internal memory
 will be reserved if there is currently none, otherwise it is a no-op.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args">
-<span id="_CPPv3I0DpEN8MemArena4makeEDpRR4Args"></span><span id="_CPPv2I0DpEN8MemArena4makeEDpRR4Args"></span>template&lt;typename <code class="descname">T</code>, typename ...<code class="descname">Args</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="MemArena::make::T">T</a> *<code class="descname">make</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="MemArena::make::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0DpEN8MemArena4makeEDpRR4Args"></span><span id="_CPPv2I0DpEN8MemArena4makeEDpRR4Args"></span>template&lt;typename <code class="sig-name descname">T</code>, typename ...<code class="sig-name descname">Args</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="MemArena::make::T">T</a> *<code class="sig-name descname">make</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="MemArena::make::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0DpEN8MemArena4makeEP1TDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create an instance of <em>T</em>. <code class="code docutils literal notranslate"><span class="pre">sizeof(T)</span></code> bytes of memory are allocated from the arena
 and the constructor invoked. This method takes any set of arguments, which are passed to
 the constructor. A pointer to the newly constructed instance of <em>T</em> is returned. Note if
@@ -316,9 +316,9 @@ a <code class="code docutils literal notranslate"><span class="pre">std::string_
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N8MemArena6freezeE6size_t">
-<span id="_CPPv3N8MemArena6freezeE6size_t"></span><span id="_CPPv2N8MemArena6freezeE6size_t"></span><span id="MemArena::freeze__s"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="descname">freeze</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena6freezeE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8MemArena6freezeE6size_t"></span><span id="_CPPv2N8MemArena6freezeE6size_t"></span><span id="MemArena::freeze__s"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="sig-name descname">freeze</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena6freezeE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Stop allocating from existing internal memory blocks. These blocks are now “frozen”. Further
 allocation calls will cause new memory to be reserved.</p>
 <p><em>n</em> is optional. If not provided, make the hint for the next internal memory reservation
@@ -326,15 +326,15 @@ to be large enough to hold all currently (now frozen) memory allocation. If <em>
 provided it is used as the reservation hint.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N8MemArena4thawEv">
-<span id="_CPPv3N8MemArena4thawEv"></span><span id="_CPPv2N8MemArena4thawEv"></span><span id="MemArena::thaw"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="descname">thaw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena4thawEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8MemArena4thawEv"></span><span id="_CPPv2N8MemArena4thawEv"></span><span id="MemArena::thaw"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="sig-name descname">thaw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena4thawEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Release all frozen internal memory blocks, destroying all frozen allocations.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4N8MemArena5clearE6size_t">
-<span id="_CPPv3N8MemArena5clearE6size_t"></span><span id="_CPPv2N8MemArena5clearE6size_t"></span><span id="MemArena::clear__s"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="descname">clear</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena5clearE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N8MemArena5clearE6size_t"></span><span id="_CPPv2N8MemArena5clearE6size_t"></span><span id="MemArena::clear__s"></span><a class="reference internal" href="#_CPPv48MemArena" title="MemArena">MemArena</a> &amp;<code class="sig-name descname">clear</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8MemArena5clearE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Release all memory, destroying all allocations. The next memory reservation will be the size
 of the allocated memory (frozen and not) at the time of the call to <a class="reference internal" href="#_CPPv4N8MemArena5clearE6size_t" title="MemArena::clear"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">MemArena::clear()</span></code></a>.
 <em>n</em> is optional. If this is provided it is used as the hint for the next reserved block,

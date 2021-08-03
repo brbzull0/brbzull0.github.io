@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -251,205 +251,205 @@ it receives:</p>
 </pre></div>
 </div>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">You might notice that a continuation cannot determine if more events are
+<p class="admonition-title">Caution</p>
+<p>You might notice that a continuation cannot determine if more events are
 “in flight” toward it. Do not use <a class="reference internal" href="../../api/functions/TSContDestroy.en.html#c.TSContDestroy" title="TSContDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDestroy()</span></code></a> to delete a
 continuation before you make sure that all incoming events, such as
 those sent because of <a class="reference internal" href="../../api/functions/TSHttpHookAdd.en.html#c.TSHttpTxnHookAdd" title="TSHttpTxnHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnHookAdd()</span></code></a>, have been handled.</p>
 </div>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">TS_HTTP_SEND_REQUEST_HDR_HOOK may callback several times when the
+<p class="admonition-title">Caution</p>
+<p>TS_HTTP_SEND_REQUEST_HDR_HOOK may callback several times when the
 OS crashed. Be careful to use functions such as TSContDestroy in
 TS_HTTP_SEND_REQUEST_HDR_HOOK hook.</p>
 </div>
 <p>The following table lists events and the corresponding type of
 <cite>void* data</cite> passed to handler functions:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="39%" />
-<col width="38%" />
-<col width="23%" />
+<col style="width: 39%" />
+<col style="width: 38%" />
+<col style="width: 23%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Event</th>
-<th class="head">Event Sender</th>
-<th class="head">Data Type</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Event</p></th>
+<th class="head"><p>Event Sender</p></th>
+<th class="head"><p>Data Type</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_REQUEST_HDR" title="TS_EVENT_HTTP_READ_REQUEST_HDR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_REQUEST_HDR</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_READ_REQUEST_HDR_HOOK" title="TS_HTTP_READ_REQUEST_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_READ_REQUEST_HDR_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_REQUEST_HDR" title="TS_EVENT_HTTP_READ_REQUEST_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_REQUEST_HDR</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_READ_REQUEST_HDR_HOOK" title="TS_HTTP_READ_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_READ_REQUEST_HDR_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_PRE_REMAP" title="TS_EVENT_HTTP_PRE_REMAP"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_PRE_REMAP</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_PRE_REMAP_HOOK" title="TS_HTTP_PRE_REMAP_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_PRE_REMAP_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_PRE_REMAP" title="TS_EVENT_HTTP_PRE_REMAP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_PRE_REMAP</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_PRE_REMAP_HOOK" title="TS_HTTP_PRE_REMAP_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_PRE_REMAP_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_OS_DNS" title="TS_EVENT_HTTP_OS_DNS"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_OS_DNS</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_OS_DNS_HOOK" title="TS_HTTP_OS_DNS_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_OS_DNS_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_OS_DNS" title="TS_EVENT_HTTP_OS_DNS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_OS_DNS</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_OS_DNS_HOOK" title="TS_HTTP_OS_DNS_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_OS_DNS_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SEND_REQUEST_HDR" title="TS_EVENT_HTTP_SEND_REQUEST_HDR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SEND_REQUEST_HDR</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SEND_REQUEST_HDR" title="TS_EVENT_HTTP_SEND_REQUEST_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SEND_REQUEST_HDR</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_CACHE_HDR" title="TS_EVENT_HTTP_READ_CACHE_HDR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_CACHE_HDR</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_READ_CACHE_HDR_HOOK" title="TS_HTTP_READ_CACHE_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_READ_CACHE_HDR_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_CACHE_HDR" title="TS_EVENT_HTTP_READ_CACHE_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_CACHE_HDR</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_READ_CACHE_HDR_HOOK" title="TS_HTTP_READ_CACHE_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_READ_CACHE_HDR_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_RESPONSE_HDR" title="TS_EVENT_HTTP_READ_RESPONSE_HDR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_RESPONSE_HDR</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_READ_RESPONSE_HDR_HOOK" title="TS_HTTP_READ_RESPONSE_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_READ_RESPONSE_HDR_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_READ_RESPONSE_HDR" title="TS_EVENT_HTTP_READ_RESPONSE_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_READ_RESPONSE_HDR</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_READ_RESPONSE_HDR_HOOK" title="TS_HTTP_READ_RESPONSE_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_READ_RESPONSE_HDR_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SEND_RESPONSE_HDR" title="TS_EVENT_HTTP_SEND_RESPONSE_HDR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SEND_RESPONSE_HDR</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_SEND_RESPONSE_HDR_HOOK" title="TS_HTTP_SEND_RESPONSE_HDR_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_SEND_RESPONSE_HDR_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SEND_RESPONSE_HDR" title="TS_EVENT_HTTP_SEND_RESPONSE_HDR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SEND_RESPONSE_HDR</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SEND_RESPONSE_HDR_HOOK" title="TS_HTTP_SEND_RESPONSE_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_RESPONSE_HDR_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SELECT_ALT" title="TS_EVENT_HTTP_SELECT_ALT"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SELECT_ALT</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_SELECT_ALT_HOOK" title="TS_HTTP_SELECT_ALT_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_SELECT_ALT_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SELECT_ALT" title="TS_EVENT_HTTP_SELECT_ALT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SELECT_ALT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SELECT_ALT_HOOK" title="TS_HTTP_SELECT_ALT_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SELECT_ALT_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_TXN_START" title="TS_EVENT_HTTP_TXN_START"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_TXN_START</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_TXN_START" title="TS_EVENT_HTTP_TXN_START"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_TXN_START</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_TXN_CLOSE" title="TS_EVENT_HTTP_TXN_CLOSE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_TXN_CLOSE</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_TXN_CLOSE_HOOK" title="TS_HTTP_TXN_CLOSE_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_TXN_CLOSE_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_TXN_CLOSE" title="TS_EVENT_HTTP_TXN_CLOSE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_TXN_CLOSE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_TXN_CLOSE_HOOK" title="TS_HTTP_TXN_CLOSE_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_CLOSE_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SSN_START" title="TS_EVENT_HTTP_SSN_START"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_START</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_SSN_START_HOOK" title="TS_HTTP_SSN_START_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_SSN_START_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpSsn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SSN_START" title="TS_EVENT_HTTP_SSN_START"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_START</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SSN_START_HOOK" title="TS_HTTP_SSN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SSN_START_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpSsn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SSN_CLOSE" title="TS_EVENT_HTTP_SSN_CLOSE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_CLOSE</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_SSN_CLOSE_HOOK" title="TS_HTTP_SSN_CLOSE_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_SSN_CLOSE_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpSsn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_SSN_CLOSE" title="TS_EVENT_HTTP_SSN_CLOSE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_SSN_CLOSE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SSN_CLOSE_HOOK" title="TS_HTTP_SSN_CLOSE_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SSN_CLOSE_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpSsn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NONE" title="TS_EVENT_NONE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NONE</span></code></a></td>
-<td>&#160;</td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NONE" title="TS_EVENT_NONE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NONE</span></code></a></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_LOOKUP_COMPLETE" title="TS_EVENT_CACHE_LOOKUP_COMPLETE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_LOOKUP_COMPLETE</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK" title="TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_LOOKUP_COMPLETE" title="TS_EVENT_CACHE_LOOKUP_COMPLETE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_LOOKUP_COMPLETE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK" title="TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_CACHE_LOOKUP_COMPLETE_HOOK</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHttpTxn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a>
 <a class="reference internal" href="../../api/functions/TSVIOReenable.en.html#c.TSVIOReenable" title="TSVIOReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIOReenable()</span></code></a>
 <a class="reference internal" href="../../api/functions/TSContScheduleOnPool.en.html#c.TSContScheduleOnPool" title="TSContScheduleOnPool"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnPool()</span></code></a>
-<a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></td>
-<td>&#160;</td>
+<a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_REQUEST_TRANSFORM_HOOK" title="TS_HTTP_REQUEST_TRANSFORM_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code></a></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_REQUEST_TRANSFORM_HOOK" title="TS_HTTP_REQUEST_TRANSFORM_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></td>
-<td><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TS_HTTP_RESPONSE_TRANSFORM_HOOK" title="TS_HTTP_RESPONSE_TRANSFORM_HOOK"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code></a></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_IMMEDIATE" title="TS_EVENT_IMMEDIATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_RESPONSE_TRANSFORM_HOOK" title="TS_HTTP_RESPONSE_TRANSFORM_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ" title="TS_EVENT_CACHE_OPEN_READ"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a></td>
-<td>Cache VC</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ" title="TS_EVENT_CACHE_OPEN_READ"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a></p></td>
+<td><p>Cache VC</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ_FAILED" title="TS_EVENT_CACHE_OPEN_READ_FAILED"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ_FAILED</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a></td>
-<td>TS_CACHE_ERROR code</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ_FAILED" title="TS_EVENT_CACHE_OPEN_READ_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ_FAILED</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a></p></td>
+<td><p>TS_CACHE_ERROR code</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_WRITE" title="TS_EVENT_CACHE_OPEN_WRITE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheWrite.en.html#c.TSCacheWrite" title="TSCacheWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheWrite()</span></code></a></td>
-<td>Cache VC</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_WRITE" title="TS_EVENT_CACHE_OPEN_WRITE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheWrite.en.html#c.TSCacheWrite" title="TSCacheWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheWrite()</span></code></a></p></td>
+<td><p>Cache VC</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_WRITE_FAILED" title="TS_EVENT_CACHE_OPEN_WRITE_FAILED"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE_FAILED</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheWrite.en.html#c.TSCacheWrite" title="TSCacheWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheWrite()</span></code></a></td>
-<td>TS_CACHE_ERROR code</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_WRITE_FAILED" title="TS_EVENT_CACHE_OPEN_WRITE_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE_FAILED</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheWrite.en.html#c.TSCacheWrite" title="TSCacheWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheWrite()</span></code></a></p></td>
+<td><p>TS_CACHE_ERROR code</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_REMOVE" title="TS_EVENT_CACHE_REMOVE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheRemove.en.html#c.TSCacheRemove" title="TSCacheRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRemove()</span></code></a></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_REMOVE" title="TS_EVENT_CACHE_REMOVE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheRemove.en.html#c.TSCacheRemove" title="TSCacheRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRemove()</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_REMOVE_FAILED" title="TS_EVENT_CACHE_REMOVE_FAILED"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE_FAILED</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSCacheRemove.en.html#c.TSCacheRemove" title="TSCacheRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRemove()</span></code></a></td>
-<td>TS_CACHE_ERROR code</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_REMOVE_FAILED" title="TS_EVENT_CACHE_REMOVE_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE_FAILED</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSCacheRemove.en.html#c.TSCacheRemove" title="TSCacheRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRemove()</span></code></a></p></td>
+<td><p>TS_CACHE_ERROR code</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>
 <a class="reference internal" href="../../api/functions/TSHttpTxnServerIntercept.en.html#c.TSHttpTxnServerIntercept" title="TSHttpTxnServerIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnServerIntercept()</span></code></a>
-<a class="reference internal" href="../../api/functions/TSHttpTxnIntercept.en.html#c.TSHttpTxnIntercept" title="TSHttpTxnIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIntercept()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSNetVConnection" title="TSNetVConnection"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSNetVConnection</span></code></a></td>
+<a class="reference internal" href="../../api/functions/TSHttpTxnIntercept.en.html#c.TSHttpTxnIntercept" title="TSHttpTxnIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIntercept()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSNetVConnection" title="TSNetVConnection"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSNetVConnection</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT_FAILED" title="TS_EVENT_NET_ACCEPT_FAILED"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT_FAILED</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT_FAILED" title="TS_EVENT_NET_ACCEPT_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT_FAILED</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>
 <a class="reference internal" href="../../api/functions/TSHttpTxnServerIntercept.en.html#c.TSHttpTxnServerIntercept" title="TSHttpTxnServerIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnServerIntercept()</span></code></a>
-<a class="reference internal" href="../../api/functions/TSHttpTxnIntercept.en.html#c.TSHttpTxnIntercept" title="TSHttpTxnIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIntercept()</span></code></a></td>
-<td>&#160;</td>
+<a class="reference internal" href="../../api/functions/TSHttpTxnIntercept.en.html#c.TSHttpTxnIntercept" title="TSHttpTxnIntercept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIntercept()</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HOST_LOOKUP" title="TS_EVENT_HOST_LOOKUP"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HOST_LOOKUP</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSHostLookup.en.html#c.TSHostLookup" title="TSHostLookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHostLookup()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHostLookupResult" title="TSHostLookupResult"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHostLookupResult</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HOST_LOOKUP" title="TS_EVENT_HOST_LOOKUP"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HOST_LOOKUP</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSHostLookup.en.html#c.TSHostLookup" title="TSHostLookup"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHostLookup()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSHostLookupResult" title="TSHostLookupResult"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSHostLookupResult</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_TIMEOUT" title="TS_EVENT_TIMEOUT"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_TIMEOUT</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSContScheduleOnPool.en.html#c.TSContScheduleOnPool" title="TSContScheduleOnPool"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnPool()</span></code></a>
-<a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_TIMEOUT" title="TS_EVENT_TIMEOUT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_TIMEOUT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSContScheduleOnPool.en.html#c.TSContScheduleOnPool" title="TSContScheduleOnPool"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnPool()</span></code></a>
+<a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_ERROR" title="TS_EVENT_ERROR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_ERROR</span></code></a></td>
-<td>&#160;</td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_ERROR" title="TS_EVENT_ERROR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_ERROR</span></code></a></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_READY" title="TS_EVENT_VCONN_READ_READY"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_READY" title="TS_EVENT_VCONN_READ_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_WRITE_READY" title="TS_EVENT_VCONN_WRITE_READY"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_WRITE_READY" title="TS_EVENT_VCONN_WRITE_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_COMPLETE" title="TS_EVENT_VCONN_READ_COMPLETE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_COMPLETE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_COMPLETE" title="TS_EVENT_VCONN_READ_COMPLETE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_COMPLETE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_WRITE_COMPLETE" title="TS_EVENT_VCONN_WRITE_COMPLETE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_WRITE_COMPLETE" title="TS_EVENT_VCONN_WRITE_COMPLETE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_EOS" title="TS_EVENT_VCONN_EOS"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_EOS</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_EOS" title="TS_EVENT_VCONN_EOS"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_EOS</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVIO" title="TSVIO"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVIO</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_CONNECT" title="TS_EVENT_NET_CONNECT"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NET_CONNECT</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSNetConnect.en.html#c.TSNetConnect" title="TSNetConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetConnect()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_CONNECT" title="TS_EVENT_NET_CONNECT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_CONNECT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSNetConnect.en.html#c.TSNetConnect" title="TSNetConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetConnect()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_CONNECT_FAILED" title="TS_EVENT_NET_CONNECT_FAILED"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NET_CONNECT_FAILED</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSNetConnect.en.html#c.TSNetConnect" title="TSNetConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetConnect()</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_NET_CONNECT_FAILED" title="TS_EVENT_NET_CONNECT_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_CONNECT_FAILED</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSNetConnect.en.html#c.TSNetConnect" title="TSNetConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetConnect()</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_CONTINUE" title="TS_EVENT_HTTP_CONTINUE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_CONTINUE</span></code></a></td>
-<td>&#160;</td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_CONTINUE" title="TS_EVENT_HTTP_CONTINUE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_CONTINUE</span></code></a></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_ERROR" title="TS_EVENT_HTTP_ERROR"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_ERROR</span></code></a></td>
-<td>&#160;</td>
-<td>&#160;</td>
+<tr class="row-even"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_HTTP_ERROR" title="TS_EVENT_HTTP_ERROR"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_HTTP_ERROR</span></code></a></p></td>
+<td></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_MGMT_UPDATE" title="TS_EVENT_MGMT_UPDATE"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_MGMT_UPDATE</span></code></a></td>
-<td><a class="reference internal" href="../../api/functions/TSMgmtUpdateRegister.en.html#c.TSMgmtUpdateRegister" title="TSMgmtUpdateRegister"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtUpdateRegister()</span></code></a></td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../../api/types/TSEvent.en.html#c.TS_EVENT_MGMT_UPDATE" title="TS_EVENT_MGMT_UPDATE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_MGMT_UPDATE</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../api/functions/TSMgmtUpdateRegister.en.html#c.TSMgmtUpdateRegister" title="TSMgmtUpdateRegister"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMgmtUpdateRegister()</span></code></a></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <p>The continuation functions are listed below:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSContCall.en.html#c.TSContCall" title="TSContCall"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCall()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContCreate.en.html#c.TSContCreate" title="TSContCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCreate()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContDataGet.en.html#c.TSContDataGet" title="TSContDataGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDataGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContDataSet.en.html#c.TSContDataSet" title="TSContDataSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDataSet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContDestroy.en.html#c.TSContDestroy" title="TSContDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDestroy()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContMutexGet.en.html#c.TSContMutexGet" title="TSContMutexGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContMutexGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContScheduleOnPool.en.html#c.TSContScheduleOnPool" title="TSContScheduleOnPool"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnPool()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContCall.en.html#c.TSContCall" title="TSContCall"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCall()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContCreate.en.html#c.TSContCreate" title="TSContCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCreate()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContDataGet.en.html#c.TSContDataGet" title="TSContDataGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDataGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContDataSet.en.html#c.TSContDataSet" title="TSContDataSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDataSet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContDestroy.en.html#c.TSContDestroy" title="TSContDestroy"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDestroy()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContMutexGet.en.html#c.TSContMutexGet" title="TSContMutexGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContMutexGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContScheduleOnPool.en.html#c.TSContScheduleOnPool" title="TSContScheduleOnPool"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnPool()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSContScheduleOnThread.en.html#c.TSContScheduleOnThread" title="TSContScheduleOnThread"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContScheduleOnThread()</span></code></a></p></li>
 </ul>
 </div>
 

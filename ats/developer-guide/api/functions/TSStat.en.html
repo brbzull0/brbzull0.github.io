@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -433,47 +436,47 @@ statistics. In general monitoring the behavior of plugins in production is easie
 in contrast to processing log files.</p>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatCreate">
-int <code class="descname">TSStatCreate</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a><em>&nbsp;type</em>, <a class="reference internal" href="../types/TSStatPeristence.en.html#c.TSStatPersistence" title="TSStatPersistence">TSStatPersistence</a><em>&nbsp;persistence</em>, <a class="reference internal" href="../types/TSStatSync.en.html#c.TSStatSync" title="TSStatSync">TSStatSync</a><em>&nbsp;sync_style</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatCreate" title="Permalink to this definition">¶</a></dt>
+int <code class="sig-name descname">TSStatCreate</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a> <em>type</em>, <a class="reference internal" href="../types/TSStatPeristence.en.html#c.TSStatPersistence" title="TSStatPersistence">TSStatPersistence</a> <em>persistence</em>, <a class="reference internal" href="../types/TSStatSync.en.html#c.TSStatSync" title="TSStatSync">TSStatSync</a> <em>sync_style</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatCreate" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatFindName">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSStatFindName</code><span class="sig-paren">(</span>const char *<em>&nbsp;name</em>, int *<em>&nbsp;idx_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatFindName" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSStatFindName</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, int *<em>idx_ptr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatFindName" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatIntGet">
-<a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <code class="descname">TSStatIntGet</code><span class="sig-paren">(</span>int<em>&nbsp;idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntGet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <code class="sig-name descname">TSStatIntGet</code><span class="sig-paren">(</span>int <em>idx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatIntSet">
-void <code class="descname">TSStatIntSet</code><span class="sig-paren">(</span>int<em>&nbsp;idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a><em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntSet" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSStatIntSet</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatIntIncrement">
-void <code class="descname">TSStatIntIncrement</code><span class="sig-paren">(</span>int<em>&nbsp;idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a><em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntIncrement" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSStatIntIncrement</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntIncrement" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSStatIntDecrement">
-void <code class="descname">TSStatIntDecrement</code><span class="sig-paren">(</span>int<em>&nbsp;idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a><em>&nbsp;value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntDecrement" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSStatIntDecrement</code><span class="sig-paren">(</span>int <em>idx</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatIntDecrement" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="type">
+<dl class="c type">
 <dt id="c.TSRecordDumpCb">
-void <code class="descname">( * TSRecordDumpCb)</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a> *<em>&nbsp;type</em>, void *<em>&nbsp;edata</em>, int<em>&nbsp;registered</em>, const char *<em>&nbsp;name</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a><em>&nbsp;type</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordData" title="TSRecordData">TSRecordData</a> *<em>&nbsp;datum</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDumpCb" title="Permalink to this definition">¶</a></dt>
+<em class="property">typedef </em>void (*<code class="sig-name descname">TSRecordDumpCb</code>)<span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a> *type, void *edata, int registered, <em class="property">const</em> char *name, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a> type, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordData" title="TSRecordData">TSRecordData</a> *datum<span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDumpCb" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSRecordDump">
-void <code class="descname">TSRecordDump</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a><em>&nbsp;rect_type</em>, <a class="reference internal" href="#c.TSRecordDumpCb" title="TSRecordDumpCb">TSRecordDumpCb</a><em>&nbsp;callback</em>, void *<em>&nbsp;edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDump" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSRecordDump</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType">TSRecordType</a> <em>rect_type</em>, <a class="reference internal" href="#c.TSRecordDumpCb" title="TSRecordDumpCb">TSRecordDumpCb</a> <em>callback</em>, void *<em>edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSRecordDump" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -482,10 +485,10 @@ void <code class="descname">TSRecordDump</code><span class="sig-paren">(</span><
 <p>A plugin statistic is created by <a class="reference internal" href="#c.TSStatCreate" title="TSStatCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatCreate()</span></code></a>. The <em>name</em> must be globally unique and
 should follow the standard dotted tag form. To avoid collisions and for easy of use the first tag
 should be the plugin name or something easily derived from it. Currently only integers are supported
-therefore <em>type</em> must be <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TS_RECORDDATATYPE_INT" title="TS_RECORDDATATYPE_INT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_RECORDDATATYPE_INT</span></code></a>. The return value is the index of the
-statistic. In general this should work but if it doesn’t it will <code class="code docutils literal notranslate"><span class="pre">assert</span></code>. In particular,
-creating the same statistic twice will fail in this way, which can happen if statistics are created
-as part of or based on configuration files and Traffic Server is reloaded.</p>
+therefore <em>type</em> must be <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType.TS_RECORDDATATYPE_INT" title="TSRecordDataType.TS_RECORDDATATYPE_INT"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_RECORDDATATYPE_INT</span></code></a>. The return value is
+the index of the statistic. In general this should work but if it doesn’t it will <code class="code docutils literal notranslate"><span class="pre">assert</span></code>. In
+particular, creating the same statistic twice will fail in this way, which can happen if statistics
+are created as part of or based on configuration files and Traffic Server is reloaded.</p>
 <p><a class="reference internal" href="#c.TSStatFindName" title="TSStatFindName"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSStatFindName()</span></code></a> locates a statistic by <em>name</em>. If found the function returns
 <code class="docutils literal notranslate"><span class="pre">TS_SUCCESS</span></code> and the value pointed at by <em>idx_ptr</em> is updated to be the index of the
 statistic. Otherwise it returns <code class="docutils literal notranslate"><span class="pre">TS_ERROR</span></code>.</p>
@@ -494,21 +497,22 @@ statistic. Otherwise it returns <code class="docutils literal notranslate"><span
 decrease it by <em>value</em>.</p>
 <p>A group of records can be examined via <a class="reference internal" href="#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a>. A set of records is specified and the
 iterated over. For each record in the set the callbac <em>callback</em> is invoked.</p>
-<p>The records are specified by the <a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSRecordType</span></code></a>. This this is <a class="reference internal" href="../types/TSRecordType.en.html#c.TS_RECORDTYPE_NULL" title="TS_RECORDTYPE_NULL"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_RECORDTYPE_NULL</span></code></a> then all records are examined. The callback is passed</p>
+<p>The records are specified by the <a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType" title="TSRecordType"><code class="xref c c-enum docutils literal notranslate"><span class="pre">TSRecordType</span></code></a>. If this is
+<a class="reference internal" href="../types/TSRecordType.en.html#c.TSRecordType.TS_RECORDTYPE_NULL" title="TSRecordType.TS_RECORDTYPE_NULL"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_RECORDTYPE_NULL</span></code></a> then all records are examined. The callback is passed</p>
 <blockquote>
-<div><dl class="docutils">
-<dt><em>type</em></dt>
-<dd>The record type.</dd>
-<dt><em>edata</em></dt>
-<dd>Callback context. This is the <em>edata</em> value passed to <a class="reference internal" href="#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a>.</dd>
-<dt><em>registered</em></dt>
-<dd>A flag indicating if the value has been registered.</dd>
-<dt><em>name</em></dt>
-<dd>The name of the record. This is nul terminated.</dd>
-<dt><em>type</em></dt>
-<dd>The storage type of the data in the record.</dd>
-<dt><em>datum</em></dt>
-<dd>The record data.</dd>
+<div><dl class="simple">
+<dt><em>type</em></dt><dd><p>The record type.</p>
+</dd>
+<dt><em>edata</em></dt><dd><p>Callback context. This is the <em>edata</em> value passed to <a class="reference internal" href="#c.TSRecordDump" title="TSRecordDump"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSRecordDump()</span></code></a>.</p>
+</dd>
+<dt><em>registered</em></dt><dd><p>A flag indicating if the value has been registered.</p>
+</dd>
+<dt><em>name</em></dt><dd><p>The name of the record. This is nul terminated.</p>
+</dd>
+<dt><em>type</em></dt><dd><p>The storage type of the data in the record.</p>
+</dd>
+<dt><em>datum</em></dt><dd><p>The record data.</p>
+</dd>
 </dl>
 </div></blockquote>
 </div>

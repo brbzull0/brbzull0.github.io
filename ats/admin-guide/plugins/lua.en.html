@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -275,17 +275,17 @@ script, and we can write this in remap.config:</p>
 <p>This module can also act as a global plugin of Traffic Server. In this case we should provide one of these functions in
 each lua script:</p>
 <ul class="simple">
-<li><strong>‘do_global_txn_start’</strong></li>
-<li><strong>‘do_global_txn_close’</strong></li>
-<li><strong>‘do_global_os_dns’</strong></li>
-<li><strong>‘do_global_pre_remap’</strong></li>
-<li><strong>‘do_global_post_remap’</strong></li>
-<li><strong>‘do_global_read_request’</strong></li>
-<li><strong>‘do_global_send_request’</strong></li>
-<li><strong>‘do_global_read_response’</strong></li>
-<li><strong>‘do_global_send_response’</strong></li>
-<li><strong>‘do_global_cache_lookup_complete’</strong></li>
-<li><strong>‘do_global_read_cache’</strong></li>
+<li><p><strong>‘do_global_txn_start’</strong></p></li>
+<li><p><strong>‘do_global_txn_close’</strong></p></li>
+<li><p><strong>‘do_global_os_dns’</strong></p></li>
+<li><p><strong>‘do_global_pre_remap’</strong></p></li>
+<li><p><strong>‘do_global_post_remap’</strong></p></li>
+<li><p><strong>‘do_global_read_request’</strong></p></li>
+<li><p><strong>‘do_global_send_request’</strong></p></li>
+<li><p><strong>‘do_global_read_response’</strong></p></li>
+<li><p><strong>‘do_global_send_response’</strong></p></li>
+<li><p><strong>‘do_global_cache_lookup_complete’</strong></p></li>
+<li><p><strong>‘do_global_read_cache’</strong></p></li>
 </ul>
 <p>We can write this in plugin.config:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tslua</span><span class="o">.</span><span class="n">so</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">test_global_hdr</span><span class="o">.</span><span class="n">lua</span>
@@ -624,132 +624,132 @@ instead.</p>
 </div>
 <p>These constants are usually used in ts.hook method call.</p>
 <p>Additional Information:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="20%" />
-<col width="24%" />
-<col width="19%" />
-<col width="18%" />
-<col width="19%" />
+<col style="width: 20%" />
+<col style="width: 24%" />
+<col style="width: 19%" />
+<col style="width: 18%" />
+<col style="width: 19%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Hook Point</th>
-<th class="head">Lua Hook Point constant</th>
-<th class="head">Hook function be
+<thead>
+<tr class="row-odd"><th class="head"><p>Hook Point</p></th>
+<th class="head"><p>Lua Hook Point constant</p></th>
+<th class="head"><p>Hook function be
 registered  within
 do_remap() via
-ts.hook()?</th>
-<th class="head">Hook function be
+ts.hook()?</p></th>
+<th class="head"><p>Hook function be
 registered within
 do_os_response()
-via ts.hook()?</th>
-<th class="head">Hook function be
+via ts.hook()?</p></th>
+<th class="head"><p>Hook function be
 registered within
 global context via
-ts.hook()?</th>
+ts.hook()?</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>TS_HTTP_TXN
-_START_HOOK</td>
-<td>TS_LUA_HOOK
-_TXN_START</td>
-<td>NO</td>
-<td>NO</td>
-<td>YES</td>
+<tbody>
+<tr class="row-even"><td><p>TS_HTTP_TXN
+_START_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_TXN_START</p></td>
+<td><p>NO</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_READ
-_REQUEST_HDR_HOOK</td>
-<td>TS_LUA_HOOK
-_READ_REQUEST_HDR</td>
-<td>NO</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_READ
+_REQUEST_HDR_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_READ_REQUEST_HDR</p></td>
+<td><p>NO</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_PRE
-_REMAP_HOOK</td>
-<td>TS_LUA_HOOK
-_PRE_REMAP</td>
-<td>NO</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_PRE
+_REMAP_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_PRE_REMAP</p></td>
+<td><p>NO</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_POST
-_REMAP_HOOK</td>
-<td>TS_LUA_HOOK
-_POST_REMAP</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_POST
+_REMAP_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_POST_REMAP</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_READ
-_CACHE_HDR_HOOK</td>
-<td>TS_LUA_HOOK
-_READ_CACHE_HDR</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_READ
+_CACHE_HDR_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_READ_CACHE_HDR</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_OS
-_DNS_HOOK</td>
-<td>TS_LUA_HOOK
-_OS_DNS</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_OS
+_DNS_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_OS_DNS</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_CACHE
-_LOOKUP_COMPLETE_HOOK</td>
-<td>TS_LUA_HOOK
-_CACHE_LOOKUP_COMPLETE</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_CACHE
+_LOOKUP_COMPLETE_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_CACHE_LOOKUP_COMPLETE</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_SEND
-_REQUEST_HDR_HOOK</td>
-<td>TS_LUA_HOOK
-_SEND_REQUEST_HDR</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_SEND
+_REQUEST_HDR_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_SEND_REQUEST_HDR</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_READ
-_RESPONSE_HDR_HOOK</td>
-<td>TS_LUA_HOOK
-_READ_RESPONSE_HDR</td>
-<td>YES</td>
-<td>YES</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_READ
+_RESPONSE_HDR_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_READ_RESPONSE_HDR</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_SEND
-_RESPONSE_HDR_HOOK</td>
-<td>TS_LUA_HOOK
-_SEND_RESPONSE_HDR</td>
-<td>YES</td>
-<td>YES</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_SEND
+_RESPONSE_HDR_HOOK</p></td>
+<td><p>TS_LUA_HOOK
+_SEND_RESPONSE_HDR</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_REQUEST
-_TRANSFORM_HOOK</td>
-<td>TS_LUA_REQUEST_TRANSFORM</td>
-<td>YES</td>
-<td>NO</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_REQUEST
+_TRANSFORM_HOOK</p></td>
+<td><p>TS_LUA_REQUEST_TRANSFORM</p></td>
+<td><p>YES</p></td>
+<td><p>NO</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-odd"><td>TS_HTTP_RESPONSE
-_TRANSFORM_HOOK</td>
-<td>TS_LUA_RESPONSE_TRANSFORM</td>
-<td>YES</td>
-<td>YES</td>
-<td>YES</td>
+<tr class="row-odd"><td><p>TS_HTTP_RESPONSE
+_TRANSFORM_HOOK</p></td>
+<td><p>TS_LUA_RESPONSE_TRANSFORM</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
 </tr>
-<tr class="row-even"><td>TS_HTTP_TXN
-_CLOSE_HOOK</td>
-<td>TS_LUA_HOOK_TXN_CLOSE</td>
-<td>YES</td>
-<td>YES</td>
-<td>YES</td>
+<tr class="row-even"><td><p>TS_HTTP_TXN
+_CLOSE_HOOK</p></td>
+<td><p>TS_LUA_HOOK_TXN_CLOSE</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
+<td><p>YES</p></td>
 </tr>
 </tbody>
 </table>
@@ -1903,9 +1903,9 @@ X-Forwarded-For: 135.xx.xx.xx
 <p><strong>syntax:</strong> <em>ts.server_request.set_method()</em></p>
 <p><strong>context:</strong> function &#64; TS_LUA_HOOK_SEND_REQUEST_HDR hook point or later</p>
 <p><strong>description:</strong> This function can be used to override the current server request’s method with METHOD_NAME.</p>
-<dl class="docutils">
-<dt>::</dt>
-<dd>ts.server_request.set_method(‘HEAD’)</dd>
+<dl class="simple">
+<dt>::</dt><dd><p>ts.server_request.set_method(‘HEAD’)</p>
+</dd>
 </dl>
 <p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
 </div>
@@ -2567,7 +2567,7 @@ data is returned from the transform handler.</p>
 <h3>ts.http.get_remap_from_url<a class="headerlink" href="#ts-http-get-remap-from-url" title="Permalink to this headline">¶</a></h3>
 <p><strong>syntax:</strong> <em>ts.http.get_remap_from_url()</em></p>
 <p><strong>context:</strong> do_global_post_remap</p>
-<p><strong>description:</strong> This function can be used to get the <em>from</em> URL in the matching line in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
+<p><strong>description:</strong> This function can be used to get the <em>from</em> URL in the matching line in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
 <p>Here is an example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">do_global_post_remap</span><span class="p">()</span>
     <span class="n">local</span> <span class="n">from_url</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">get_remap_from_url</span><span class="p">()</span>
@@ -2581,7 +2581,7 @@ data is returned from the transform handler.</p>
 <h3>ts.http.get_remap_to_url<a class="headerlink" href="#ts-http-get-remap-to-url" title="Permalink to this headline">¶</a></h3>
 <p><strong>syntax:</strong> <em>ts.http.get_remap_to_url()</em></p>
 <p><strong>context:</strong> do_global_post_remap</p>
-<p><strong>description:</strong> This function can be used to get the <em>to</em> URL in the matching line in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
+<p><strong>description:</strong> This function can be used to get the <em>to</em> URL in the matching line in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
 <p>Here is an example</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">function</span> <span class="n">do_global_post_remap</span><span class="p">()</span>
     <span class="n">local</span> <span class="n">to_url</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">http</span><span class="o">.</span><span class="n">get_remap_to_url</span><span class="p">()</span>
@@ -3536,8 +3536,8 @@ be returned with 4 functions to increment, decrement, get and set the value. Tha
 <div class="section" id="todo">
 <h2>Todo<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>ts.cache_xxx</li>
-<li>protocol</li>
+<li><p>ts.cache_xxx</p></li>
+<li><p>protocol</p></li>
 </ul>
 <p>Currently when we use this as a global plugin, each global hook is using a separate lua state for the same
 transaction. This can be wasteful. Also the state cannot be reused for the same transaction across the global hooks. The
@@ -3551,27 +3551,27 @@ maintaining the lua state in the ATS core.</p>
 <h2>Notes on Unit Testing Lua scripts for ATS Lua Plugin<a class="headerlink" href="#notes-on-unit-testing-lua-scripts-for-ats-lua-plugin" title="Permalink to this headline">¶</a></h2>
 <p>Follow the steps below to use busted framework to run some unit tests on sample scripts and modules</p>
 <ul class="simple">
-<li>Build and install lua 5.1.5 using the source code from here - <a class="reference external" href="http://www.lua.org/ftp/lua-5.1.tar.gz">http://www.lua.org/ftp/lua-5.1.tar.gz</a></li>
-<li>Build and install luarocks 2.2.2 from here - <a class="reference external" href="https://github.com/keplerproject/luarocks/wiki/Download">https://github.com/keplerproject/luarocks/wiki/Download</a></li>
-<li>Run “sudo luarocks install busted”</li>
-<li>Run “sudo luarocks install luacov”</li>
-<li>“cd trafficserver/plugins/lua/ci”</li>
-<li>Run “busted -c module_test.lua; luacov”. It will produce “luacov.report.out” containing the code coverage for “module.lua”</li>
-<li>Run “busted -c script_test.lua; luacov”. It will produce “luacov.report.out” containing the code coverage for “script.lua”</li>
+<li><p>Build and install lua 5.1.5 using the source code from here - <a class="reference external" href="http://www.lua.org/ftp/lua-5.1.tar.gz">http://www.lua.org/ftp/lua-5.1.tar.gz</a></p></li>
+<li><p>Build and install luarocks 2.2.2 from here - <a class="reference external" href="https://github.com/keplerproject/luarocks/wiki/Download">https://github.com/keplerproject/luarocks/wiki/Download</a></p></li>
+<li><p>Run “sudo luarocks install busted”</p></li>
+<li><p>Run “sudo luarocks install luacov”</p></li>
+<li><p>“cd trafficserver/plugins/lua/ci”</p></li>
+<li><p>Run “busted -c module_test.lua; luacov”. It will produce “luacov.report.out” containing the code coverage for “module.lua”</p></li>
+<li><p>Run “busted -c script_test.lua; luacov”. It will produce “luacov.report.out” containing the code coverage for “script.lua”</p></li>
 </ul>
 <p>Reference for further information</p>
 <ul class="simple">
-<li>Busted - <a class="reference external" href="http://olivinelabs.com/busted/">http://olivinelabs.com/busted/</a></li>
-<li>Specifications for asserts/mocks/stubs/etc inside busted framework:
-<a class="reference external" href="https://github.com/Olivine-Labs/luassert/tree/master/spec">https://github.com/Olivine-Labs/luassert/tree/master/spec</a></li>
-<li>luacov - <a class="reference external" href="https://luarocks.org/modules/hisham/luacov">https://luarocks.org/modules/hisham/luacov</a></li>
+<li><p>Busted - <a class="reference external" href="http://olivinelabs.com/busted/">http://olivinelabs.com/busted/</a></p></li>
+<li><p>Specifications for asserts/mocks/stubs/etc inside busted framework:
+<a class="reference external" href="https://github.com/Olivine-Labs/luassert/tree/master/spec">https://github.com/Olivine-Labs/luassert/tree/master/spec</a></p></li>
+<li><p>luacov - <a class="reference external" href="https://luarocks.org/modules/hisham/luacov">https://luarocks.org/modules/hisham/luacov</a></p></li>
 </ul>
 <p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
 </div>
 <div class="section" id="more-docs">
 <h2>More docs<a class="headerlink" href="#more-docs" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/portl4t/ts-lua">https://github.com/portl4t/ts-lua</a></li>
+<li><p><a class="reference external" href="https://github.com/portl4t/ts-lua">https://github.com/portl4t/ts-lua</a></p></li>
 </ul>
 <p><a class="reference internal" href="#admin-plugins-ts-lua"><span class="std std-ref">TOP</span></a></p>
 </div>

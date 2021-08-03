@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -433,9 +436,9 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSMgmtSourceGet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSMgmtSourceGet</code><span class="sig-paren">(</span>const char *<em>&nbsp;var_name</em>, <a class="reference internal" href="#c.TSMgmtSource" title="TSMgmtSource">TSMgmtSource</a> *<em>&nbsp;result</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSMgmtSourceGet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSMgmtSourceGet</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>var_name</em>, <a class="reference internal" href="#c.TSMgmtSource" title="TSMgmtSource">TSMgmtSource</a> *<em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSMgmtSourceGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -447,40 +450,40 @@ failure if <em>var_name</em> is not found.</p>
 </div>
 <div class="section" id="types">
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
-<dl class="type">
+<dl class="c type">
 <dt id="c.TSMgmtSource">
-<code class="descname">TSMgmtSource</code><a class="headerlink" href="#c.TSMgmtSource" title="Permalink to this definition">¶</a></dt>
+<em class="property">type </em><code class="sig-name descname">TSMgmtSource</code><a class="headerlink" href="#c.TSMgmtSource" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Source of the current value for a management (configuration) value.</p>
-<dl class="macro">
-<dt id="c.TS_MGMT_SOURCE_NULL">
-<code class="descname">TS_MGMT_SOURCE_NULL</code><a class="headerlink" href="#c.TS_MGMT_SOURCE_NULL" title="Permalink to this definition">¶</a></dt>
+<dl class="c macro">
+<dt id="c.TSMgmtSource.TS_MGMT_SOURCE_NULL">
+<code class="sig-name descname">TS_MGMT_SOURCE_NULL</code><a class="headerlink" href="#c.TSMgmtSource.TS_MGMT_SOURCE_NULL" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Invalid value, no source available. This is primarily used as an initialization or error value
 and should be returned only when the API call fails.</p>
 </dd></dl>
 
-<dl class="macro">
-<dt id="c.TS_MGMT_SOURCE_DEFAULT">
-<code class="descname">TS_MGMT_SOURCE_DEFAULT</code><a class="headerlink" href="#c.TS_MGMT_SOURCE_DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dl class="c macro">
+<dt id="c.TSMgmtSource.TS_MGMT_SOURCE_DEFAULT">
+<code class="sig-name descname">TS_MGMT_SOURCE_DEFAULT</code><a class="headerlink" href="#c.TSMgmtSource.TS_MGMT_SOURCE_DEFAULT" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The default value provided by the Traffic Server core.</p>
 </dd></dl>
 
-<dl class="macro">
-<dt id="c.TS_MGMT_SOURCE_PLUGIN">
-<code class="descname">TS_MGMT_SOURCE_PLUGIN</code><a class="headerlink" href="#c.TS_MGMT_SOURCE_PLUGIN" title="Permalink to this definition">¶</a></dt>
+<dl class="c macro">
+<dt id="c.TSMgmtSource.TS_MGMT_SOURCE_PLUGIN">
+<code class="sig-name descname">TS_MGMT_SOURCE_PLUGIN</code><a class="headerlink" href="#c.TSMgmtSource.TS_MGMT_SOURCE_PLUGIN" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The configuration variable was created by a plugin and the value is the default value provided
 by a plugin.</p>
 </dd></dl>
 
-<dl class="macro">
-<dt id="c.TS_MGMT_SOURCE_EXPLICIT">
-<code class="descname">TS_MGMT_SOURCE_EXPLICIT</code><a class="headerlink" href="#c.TS_MGMT_SOURCE_EXPLICIT" title="Permalink to this definition">¶</a></dt>
-<dd><p>The value has been set in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. Note this value is returned even if the
+<dl class="c macro">
+<dt id="c.TSMgmtSource.TS_MGMT_SOURCE_EXPLICIT">
+<code class="sig-name descname">TS_MGMT_SOURCE_EXPLICIT</code><a class="headerlink" href="#c.TSMgmtSource.TS_MGMT_SOURCE_EXPLICIT" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The value has been set in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. Note this value is returned even if the
 variable was explicitly set to the default value.</p>
 </dd></dl>
 
-<dl class="macro">
-<dt id="c.TS_MGMT_SOURCE_ENV">
-<code class="descname">TS_MGMT_SOURCE_ENV</code><a class="headerlink" href="#c.TS_MGMT_SOURCE_ENV" title="Permalink to this definition">¶</a></dt>
+<dl class="c macro">
+<dt id="c.TSMgmtSource.TS_MGMT_SOURCE_ENV">
+<code class="sig-name descname">TS_MGMT_SOURCE_ENV</code><a class="headerlink" href="#c.TSMgmtSource.TS_MGMT_SOURCE_ENV" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The value was retrieved from the process environment, overriding the default value.</p>
 </dd></dl>
 

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -207,10 +207,10 @@
 <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">TSDebug</span> <span class="pre">(const</span> <span class="pre">char</span> <span class="pre">*tag,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*format_str,</span> <span class="pre">...)</span></code> to add
 traces in your plugin. In this API:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">tag</span></code> is the Traffic Server parameter that enables Traffic Server
-to print out <em>``format_str``</em></li>
-<li><code class="docutils literal notranslate"><span class="pre">...</span></code> are variables for <em>``format_str``</em> in the standard <code class="docutils literal notranslate"><span class="pre">printf</span></code>
-style.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code> is the Traffic Server parameter that enables Traffic Server
+to print out <em>``format_str``</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code> are variables for <em>``format_str``</em> in the standard <code class="docutils literal notranslate"><span class="pre">printf</span></code>
+style.</p></li>
 </ul>
 <p>Run Traffic Server with the <code class="docutils literal notranslate"><span class="pre">-Ttag</span></code> option. For example, if the tag is
 <code class="docutils literal notranslate"><span class="pre">my-plugin</span></code>, then the debug output goes to <code class="docutils literal notranslate"><span class="pre">traffic.out.</span></code>See
@@ -218,7 +218,7 @@ below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">T</span><span class="s2">&quot;my-plugin&quot;</span>
 </pre></div>
 </div>
-<p>Set the following variables in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> (in the Traffic Server
+<p>Set the following variables in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> (in the Traffic Server
 <code class="docutils literal notranslate"><span class="pre">config</span></code> directory):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">tags</span> <span class="n">STRING</span> <span class="n">debug</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">name</span>
@@ -249,21 +249,21 @@ multiple tags then use a pipe symbol to separate the tags. For example
 nor “splitdns”).</p>
 <p>Some of the useful HTTP debug tags are:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">http_hdrs</span></code> - traces all incoming and outgoing HTTP headers.</li>
-<li><code class="docutils literal notranslate"><span class="pre">http_trans</span></code> - traces actions in an HTTP transaction.</li>
-<li><code class="docutils literal notranslate"><span class="pre">http_seq</span></code> - traces the sequence of the HTTP state machine.</li>
-<li><code class="docutils literal notranslate"><span class="pre">http_tproxy</span></code> - transparency related HTTP events</li>
-<li><code class="docutils literal notranslate"><span class="pre">dns</span></code> - DNS operations</li>
-<li><code class="docutils literal notranslate"><span class="pre">hostdb</span></code> - Host name lookup</li>
-<li><code class="docutils literal notranslate"><span class="pre">iocore_net</span></code> - Socket and low level IO (very voluminous)</li>
-<li><code class="docutils literal notranslate"><span class="pre">socket</span></code> - socket operations</li>
-<li><code class="docutils literal notranslate"><span class="pre">ssl</span></code> - SSL related events</li>
-<li><code class="docutils literal notranslate"><span class="pre">cache</span></code> - Cache operations (many subtags, examine the output to
-narrow the tag set)</li>
-<li><code class="docutils literal notranslate"><span class="pre">cache_update</span></code> - Cache updates including writes</li>
-<li><code class="docutils literal notranslate"><span class="pre">cache_read</span></code> - Cache read events.</li>
-<li><code class="docutils literal notranslate"><span class="pre">dir_probe</span></code> - Cache searches.</li>
-<li><code class="docutils literal notranslate"><span class="pre">sdk</span></code> - gives some warning concerning API usage.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_hdrs</span></code> - traces all incoming and outgoing HTTP headers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_trans</span></code> - traces actions in an HTTP transaction.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_seq</span></code> - traces the sequence of the HTTP state machine.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">http_tproxy</span></code> - transparency related HTTP events</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dns</span></code> - DNS operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hostdb</span></code> - Host name lookup</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iocore_net</span></code> - Socket and low level IO (very voluminous)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">socket</span></code> - socket operations</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ssl</span></code> - SSL related events</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache</span></code> - Cache operations (many subtags, examine the output to
+narrow the tag set)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache_update</span></code> - Cache updates including writes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cache_read</span></code> - Cache read events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dir_probe</span></code> - Cache searches.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sdk</span></code> - gives some warning concerning API usage.</p></li>
 </ul>
 </div>
 </div>

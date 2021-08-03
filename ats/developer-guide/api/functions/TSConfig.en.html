@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -433,29 +436,29 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="type">
+<dl class="c type">
 <dt id="c.TSConfigDestroyFunc">
-void <code class="descname">(*TSConfigDestroyFunc)</code><span class="sig-paren">(</span>void*<span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDestroyFunc" title="Permalink to this definition">¶</a></dt>
+<em class="property">typedef </em>void (*<code class="sig-name descname">TSConfigDestroyFunc</code>)<span class="sig-paren">(</span>void*<span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDestroyFunc" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSConfigSet">
-unsigned int <code class="descname">TSConfigSet</code><span class="sig-paren">(</span>unsigned int<em>&nbsp;id</em>, void *<em>&nbsp;data</em>, <a class="reference internal" href="#c.TSConfigDestroyFunc" title="TSConfigDestroyFunc">TSConfigDestroyFunc</a><em>&nbsp;funcp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigSet" title="Permalink to this definition">¶</a></dt>
+unsigned int <code class="sig-name descname">TSConfigSet</code><span class="sig-paren">(</span>unsigned int <em>id</em>, void *<em>data</em>, <a class="reference internal" href="#c.TSConfigDestroyFunc" title="TSConfigDestroyFunc">TSConfigDestroyFunc</a> <em>funcp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSConfigGet">
-<a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <code class="descname">TSConfigGet</code><span class="sig-paren">(</span>unsigned int<em>&nbsp;id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigGet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <code class="sig-name descname">TSConfigGet</code><span class="sig-paren">(</span>unsigned int <em>id</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSConfigRelease">
-void <code class="descname">TSConfigRelease</code><span class="sig-paren">(</span>unsigned int<em>&nbsp;id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a><em>&nbsp;configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigRelease" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSConfigRelease</code><span class="sig-paren">(</span>unsigned int <em>id</em>, <a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <em>configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigRelease" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSConfigDataGet">
-void* <code class="descname">TSConfigDataGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a><em>&nbsp;configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDataGet" title="Permalink to this definition">¶</a></dt>
+void *<code class="sig-name descname">TSConfigDataGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSConfig" title="TSConfig">TSConfig</a> <em>configp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSConfigDataGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>

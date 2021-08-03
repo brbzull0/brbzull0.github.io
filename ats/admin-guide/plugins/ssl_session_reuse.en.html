@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -253,27 +253,27 @@ to build this plugin.</p>
 package.  It must be installed on at least one box in the ATS group.  We have it installed on two boxes in a failover
 scenario.  The SSL Session Reuse configuration file describes how to communicate with the redis servers.</p>
 <ul class="simple">
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache</span></code></a> should be set to 2 to enable the ATS implementation of session cache</li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.size</span></code></a> and <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-num-buckets" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.num_buckets</span></code></a> may need to be adjusted to ensure good hash table performance for your workload.  For example, we needed to increase the number of buckets to avoid long hash chains.</li>
-<li><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-server-session-ticket-enable" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.session_ticket.enable</span></code></a> should be set to 1 to enable session ticket support.</li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache</span></code></a> should be set to 2 to enable the ATS implementation of session cache</p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.size</span></code></a> and <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-num-buckets" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.num_buckets</span></code></a> may need to be adjusted to ensure good hash table performance for your workload.  For example, we needed to increase the number of buckets to avoid long hash chains.</p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-server-session-ticket-enable" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.session_ticket.enable</span></code></a> should be set to 1 to enable session ticket support.</p></li>
 </ul>
 </div>
 <div class="section" id="config-file">
 <h2>Config File<a class="headerlink" href="#config-file" title="Permalink to this headline">¶</a></h2>
 <p>SSL Session Reuse is a global plugin.  Its configuration file is given as a argument to the plugin.</p>
 <ul class="simple">
-<li>redis.RedisEndpoints - This is a comma separated list of Redis servers to connect to.  The description of the redis server may include a port</li>
-<li>redis.RedisConnectTimeout - Timeout on the redis connect attempt in milliseconds.</li>
-<li>redis.RedisRetryDelay - Timeout on retrying redis operations in milliseconds.</li>
-<li>pubconfig.PubNumWorkers - Number of worker threads.  Must be at least as many as the number of redis servers.</li>
-<li>pubconfig.PubRedisPublishTries - Number of times to attempt publishing data</li>
-<li>pubconfig.PubRedisConnectTries - Number of times to retry a redis connection attempt</li>
-<li>pubconfig.PubMaxQueuedMessages - Maximum number of undelivered messages to leave in the queue</li>
-<li>ssl_session.ClusterName - Name associated with the group of machines.  Used to form basis of the redis channel name, e.g. Pool1</li>
-<li>ssl_session.KeyUpdateInterval - How often to update the STEK key in seconds.</li>
-<li>ssl_session.STEKMaster - If set to 1, the machine will assume it is the STEK master on startup</li>
-<li>ssl_session.redis_auth_key_file - The location of the file containing the redis preshared secret.</li>
-<li>subconfig.SubColoChannel - The redis channels to subscribe to, e.g. Pool1.*</li>
+<li><p>redis.RedisEndpoints - This is a comma separated list of Redis servers to connect to.  The description of the redis server may include a port</p></li>
+<li><p>redis.RedisConnectTimeout - Timeout on the redis connect attempt in milliseconds.</p></li>
+<li><p>redis.RedisRetryDelay - Timeout on retrying redis operations in milliseconds.</p></li>
+<li><p>pubconfig.PubNumWorkers - Number of worker threads.  Must be at least as many as the number of redis servers.</p></li>
+<li><p>pubconfig.PubRedisPublishTries - Number of times to attempt publishing data</p></li>
+<li><p>pubconfig.PubRedisConnectTries - Number of times to retry a redis connection attempt</p></li>
+<li><p>pubconfig.PubMaxQueuedMessages - Maximum number of undelivered messages to leave in the queue</p></li>
+<li><p>ssl_session.ClusterName - Name associated with the group of machines.  Used to form basis of the redis channel name, e.g. Pool1</p></li>
+<li><p>ssl_session.KeyUpdateInterval - How often to update the STEK key in seconds.</p></li>
+<li><p>ssl_session.STEKMaster - If set to 1, the machine will assume it is the STEK master on startup</p></li>
+<li><p>ssl_session.redis_auth_key_file - The location of the file containing the redis preshared secret.</p></li>
+<li><p>subconfig.SubColoChannel - The redis channels to subscribe to, e.g. Pool1.*</p></li>
 </ul>
 </div>
 <div class="section" id="example-config-file">

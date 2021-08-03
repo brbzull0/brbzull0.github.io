@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -131,7 +131,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -207,20 +207,20 @@
             
   <div class="section" id="strategies-yaml">
 <h1>strategies.yaml<a class="headerlink" href="#strategies-yaml" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="std:configfile-strategies.yaml"></span><p>The <a class="reference internal" href="#std:configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file identifies the next hop proxies used in an
+<span class="target" id="std-configfile-strategies.yaml"><span id="std:configfile-strategies.yaml"></span></span><p>The <a class="reference internal" href="#std-configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file identifies the next hop proxies used in an
 cache hierarchy and the algorithms used to select the next hop proxy. Use
 this file to perform the following configuration:</p>
 <ul class="simple">
-<li>Set up next hop cache hierarchies, with multiple parents and parent
-failover</li>
+<li><p>Set up next hop cache hierarchies, with multiple parents and parent
+failover</p></li>
 </ul>
-<p>Traffic Server uses the <a class="reference internal" href="#std:configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file only when one or more
+<p>Traffic Server uses the <a class="reference internal" href="#std-configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file only when one or more
 remap lines in remap.config specifies the use of a strategy with the &#64;strategy tag.
 remap.config Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span> <span class="nd">@strategy</span><span class="o">=</span><span class="s1">&#39;mid-tier-north&#39;</span>
 </pre></div>
 </div>
-<p>After you modify the <a class="reference internal" href="#std:configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file, run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
+<p>After you modify the <a class="reference internal" href="#std-configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> file, run the <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>
 command to apply your changes.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
@@ -238,10 +238,10 @@ a directory, the NextHopStrategyFactory will alphanumerically concatenate all fi
 <p>In the example below, <strong>hosts</strong> is a <strong>YAML</strong> list of hosts.  Each host entry  uses a <strong>YAML</strong> anchor,
 <strong>&amp;p1</strong> and <strong>&amp;p2</strong> that may be used elsewhere in the <strong>YAML</strong> document to refer to hosts <strong>p1</strong> and <strong>p2</strong>.</p>
 <ul class="simple">
-<li><strong>host</strong>: the host value is a hostname string</li>
-<li><strong>protocol</strong>: a list of schemes, ports, and health check urls for  the host.</li>
-<li><strong>healthcheck</strong>: health check information with the <strong>url</strong> used to check
-the hosts health by some external health check agent.</li>
+<li><p><strong>host</strong>: the host value is a hostname string</p></li>
+<li><p><strong>protocol</strong>: a list of schemes, ports, and health check urls for  the host.</p></li>
+<li><p><strong>healthcheck</strong>: health check information with the <strong>url</strong> used to check
+the hosts health by some external health check agent.</p></li>
 </ul>
 <p>Example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hosts</span><span class="p">:</span>
@@ -338,48 +338,48 @@ entry using the <strong>&#64;strategy</strong> tag in remap.config.</p>
 </div>
 <blockquote>
 <div><ol class="arabic simple">
-<li><strong>rr_ip</strong>: round robin selection using the modulus of the client IP</li>
-<li><strong>rr_strict</strong>: strict round robin over the list of hosts in the primary group.</li>
-<li><strong>first_live</strong>: always selects the first host in the primary group.  Other hosts are selected when the first host fails.</li>
-<li><strong>latched</strong>:  Same as <strong>first_live</strong> but primary selection sticks to whatever host was used by a previous transaction.</li>
-<li><strong>consistent_hash</strong>: hosts are selected using a <strong>hash_key</strong>.</li>
+<li><p><strong>rr_ip</strong>: round robin selection using the modulus of the client IP</p></li>
+<li><p><strong>rr_strict</strong>: strict round robin over the list of hosts in the primary group.</p></li>
+<li><p><strong>first_live</strong>: always selects the first host in the primary group.  Other hosts are selected when the first host fails.</p></li>
+<li><p><strong>latched</strong>:  Same as <strong>first_live</strong> but primary selection sticks to whatever host was used by a previous transaction.</p></li>
+<li><p><strong>consistent_hash</strong>: hosts are selected using a <strong>hash_key</strong>.</p></li>
 </ol>
 </div></blockquote>
 <ul>
-<li><p class="first"><strong>hash_key</strong>: The hashing key used by the <strong>consistent_hash</strong> policy. If not specified, defaults to <strong>path</strong> which is the
+<li><p><strong>hash_key</strong>: The hashing key used by the <strong>consistent_hash</strong> policy. If not specified, defaults to <strong>path</strong> which is the
 same policy used in the <strong>parent.config</strong> implementation. Use one of:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li><strong>hostname</strong>: Creates a hash using the <strong>hostname</strong> in the request URL.</li>
-<li><strong>path</strong>: (<strong>default</strong>) Creates a hash over the path portion of the request URL.</li>
-<li><strong>path+query</strong>: Same as <strong>path</strong> but adds the <strong>query string</strong> in the request URL.</li>
-<li><strong>path+fragment</strong>: Same as <strong>path</strong> but adds the fragment portion of the URL.</li>
-<li><strong>cache_key</strong>: Uses the hash key from the <strong>cachekey</strong> plugin.  defaults to <strong>path</strong> if the <strong>cachekey</strong> plugin is not configured on the <strong>remap</strong>.</li>
-<li><strong>url</strong>: Creates a hash from the entire request url.</li>
+<li><p><strong>hostname</strong>: Creates a hash using the <strong>hostname</strong> in the request URL.</p></li>
+<li><p><strong>path</strong>: (<strong>default</strong>) Creates a hash over the path portion of the request URL.</p></li>
+<li><p><strong>path+query</strong>: Same as <strong>path</strong> but adds the <strong>query string</strong> in the request URL.</p></li>
+<li><p><strong>path+fragment</strong>: Same as <strong>path</strong> but adds the fragment portion of the URL.</p></li>
+<li><p><strong>cache_key</strong>: Uses the hash key from the <strong>cachekey</strong> plugin.  defaults to <strong>path</strong> if the <strong>cachekey</strong> plugin is not configured on the <strong>remap</strong>.</p></li>
+<li><p><strong>url</strong>: Creates a hash from the entire request url.</p></li>
 </ol>
 </div></blockquote>
 </li>
-<li><p class="first"><strong>go_direct</strong> - A boolean value indicating whether a transaction may bypass proxies and go direct to the origin. Defaults to <strong>true</strong></p>
-</li>
-<li><p class="first"><strong>parent_is_proxy</strong>: A boolean value which indicates if the groups of hosts are proxy caches or origins.  <strong>true</strong> (default) means all the hosts used in the remap are Traffic Server caches.  <strong>false</strong> means the hosts are origins that the next hop strategies may use for load balancing and/or failover.</p>
-</li>
-<li><p class="first"><strong>scheme</strong> Indicates which scheme the strategy supports, <em>http</em> or <em>https</em>
+<li><p><strong>go_direct</strong> - A boolean value indicating whether a transaction may bypass proxies and go direct to the origin. Defaults to <strong>true</strong></p></li>
+<li><p><strong>parent_is_proxy</strong>: A boolean value which indicates if the groups of hosts are proxy caches or origins.  <strong>true</strong> (default) means all the hosts used in the remap are Traffic Server caches.  <strong>false</strong> means the hosts are origins that the next hop strategies may use for load balancing and/or failover.</p></li>
+<li><p><strong>cache_peer_result</strong> - A boolean value that is only used when the <strong>policy</strong> is ‘consistent_hash’ and a <strong>peering_ring</strong> mode is used for the strategy. When set to true, the default, all responses from upstream and peer endpoints are allowed to be cached.  Setting this to false will disable caching responses received from a peer host. Only responses from upstream origins or parents will be cached for this strategy.</p></li>
+<li><p><strong>scheme</strong> Indicates which scheme the strategy supports, <em>http</em> or <em>https</em>
 - <strong>failover</strong>: A map of <strong>failover</strong> information.
 - <strong>max_simple_retries</strong>: Part of the <strong>failover</strong> map and is an integer value of the maximum number of retries for a <strong>simple retry</strong> on the list of indicated response codes.  <strong>simple retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the response codes configured for this strategy in the <strong>failover</strong> map.  If no failover response codes are configured, no <strong>simple retry</strong> is attempted.
 - <strong>max_unavailable_retries Part of the **failover</strong> map and is an integer value of the maximum number of retries for a <strong>unavailable retry</strong> on the list of indicated markdown response codes.  <strong>unavailable retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the markdown response codes configured for this strategy in the <strong>failover</strong> map.  If no failover markdown response codes are configured, no <strong>unavailable retry</strong> is attempted.  <strong>unavailable retry</strong> differs from <strong>simple retry</strong> in that if a failover for retry is done, the previously retried server is marked down for rety.</p>
 <ul class="simple">
-<li><strong>ring_mode</strong>: Part of the <strong>failover</strong> map. The host ring selection mode.  Use either <strong>exhaust_ring</strong> or <strong>alternate_ring</strong></li>
+<li><p><strong>ring_mode</strong>: Part of the <strong>failover</strong> map. The host ring selection mode.  Use either <strong>exhaust_ring</strong>,  <strong>alternate_ring</strong> or <strong>peering_ring</strong></p></li>
 </ul>
 <blockquote>
 <div><ol class="arabic simple">
-<li><strong>exhaust_ring</strong>: when a host normally selected by the policy fails, another host is selected from the same group.  A new group is not selected until all hosts on the previous group have been exhausted</li>
-<li><strong>alternate_ring</strong>: retry hosts are selected from groups in an alternating group fashion.</li>
+<li><p><strong>exhaust_ring</strong>: when a host normally selected by the policy fails, another host is selected from the same group.  A new group is not selected until all hosts on the previous group have been exhausted</p></li>
+<li><p><strong>alternate_ring</strong>: retry hosts are selected from groups in an alternating group fashion.</p></li>
+<li><p><strong>peering_ring</strong> This mode is only implemented for a policy of <strong>consistent_hash</strong> and requires that two host groups are defined. The first host group is a list of peer caches and “this” host itself, the second group is a list of upstream caches.  Parents are always selected from the peer list however, if the selected parent is “this” host itself a new parent from the upstream list is chosen.  In addition, if any peer host is unreachable or times out, a host from the upstream list is chosen for retries.</p></li>
 </ol>
 </div></blockquote>
 <ul class="simple">
-<li><strong>response_codes</strong>: Part of the <strong>failover</strong> map.  This is a list of <strong>http</strong> response codes that may be used for <strong>simple retry</strong>.</li>
-<li><strong>markdown_codes</strong>: Part of the <strong>failover</strong> map.  This is a list of <strong>http</strong> response codes that may be used for <strong>unavailable retry</strong> which will cause a parent markdown.</li>
-<li><strong>health_check</strong>: Part of the <strong>failover</strong> map.  A list of health checks. <strong>passive</strong> is the default and means that the state machine marks down <strong>hosts</strong> when a transaction timeout or connection error is detected.  <strong>passive</strong> is always used by the next hop strategies.  <strong>active</strong> means that some external process may actively health check the hosts using the defined <strong>health check url</strong> and mark them down using <strong>traffic_ctl</strong>.</li>
+<li><p><strong>response_codes</strong>: Part of the <strong>failover</strong> map.  This is a list of <strong>http</strong> response codes that may be used for <strong>simple retry</strong>.</p></li>
+<li><p><strong>markdown_codes</strong>: Part of the <strong>failover</strong> map.  This is a list of <strong>http</strong> response codes that may be used for <strong>unavailable retry</strong> which will cause a parent markdown.</p></li>
+<li><p><strong>health_check</strong>: Part of the <strong>failover</strong> map.  A list of health checks. <strong>passive</strong> is the default and means that the state machine marks down <strong>hosts</strong> when a transaction timeout or connection error is detected.  <strong>passive</strong> is always used by the next hop strategies.  <strong>active</strong> means that some external process may actively health check the hosts using the defined <strong>health check url</strong> and mark them down using <strong>traffic_ctl</strong>.</p></li>
 </ul>
 </li>
 </ul>

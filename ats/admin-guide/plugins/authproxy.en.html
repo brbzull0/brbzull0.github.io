@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -225,7 +225,7 @@ lookup state if a document is found in the cache. This will have
 the effect of serving the document without consulting the <code class="docutils literal notranslate"><span class="pre">AuthProxy</span></code>
 plugin. you can disable this behavior by setting
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-doc-in-cache-skip-dns" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.doc_in_cache_skip_dns</span></code></a> to <code class="docutils literal notranslate"><span class="pre">0</span></code> in
-<a class="reference internal" href="../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <p>Note that the authorization request will need to match a remap rule
 (which, as a standalone remap rule, does not need to call the
 AuthProxy plugin). If a second remap rule is required, by default,
@@ -234,14 +234,9 @@ the request from the client. It could be added using the
 <code class="docutils literal notranslate"><span class="pre">header_rewrite</span></code> plugin (set-header Host “pristine_host.example.com”).</p>
 <div class="section" id="plugin-options">
 <h2>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
-<table class="docutils option-list" frame="void" rules="none">
-<col class="option" />
-<col class="description" />
-<tbody valign="top">
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--auth-transform=<var>TYPE</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td><p class="first">This option specifies how to route the incoming request to the
+<dl class="option-list">
+<dt><kbd><span class="option">--auth-transform=<var>TYPE</var></span></kbd></dt>
+<dd><p>This option specifies how to route the incoming request to the
 authorization service. The transform type may be <code class="docutils literal notranslate"><span class="pre">head</span></code> or
 <code class="docutils literal notranslate"><span class="pre">redirect</span></code>.</p>
 <p>If the transform type is <code class="docutils literal notranslate"><span class="pre">head</span></code>, then the incoming request is
@@ -257,32 +252,28 @@ and it’s not able to cache HEAD requests.</p>
 request is sent to the authorization service designated by the
 <cite>–auth-host</cite> and <cite>–auth-port</cite> parameters. If the response is
 200 OK, the incoming request is allowed to proceed.</p>
-<p class="last">When the authorization service responds with a status other than
+<p>When the authorization service responds with a status other than
 200 OK, that response is returned to the client as the response to
 the incoming request. This allows mechanisms such as HTTP basic
 authentication to work correctly. Note that the body of the
 authorization service response is not returned to the client.</p>
-</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--auth-host=<var>HOST</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The name or address of the authorization host. This is only used
-by the <code class="docutils literal notranslate"><span class="pre">redirect</span></code> transform.</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--auth-port=<var>PORT</var></span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>The TCP port of the authorization host. This is only used by the
-<code class="docutils literal notranslate"><span class="pre">redirect</span></code> transform.</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd><span class="option">--force-cacheability</span></kbd></td>
-</tr>
-<tr><td>&#160;</td><td>If this options is set, the plugin will allow Traffic Server to
+</dd>
+<dt><kbd><span class="option">--auth-host=<var>HOST</var></span></kbd></dt>
+<dd><p>The name or address of the authorization host. This is only used
+by the <code class="docutils literal notranslate"><span class="pre">redirect</span></code> transform.</p>
+</dd>
+<dt><kbd><span class="option">--auth-port=<var>PORT</var></span></kbd></dt>
+<dd><p>The TCP port of the authorization host. This is only used by the
+<code class="docutils literal notranslate"><span class="pre">redirect</span></code> transform.</p>
+</dd>
+<dt><kbd><span class="option">--force-cacheability</span></kbd></dt>
+<dd><p>If this options is set, the plugin will allow Traffic Server to
 cache the result of authorized requests. In the normal case, requests
 with authorization headers are nor cacheable, but this flag allows
 that by setting the <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-ignore-authentication" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.ignore_authentication</span></code></a>
-option on the request.</td></tr>
-</tbody>
-</table>
+option on the request.</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>

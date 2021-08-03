@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -227,38 +227,38 @@
 <span id="developer-plugins-ssl-session-hooks"></span><h1>TLS Session Plugin API<a class="headerlink" href="#tls-session-plugin-api" title="Permalink to this headline">¶</a></h1>
 <p>These interfaces enable a plugin to hook into operations on the ATS TLS session cache.  ATS also provides API’s
 to enable the plugin to update the session cache based on outside information, e.g. peer servers.</p>
-<dl class="macro">
+<dl class="c macro">
 <dt id="c.TS_SSL_SESSION_HOOK">
-<code class="descname">TS_SSL_SESSION_HOOK</code><a class="headerlink" href="#c.TS_SSL_SESSION_HOOK" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">TS_SSL_SESSION_HOOK</code><a class="headerlink" href="#c.TS_SSL_SESSION_HOOK" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>This hook is invoked when a change has been made to the ATS session cache or a session has been accessed
 from ATS via openssl.  These hooks are only activated if the ATS implementation of the session cache is in
 use.  This means <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-ssl-session-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache</span></code></a> has been set to 2.</p>
 <p>The hook callback has the following signature</p>
-<dl class="function">
+<dl class="c function">
 <dt id="c.SSL_session_callback">
-int <code class="descname">SSL_session_callback</code><span class="sig-paren">(</span><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a><em>&nbsp;contp</em>, <a class="reference internal" href="../../api/types/TSEvent.en.html#c.TSEvent" title="TSEvent">TSEvent</a><em>&nbsp;event</em>, void *<em>&nbsp;edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SSL_session_callback" title="Permalink to this definition">¶</a></dt>
+int <code class="sig-name descname">SSL_session_callback</code><span class="sig-paren">(</span><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em>, <a class="reference internal" href="../../api/types/TSEvent.en.html#c.TSEvent" title="TSEvent">TSEvent</a> <em>event</em>, void *<em>edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SSL_session_callback" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>The edata parameter is a pointer to a <a class="reference internal" href="../../api/types/TSSslSession.en.html#c.TSSslSessionID" title="TSSslSessionID"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSSslSessionID</span></code></a>.</p>
 <p>This callback in synchronous since the underlying openssl callback is unable to pause processing.</p>
 <p>The following events can be sent to this callback</p>
-<dl class="macro">
+<dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_NEW">
-<code class="descname">TS_EVENT_SSL_SESSION_NEW</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_NEW" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_NEW</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_NEW" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a new session has been inserted into the SSL session cache.  The plugin can call <a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGet" title="TSSslSessionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGet()</span></code></a> to retrieve the actual session object.  The plugin could communicate information about the new session to other processes or update additional logging or statistics.</p>
 </dd></dl>
 
-<dl class="macro">
+<dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_GET">
-<code class="descname">TS_EVENT_SSL_SESSION_GET</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_GET" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_GET</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_GET" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a session has been fetched from the SSL session cache by a client request.  The plugin could update additional logging and statistics.</p>
 </dd></dl>
 
-<dl class="macro">
+<dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_REMOVE">
-<code class="descname">TS_EVENT_SSL_SESSION_REMOVE</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_REMOVE" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_REMOVE</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a session has been removed from the SSL session cache.  The plugin could communication information about the session removal to other processes or update additional logging and statistics.</p>
 </dd></dl>
 
@@ -267,11 +267,11 @@ int <code class="descname">SSL_session_callback</code><span class="sig-paren">(<
 <h1>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h1>
 <p>A number of API functions will likely be used with this hook.</p>
 <ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGet" title="TSSslSessionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGet()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGetBuffer" title="TSSslSessionGetBuffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGetBuffer()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionInsert" title="TSSslSessionInsert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionInsert()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionRemove" title="TSSslSessionRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionRemove()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslTicketKeyUpdate" title="TSSslTicketKeyUpdate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslTicketKeyUpdate()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGet" title="TSSslSessionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGet()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGetBuffer" title="TSSslSessionGetBuffer"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGetBuffer()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionInsert" title="TSSslSessionInsert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionInsert()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionRemove" title="TSSslSessionRemove"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionRemove()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslTicketKeyUpdate" title="TSSslTicketKeyUpdate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslTicketKeyUpdate()</span></code></a></p></li>
 </ul>
 </div>
 <div class="section" id="example-use-case">

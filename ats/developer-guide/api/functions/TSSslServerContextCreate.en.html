@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -434,21 +437,21 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSSslServerContextCreate">
-<a class="reference internal" href="#c.TSSslContext" title="TSSslContext">TSSslContext</a> <code class="descname">TSSslServerContextCreate</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSSslX509" title="TSSslX509">TSSslX509</a><em>&nbsp;*cert</em>, char<em>&nbsp;*certname</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSSslServerContextCreate" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="#c.TSSslContext" title="TSSslContext">TSSslContext</a> <code class="sig-name descname">TSSslServerContextCreate</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSSslX509" title="TSSslX509">TSSslX509</a> *<em>cert</em>, char *<em>certname</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSSslServerContextCreate" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSSslContextDestroy">
-void <code class="descname">TSSslContextDestroy</code><span class="sig-paren">(</span><a class="reference internal" href="#c.TSSslContext" title="TSSslContext">TSSslContext</a><em>&nbsp;ctx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSSslContextDestroy" title="Permalink to this definition">¶</a></dt>
+void <code class="sig-name descname">TSSslContextDestroy</code><span class="sig-paren">(</span><a class="reference internal" href="#c.TSSslContext" title="TSSslContext">TSSslContext</a> <em>ctx</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSSslContextDestroy" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference internal" href="#c.TSSslServerContextCreate" title="TSSslServerContextCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslServerContextCreate()</span></code></a> creates a new TLS server context. The context
-is configured using the TLS settings specified in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. The user can pass certificate object(<a class="reference internal" href="TSTypes.en.html#c.TSSslX509" title="TSSslX509"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSSslX509</span></code></a> <em>cert</em>
+is configured using the TLS settings specified in <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. The user can pass certificate object(<a class="reference internal" href="TSTypes.en.html#c.TSSslX509" title="TSSslX509"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSSslX509</span></code></a> <em>cert</em>
 and certname (<code class="code docutils literal notranslate"><span class="pre">const</span> <span class="pre">char*</span></code> <em>certname</em>) optionally.
 This function sets the certificate status callback and initializes OCSP stapling data if <em>cert</em> and <em>certname</em> is provided and ocsp is enabled globally.
 <a class="reference internal" href="#c.TSSslServerContextCreate" title="TSSslServerContextCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslServerContextCreate()</span></code></a> returns <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> on failure.</p>
@@ -458,9 +461,9 @@ performed.</p>
 </div>
 <div class="section" id="type">
 <h2>Type<a class="headerlink" href="#type" title="Permalink to this headline">¶</a></h2>
-<dl class="type">
+<dl class="c type">
 <dt id="c.TSSslContext">
-<code class="descname">TSSslContext</code><a class="headerlink" href="#c.TSSslContext" title="Permalink to this definition">¶</a></dt>
+<em class="property">type </em><code class="sig-name descname">TSSslContext</code><a class="headerlink" href="#c.TSSslContext" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The SSL context object. This is an opaque type that can be cast to
 the underlying SSL library type (<code class="code docutils literal notranslate"><span class="pre">SSL_CTX</span> <span class="pre">*</span></code> for the OpenSSL library).</p>
 </dd></dl>

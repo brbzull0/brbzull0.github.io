@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -300,8 +300,8 @@ HTTP client (e.g. the document) or the data stream being sent <em>from</em> an
 HTTP client (e.g. post data). To do this, the transformation should hook
 on to one of the following hooks:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code></p></li>
 </ul>
 <p>Note that because a transformation is intimately associated with a given
 transaction, it is only possible to add the hook to the transaction
@@ -322,7 +322,7 @@ internal Traffic Server data structures will not be deallocated, thereby
 causing a memory leak.</p>
 <p>Here’s how to make sure that all incoming data is consumed:</p>
 <ul>
-<li><p class="first">After reading or copying data, make sure that you consume the data
+<li><p>After reading or copying data, make sure that you consume the data
 and increase the value of ndone for the input VIO, as in the
 following example taken from <code class="docutils literal notranslate"><span class="pre">null_transform.c</span></code>:</p>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TSIOBufferCopy</span> <span class="p">(</span><span class="n">TSVIOBufferGet</span> <span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">output_vio</span><span class="p">),</span>
@@ -334,16 +334,15 @@ following example taken from <code class="docutils literal notranslate"><span cl
 </pre></div>
 </div>
 </li>
-<li><p class="first">Before sending <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code>, your transformation
+<li><p>Before sending <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code>, your transformation
 should check the number of bytes remaining in the upstream
 vconnection’s write VIO (input VIO) using the function
 <code class="docutils literal notranslate"><span class="pre">TSVIONTodoGet</span></code> (<code class="docutils literal notranslate"><span class="pre">input_vio</span></code>). This value should go to zero when
 all of the upstream data is consumed
 (<code class="docutils literal notranslate"><span class="pre">TSVIONTodoGet</span> <span class="pre">=</span> <span class="pre">nbytes</span> <span class="pre">-</span> <span class="pre">ndone</span></code>). Do not send
 <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code> events if <a class="reference internal" href="../../api/functions/TSVIONTodoGet.en.html#c.TSVIONTodoGet" title="TSVIONTodoGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIONTodoGet()</span></code></a> is
-greater than zero.</p>
-</li>
-<li><p class="first">The transformation passes data out of itself by using the output
+greater than zero.</p></li>
+<li><p>The transformation passes data out of itself by using the output
 vconnection retrieved by <a class="reference internal" href="../../api/functions/TSTransformOutputVConnGet.en.html#c.TSTransformOutputVConnGet" title="TSTransformOutputVConnGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformOutputVConnGet()</span></code></a>. Immediately
 before Traffic Server initiates the write operation (which inputs
 data into the transformation), it sets the output vconnection either
@@ -351,21 +350,19 @@ to the next transformation in the chain of transformations or to a
 special terminating transformation (if it’s the last transformation
 in the chain). Since the transformation is handed ownership of the
 output vconnection, it must close it at some point in order for it to
-be deallocated.</p>
-</li>
-<li><p class="first">All of the transformations in a transformation chain share the
+be deallocated.</p></li>
+<li><p>All of the transformations in a transformation chain share the
 transaction’s mutex. This small restriction (enforced by
 <a class="reference internal" href="../../api/functions/TSTransformCreate.en.html#c.TSTransformCreate" title="TSTransformCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformCreate()</span></code></a>) removes many of the locking complications of
 implementing general vconnections. For example, a transformation does
 not have to grab its write VIO mutex before accessing its write VIO
-because it knows it already holds the mutex.</p>
-</li>
+because it knows it already holds the mutex.</p></li>
 </ul>
 <p>The transformation functions are:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="../../api/functions/TSTransformCreate.en.html#c.TSTransformCreate" title="TSTransformCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformCreate()</span></code></a></li>
-<li><a class="reference internal" href="../../api/functions/TSTransformOutputVConnGet.en.html#c.TSTransformOutputVConnGet" title="TSTransformOutputVConnGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformOutputVConnGet()</span></code></a></li>
+<li><p><a class="reference internal" href="../../api/functions/TSTransformCreate.en.html#c.TSTransformCreate" title="TSTransformCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformCreate()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSTransformOutputVConnGet.en.html#c.TSTransformOutputVConnGet" title="TSTransformOutputVConnGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformOutputVConnGet()</span></code></a></p></li>
 </ul>
 </div></blockquote>
 </div>

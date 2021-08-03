@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -219,16 +219,16 @@ reference class definition. Sphinx domains are implemented in Python.</p>
 permits us to define and reference a set of variables which are constrained by
 the following characteristics:</p>
 <ol class="arabic simple">
-<li>Each variable in the domain must be one of known list of data types, which
+<li><p>Each variable in the domain must be one of known list of data types, which
 we will limit here to the possibilities of <code class="docutils literal notranslate"><span class="pre">integer</span></code>,
-<code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">string</span></code>.</li>
-<li>Where the data type is not specified, we can assume it is <code class="docutils literal notranslate"><span class="pre">string</span></code>.</li>
-<li>Variables which are numeric in their type may have a range of permissible
-values.</li>
-<li>Variables in the domain may still be present and supported in the system, but
-are planned to be removed in some future release.</li>
-<li>Every variable is associated with a single URI protocol, though there is no
-validation performed on the value used to represent the protocol name.</li>
+<code class="docutils literal notranslate"><span class="pre">float</span></code>, <code class="docutils literal notranslate"><span class="pre">string</span></code>.</p></li>
+<li><p>Where the data type is not specified, we can assume it is <code class="docutils literal notranslate"><span class="pre">string</span></code>.</p></li>
+<li><p>Variables which are numeric in their type may have a range of permissible
+values.</p></li>
+<li><p>Variables in the domain may still be present and supported in the system, but
+are planned to be removed in some future release.</p></li>
+<li><p>Every variable is associated with a single URI protocol, though there is no
+validation performed on the value used to represent the protocol name.</p></li>
 </ol>
 <p>As stated, this example is fairly contrived and would not match any particularly
 likely real-world needs, but it will allow us to demonstrate the full extent of
@@ -254,7 +254,7 @@ class attributes are expected, which determine how domain object definitions are
 processed. Traffic Server convention is to name each domain’s class in camel case,
 beginning with <code class="docutils literal notranslate"><span class="pre">TS</span></code> to prevent any class name collisions with builtin
 Sphinx classes.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
 </pre></div>
 </div>
 <p>We have named the domain’s defining class as <em>TSVariable</em> and inherited from the
@@ -263,7 +263,7 @@ domain which supports at least two required attributes (a name, of course, and
 a URI protocol with which it is associated) and a commonly defined, though
 optional, third attribute (a data type). We’ll deal with the value ranges and
 deprecation status later.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
     <span class="n">required_arguments</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">optional_arguments</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">final_argument_whitespace</span> <span class="o">=</span> <span class="kc">False</span>
@@ -277,8 +277,8 @@ domain do not permit whitespace in the final argument, but definitions can have
 a block of text content which follows them and should be associated with the
 item being defined.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Permitting whitespace in the final argument causes the final value of a valid
+<p class="admonition-title">Note</p>
+<p>Permitting whitespace in the final argument causes the final value of a valid
 definition to <em>slurp</em> the remaining content of the definition. Normally, each
 argument is separated by whitespace, thus <code class="docutils literal notranslate"><span class="pre">foo</span> <span class="pre">bar</span> <span class="pre">baz</span></code> would only be a
 valid definition if the domain’s required and optional argument counts added
@@ -290,7 +290,7 @@ be valid and the second argument in this case would be <code class="docutils lit
 indicate whether the variable is being deprecated. These can easily be
 supported through the <code class="docutils literal notranslate"><span class="pre">option_spec</span></code>, which allows for options to be tagged
 on to a domain item, on the lines immediately following its definition.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
     <span class="o">...</span>
     <span class="n">option_spec</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;deprecated&#39;</span> <span class="p">:</span> <span class="n">rst</span><span class="o">.</span><span class="n">directives</span><span class="o">.</span><span class="n">flag</span><span class="p">,</span>
@@ -307,7 +307,7 @@ types which can perform any complexity of validation you may desire to
 implement.</p>
 <p>It would be good form to also include a docstring for the class explaining the
 expected arguments in brief. With that included, our class now looks like:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariable</span><span class="p">(</span><span class="n">std</span><span class="o">.</span><span class="n">Target</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Description of a Traffic Server protocol variable.</span>
 
@@ -349,7 +349,7 @@ transform the item’s definition into a document structure suitable for
 rendering. The default title to be used for references will be constructed in
 this method, and all arguments and options will be processed.</p>
 <p>Our variables domain might have the following <code class="docutils literal notranslate"><span class="pre">run</span></code> method:</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">var_name</span><span class="p">,</span> <span class="n">var_proto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arguments</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">var_type</span> <span class="o">=</span> <span class="s1">&#39;string&#39;</span>
 
@@ -409,7 +409,7 @@ a single method, <code class="docutils literal notranslate"><span class="pre">pr
 Traffic Server convention is to name the reference class the same as the domain class, but
 with <code class="docutils literal notranslate"><span class="pre">Ref</span></code> appended to the name. Thus, the domain class <code class="docutils literal notranslate"><span class="pre">TSVariable</span></code>
 is accompanied by a <code class="docutils literal notranslate"><span class="pre">TSVariableRef</span></code> reference class.</p>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariableRef</span><span class="p">(</span><span class="n">XRefRole</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSVariableRef</span><span class="p">(</span><span class="n">XRefRole</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">process_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">ref_node</span><span class="p">,</span> <span class="n">explicit_title_p</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">title</span><span class="p">,</span> <span class="n">target</span>
 </pre></div>
@@ -418,25 +418,25 @@ is accompanied by a <code class="docutils literal notranslate"><span class="pre"
 and should return two values: a string containing the title of the reference,
 and a hyperlink target to be used for the rendered documentation.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">process_link</span></code> method receives the following arguments:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">self</span></code></dt>
-<dd>The reference instance object, as per Python method conventions.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">env</span></code></dt>
-<dd>A dictionary object containing the environment of the documentation
-processor in its state at the time of the reference encounter.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ref_node</span></code></dt>
-<dd>The node object of the reference as encountered in the documentation source.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">explicit_title_p</span></code></dt>
-<dd>Contains the text content of the reference’s explicit title overriding, if
-present in the reference markup.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">title</span></code></dt>
-<dd>The processed form of the reference title, which may be the result of domain
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">self</span></code></dt><dd><p>The reference instance object, as per Python method conventions.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">env</span></code></dt><dd><p>A dictionary object containing the environment of the documentation
+processor in its state at the time of the reference encounter.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ref_node</span></code></dt><dd><p>The node object of the reference as encountered in the documentation source.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">explicit_title_p</span></code></dt><dd><p>Contains the text content of the reference’s explicit title overriding, if
+present in the reference markup.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">title</span></code></dt><dd><p>The processed form of the reference title, which may be the result of domain
 class transformations or an overriding of the reference title within the
-reference itself.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt>
-<dd>The computed target of the reference, suitable for use by Sphinx to
+reference itself.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">target</span></code></dt><dd><p>The computed target of the reference, suitable for use by Sphinx to
 construct hyperlinks to the location of the item’s definition, wherever it
-may reside in the final rendered form of the documentation.</dd>
+may reside in the final rendered form of the documentation.</p>
+</dd>
 </dl>
 <p>In our reference class, we have simply returned the processed title (allowing
 the documentation to override the variable’s name if desired, or defaulting to
@@ -458,20 +458,20 @@ the new domain and reference. In each case, the key used when adding to the
 dictionary should be the string you wish to use in documentation markup for
 your new domain. In our example’s case, we will choose <code class="docutils literal notranslate"><span class="pre">variable</span></code> since it
 aligns with the Python classes we’ve created above, and their contrived purpose.</p>
-<dl class="docutils">
-<dt>object_types</dt>
-<dd>Used to define the actual markup string</dd>
-<dt>directives</dt>
-<dd>Defines which class is used to implement a given domain.</dd>
-<dt>roles</dt>
-<dd>Defines the class used to implement references to a domain.</dd>
-<dt>initial_data</dt>
-<dd>Used to initialized the dictionary which tracks all encountered instances of
+<dl class="simple">
+<dt>object_types</dt><dd><p>Used to define the actual markup string</p>
+</dd>
+<dt>directives</dt><dd><p>Defines which class is used to implement a given domain.</p>
+</dd>
+<dt>roles</dt><dd><p>Defines the class used to implement references to a domain.</p>
+</dd>
+<dt>initial_data</dt><dd><p>Used to initialized the dictionary which tracks all encountered instances of
 each domain. This should always be set to an empty dictionary for each
-domain.</dd>
-<dt>dangling_warnings</dt>
-<dd>May be used to provide a default warning if a reference is attempted to a
-non-existent item for a domain.</dd>
+domain.</p>
+</dd>
+<dt>dangling_warnings</dt><dd><p>May be used to provide a default warning if a reference is attempted to a
+non-existent item for a domain.</p>
+</dd>
 </dl>
 </div>
 </div>

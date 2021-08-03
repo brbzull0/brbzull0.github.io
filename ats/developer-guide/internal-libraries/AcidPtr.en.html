@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -229,18 +229,18 @@
 <p>Provides transparent interface for “copy on write” and “commit when done” in a familiar unique_ptr style.</p>
 <p>Named after the desirable properties of a database, <a class="reference external" href="https://en.wikipedia.org/wiki/ACID_(computer_science)">ACID</a> acronym:</p>
 <ul class="simple">
-<li>Atomic - reads and writes avoid skew, by using mutex locks.</li>
-<li>Consistent - data can only be changed by a commit, and only one commit can exist at a time per data.</li>
-<li>Isolated - commits of a single point of data are not concurrent. But commits of separate data can be concurrent.</li>
-<li>Durable - shared_ptr is used to keep older versions of data in memory while references exist.</li>
+<li><p>Atomic - reads and writes avoid skew, by using mutex locks.</p></li>
+<li><p>Consistent - data can only be changed by a commit, and only one commit can exist at a time per data.</p></li>
+<li><p>Isolated - commits of a single point of data are not concurrent. But commits of separate data can be concurrent.</p></li>
+<li><p>Durable - shared_ptr is used to keep older versions of data in memory while references exist.</p></li>
 </ul>
 <div class="section" id="performance">
 <h3>Performance<a class="headerlink" href="#performance" title="Permalink to this headline">¶</a></h3>
 <p>Note this code is currently implemented with mutex locks, it is expected to be fast due to the very brief duration of each lock. It would be plausible to change the implementation to use atomics or spin locks.</p>
 <p><a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">AcidCommitPtr</span></code></a></p>
 <ul class="simple">
-<li>On construction, duplicate values from a shared_ptr to a unique_ptr. (aka copy read to write memory)</li>
-<li>On destruction, move value ptr to shared_ptr. (aka move write ptr to read ptr)</li>
+<li><p>On construction, duplicate values from a shared_ptr to a unique_ptr. (aka copy read to write memory)</p></li>
+<li><p>On destruction, move value ptr to shared_ptr. (aka move write ptr to read ptr)</p></li>
 </ul>
 <p>The <a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">AcidCommitPtr</span></code></a> executes this transparent to the writer code. It copies the data on construction, and finalizes on destruction. A MemLock is used to allow exclusive read and write access, however the access is made to as fast as possible.</p>
 </div>
@@ -427,32 +427,32 @@ deactivate WriteMutex"/>
 </div>
 <div class="section" id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv4I0E7AcidPtr">
-<span id="_CPPv3I0E7AcidPtr"></span><span id="_CPPv2I0E7AcidPtr"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">class </em><code class="descname">AcidPtr</code><a class="headerlink" href="#_CPPv4I0E7AcidPtr" title="Permalink to this definition">¶</a><br /></dt>
-<dd><dl class="function">
+<span id="_CPPv3I0E7AcidPtr"></span><span id="_CPPv2I0E7AcidPtr"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">AcidPtr</code><a class="headerlink" href="#_CPPv4I0E7AcidPtr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="cpp function">
 <dt id="_CPPv4I0ENK7AcidPtr6getPtrEKNSt10shared_ptrIK1TEEv">
-<span id="_CPPv3I0ENK7AcidPtr6getPtrEv"></span><span id="_CPPv2I0ENK7AcidPtr6getPtrEv"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">const</em> std::shared_ptr&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4I0ENK7AcidPtr6getPtrEKNSt10shared_ptrIK1TEEv" title="AcidPtr::getPtr::T">T</a>&gt; <code class="descname">getPtr</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I0ENK7AcidPtr6getPtrEKNSt10shared_ptrIK1TEEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0ENK7AcidPtr6getPtrEv"></span><span id="_CPPv2I0ENK7AcidPtr6getPtrEv"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">const</em> std::shared_ptr&lt;<em class="property">const</em> <a class="reference internal" href="#_CPPv4I0ENK7AcidPtr6getPtrEKNSt10shared_ptrIK1TEEv" title="AcidPtr::getPtr::T">T</a>&gt; <code class="sig-name descname">getPtr</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I0ENK7AcidPtr6getPtrEKNSt10shared_ptrIK1TEEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="cpp class">
 <dt id="_CPPv4I0E13AcidCommitPtr">
-<span id="_CPPv3I0E13AcidCommitPtr"></span><span id="_CPPv2I0E13AcidCommitPtr"></span>template&lt;typename <code class="descname">T</code>&gt;<br /><em class="property">class </em><code class="descname">AcidCommitPtr</code><a class="headerlink" href="#_CPPv4I0E13AcidCommitPtr" title="Permalink to this definition">¶</a><br /></dt>
-<dd><dl class="function">
+<span id="_CPPv3I0E13AcidCommitPtr"></span><span id="_CPPv2I0E13AcidCommitPtr"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">AcidCommitPtr</code><a class="headerlink" href="#_CPPv4I0E13AcidCommitPtr" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="cpp function">
 <dt id="_CPPv4IEN13AcidCommitPtrD0Ev">
-<span id="_CPPv3IEN13AcidCommitPtrD0Ev"></span><span id="_CPPv2IEN13AcidCommitPtrD0Ev"></span>template&lt;&gt;<br /><code class="descname">~AcidCommitPtr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN13AcidCommitPtrD0Ev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IEN13AcidCommitPtrD0Ev"></span><span id="_CPPv2IEN13AcidCommitPtrD0Ev"></span>template&lt;&gt;<br /><code class="sig-name descname">~AcidCommitPtr</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN13AcidCommitPtrD0Ev" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4I_1TEN13AcidCommitPtr11startCommitE13AcidCommitPtrI1TEv">
-<span id="_CPPv3I_1TEN13AcidCommitPtr11startCommitEv"></span><span id="_CPPv2I_1TEN13AcidCommitPtr11startCommitEv"></span>template&lt;<a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr::T">T</a>&gt;<br /><a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr">AcidCommitPtr</a>&lt;<a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr::T">T</a>&gt; <code class="descname">startCommit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_1TEN13AcidCommitPtr11startCommitE13AcidCommitPtrI1TEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I_1TEN13AcidCommitPtr11startCommitEv"></span><span id="_CPPv2I_1TEN13AcidCommitPtr11startCommitEv"></span>template&lt;<a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr::T">T</a>&gt;<br /><a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr">AcidCommitPtr</a>&lt;<a class="reference internal" href="#_CPPv4I0E13AcidCommitPtr" title="AcidCommitPtr::T">T</a>&gt; <code class="sig-name descname">startCommit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I_1TEN13AcidCommitPtr11startCommitE13AcidCommitPtrI1TEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="cpp function">
 <dt id="_CPPv4IEN13AcidCommitPtr5abortEvv">
-<span id="_CPPv3IEN13AcidCommitPtr5abortEv"></span><span id="_CPPv2IEN13AcidCommitPtr5abortEv"></span>template&lt;&gt;<br />void <code class="descname">abort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN13AcidCommitPtr5abortEvv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IEN13AcidCommitPtr5abortEv"></span><span id="_CPPv2IEN13AcidCommitPtr5abortEv"></span>template&lt;&gt;<br />void <code class="sig-name descname">abort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IEN13AcidCommitPtr5abortEvv" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </dd></dl>

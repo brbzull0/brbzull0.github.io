@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -228,11 +228,11 @@ into the new requests. Optionally POST/PUT requests can be skipped via
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>Actions:</p>
 <ol class="arabic simple">
-<li>Adds <code class="docutils literal notranslate"><span class="pre">X-Multiplexer:</span> <span class="pre">original</span></code> header into client’s request.</li>
-<li>Copies client’s request (bodies are copied by transforming the request)</li>
-<li>Changes <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</li>
-<li>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span> <span class="pre">header</span></code> to “copy”.</li>
-<li>Sends the copied request with <code class="code docutils literal notranslate"><span class="pre">TSHttpConnect</span></code>.</li>
+<li><p>Adds <code class="docutils literal notranslate"><span class="pre">X-Multiplexer:</span> <span class="pre">original</span></code> header into client’s request.</p></li>
+<li><p>Copies client’s request (bodies are copied by transforming the request)</p></li>
+<li><p>Changes <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</p></li>
+<li><p>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span> <span class="pre">header</span></code> to “copy”.</p></li>
+<li><p>Sends the copied request with <code class="code docutils literal notranslate"><span class="pre">TSHttpConnect</span></code>.</p></li>
 </ol>
 <p>Multiplexer dispatches the request in background without blocking the original request. Multiplexed
 responses are drained and discarded.</p>
@@ -241,12 +241,12 @@ responses are drained and discarded.</p>
 responses are printed into the logs.</p>
 <p>Multiplexer produces the following statistics consumed with <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>:</p>
 <ul class="simple">
-<li>failures: number of failed multiplexed requests</li>
-<li>hits: number of successful multiplexed requests</li>
-<li>requests: total number of multiplexed requests</li>
-<li>time(avg): average time taken between multiplexed requests and their responses</li>
-<li>timeouts: number of multiplexed requests which timed-out</li>
-<li>size(avg): average size of multiplexed responses</li>
+<li><p>failures: number of failed multiplexed requests</p></li>
+<li><p>hits: number of successful multiplexed requests</p></li>
+<li><p>requests: total number of multiplexed requests</p></li>
+<li><p>time(avg): average time taken between multiplexed requests and their responses</p></li>
+<li><p>timeouts: number of multiplexed requests which timed-out</p></li>
+<li><p>size(avg): average size of multiplexed responses</p></li>
 </ul>
 <p>Example remap.config:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/a http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com</span>
@@ -311,8 +311,8 @@ kEnd --&gt; [*]
 <div class="section" id="notes">
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This should be moved to the Traffic Server documentation.</p>
+<p class="admonition-title">Note</p>
+<p>This should be moved to the Traffic Server documentation.</p>
 </div>
 </div>
 </div>

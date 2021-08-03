@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -126,7 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -208,12 +208,12 @@
 behind a single physical interface. For the purposes of this example
 will we presume</p>
 <ul class="simple">
-<li>The clients are on network 172.28.56.0/24</li>
-<li>The router connects the networks 172.28.56.0/24 and 192.168.1.0/24</li>
-<li>Interface <code class="docutils literal notranslate"><span class="pre">eth0</span></code> is on the network 192.168.1.0/24</li>
-<li>Interface <code class="docutils literal notranslate"><span class="pre">eth1</span></code> is on the network 172.28.56.0/24</li>
-<li>The router is already configured to route traffic correctly for the
-clients.</li>
+<li><p>The clients are on network 172.28.56.0/24</p></li>
+<li><p>The router connects the networks 172.28.56.0/24 and 192.168.1.0/24</p></li>
+<li><p>Interface <code class="docutils literal notranslate"><span class="pre">eth0</span></code> is on the network 192.168.1.0/24</p></li>
+<li><p>Interface <code class="docutils literal notranslate"><span class="pre">eth1</span></code> is on the network 172.28.56.0/24</p></li>
+<li><p>The router is already configured to route traffic correctly for the
+clients.</p></li>
 </ul>
 <p>In this example we will intercept port 80 (HTTP) traffic that traverses
 the router. The first step is to use <code class="docutils literal notranslate"><span class="pre">iptables</span></code> to handle IP packets
@@ -251,17 +251,17 @@ the loopback interface via a policy routing table.</p>
 <code class="docutils literal notranslate"><span class="pre">iptables</span></code> and the routing rule. The table number must be in the range
 1..253.</p>
 <p>To configure Traffic Server set the following values in
-<a class="reference internal" href="../../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></dt>
-<dd><code class="docutils literal notranslate"><span class="pre">STRING</span></code>
-Default: <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code></dd>
-<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></dt>
-<dd><code class="docutils literal notranslate"><span class="pre">INT</span></code>
-Default: <code class="docutils literal notranslate"><span class="pre">1</span></code></dd>
-<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></dt>
-<dd><code class="docutils literal notranslate"><span class="pre">INT</span></code>
-Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></dd>
+<a class="reference internal" href="../../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a></p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.http.server_ports</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">STRING</span></code>
+Default: <em>value from</em> <code class="docutils literal notranslate"><span class="pre">--on-port</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.reverse_proxy.enabled</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">INT</span></code>
+Default: <code class="docutils literal notranslate"><span class="pre">1</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">INT</span></code>
+Default: <code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
 </dl>
 </div>
 

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -230,7 +230,7 @@ be stored at every other lower level as well, so that it does not have to be
 copied if evicted from a higher tier.</p>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
-<p>Each <a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage unit</span></a> in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> can be marked with a
+<p>Each <a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage unit</span></a> in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> can be marked with a
 <em>quality</em> value which is 32 bit number. Storage units that are not marked are
 all assigned the same value which is guaranteed to be distinct from all explicit
 values. The quality value is arbitrary from the point of view of this design,
@@ -248,17 +248,17 @@ Traffic Server automatically handle all volumes as a single tier.</p>
 <p>After a client request is received and processed, volume assignment is done. For
 each tier, the oracle would return one of four values along with a volume
 pointer:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">READ</span></code></dt>
-<dd>The tier appears to have the object and can serve it.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">WRITE</span></code></dt>
-<dd>The object is not in this tier and should be written to this tier if
-possible.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RW</span></code></dt>
-<dd>Treat as <code class="docutils literal notranslate"><span class="pre">READ</span></code> if possible, but if the object turns out to not in the
-cache treat as <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">NO_SALE</span></code></dt>
-<dd>Do not interact with this tier for this object.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">READ</span></code></dt><dd><p>The tier appears to have the object and can serve it.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WRITE</span></code></dt><dd><p>The object is not in this tier and should be written to this tier if
+possible.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RW</span></code></dt><dd><p>Treat as <code class="docutils literal notranslate"><span class="pre">READ</span></code> if possible, but if the object turns out to not in the
+cache treat as <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_SALE</span></code></dt><dd><p>Do not interact with this tier for this object.</p>
+</dd>
 </dl>
 <p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">volume</span></a> returned for the tier must be a volume with
 the corresponding tier quality value. In effect, the current style of volume
@@ -287,7 +287,7 @@ server will not be used. In terms of implementation, currently a cache write to
 a volume is done via the construction of an instance of <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a>
 which receives the object stream. For tiered storage, the same thing is done
 for each target volume.</p>
-<p>For cache volume overrides (via <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>) this same process is
+<p>For cache volume overrides (via <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>) this same process is
 used except with only the volumes stripes contained within the specified cache
 volume.</p>
 </div>
@@ -306,7 +306,7 @@ happens.</p>
 <h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
 <p>As an example use, it would be possible to have only one cache volume that uses
 tiered storage for a particular set of domains using volume tagging.
-<a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> would be used to direct those domains to the selected
+<a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> would be used to direct those domains to the selected
 cache volume. The oracle would check the URL in parallel and return <code class="docutils literal notranslate"><span class="pre">NO_SALE</span></code>
 for the tiers in the target cache volume for other domains. For the other tier
 (that of the unmarked storage units), the oracle would return <code class="docutils literal notranslate"><span class="pre">RW</span></code> for the

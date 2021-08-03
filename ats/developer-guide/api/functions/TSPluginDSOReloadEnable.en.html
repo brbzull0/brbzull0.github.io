@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -434,9 +437,9 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSPluginDSOReloadEnable">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSPluginDSOReloadEnable</code><span class="sig-paren">(</span>int<em>&nbsp;enabled</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSPluginDSOReloadEnable" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSPluginDSOReloadEnable</code><span class="sig-paren">(</span>int <em>enabled</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSPluginDSOReloadEnable" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -446,14 +449,13 @@
 dynamic reloading when the same Dynamic Shared Object (DSO) is also used as a remap plugin.
 This overrides <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-plugin-dynamic-reload-mode" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.plugin.dynamic_reload_mode</span></code></a>.</p>
 <div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This function should be called from within <a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a></p>
+<p class="admonition-title">Warning</p>
+<p>This function should be called from within <a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a></p>
 </div>
-<dl class="docutils">
-<dt>The function will return <a class="reference internal" href="../types/TSReturnCode.en.html#c.TS_ERROR" title="TS_ERROR"><code class="xref c c-type docutils literal notranslate"><span class="pre">TS_ERROR</span></code></a>  in any of the following cases:</dt>
-<dd><ul class="first last simple">
-<li>The function was not called from within <a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a></li>
-<li>TS is unable to get the canonical path from the plugin’s path.</li>
+<dl class="simple">
+<dt>The function will return <a class="reference internal" href="../types/TSReturnCode.en.html#c.TS_ERROR" title="TS_ERROR"><code class="xref c c-type docutils literal notranslate"><span class="pre">TS_ERROR</span></code></a>  in any of the following cases:</dt><dd><ul class="simple">
+<li><p>The function was not called from within <a class="reference internal" href="TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a></p></li>
+<li><p>TS is unable to get the canonical path from the plugin’s path.</p></li>
 </ul>
 </dd>
 </dl>

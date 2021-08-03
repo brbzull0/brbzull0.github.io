@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -228,32 +228,32 @@ whole asset and single range requests.</p>
 <p>This slice plugin, along with the <cite>cache_range_requests</cite>
 plugin allows the following:</p>
 <ul class="simple">
-<li>Fulfill arbitrary range requests by fetching a minimum
-number of cacheable aligned blocks to fulfill the request.</li>
-<li>Breaks up very large assets into much smaller cache
+<li><p>Fulfill arbitrary range requests by fetching a minimum
+number of cacheable aligned blocks to fulfill the request.</p></li>
+<li><p>Breaks up very large assets into much smaller cache
 blocks that can be spread across multiple storage
-devices and within cache groups.</li>
+devices and within cache groups.</p></li>
 </ul>
 </div>
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>This plugin is intended for use as a remap plugin and is
-configured in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
-<p>Or preferably per remap rule in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+configured in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p>
+<p>Or preferably per remap rule in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> <span class="nd">@plugin</span><span class="o">=</span><span class="nb">slice</span><span class="o">.</span><span class="n">so</span> \
     <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span>
 </pre></div>
 </div>
 <p>In this case, the plugin will use the default behaviour:</p>
 <ul class="simple">
-<li>Fulfill whole file or range requests by requesting cacheable
+<li><p>Fulfill whole file or range requests by requesting cacheable
 block aligned ranges from the parent and assemble them
 into client responses, either 200 or 206 depending on the
-client request.</li>
-<li>Default block size is 1mb (1048576 bytes).</li>
-<li>This plugin depends on the cache_range_requests plugin
+client request.</p></li>
+<li><p>Default block size is 1mb (1048576 bytes).</p></li>
+<li><p>This plugin depends on the cache_range_requests plugin
 to perform actual parent fetching and block caching
-and If-* conditional header evaluations.</li>
+and If-* conditional header evaluations.</p></li>
 </ul>
 <div class="section" id="plugin-options">
 <h3>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h3>
@@ -347,7 +347,7 @@ following options are provided to help with log overrun:</p>
 <span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">errorlog</span>
 </pre></div>
 </div>
-<p>After modifying <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, restart or reload traffic server
+<p>After modifying <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, restart or reload traffic server
 (sudo traffic_ctl config reload) or (sudo traffic_ctl server restart)
 to activate the new configuration values.</p>
 <p>Don’t slice txt files:</p>

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -224,8 +224,8 @@
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">certifier</span></code> performs two basic tasks:</p>
 <ol class="arabic simple">
-<li>Load SSL certificates from file storage on demand. The total number of loaded certificates kept in memory can be configured.</li>
-<li>Generates SSL certificates on demand. Generated certificates will be written to file storage for later retrieval.</li>
+<li><p>Load SSL certificates from file storage on demand. The total number of loaded certificates kept in memory can be configured.</p></li>
+<li><p>Generates SSL certificates on demand. Generated certificates will be written to file storage for later retrieval.</p></li>
 </ol>
 </div>
 <div class="section" id="implementation">
@@ -233,21 +233,21 @@
 <p>Certificates management is done by <cite>SslLRUList</cite> (a Least-Recently-Used (LRU) list with a lookup map). The structure holding all info related to a given SNI is <cite>SslData</cite>. On lookup/insertion, the lookup map will be accessed and the corresponding <cite>SslData</cite> pointer will be moved to the head in the list. If on lookup/insertion the internal count exceeds the given limit on number of files, the tail node will be removed from both the list and the map.</p>
 <p>When the plugin sees an incoming HTTPS request, it does:</p>
 <ol class="arabic simple">
-<li>Look up the SNI in <cite>SslLRUList</cite> and set up the context if a valid context exists. Otherwise, it will schedule a thread to retrieve such context from disk (or generate). If such a thread is already scheduled, it will put this SSL connection onto the queue.</li>
-<li>The retriever thread will first try to load the cert from disk. If no such certs exist and dynamic generation is enabled, the thread will generate a Certificate Signing Request (CSR) with provided SNI and sign it with root CA passed in from config options. The signed certificate is then written to the disk and all queued up SSL connections are set up with correct context and enabled.</li>
+<li><p>Look up the SNI in <cite>SslLRUList</cite> and set up the context if a valid context exists. Otherwise, it will schedule a thread to retrieve such context from disk (or generate). If such a thread is already scheduled, it will put this SSL connection onto the queue.</p></li>
+<li><p>The retriever thread will first try to load the cert from disk. If no such certs exist and dynamic generation is enabled, the thread will generate a Certificate Signing Request (CSR) with provided SNI and sign it with root CA passed in from config options. The signed certificate is then written to the disk and all queued up SSL connections are set up with correct context and enabled.</p></li>
 </ol>
 </div>
 <div class="section" id="setup">
 <h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>Cert and key:</dt>
-<dd>For example, <code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">req</span> <span class="pre">-newkey</span> <span class="pre">rsa:2048</span> <span class="pre">-nodes</span> <span class="pre">-keyout</span> <span class="pre">ca.key</span> <span class="pre">-x509</span> <span class="pre">-days</span> <span class="pre">365</span> <span class="pre">-out</span> <span class="pre">ca.cert</span></code>. Note that the cert/key should be generated without a challenge password.</dd>
+<li><dl class="simple">
+<dt>Cert and key:</dt><dd><p>For example, <code class="docutils literal notranslate"><span class="pre">openssl</span> <span class="pre">req</span> <span class="pre">-newkey</span> <span class="pre">rsa:2048</span> <span class="pre">-nodes</span> <span class="pre">-keyout</span> <span class="pre">ca.key</span> <span class="pre">-x509</span> <span class="pre">-days</span> <span class="pre">365</span> <span class="pre">-out</span> <span class="pre">ca.cert</span></code>. Note that the cert/key should be generated without a challenge password.</p>
+</dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Serial number:</dt>
-<dd>A text file containing a valid integer with a trailing new line.</dd>
+<li><dl class="simple">
+<dt>Serial number:</dt><dd><p>A text file containing a valid integer with a trailing new line.</p>
+</dd>
 </dl>
 </li>
 </ul>
@@ -255,43 +255,41 @@
 <div class="section" id="plugin-configuration">
 <h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><dl class="first docutils">
-<dt>Specify certificate generation related files. If any of the following parameters is missing, the dynamic generation will be disabled.</dt>
-<dd><dl class="first option">
-<dt id="cmdoption-certifier-so-sign-cert">
-<code class="descname">--sign-cert</code><code class="descclassname"> &lt;path_to_certificate&gt;</code><a class="headerlink" href="#cmdoption-certifier-so-sign-cert" title="Permalink to this definition">¶</a></dt>
+<li><dl>
+<dt>Specify certificate generation related files. If any of the following parameters is missing, the dynamic generation will be disabled.</dt><dd><dl class="std option">
+<dt id="cmdoption-certifier.so-sign-cert">
+<span id="cmdoption-certifier-so-sign-cert"></span><code class="sig-name descname">--sign-cert</code><code class="sig-prename descclassname"> &lt;path_to_certificate&gt;</code><a class="headerlink" href="#cmdoption-certifier.so-sign-cert" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>, default:empty/unused) - specifies the path to the root CA certificate. In most cases, this would be a self-signed certificate that is configured to be trusted by all potential clients. Path should be the path and file name of the cert. If it is relative, it is relative to the Traffic Server configuration directory.</p>
-<dl class="option">
-<dt id="cmdoption-certifier-so-sign-key">
-<code class="descname">--sign-key</code><code class="descclassname"> &lt;path_to_key&gt;</code><a class="headerlink" href="#cmdoption-certifier-so-sign-key" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-certifier.so-sign-key">
+<span id="cmdoption-certifier-so-sign-key"></span><code class="sig-name descname">--sign-key</code><code class="sig-prename descclassname"> &lt;path_to_key&gt;</code><a class="headerlink" href="#cmdoption-certifier.so-sign-key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>, default:empty/unused) - specifies the path to the root CA private key. In most cases, this would be generated alongside the self-signed root CA certificate.</p>
-<dl class="option">
-<dt id="cmdoption-certifier-so-sign-serial">
-<code class="descname">--sign-serial</code><code class="descclassname"> &lt;path_to_serial&gt;</code><a class="headerlink" href="#cmdoption-certifier-so-sign-serial" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-certifier.so-sign-serial">
+<span id="cmdoption-certifier-so-sign-serial"></span><code class="sig-name descname">--sign-serial</code><code class="sig-prename descclassname"> &lt;path_to_serial&gt;</code><a class="headerlink" href="#cmdoption-certifier.so-sign-serial" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p class="last">(<cite>optional</cite>, default:empty/unused) - specifies the path to the serial number file. This will be used to assign serial numbers to certificates and keep all generated ones in sync. Serial file should be a number with a trailing newline.</p>
+<p>(<cite>optional</cite>, default:empty/unused) - specifies the path to the serial number file. This will be used to assign serial numbers to certificates and keep all generated ones in sync. Serial file should be a number with a trailing newline.</p>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Specify the certificates management related settings.</dt>
-<dd><dl class="first option">
-<dt id="cmdoption-certifier-so-store">
-<code class="descname">--store</code><code class="descclassname"> &lt;path_to_certs_dir&gt;</code><a class="headerlink" href="#cmdoption-certifier-so-store" title="Permalink to this definition">¶</a></dt>
+<li><dl>
+<dt>Specify the certificates management related settings.</dt><dd><dl class="std option">
+<dt id="cmdoption-certifier.so-store">
+<span id="cmdoption-certifier-so-store"></span><code class="sig-name descname">--store</code><code class="sig-prename descclassname"> &lt;path_to_certs_dir&gt;</code><a class="headerlink" href="#cmdoption-certifier.so-store" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>, default:empty) - specifies the directory to use as the root of file system certificates storage.</p>
-<dl class="option">
-<dt id="cmdoption-certifier-so-max">
-<code class="descname">--max</code><code class="descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-certifier-so-max" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-certifier.so-max">
+<span id="cmdoption-certifier-so-max"></span><code class="sig-name descname">--max</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-certifier.so-max" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p class="last">(<cite>required</cite>, default:empty) - specifies the upper limit on number of files kept in memory.</p>
+<p>(<cite>required</cite>, default:empty) - specifies the upper limit on number of files kept in memory.</p>
 </dd>
 </dl>
 </li>
@@ -299,9 +297,10 @@
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<p>To use this plugin, enable it in a <a class="reference internal" href="../files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> rule, specifying certificates storage path, max number of certificates in memory, and signing cert+key+serial. For example:</p>
+<p>To use this plugin, enable it in a <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> rule, specifying certificates storage path, max number of certificates in memory, and signing cert+key+serial. For example:</p>
 <blockquote>
-<div>certifier.so –store=/home/zeyuan/certifier/certs –max=1000 –sign-cert=/home/zeyuan/certifier/root-ca.crt –sign-key=/home/zeyuan/certifier/root-ca.key –sign-serial=/home/zeyuan/certifier/ca-serial.txt</div></blockquote>
+<div><p>certifier.so –store=/home/zeyuan/certifier/certs –max=1000 –sign-cert=/home/zeyuan/certifier/root-ca.crt –sign-key=/home/zeyuan/certifier/root-ca.key –sign-serial=/home/zeyuan/certifier/ca-serial.txt</p>
+</div></blockquote>
 <p>One use case would be routing incoming CONNECT request to another port on traffic server. With the certifier generating a trusted certificate, other plugins can act with a similar behavior to Man-In-The-Middle (logging interesting data for example).</p>
 <div class="figure align-center">
 <p class="plantuml">

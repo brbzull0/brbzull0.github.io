@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -434,14 +437,14 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnOutgoingAddrGet">
-sockaddr const* <code class="descname">TSHttpTxnOutgoingAddrGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnOutgoingAddrGet" title="Permalink to this definition">¶</a></dt>
+sockaddr <em class="property">const</em> *<code class="sig-name descname">TSHttpTxnOutgoingAddrGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnOutgoingAddrGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSHttpTxnOutgoingAddrSet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSHttpTxnOutgoingAddrSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a><em>&nbsp;txnp</em>, sockaddr const*<em>&nbsp;addr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnOutgoingAddrSet" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnOutgoingAddrSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, sockaddr <em class="property">const</em> *<em>addr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnOutgoingAddrSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -450,8 +453,8 @@ sockaddr const* <code class="descname">TSHttpTxnOutgoingAddrGet</code><span clas
 <p>These functions concern the local IP address and port, that is the address and port on the Traffic Server side
 of outbound connections (network connections <em>from</em> Traffic Server <em>to</em> another socket).</p>
 <p>The address and optional the port can be set with <a class="reference internal" href="#c.TSHttpTxnOutgoingAddrSet" title="TSHttpTxnOutgoingAddrSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnOutgoingAddrSet()</span></code></a>. This must be
-done before the outbound connection is made, that is, earlier than the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a>.
-A good choice is the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_HTTP_POST_REMAP_HOOK" title="TS_HTTP_POST_REMAP_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code></a>, since it is a hook that is always called, and it
+done before the outbound connection is made, that is, earlier than the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a>.
+A good choice is the <a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_POST_REMAP_HOOK" title="TS_HTTP_POST_REMAP_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code></a>, since it is a hook that is always called, and it
 is the latest hook that is called before the connection is made.
 The <em>addr</em> must be populated with the IP address and port to be used. If the port is not
 relevant it can be set to zero, which means use any available local port. This function returns
@@ -459,7 +462,7 @@ relevant it can be set to zero, which means use any available local port. This f
 <p>Even on a successful call to <a class="reference internal" href="#c.TSHttpTxnOutgoingAddrSet" title="TSHttpTxnOutgoingAddrSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnOutgoingAddrSet()</span></code></a>, the local IP address may not match
 what was passing <em>addr</em> if <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-server-session-sharing-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">session</span> <span class="pre">sharing</span></code></a> is enabled.</p>
 <p>Conversely <a class="reference internal" href="#c.TSHttpTxnOutgoingAddrGet" title="TSHttpTxnOutgoingAddrGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnOutgoingAddrGet()</span></code></a> retrieves the local address and must be called in the
-<a class="reference internal" href="../types/TSHttpHookID.en.html#c.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a> or later, after the outbound connection has been established. It returns a
+<a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_SEND_REQUEST_HDR_HOOK" title="TS_HTTP_SEND_REQUEST_HDR_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_SEND_REQUEST_HDR_HOOK</span></code></a> or later, after the outbound connection has been established. It returns a
 pointer to a <code class="code docutils literal notranslate"><span class="pre">sockaddr</span></code> which contains the local IP address and port. If there is no valid
 outbound connection, <em>addr</em> will be <code class="code docutils literal notranslate"><span class="pre">NULL</span></code>. The returned pointer is a transient pointer
 and must not be referenced after the callback in which <a class="reference internal" href="#c.TSHttpTxnOutgoingAddrGet" title="TSHttpTxnOutgoingAddrGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnOutgoingAddrGet()</span></code></a> was called.</p>

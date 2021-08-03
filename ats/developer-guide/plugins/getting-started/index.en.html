@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -233,15 +233,15 @@
 programming language, that customize the behavior of your Traffic Server
 installation. This chapter contains the following sections:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#understanding-traffic-server-plugins">Understanding Traffic Server Plugins</a> – a brief introduction to plugins.</li>
-<li><a class="reference internal" href="a-simple-plugin.en.html#developer-plugins-getting-started-simple-plugin"><span class="std std-ref">A Simple Plugin</span></a> – walks through
-compiling and loading an example <code class="docutils literal notranslate"><span class="pre">hello</span> <span class="pre">world</span></code> plugin.</li>
-<li><a class="reference internal" href="plugin-registration-and-version-checking.en.html#developer-plugins-getting-started-registration"><span class="std std-ref">Plugin Registration and Version Checking</span></a> – shows
+<li><p><a class="reference internal" href="#understanding-traffic-server-plugins">Understanding Traffic Server Plugins</a> – a brief introduction to plugins.</p></li>
+<li><p><a class="reference internal" href="a-simple-plugin.en.html#developer-plugins-getting-started-simple-plugin"><span class="std std-ref">A Simple Plugin</span></a> – walks through
+compiling and loading an example <code class="docutils literal notranslate"><span class="pre">hello</span> <span class="pre">world</span></code> plugin.</p></li>
+<li><p><a class="reference internal" href="plugin-registration-and-version-checking.en.html#developer-plugins-getting-started-registration"><span class="std std-ref">Plugin Registration and Version Checking</span></a> – shows
 you how to register your plugin and make sure it’s compatible with the
-version of Traffic Server you’re using.</li>
-<li><a class="reference internal" href="naming-conventions.en.html#developer-plugins-getting-started-naming"><span class="std std-ref">Naming Conventions</span></a> – outlines Traffic
+version of Traffic Server you’re using.</p></li>
+<li><p><a class="reference internal" href="naming-conventions.en.html#developer-plugins-getting-started-naming"><span class="std std-ref">Naming Conventions</span></a> – outlines Traffic
 Server API naming conventions. For guidelines on creating plugin
-source code, see <a class="reference internal" href="../introduction.en.html#developer-plugins-introduction"><span class="std std-ref">Plugin Development Introduction</span></a>.</li>
+source code, see <a class="reference internal" href="../introduction.en.html#developer-plugins-introduction"><span class="std std-ref">Plugin Development Introduction</span></a>.</p></li>
 </ul>
 <div class="section" id="understanding-traffic-server-plugins">
 <h2>Understanding Traffic Server Plugins<a class="headerlink" href="#understanding-traffic-server-plugins" title="Permalink to this headline">¶</a></h2>
@@ -263,8 +263,8 @@ functions that are registered for specific Traffic Server events. When
 Traffic Server needs to process an event, it invokes any and all
 call-back functions you’ve registered for that event type.</p>
 <div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">Since plugins add object code to Traffic Server, programming errors in a
+<p class="admonition-title">Caution</p>
+<p>Since plugins add object code to Traffic Server, programming errors in a
 plugin can have serious implications. Bugs in your plugin, such as an
 out-of-range pointer, can cause Traffic Server processes to crash and
 may ultimately result in unpredictable behavior.</p>
@@ -272,58 +272,58 @@ may ultimately result in unpredictable behavior.</p>
 <p><strong>Plugin Process</strong></p>
 <div class="figure align-center" id="id1">
 <span id="pluginprocess"></span><img alt="Plugin Process" src="../../../_images/plugin_process.jpg" />
-<p class="caption"><span class="caption-text">Plugin Process</span></p>
+<p class="caption"><span class="caption-text">Plugin Process</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div>
 <div class="section" id="possible-uses-for-plugins">
 <h3>Possible Uses for Plugins<a class="headerlink" href="#possible-uses-for-plugins" title="Permalink to this headline">¶</a></h3>
 <p>Possible uses for plugins include the following:</p>
 <ul class="simple">
-<li>HTTP processing: plugins can filter, deny access, authorize users,
-transform content</li>
-<li>Protocol support: plugins can enable Traffic Server to proxy-cache
-new protocol content</li>
+<li><p>HTTP processing: plugins can filter, deny access, authorize users,
+transform content</p></li>
+<li><p>Protocol support: plugins can enable Traffic Server to proxy-cache
+new protocol content</p></li>
 </ul>
 <p>Some examples of plugins include:</p>
 <ul class="simple">
-<li><strong>Denylisting plugin</strong>: denies attempts to access web sites that are
-off-limits.</li>
-<li><strong>Append transform plugin</strong>: adds text to HTTP response content.</li>
-<li><strong>Image conversion plugin</strong>: transforms JPEG images to GIF images.</li>
-<li><strong>Compression plugin</strong>: sends response content to a compression
+<li><p><strong>Denylisting plugin</strong>: denies attempts to access web sites that are
+off-limits.</p></li>
+<li><p><strong>Append transform plugin</strong>: adds text to HTTP response content.</p></li>
+<li><p><strong>Image conversion plugin</strong>: transforms JPEG images to GIF images.</p></li>
+<li><p><strong>Compression plugin</strong>: sends response content to a compression
 server that compresses the data (alternatively, a compression library
-local to the Traffic Server host machine could do the compression).</li>
-<li><strong>Authorization plugin</strong>: checks a user’s permissions to access
+local to the Traffic Server host machine could do the compression).</p></li>
+<li><p><strong>Authorization plugin</strong>: checks a user’s permissions to access
 particular web sites. The plugin could consult a local authorization
-program or send queries to an authorization server.</li>
-<li><strong>A plugin that gathers client information</strong> from request headers and
-enters this information in a database.</li>
-<li><strong>Protocol plugin</strong>: listens for specific protocol requests on a
+program or send queries to an authorization server.</p></li>
+<li><p><strong>A plugin that gathers client information</strong> from request headers and
+enters this information in a database.</p></li>
+<li><p><strong>Protocol plugin</strong>: listens for specific protocol requests on a
 designated port and then uses Traffic Server’s proxy server &amp; cache
-to serve client requests.</li>
+to serve client requests.</p></li>
 </ul>
 <p>The figure below, <a class="reference internal" href="#possibletsplugins"><span class="std std-ref">Possible Traffic Server Plugins</span></a>, illustrates several types of plugins.</p>
 <p><strong>Possible Traffic Server Plugins</strong></p>
 <div class="figure align-center" id="id2">
 <span id="possibletsplugins"></span><img alt="Possible Traffic Server Plugins" src="../../../_images/Uses.jpg" />
-<p class="caption"><span class="caption-text">Possible Traffic Server Plugins</span></p>
+<p class="caption"><span class="caption-text">Possible Traffic Server Plugins</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>You can find basic examples for many plugins in the SDK sample code:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">append_transform.c</span></code> adds text from a specified file to HTTP/text
+<li><p><code class="docutils literal notranslate"><span class="pre">append_transform.c</span></code> adds text from a specified file to HTTP/text
 responses. This plugin is explained in
-<a class="reference internal" href="../http-transformations/append-transform-plugin.en.html#developer-plugins-http-transformations-append"><span class="std std-ref">Append Transform Plugin</span></a></li>
-<li>The compression plugin in the figure communicates with the server
+<a class="reference internal" href="../http-transformations/append-transform-plugin.en.html#developer-plugins-http-transformations-append"><span class="std std-ref">Append Transform Plugin</span></a></p></li>
+<li><p>The compression plugin in the figure communicates with the server
 that actually does the compression. The <code class="docutils literal notranslate"><span class="pre">server-transform.c</span></code> plugin
 shows how to open a connection to a transformation server, have the
 server do the transformation, and send transformed data back to the
 client. Although the transformation is null in
 <code class="docutils literal notranslate"><span class="pre">server-transform.c</span></code>, a compression or image translation plugin
-could be implemented in a similar way.</li>
-<li><code class="docutils literal notranslate"><span class="pre">basic_auth.c</span></code> performs basic HTTP proxy authorization.</li>
-<li><code class="docutils literal notranslate"><span class="pre">denylist_1.c</span></code> reads a list of servers from a configuration file
+could be implemented in a similar way.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">basic_auth.c</span></code> performs basic HTTP proxy authorization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">denylist_1.c</span></code> reads a list of servers from a configuration file
 and denies client access to these servers. This plugin is explained
-in <a class="reference internal" href="../example-plugins/denylist/index.en.html#developer-plugins-examples-denylist"><span class="std std-ref">Denylist Plugin</span></a>.</li>
+in <a class="reference internal" href="../example-plugins/denylist/index.en.html#developer-plugins-examples-denylist"><span class="std std-ref">Denylist Plugin</span></a>.</p></li>
 </ul>
 </div>
 <div class="section" id="plugin-loading">
@@ -332,11 +332,11 @@ in <a class="reference internal" href="../example-plugins/denylist/index.en.html
 file to determine the names of all shared plugin libraries that need to
 be loaded. The <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file also defines arguments that are to
 be passed to each plugin’s initialization function, <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code>.
-The <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file defines the path to each plugin shared
+The <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file defines the path to each plugin shared
 library, as described in <a class="reference internal" href="a-simple-plugin.en.html#specify-the-plugins-location"><span class="std std-ref">Specify the Plugin’s Location</span></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The path for each of these files is <em>&lt;root_dir&gt;</em><code class="docutils literal notranslate"><span class="pre">/config/</span></code>, where <em>&lt;root_dir&gt;</em> is where you installed Traffic Server.</p>
+<p class="admonition-title">Note</p>
+<p>The path for each of these files is <em>&lt;root_dir&gt;</em><code class="docutils literal notranslate"><span class="pre">/config/</span></code>, where <em>&lt;root_dir&gt;</em> is where you installed Traffic Server.</p>
 </div>
 </div>
 <div class="section" id="plugin-configuration">
@@ -381,10 +381,10 @@ instances of the same plugin. For example:</p>
 <div class="section" id="configuration-file-rules">
 <h3>Configuration File Rules<a class="headerlink" href="#configuration-file-rules" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Comment lines begin with <strong>#</strong> and continue to the end of the line.</li>
-<li>Blank lines are ignored.</li>
-<li>Plugins are loaded and initialized by Traffic Server in the order
-they appear in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file.</li>
+<li><p>Comment lines begin with <strong>#</strong> and continue to the end of the line.</p></li>
+<li><p>Blank lines are ignored.</p></li>
+<li><p>Plugins are loaded and initialized by Traffic Server in the order
+they appear in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file.</p></li>
 </ul>
 </div>
 <div class="section" id="plugin-initialization">
@@ -395,10 +395,10 @@ The <code class="docutils literal notranslate"><span class="pre">TSPluginInit</s
 information and register hooks for event notification.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> function has two arguments:</p>
 <ul class="simple">
-<li>The <code class="docutils literal notranslate"><span class="pre">argc</span></code> argument represents the number of arguments defined in
-the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that particular plugin</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">argv</span></code> argument is an array of pointers to the actual arguments
-defined in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that plugin</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">argc</span></code> argument represents the number of arguments defined in
+the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that particular plugin</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">argv</span></code> argument is an array of pointers to the actual arguments
+defined in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that plugin</p></li>
 </ul>
 <p>See <a class="reference internal" href="../../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a> for details about <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code>.</p>
 </div>

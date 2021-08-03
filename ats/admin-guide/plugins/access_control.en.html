@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -144,7 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -227,21 +227,21 @@
 <div class="section" id="requirements-and-features">
 <h2>Requirements and features<a class="headerlink" href="#requirements-and-features" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic simple">
-<li><span class="target" id="cache-access-control">Cache Access Control</span> - cached objects to be served only to properly authenticated and authorized users.</li>
-<li><span class="target" id="authorizing-multiple-requests">Authorizing Multiple Requests</span> - all requests from a particular <a class="reference internal" href="#ua">UA</a> in a defined time period to be authenticated and authorized only once.</li>
-<li><span class="target" id="multiple-page-versions">Multiple Page Versions</span> - objects may have the same name (URI) but different content for each <a class="reference internal" href="#target-audience">target audience</a> and must be served only to the corresponding <a class="reference internal" href="#target-audience">target audience</a>.</li>
-<li><span class="target" id="proxy-only-mode">Proxy Only Mode</span> - <a class="reference internal" href="#cdn">CDN</a> proxies the request to the <a class="reference internal" href="#origin">origin</a>. In case of access control failure at the <a class="reference internal" href="#edge">Edge</a>, the <a class="reference internal" href="#ua">UA</a> would not be redirected to other services, the failed request would be forwarded to the <a class="reference internal" href="#origin">origin</a>.</li>
+<li><p><span class="target" id="cache-access-control">Cache Access Control</span> - cached objects to be served only to properly authenticated and authorized users.</p></li>
+<li><p><span class="target" id="authorizing-multiple-requests">Authorizing Multiple Requests</span> - all requests from a particular <a class="reference internal" href="#ua">UA</a> in a defined time period to be authenticated and authorized only once.</p></li>
+<li><p><span class="target" id="multiple-page-versions">Multiple Page Versions</span> - objects may have the same name (URI) but different content for each <a class="reference internal" href="#target-audience">target audience</a> and must be served only to the corresponding <a class="reference internal" href="#target-audience">target audience</a>.</p></li>
+<li><p><span class="target" id="proxy-only-mode">Proxy Only Mode</span> - <a class="reference internal" href="#cdn">CDN</a> proxies the request to the <a class="reference internal" href="#origin">origin</a>. In case of access control failure at the <a class="reference internal" href="#edge">Edge</a>, the <a class="reference internal" href="#ua">UA</a> would not be redirected to other services, the failed request would be forwarded to the <a class="reference internal" href="#origin">origin</a>.</p></li>
 </ol>
 </div>
 <div class="section" id="participants">
 <h2>Participants<a class="headerlink" href="#participants" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><span class="target" id="ua">UA</span> - User Agent used by a user whose requests are subject to access control.</li>
-<li><span class="target" id="target-audience">Target audience</span> - an application specific audience (role, group of users, etc) to which the authenticated and authorized user belongs and which defines user’s permissions.</li>
-<li><span class="target" id="cdn">CDN</span> / <span class="target" id="edge">Edge</span> - Content Delivery Network, sometimes CDN and Edge are used interchangeably</li>
-<li><span class="target" id="idms">IdMS</span> - Identity Management Services</li>
-<li><span class="target" id="ds">DS</span> - Directory services</li>
-<li><span class="target" id="origin">Origin</span> / <span class="target" id="application">Application</span> - origin server which is part of the particular application, sometimes origin and application are used interchangeably</li>
+<li><p><span class="target" id="ua">UA</span> - User Agent used by a user whose requests are subject to access control.</p></li>
+<li><p><span class="target" id="target-audience">Target audience</span> - an application specific audience (role, group of users, etc) to which the authenticated and authorized user belongs and which defines user’s permissions.</p></li>
+<li><p><span class="target" id="cdn">CDN</span> / <span class="target" id="edge">Edge</span> - Content Delivery Network, sometimes CDN and Edge are used interchangeably</p></li>
+<li><p><span class="target" id="idms">IdMS</span> - Identity Management Services</p></li>
+<li><p><span class="target" id="ds">DS</span> - Directory services</p></li>
+<li><p><span class="target" id="origin">Origin</span> / <span class="target" id="application">Application</span> - origin server which is part of the particular application, sometimes origin and application are used interchangeably</p></li>
 </ul>
 </div>
 <div class="section" id="design-considerations-and-limitations">
@@ -249,25 +249,32 @@
 <p>The following are some thoughts and ideas behind the access control flow and the plugin design.</p>
 <p><strong>Existing standards</strong></p>
 <blockquote>
-<div>OAuth <a class="footnote-reference" href="#id17" id="id1">[1]</a> <a class="footnote-reference" href="#id18" id="id2">[2]</a> and SAML <a class="footnote-reference" href="#id19" id="id3">[3]</a> were considered looking for use cases matching standard-based solutions but none seemed to match the requirements completely, also supporting some of the mentioned standards would require a more involved design and implementation.</div></blockquote>
+<div><p>OAuth <a class="footnote-reference brackets" href="#id17" id="id1">1</a> <a class="footnote-reference brackets" href="#id18" id="id2">2</a> and SAML <a class="footnote-reference brackets" href="#id19" id="id3">3</a> were considered looking for use cases matching standard-based solutions but none seemed to match the requirements completely, also supporting some of the mentioned standards would require a more involved design and implementation.</p>
+</div></blockquote>
 <p><strong>Closed integration</strong></p>
 <blockquote>
-<div>Closed integration with existing <a class="reference internal" href="#idms">IdMS</a> and <a class="reference internal" href="#ds">DS</a> was considered in earlier design stages which resulted in a too specific and unnecessarily complicated access control flow, inflexible, with higher maintenance cost, possibly not scaling and not coping well with future changes.</div></blockquote>
+<div><p>Closed integration with existing <a class="reference internal" href="#idms">IdMS</a> and <a class="reference internal" href="#ds">DS</a> was considered in earlier design stages which resulted in a too specific and unnecessarily complicated access control flow, inflexible, with higher maintenance cost, possibly not scaling and not coping well with future changes.</p>
+</div></blockquote>
 <p><strong>Cache access approval only</strong></p>
 <blockquote>
-<div>Authentication and Authorization are to be performed only by the <a class="reference internal" href="#application">application</a> using various services like <a class="reference internal" href="#idms">IdMS</a>, <a class="reference internal" href="#ds">DS</a>, etc. The <a class="reference internal" href="#application">application</a> knows more about its users, their requests and permissions and need to deal with it regardless. It is assumed that the <a class="reference internal" href="#origin">origin</a> will perform its own access control. The <a class="reference internal" href="#cdn">CDN</a> is to be concerned only with the <span class="target" id="access-approval">access approval</span> (the function of actually granting or rejecting access) to the objects in its own caches based on an access token provided by the <a class="reference internal" href="#application">application</a>.</div></blockquote>
+<div><p>Authentication and Authorization are to be performed only by the <a class="reference internal" href="#application">application</a> using various services like <a class="reference internal" href="#idms">IdMS</a>, <a class="reference internal" href="#ds">DS</a>, etc. The <a class="reference internal" href="#application">application</a> knows more about its users, their requests and permissions and need to deal with it regardless. It is assumed that the <a class="reference internal" href="#origin">origin</a> will perform its own access control. The <a class="reference internal" href="#cdn">CDN</a> is to be concerned only with the <span class="target" id="access-approval">access approval</span> (the function of actually granting or rejecting access) to the objects in its own caches based on an access token provided by the <a class="reference internal" href="#application">application</a>.</p>
+</div></blockquote>
 <p><strong>Access token</strong></p>
 <blockquote>
-<div>The access token should be a compact and self-contained token containing the information required for properly enforcing the access control. It can be extracted from HTTP headers, cookies, URI query parameters which would allow us to support various <a class="reference internal" href="#access-approval">access approval</a> use cases.</div></blockquote>
+<div><p>The access token should be a compact and self-contained token containing the information required for properly enforcing the access control. It can be extracted from HTTP headers, cookies, URI query parameters which would allow us to support various <a class="reference internal" href="#access-approval">access approval</a> use cases.</p>
+</div></blockquote>
 <p><strong>Access token subject</strong></p>
 <blockquote>
-<div>The subject of the token in some of the use cases would signify a separate <a class="reference internal" href="#target-audience">target audience</a> and should be opaque to <a class="reference internal" href="#cdn">CDN</a> which would allow <a class="reference internal" href="#cdn">CDN</a> to be taken out of the authorization and authentication equation. In those use cases the <cite>subject</cite> will be added to the cache key as a mechanism to support <a class="reference internal" href="#multiple-page-versions">multiple page versions</a>. Special considerations should be given to the cache-hit ratio and the distinct <a class="reference internal" href="#target-audience">target audience</a> count. The bigger the number of audiences the lesser the cache-hit ratio.</div></blockquote>
+<div><p>The subject of the token in some of the use cases would signify a separate <a class="reference internal" href="#target-audience">target audience</a> and should be opaque to <a class="reference internal" href="#cdn">CDN</a> which would allow <a class="reference internal" href="#cdn">CDN</a> to be taken out of the authorization and authentication equation. In those use cases the <cite>subject</cite> will be added to the cache key as a mechanism to support <a class="reference internal" href="#multiple-page-versions">multiple page versions</a>. Special considerations should be given to the cache-hit ratio and the distinct <a class="reference internal" href="#target-audience">target audience</a> count. The bigger the number of audiences the lesser the cache-hit ratio.</p>
+</div></blockquote>
 <p><strong>Cache key modifications</strong></p>
 <blockquote>
-<div>This plugin will not modify the cache key directly but rather rely on plugins like <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a>.</div></blockquote>
+<div><p>This plugin will not modify the cache key directly but rather rely on plugins like <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a>.</p>
+</div></blockquote>
 <p><strong>TLS only</strong></p>
 <blockquote>
-<div>To combat the risk of man in the middle attacks, spoofing elements of the requests, unexpectedly leaking security information only TLS will be used when requesting protected assets and exchanging access tokens.</div></blockquote>
+<div><p>To combat the risk of man in the middle attacks, spoofing elements of the requests, unexpectedly leaking security information only TLS will be used when requesting protected assets and exchanging access tokens.</p>
+</div></blockquote>
 </div>
 <div class="section" id="use-cases">
 <h2>Use cases<a class="headerlink" href="#use-cases" title="Permalink to this headline">¶</a></h2>
@@ -366,18 +373,18 @@ end
 <h2>Access token<a class="headerlink" href="#access-token" title="Permalink to this headline">¶</a></h2>
 <p>The access token could contain the following claims:</p>
 <ul class="simple">
-<li><span class="target" id="subject">subject</span> - the subject of the access token is an opaque string provided by the <a class="reference internal" href="#application">application</a>, in <a class="reference internal" href="#use-case-1">use case 1</a> and <a class="reference internal" href="#use-case-2">use case 2</a> the subject signifies a <a class="reference internal" href="#target-audience">target audience</a></li>
-<li><span class="target" id="expiration">expiration</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> after which the access token is not considered valid (expired)</li>
-<li><span class="target" id="not-before-time">not before time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> before which the access token is not considered valid (used before its time)</li>
-<li><span class="target" id="issued-at-time">issued at time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> the access token was issued</li>
-<li><span class="target" id="token-id">token id</span> - unique opaque token id for debugging and tracking assigned by the <a class="reference internal" href="#application">application</a>,</li>
-<li><span class="target" id="version">version</span> - access token version</li>
-<li><span class="target" id="scope">scope</span> - defines the scope in which this subject is valid</li>
-<li><span class="target" id="key-id">key id</span> - the key in a map or database of secrets to be used to calculate the digest</li>
-<li><span class="target" id="signature-type">signature type</span>  - name of the HMAC hash function / cryptographic signature scheme to be used for calculating the message digest, supported signature types: <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-256</span></code>, <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-512</span></code>, <code class="docutils literal notranslate"><span class="pre">RSA-PSS</span></code> (still not implemented)</li>
-<li><span class="target" id="message-digest">message digest</span> - the message digest that signs the access token</li>
+<li><p><span class="target" id="subject">subject</span> - the subject of the access token is an opaque string provided by the <a class="reference internal" href="#application">application</a>, in <a class="reference internal" href="#use-case-1">use case 1</a> and <a class="reference internal" href="#use-case-2">use case 2</a> the subject signifies a <a class="reference internal" href="#target-audience">target audience</a></p></li>
+<li><p><span class="target" id="expiration">expiration</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> after which the access token is not considered valid (expired)</p></li>
+<li><p><span class="target" id="not-before-time">not before time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> before which the access token is not considered valid (used before its time)</p></li>
+<li><p><span class="target" id="issued-at-time">issued at time</span> - <a class="reference external" href="https://en.wikipedia.org/wiki/Unix_time">Unix time</a> the access token was issued</p></li>
+<li><p><span class="target" id="token-id">token id</span> - unique opaque token id for debugging and tracking assigned by the <a class="reference internal" href="#application">application</a>,</p></li>
+<li><p><span class="target" id="version">version</span> - access token version</p></li>
+<li><p><span class="target" id="scope">scope</span> - defines the scope in which this subject is valid</p></li>
+<li><p><span class="target" id="key-id">key id</span> - the key in a map or database of secrets to be used to calculate the digest</p></li>
+<li><p><span class="target" id="signature-type">signature type</span>  - name of the HMAC hash function / cryptographic signature scheme to be used for calculating the message digest, supported signature types: <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-256</span></code>, <code class="docutils literal notranslate"><span class="pre">HMAC-SHA-512</span></code>, <code class="docutils literal notranslate"><span class="pre">RSA-PSS</span></code> (still not implemented)</p></li>
+<li><p><span class="target" id="message-digest">message digest</span> - the message digest that signs the access token</p></li>
 </ul>
-<p>To make the plugin more configurable and to support more use cases various formats could be supported in the future, i.e <cite>Named Claim</cite> formats , <cite>Positional Claim</cite> formats, <cite>JWT</cite> <a class="footnote-reference" href="#id20" id="id6">[4]</a>, etc.</p>
+<p>To make the plugin more configurable and to support more use cases various formats could be supported in the future, i.e <cite>Named Claim</cite> formats , <cite>Positional Claim</cite> formats, <cite>JWT</cite> <a class="footnote-reference brackets" href="#id20" id="id6">4</a>, etc.</p>
 <p>The format of the access token will be specifiable <strong>only</strong> through the plugin configuration by design and not the access token since migrations from one format to another during upgrades are not expected in normal circumstances.</p>
 <p>Changes in claim names (claim positions in <cite>Positional Claims</cite>), in their interpretation, adding new claims, removing claims, switching from <cite>required</cite> to <cite>optional</cite> and vice versa will be handled by having a <a class="reference internal" href="#version">version</a> claim in the token.</p>
 <p><a class="reference internal" href="#version">Version</a> and <a class="reference internal" href="#signature-type">signature type</a> claims are part of the token (“user input”) to allow easier migration between different versions and signature types, but they could be overridable through configuration in future versions to force the usage only to specific versions or signature types (in which case the corresponding claim could be omitted from the token and would be ignored if specified).</p>
@@ -385,38 +392,35 @@ end
 <div class="section" id="query-param-style-named-claim-format">
 <h3>Query-Param-Style Named Claim format<a class="headerlink" href="#query-param-style-named-claim-format" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>claim names</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">sub</span></code> for <a class="reference internal" href="#subject">subject</a>, <cite>required</cite></li>
-<li><code class="docutils literal notranslate"><span class="pre">exp</span></code> for <a class="reference internal" href="#expiration">expiration</a>, <cite>required</cite></li>
-<li><code class="docutils literal notranslate"><span class="pre">nbf</span></code> for <a class="reference internal" href="#not-before-time">not before time</a>, <cite>optional</cite></li>
-<li><code class="docutils literal notranslate"><span class="pre">iat</span></code> for <a class="reference internal" href="#issued-at-time">issued at time</a>, <cite>optional</cite></li>
-<li><code class="docutils literal notranslate"><span class="pre">tid</span></code> for <a class="reference internal" href="#token-id">token id</a>, <cite>optional</cite></li>
-<li><code class="docutils literal notranslate"><span class="pre">ver</span></code> for <a class="reference internal" href="#version">version</a>, <cite>optional</cite>, defaults to <code class="docutils literal notranslate"><span class="pre">ver=1</span></code> if not specified.</li>
-<li><code class="docutils literal notranslate"><span class="pre">scope</span></code> for <a class="reference internal" href="#scope">scope</a>, <cite>optional</cite>, ignored by the current version of the plugin, still not finalized (more applications and their use cases need to be studied to finalize the format)</li>
-<li><code class="docutils literal notranslate"><span class="pre">kid</span></code> for <a class="reference internal" href="#key-id">key id</a>, <cite>required</cite> (tokens to be always signed)</li>
-<li><code class="docutils literal notranslate"><span class="pre">st</span></code> for <a class="reference internal" href="#signature-type">signature type</a>, <cite>optional</cite> (default would be <code class="docutils literal notranslate"><span class="pre">SHA-256</span></code> if not specified)</li>
-<li><code class="docutils literal notranslate"><span class="pre">md</span></code> for <a class="reference internal" href="#message-digest">message digest</a> - this claim is <cite>required</cite> and expected to be always the last claim.</li>
+<li><dl class="simple">
+<dt>claim names</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub</span></code> for <a class="reference internal" href="#subject">subject</a>, <cite>required</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exp</span></code> for <a class="reference internal" href="#expiration">expiration</a>, <cite>required</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbf</span></code> for <a class="reference internal" href="#not-before-time">not before time</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iat</span></code> for <a class="reference internal" href="#issued-at-time">issued at time</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tid</span></code> for <a class="reference internal" href="#token-id">token id</a>, <cite>optional</cite></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ver</span></code> for <a class="reference internal" href="#version">version</a>, <cite>optional</cite>, defaults to <code class="docutils literal notranslate"><span class="pre">ver=1</span></code> if not specified.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scope</span></code> for <a class="reference internal" href="#scope">scope</a>, <cite>optional</cite>, ignored by the current version of the plugin, still not finalized (more applications and their use cases need to be studied to finalize the format)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kid</span></code> for <a class="reference internal" href="#key-id">key id</a>, <cite>required</cite> (tokens to be always signed)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">st</span></code> for <a class="reference internal" href="#signature-type">signature type</a>, <cite>optional</cite> (default would be <code class="docutils literal notranslate"><span class="pre">SHA-256</span></code> if not specified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">md</span></code> for <a class="reference internal" href="#message-digest">message digest</a> - this claim is <cite>required</cite> and expected to be always the last claim.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>delimiters</dt>
-<dd><ul class="first last">
-<li>claims are separated by <code class="docutils literal notranslate"><span class="pre">&amp;</span></code></li>
-<li>keys and values in each claim are separated by <code class="docutils literal notranslate"><span class="pre">=</span></code></li>
+<li><dl class="simple">
+<dt>delimiters</dt><dd><ul>
+<li><p>claims are separated by <code class="docutils literal notranslate"><span class="pre">&amp;</span></code></p></li>
+<li><p>keys and values in each claim are separated by <code class="docutils literal notranslate"><span class="pre">=</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>notes and limitations</dt>
-<dd><ul class="first last">
-<li>if any claim value contains <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> or <code class="docutils literal notranslate"><span class="pre">=</span></code> escaping would be necessary (i.e. through Percent-Encoding <a class="footnote-reference" href="#id22" id="id7">[6]</a>)</li>
-<li>the size of the access token cannot be larger then 4K to limit the amount of data the <a class="reference internal" href="#application">application</a> could fit in the opaque claims, in general the access token is meant to be small since it could end up stored in a cookie and be sent as part of lots and lots of requests.</li>
-<li>during signing the access token payload should end with <code class="docutils literal notranslate"><span class="pre">&amp;md=</span></code> and the calculated <a class="reference internal" href="#message-digest">message digest</a> would be appended directly to the payload to form the token (see the example below).</li>
+<li><dl class="simple">
+<dt>notes and limitations</dt><dd><ul>
+<li><p>if any claim value contains <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> or <code class="docutils literal notranslate"><span class="pre">=</span></code> escaping would be necessary (i.e. through Percent-Encoding <a class="footnote-reference brackets" href="#id22" id="id7">6</a>)</p></li>
+<li><p>the size of the access token cannot be larger then 4K to limit the amount of data the <a class="reference internal" href="#application">application</a> could fit in the opaque claims, in general the access token is meant to be small since it could end up stored in a cookie and be sent as part of lots and lots of requests.</p></li>
+<li><p>during signing the access token payload should end with <code class="docutils literal notranslate"><span class="pre">&amp;md=</span></code> and the calculated <a class="reference internal" href="#message-digest">message digest</a> would be appended directly to the payload to form the token (see the example below).</p></li>
 </ul>
 </dd>
 </dl>
@@ -446,12 +450,12 @@ end
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">TokenCookie</span><span class="o">=</span>c3ViPWZyb2dzLWluLWEtd2VsbCZleHA9MTU3NzgzNjgwMCZuYmY9MTUxNDc2NDgwMCZpYXQ9MTUxNDE2MDAwMCZ0aWQ9MTIzNDU2Nzg5MCZraWQ9a2V5MSZzdD1ITUFDLVNIQS0yNTYmbWQ9ODg3OWFmOThhYjYwNzEzMTVhN2FiNTVlNTI0NWNiZTFjMTA2MzAzYmNjNDY5MGNiZmM4MDdhNDQwMmQxMWFiMw<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Wed, <span class="m">01</span> Jan <span class="m">2020</span> <span class="m">00</span>:00:00 GMT<span class="p">;</span> Secure<span class="p">;</span> HttpOnly
 </pre></div>
 </div>
-<p>The value of the cookie is the access token provided by the <a class="reference internal" href="#origin">origin</a> encoded with a <cite>base64url Encoding without Padding</cite> <a class="footnote-reference" href="#id20" id="id10">[4]</a></p>
-<p>The following attributes are added to the <cite>Set-Cookie</cite> header <a class="footnote-reference" href="#id21" id="id11">[5]</a>:</p>
+<p>The value of the cookie is the access token provided by the <a class="reference internal" href="#origin">origin</a> encoded with a <cite>base64url Encoding without Padding</cite> <a class="footnote-reference brackets" href="#id20" id="id10">4</a></p>
+<p>The following attributes are added to the <cite>Set-Cookie</cite> header <a class="footnote-reference brackets" href="#id21" id="id11">5</a>:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">Secure</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to include the cookie in an HTTP request only if the request is transmitted over a secure channel, typically HTTP over Transport Layer Security (TLS)</li>
-<li><code class="docutils literal notranslate"><span class="pre">HttpOnly</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to omit the cookie when providing access to cookies via “non-HTTP” APIs such as a web browser API that exposes cookies to scripts</li>
-<li><code class="docutils literal notranslate"><span class="pre">Expires</span></code> - this attribute will be set to the time specified in the <a class="reference internal" href="#expiration">expiration</a> claim</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Secure</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to include the cookie in an HTTP request only if the request is transmitted over a secure channel, typically HTTP over Transport Layer Security (TLS)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HttpOnly</span></code> - instructs the <a class="reference internal" href="#ua">UA</a> to omit the cookie when providing access to cookies via “non-HTTP” APIs such as a web browser API that exposes cookies to scripts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Expires</span></code> - this attribute will be set to the time specified in the <a class="reference internal" href="#expiration">expiration</a> claim</p></li>
 </ul>
 <p>Just for a reference the following access token would be assigned to the user <a class="reference external" href="https://en.wikipedia.org/wiki/Finding_Nemo">Nemo the Clownfish</a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">sub</span><span class="o">=</span>fish-in-a-sea<span class="p">&amp;</span><span class="nv">exp</span><span class="o">=</span><span class="m">1577836800</span><span class="p">&amp;</span><span class="nv">nbf</span><span class="o">=</span><span class="m">1514764800</span><span class="p">&amp;</span><span class="nv">iat</span><span class="o">=</span><span class="m">1514160000</span><span class="p">&amp;</span><span class="nv">tid</span><span class="o">=</span><span class="m">2345678901</span><span class="p">&amp;</span><span class="nv">kid</span><span class="o">=</span>key1<span class="p">&amp;</span><span class="nv">st</span><span class="o">=</span>HMAC-SHA-256<span class="p">&amp;</span><span class="nv">md</span><span class="o">=</span>a43d8a46804d9e9319b7d1337007eed73daf37105f1feaae1d68567389654f88
@@ -462,53 +466,48 @@ end
 <div class="section" id="plugin-configuration">
 <h2>Plugin configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>Specify where to look for the access token</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--check-cookie=&lt;cookie_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the name of the cookie that contains the access token, although it is optional if not specified the plugin does not perform access control since this is the only currently supported access token source.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--token-response-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the <a class="reference internal" href="#origin">origin</a> response header name that contains the access token passed from the <a class="reference internal" href="#origin">origin</a> to the CDN, although it is optional this is the only currently supported way to get the access token from the <a class="reference internal" href="#origin">origin</a>.</li>
+<li><dl class="simple">
+<dt>Specify where to look for the access token</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--check-cookie=&lt;cookie_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the name of the cookie that contains the access token, although it is optional if not specified the plugin does not perform access control since this is the only currently supported access token source.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--token-response-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - specifies the <a class="reference internal" href="#origin">origin</a> response header name that contains the access token passed from the <a class="reference internal" href="#origin">origin</a> to the CDN, although it is optional this is the only currently supported way to get the access token from the <a class="reference internal" href="#origin">origin</a>.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Signify some common failures through HTTP status code.</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--invalid-syntax-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">400</span></code>) - access token bad syntax error</li>
-<li><code class="docutils literal notranslate"><span class="pre">--invalid-signature-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">401</span></code>) - invalid access token signature</li>
-<li><code class="docutils literal notranslate"><span class="pre">--invalid-timing-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - bad timing when validating the access token (expired, or too early)</li>
-<li><code class="docutils literal notranslate"><span class="pre">--invalid-scope-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - access token scope validation failed</li>
-<li><code class="docutils literal notranslate"><span class="pre">--invalid-origin-response=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">520</span></code>) - <a class="reference internal" href="#origin">origin</a> response did not look right, i.e. the access token provided by <a class="reference internal" href="#origin">origin</a> is not valid.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--internal-error-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">500</span></code>) - unexpected internal error (should not happened ideally)</li>
+<li><dl class="simple">
+<dt>Signify some common failures through HTTP status code.</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-syntax-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">400</span></code>) - access token bad syntax error</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-signature-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">401</span></code>) - invalid access token signature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-timing-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - bad timing when validating the access token (expired, or too early)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-scope-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">403</span></code>) - access token scope validation failed</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--invalid-origin-response=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">520</span></code>) - <a class="reference internal" href="#origin">origin</a> response did not look right, i.e. the access token provided by <a class="reference internal" href="#origin">origin</a> is not valid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--internal-error-status-code=&lt;http_status_code&gt;</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">500</span></code>) - unexpected internal error (should not happened ideally)</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Extract information into a request header</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--extract-subject-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>subject</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging or to be able to modify the cache key by using <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a> plugin.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--extract-tokenid-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>token id</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</li>
-<li><code class="docutils literal notranslate"><span class="pre">--extract-status-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token validation status request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</li>
+<li><dl class="simple">
+<dt>Extract information into a request header</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-subject-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>subject</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging or to be able to modify the cache key by using <a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a> plugin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-tokenid-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token <cite>token id</cite> claim into a request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--extract-status-to-header=&lt;header_name&gt;</span></code> (<cite>optional</cite>, default:empty/unused) - extract the access token validation status request header with <code class="docutils literal notranslate"><span class="pre">&lt;header_name&gt;</span></code> for debugging purposes and logging</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Plugin setup related</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--symmetric-keys-map=&lt;txt_file_name&gt;</span></code> (<cite>optional</cite>, default: empty/unused) - the name of a file containing a map of symmetric encrypt secrets, secrets are expected one per line in format <code class="docutils literal notranslate"><span class="pre">key_name_N=secret_value_N</span></code> (key names are used in access token signature validation, multiple keys would be useful for key rotation). Although it is <cite>optional</cite> this is the only source of secrets supported and if not specified / used access token validation would constantly fail.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--include-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that match.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--exclude-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that do not match.</li>
+<li><dl class="simple">
+<dt>Plugin setup related</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--symmetric-keys-map=&lt;txt_file_name&gt;</span></code> (<cite>optional</cite>, default: empty/unused) - the name of a file containing a map of symmetric encrypt secrets, secrets are expected one per line in format <code class="docutils literal notranslate"><span class="pre">key_name_N=secret_value_N</span></code> (key names are used in access token signature validation, multiple keys would be useful for key rotation). Although it is <cite>optional</cite> this is the only source of secrets supported and if not specified / used access token validation would constantly fail.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that match.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--exclude-uri-paths-file</span></code> (<cite>optional</cite>, default:empty/unused) - a file containing a list of regex expressions to be matched against URI paths. The access control is applied to paths that do not match.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Behavior modifiers to support various use-cases</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--reject-invalid-token-requests</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - reject invalid token requests instead of forwarding them to <a class="reference internal" href="#origin">origin</a>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--use-redirects</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - used to configure <a class="reference internal" href="#use-case-2">use case 2</a>, not implemented yet.</li>
+<li><dl class="simple">
+<dt>Behavior modifiers to support various use-cases</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--reject-invalid-token-requests</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - reject invalid token requests instead of forwarding them to <a class="reference internal" href="#origin">origin</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--use-redirects</span></code> (<cite>optional</cite>, default:<code class="docutils literal notranslate"><span class="pre">false</span></code>) - used to configure <a class="reference internal" href="#use-case-2">use case 2</a>, not implemented yet.</p></li>
 </ul>
 </dd>
 </dl>
@@ -520,7 +519,7 @@ end
 <div class="section" id="configuration-files">
 <h4>Configuration files<a class="headerlink" href="#configuration-files" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li>Apache traffic server <code class="docutils literal notranslate"><span class="pre">remap.config</span></code></li>
+<li><p>Apache traffic server <code class="docutils literal notranslate"><span class="pre">remap.config</span></code></p></li>
 </ul>
 <p><a class="reference internal" href="cachekey.en.html#admin-plugins-cachekey"><span class="std std-ref">Cache Key and Parent Selection URL Manipulation Plugin</span></a> is used to add the access token <cite>subject</cite> into the cache key (<code class="docutils literal notranslate"><span class="pre">&#64;TokenSubject</span></code>). and should always follow the <a class="reference internal" href="#admin-plugins-access-control"><span class="std std-ref">Access Control Plugin</span></a> in the remap rule in order for this mechanism to work properly.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>map https://example-cdn.com http://example.com <span class="se">\</span>
@@ -537,7 +536,7 @@ end
 </pre></div>
 </div>
 <ul class="simple">
-<li>Secrets map <code class="docutils literal notranslate"><span class="pre">hmac_keys.txt</span></code></li>
+<li><p>Secrets map <code class="docutils literal notranslate"><span class="pre">hmac_keys.txt</span></code></p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cat etc/trafficserver/hmac_keys.txt
 <span class="nv">key1</span><span class="o">=</span>PEIFtmunx9
@@ -550,7 +549,7 @@ end
 </pre></div>
 </div>
 <ul class="simple">
-<li>Format the <code class="docutils literal notranslate"><span class="pre">access_control.log</span></code></li>
+<li><p>Format the <code class="docutils literal notranslate"><span class="pre">access_control.log</span></code></p></li>
 </ul>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span>
   <span class="nt">formats</span><span class="p">:</span>
@@ -563,7 +562,7 @@ end
 </pre></div>
 </div>
 <ul class="simple">
-<li>X-Debug plugin added to <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code></li>
+<li><p>X-Debug plugin added to <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code></p></li>
 </ul>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ cat etc/trafficserver/plugin.config
 xdebug.so
@@ -617,42 +616,26 @@ x-cache: hit-fresh
 <hr class="docutils" />
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id17" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>“The OAuth 1.0 Protocol”, <a class="reference external" href="https://tools.ietf.org/html/rfc5849">RFC 5849</a>, April 2010.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id18" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>“The OAuth 2.0 Authorization Framework”, <a class="reference external" href="https://tools.ietf.org/html/rfc6749">RFC 6749</a>, October 2012</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id19" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>“Security Assertion Markup Language 2.0 (SAML 2.0)” <a class="reference external" href="https://wiki.oasis-open.org">OASIS</a>, March 2005.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id20" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[4]</td><td><em>(<a class="fn-backref" href="#id6">1</a>, <a class="fn-backref" href="#id10">2</a>)</em> “JSON Web Signature (JWS)”, Appendix C. “Notes on Implementing base64url Encoding without Padding”, <a class="reference external" href="https://tools.ietf.org/html/rfc7515#appendix-C">RFC 7515</a>, May 2015</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id21" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id11">[5]</a></td><td>“HTTP State Management Mechanism”, 4.1 “Set-Cookie”, <a class="reference external" href="https://tools.ietf.org/html/rfc6265#section-4.1">RFC 6225</a>, April 2011</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id22" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id7">[6]</a></td><td>“Uniform Resource Identifier (URI): Generic Syntax”, 2.1. “Percent-Encoding”, <a class="reference external" href="https://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986</a>, January 2005.</td></tr>
-</tbody>
-</table>
+<dl class="footnote brackets">
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>“The OAuth 1.0 Protocol”, <a class="reference external" href="https://tools.ietf.org/html/rfc5849">RFC 5849</a>, April 2010.</p>
+</dd>
+<dt class="label" id="id18"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>“The OAuth 2.0 Authorization Framework”, <a class="reference external" href="https://tools.ietf.org/html/rfc6749">RFC 6749</a>, October 2012</p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>“Security Assertion Markup Language 2.0 (SAML 2.0)” <a class="reference external" href="https://wiki.oasis-open.org">OASIS</a>, March 2005.</p>
+</dd>
+<dt class="label" id="id20"><span class="brackets">4</span><span class="fn-backref">(<a href="#id6">1</a>,<a href="#id10">2</a>)</span></dt>
+<dd><p>“JSON Web Signature (JWS)”, Appendix C. “Notes on Implementing base64url Encoding without Padding”, <a class="reference external" href="https://tools.ietf.org/html/rfc7515#appendix-C">RFC 7515</a>, May 2015</p>
+</dd>
+<dt class="label" id="id21"><span class="brackets"><a class="fn-backref" href="#id11">5</a></span></dt>
+<dd><p>“HTTP State Management Mechanism”, 4.1 “Set-Cookie”, <a class="reference external" href="https://tools.ietf.org/html/rfc6265#section-4.1">RFC 6225</a>, April 2011</p>
+</dd>
+<dt class="label" id="id22"><span class="brackets"><a class="fn-backref" href="#id7">6</a></span></dt>
+<dd><p>“Uniform Resource Identifier (URI): Generic Syntax”, 2.1. “Percent-Encoding”, <a class="reference external" href="https://tools.ietf.org/html/rfc3986#section-2.1">RFC 3986</a>, January 2005.</p>
+</dd>
+</dl>
 </div>
 </div>
 

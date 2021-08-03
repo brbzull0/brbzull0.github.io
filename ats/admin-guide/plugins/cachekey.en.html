@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -220,29 +220,29 @@
 Although <cite>cache key</cite> is used everywhere in this document, the same manipulations can be applied to <cite>parent selection URL</cite>
 by switching <a class="reference internal" href="#key-type">key type</a>. The plugin can</p>
 <ul class="simple">
-<li>sort query parameters to prevent query parameter reordering being a cache miss</li>
-<li>ignore specific query parameters from the <cite>cache key</cite> by name or regular expression</li>
-<li>ignore all query parameters from the <cite>cache key</cite></li>
-<li>only use specific query parameters in the <cite>cache key</cite> by name or regular expression</li>
-<li>include headers or cookies by name</li>
-<li>capture values from the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header.</li>
-<li>classify request using <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> and a list of regular expressions</li>
-<li>capture and replace strings from the URI and include them in the <cite>cache key</cite></li>
-<li>do more - please find more examples below.</li>
+<li><p>sort query parameters to prevent query parameter reordering being a cache miss</p></li>
+<li><p>ignore specific query parameters from the <cite>cache key</cite> by name or regular expression</p></li>
+<li><p>ignore all query parameters from the <cite>cache key</cite></p></li>
+<li><p>only use specific query parameters in the <cite>cache key</cite> by name or regular expression</p></li>
+<li><p>include headers or cookies by name</p></li>
+<li><p>capture values from the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header.</p></li>
+<li><p>classify request using <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> and a list of regular expressions</p></li>
+<li><p>capture and replace strings from the URI and include them in the <cite>cache key</cite></p></li>
+<li><p>do more - please find more examples below.</p></li>
 </ul>
 </div>
 <div class="section" id="uri-type">
 <h2>URI type<a class="headerlink" href="#uri-type" title="Permalink to this headline">¶</a></h2>
 <p>The plugin manipulates the <code class="docutils literal notranslate"><span class="pre">remap</span></code> URI (value set during URI remap) by default. If manipulation needs to be based on the <code class="docutils literal notranslate"><span class="pre">pristine</span></code> URI (the value before URI remapping takes place) one could use the following option:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--uri-type=[remap|pristine]</span></code> (default: <code class="docutils literal notranslate"><span class="pre">remap</span></code>)</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--uri-type=[remap|pristine]</span></code> (default: <code class="docutils literal notranslate"><span class="pre">remap</span></code>)</p></li>
 </ul>
 </div>
 <div class="section" id="key-type">
 <h2>Key type<a class="headerlink" href="#key-type" title="Permalink to this headline">¶</a></h2>
 <p>The plugin manipulates the <cite>cache key</cite> by default. If <cite>parent selection URL</cite> manipulation is needed the following option can be used:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--key-type=&lt;list</span> <span class="pre">of</span> <span class="pre">target</span> <span class="pre">types&gt;</span></code>  (default: <code class="docutils literal notranslate"><span class="pre">cache_key</span></code>) - list of <code class="docutils literal notranslate"><span class="pre">cache_key</span></code> or <code class="docutils literal notranslate"><span class="pre">parent_selection_url</span></code>, if multiple <code class="docutils literal notranslate"><span class="pre">--key-type</span></code> options are specified then all values are combined together.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--key-type=&lt;list</span> <span class="pre">of</span> <span class="pre">target</span> <span class="pre">types&gt;</span></code>  (default: <code class="docutils literal notranslate"><span class="pre">cache_key</span></code>) - list of <code class="docutils literal notranslate"><span class="pre">cache_key</span></code> or <code class="docutils literal notranslate"><span class="pre">parent_selection_url</span></code>, if multiple <code class="docutils literal notranslate"><span class="pre">--key-type</span></code> options are specified then all values are combined together.</p></li>
 </ul>
 <p>An instance of this plugin can be used for applying manipulations to <cite>cache key</cite>, <cite>parent selection URL</cite> or both depending on the need. See <a class="reference internal" href="#simultaneous-cache-key-and-parent-selection-url-manipulation">simultaneous cache key and parent selection URL manipulation</a>
 for examples of how to apply the <strong>same</strong> set of manipulations to both targets with a single plugin instance or applying <strong>different</strong> sets of manipulations to each target using separate plugin instances.</p>
@@ -259,11 +259,11 @@ for examples of how to apply the <strong>same</strong> set of manipulations to b
 </pre></div>
 </div>
 <ul class="simple">
-<li>The <cite>cache key</cite> set by the cachekey plugin can be considered as divided into several sections.</li>
-<li>Every section is manipulated separately by the related plugin parameters (more info in each section description below).</li>
-<li>“User-Agent”, “Headers” and “Cookies” sections are optional and will be missing from the <cite>cache key</cite> if no related plugin parameters are used.</li>
-<li>“Prefix”, “Path” and “Query” sections always have default values even if no related plugin parameters are used.</li>
-<li>All cachekey plugin parameters are optional and if missing some of the <cite>cache key</cite> sections will be missing (the optional sections) or their values will be left to their defaults.</li>
+<li><p>The <cite>cache key</cite> set by the cachekey plugin can be considered as divided into several sections.</p></li>
+<li><p>Every section is manipulated separately by the related plugin parameters (more info in each section description below).</p></li>
+<li><p>“User-Agent”, “Headers” and “Cookies” sections are optional and will be missing from the <cite>cache key</cite> if no related plugin parameters are used.</p></li>
+<li><p>“Prefix”, “Path” and “Query” sections always have default values even if no related plugin parameters are used.</p></li>
+<li><p>All cachekey plugin parameters are optional and if missing some of the <cite>cache key</cite> sections will be missing (the optional sections) or their values will be left to their defaults.</p></li>
 </ul>
 <div class="section" id="prefix-section">
 <h3>“Prefix” section<a class="headerlink" href="#prefix-section" title="Permalink to this headline">¶</a></h3>
@@ -285,12 +285,12 @@ configured               |
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--static-prefix=&lt;value&gt;</span></code> (default: empty string) - if specified and not an empty string the <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> will be added to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--capture-prefix=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from <code class="docutils literal notranslate"><span class="pre">host:port</span></code> based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--capture-prefix-uri=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the entire URI based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</li>
-<li>If any of the “Prefix” related plugin parameters are used together in the plugin configuration they are added to the <cite>cache key</cite> in the order shown in the diagram.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--remove-prefix=&lt;true|false|yes|no|0|1</span></code> (default: false) - if specified the prefix elements (host, port) are not processed nor appended to the <cite>cache key</cite>. All prefix related plugin parameters are ignored if this parameter is <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--canonical-prefix=true|false|yes|no|0|1</span></code> (default: false) - impacts the input of regex operation when <code class="docutils literal notranslate"><span class="pre">--capture-prefix</span></code> is used and the default value if no prefix parameters are used (see the table above).</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--static-prefix=&lt;value&gt;</span></code> (default: empty string) - if specified and not an empty string the <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> will be added to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--capture-prefix=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from <code class="docutils literal notranslate"><span class="pre">host:port</span></code> based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--capture-prefix-uri=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the entire URI based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</p></li>
+<li><p>If any of the “Prefix” related plugin parameters are used together in the plugin configuration they are added to the <cite>cache key</cite> in the order shown in the diagram.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remove-prefix=&lt;true|false|yes|no|0|1</span></code> (default: false) - if specified the prefix elements (host, port) are not processed nor appended to the <cite>cache key</cite>. All prefix related plugin parameters are ignored if this parameter is <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--canonical-prefix=true|false|yes|no|0|1</span></code> (default: false) - impacts the input of regex operation when <code class="docutils literal notranslate"><span class="pre">--capture-prefix</span></code> is used and the default value if no prefix parameters are used (see the table above).</p></li>
 </ul>
 </div>
 <div class="section" id="user-agent-section">
@@ -304,25 +304,23 @@ configured               |
 </pre></div>
 </div>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> classification</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--ua-allowlist=&lt;classname&gt;:&lt;filename&gt;</span></code> (default: empty string) - loads a regex patterns list from a file <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>, the patterns are matched against the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header and if matched <code class="docutils literal notranslate"><span class="pre">&lt;classname&gt;</span></code> is added it to the key.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--ua-denylist=&lt;classname&gt;:&lt;filename&gt;</span></code> (default: empty string) - loads a regex patterns list from a file <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>, the patterns are matched against the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header and if <strong>not</strong> matched <code class="docutils literal notranslate"><span class="pre">&lt;classname&gt;</span></code> is added it to the key.</li>
-<li>Multiple <code class="docutils literal notranslate"><span class="pre">--ua-allowlist</span></code> and <code class="docutils literal notranslate"><span class="pre">--ua-denylist</span></code> can be used and the result will be defined by their order in the plugin configuration.</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> classification</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ua-allowlist=&lt;classname&gt;:&lt;filename&gt;</span></code> (default: empty string) - loads a regex patterns list from a file <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>, the patterns are matched against the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header and if matched <code class="docutils literal notranslate"><span class="pre">&lt;classname&gt;</span></code> is added it to the key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ua-denylist=&lt;classname&gt;:&lt;filename&gt;</span></code> (default: empty string) - loads a regex patterns list from a file <code class="docutils literal notranslate"><span class="pre">&lt;filename&gt;</span></code>, the patterns are matched against the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header and if <strong>not</strong> matched <code class="docutils literal notranslate"><span class="pre">&lt;classname&gt;</span></code> is added it to the key.</p></li>
+<li><p>Multiple <code class="docutils literal notranslate"><span class="pre">--ua-allowlist</span></code> and <code class="docutils literal notranslate"><span class="pre">--ua-denylist</span></code> can be used and the result will be defined by their order in the plugin configuration.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> regex capturing and replacement</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">--ua-capture=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header based on <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> (see below) and are added to the <cite>cache key</cite>.</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> regex capturing and replacement</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ua-capture=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> header based on <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> (see below) and are added to the <cite>cache key</cite>.</p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li>If any <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> classification and regex capturing and replacement plugin parameters are used together they are added to the <cite>cache key</cite> in the order shown in the diagram.</li>
+<li><p>If any <code class="docutils literal notranslate"><span class="pre">User-Agent</span></code> classification and regex capturing and replacement plugin parameters are used together they are added to the <cite>cache key</cite> in the order shown in the diagram.</p></li>
 </ul>
 </div>
 <div class="section" id="headers-section">
@@ -336,8 +334,8 @@ configured               |
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--include-headers</span></code> (default: empty list) - comma separated list of headers to be added to the <cite>cache key</cite>. The list of headers defined by <code class="docutils literal notranslate"><span class="pre">--include-headers</span></code> are always sorted before adding them to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--capture-header=&lt;headername&gt;:&lt;capture_definition&gt;</span></code> (default: empty) - captures elements from header &lt;headername&gt; using &lt;capture_definition&gt; and adds them to the <cite>cache key</cite>.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-headers</span></code> (default: empty list) - comma separated list of headers to be added to the <cite>cache key</cite>. The list of headers defined by <code class="docutils literal notranslate"><span class="pre">--include-headers</span></code> are always sorted before adding them to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--capture-header=&lt;headername&gt;:&lt;capture_definition&gt;</span></code> (default: empty) - captures elements from header &lt;headername&gt; using &lt;capture_definition&gt; and adds them to the <cite>cache key</cite>.</p></li>
 </ul>
 </div>
 <div class="section" id="cookies-section">
@@ -351,7 +349,7 @@ configured               |
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--include-cookies</span></code> (default: empty list) - comma separated list of cookies to be added to the <cite>cache key</cite>. The list of cookies defined by <code class="docutils literal notranslate"><span class="pre">--include-cookies</span></code> are always sorted before adding them to the <cite>cache key</cite>.</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-cookies</span></code> (default: empty list) - comma separated list of cookies to be added to the <cite>cache key</cite>. The list of cookies defined by <code class="docutils literal notranslate"><span class="pre">--include-cookies</span></code> are always sorted before adding them to the <cite>cache key</cite>.</p></li>
 </ul>
 </div>
 <div class="section" id="path-section">
@@ -365,33 +363,32 @@ configured               |
 </pre></div>
 </div>
 <ul class="simple">
-<li>if no path related plugin parameters are used, the URI path string is included in the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--capture-path=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from URI path based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--capture-path-uri=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the entire URI based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--remove-path=&lt;true|false|yes|no|0|1</span></code> (default: false) - if specified the HTTP URI path element is not processed nor appended to the cachekey. All path related plugin parameters are ignored if this parameter is <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>.</li>
+<li><p>if no path related plugin parameters are used, the URI path string is included in the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--capture-path=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from URI path based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--capture-path-uri=&lt;capture_definition&gt;</span></code> (default: empty string) - if specified and not empty then strings are captured from the entire URI based on the <code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> and are added to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remove-path=&lt;true|false|yes|no|0|1</span></code> (default: false) - if specified the HTTP URI path element is not processed nor appended to the cachekey. All path related plugin parameters are ignored if this parameter is <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">yes</span></code> or <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
 </ul>
 </div>
 <div class="section" id="query-section">
 <h3>“Query” section<a class="headerlink" href="#query-section" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>If no query related plugin parameters are used, the query string is included in the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--exclude-params</span></code> (default: empty list) - comma-separated list of query params to be excluded in the <cite>cache key</cite>. If the list is empty then no exlusions are applied (no query parameters will be excluded from the <cite>cache key</cite>). The exclude list overrides the include list.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--include-params</span></code> (default: empty list) - comma-separated list of query params to be allow-listed in the <cite>cache key</cite>. If the list is empty then no allow-list is applied (all query parameters will be included in the <cite>cache key</cite>).</li>
-<li><code class="docutils literal notranslate"><span class="pre">--include-match-params</span></code> (default: empty list) - regular expression matching query parameter names which will be allowed in the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--exclude-match-params</span></code> (default: empty list) - regular expression matching query parameter names which will be excluded in the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--remove-all-params</span></code> (boolean:<code class="docutils literal notranslate"><span class="pre">true|false</span></code>, <code class="docutils literal notranslate"><span class="pre">0|1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes|no</span></code>, default: <code class="docutils literal notranslate"><span class="pre">false</span></code>) - if equals <code class="docutils literal notranslate"><span class="pre">true</span></code> then all query parameters are removed (the whole query string) and all other URI query parameter related settings (if used) will have no effect.</li>
-<li><code class="docutils literal notranslate"><span class="pre">--sort-params</span></code> (boolean:<code class="docutils literal notranslate"><span class="pre">true|false</span></code>, <code class="docutils literal notranslate"><span class="pre">0|1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes|no</span></code>, default: <code class="docutils literal notranslate"><span class="pre">false</span></code>) - if equals <code class="docutils literal notranslate"><span class="pre">true</span></code> then all query parameters are sorted in an increasing case-sensitive order</li>
+<li><p>If no query related plugin parameters are used, the query string is included in the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--exclude-params</span></code> (default: empty list) - comma-separated list of query params to be excluded in the <cite>cache key</cite>. If the list is empty then no exclusions are applied (no query parameters will be excluded from the <cite>cache key</cite>). The exclude list overrides the include list.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-params</span></code> (default: empty list) - comma-separated list of query params to be allow-listed in the <cite>cache key</cite>. If the list is empty then no allow-list is applied (all query parameters will be included in the <cite>cache key</cite>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--include-match-params</span></code> (default: empty list) - regular expression matching query parameter names which will be allowed in the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--exclude-match-params</span></code> (default: empty list) - regular expression matching query parameter names which will be excluded in the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--remove-all-params</span></code> (boolean:<code class="docutils literal notranslate"><span class="pre">true|false</span></code>, <code class="docutils literal notranslate"><span class="pre">0|1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes|no</span></code>, default: <code class="docutils literal notranslate"><span class="pre">false</span></code>) - if equals <code class="docutils literal notranslate"><span class="pre">true</span></code> then all query parameters are removed (the whole query string) and all other URI query parameter related settings (if used) will have no effect.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sort-params</span></code> (boolean:<code class="docutils literal notranslate"><span class="pre">true|false</span></code>, <code class="docutils literal notranslate"><span class="pre">0|1</span></code>, <code class="docutils literal notranslate"><span class="pre">yes|no</span></code>, default: <code class="docutils literal notranslate"><span class="pre">false</span></code>) - if equals <code class="docutils literal notranslate"><span class="pre">true</span></code> then all query parameters are sorted in an increasing case-sensitive order</p></li>
 </ul>
 <p>All parameters are optional, and if not used, their default values are as mentioned below. Boolean values default to <code class="docutils literal notranslate"><span class="pre">false</span></code> and the rest default to an empty list. Examples of each parameter’s usage can be found below.</p>
 </div>
 <div class="section" id="capture-definition">
 <h3>&lt;capture_definition&gt;<a class="headerlink" href="#capture-definition" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> can be in the following formats</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> defines regex capturing groups, up to 10 captured strings based on <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> will be added to the <cite>cache key</cite>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">/&lt;regex&gt;/&lt;replacement&gt;/</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> defines regex capturing groups, <code class="docutils literal notranslate"><span class="pre">&lt;replacement&gt;</span></code> defines a pattern where the captured strings referenced with <code class="docutils literal notranslate"><span class="pre">$0</span></code> … <code class="docutils literal notranslate"><span class="pre">$9</span></code> will be substituted and the result will be added to the <cite>cache key</cite>.</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">&lt;capture_definition&gt;</span></code> can be in the following formats</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> defines regex capturing groups, up to 10 captured strings based on <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> will be added to the <cite>cache key</cite>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/&lt;regex&gt;/&lt;replacement&gt;/</span></code> - <code class="docutils literal notranslate"><span class="pre">&lt;regex&gt;</span></code> defines regex capturing groups, <code class="docutils literal notranslate"><span class="pre">&lt;replacement&gt;</span></code> defines a pattern where the captured strings referenced with <code class="docutils literal notranslate"><span class="pre">$0</span></code> … <code class="docutils literal notranslate"><span class="pre">$9</span></code> will be substituted and the result will be added to the <cite>cache key</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -401,7 +398,7 @@ configured               |
 <div class="section" id="cache-key-elements-separator">
 <h3>Cache key elements separator<a class="headerlink" href="#cache-key-elements-separator" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">--separator=&lt;string&gt;</span></code> - the <cite>cache key</cite> is constructed by extracting elements from HTTP URI and headers or by using the UA classifiers and they are appended during the key construction and separated by <code class="docutils literal notranslate"><span class="pre">/</span></code> (by default). This options allows to override the default separator to any string (including an empty string).</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--separator=&lt;string&gt;</span></code> - the <cite>cache key</cite> is constructed by extracting elements from HTTP URI and headers or by using the UA classifiers and they are appended during the key construction and separated by <code class="docutils literal notranslate"><span class="pre">/</span></code> (by default). This options allows to override the default separator to any string (including an empty string).</p></li>
 </ul>
 </div>
 </div>
@@ -429,13 +426,12 @@ map http://www.example.com http://www.origin.com \
 <p>If both global and per-remap instance are used the per-remap configuration would take precedence (per-remap configuration would be applied and the global configuration ignored).</p>
 <p>Because of the ATS core (remap) and the CacheKey plugin implementation there is a slight difference between the global and the per-remap functionality when <code class="docutils literal notranslate"><span class="pre">--uri-type=remap</span></code> is used.</p>
 <ul>
-<li><p class="first">The global instance always uses the URI <strong>after</strong> remap (at <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>).</p>
-</li>
-<li><p class="first">The per-remap instance uses the URI <strong>during</strong> remap (after <code class="docutils literal notranslate"><span class="pre">TS_HTTP_PRE_REMAP_HOOK</span></code> and  before <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>) which leads to a different URI to be used depending on plugin order in the remap rule.</p>
+<li><p>The global instance always uses the URI <strong>after</strong> remap (at <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>).</p></li>
+<li><p>The per-remap instance uses the URI <strong>during</strong> remap (after <code class="docutils literal notranslate"><span class="pre">TS_HTTP_PRE_REMAP_HOOK</span></code> and  before <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>) which leads to a different URI to be used depending on plugin order in the remap rule.</p>
 <blockquote>
 <div><ul class="simple">
-<li>If CacheKey plugin is the first plugin in the remap rule the URI used will be practically the same as the pristine URI.</li>
-<li>If the CacheKey plugin is the last plugin in the remap rule (which is right before <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>) the behavior will be similar to the global instance.</li>
+<li><p>If CacheKey plugin is the first plugin in the remap rule the URI used will be practically the same as the pristine URI.</p></li>
+<li><p>If the CacheKey plugin is the last plugin in the remap rule (which is right before <code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>) the behavior will be similar to the global instance.</p></li>
 </ul>
 </div></blockquote>
 </li>

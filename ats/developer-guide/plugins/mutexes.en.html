@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -245,13 +245,13 @@ later).</p>
 <p>In general, you should use <code class="docutils literal notranslate"><span class="pre">TSMutexLockTry</span></code> instead of
 <code class="docutils literal notranslate"><span class="pre">TSMutexLock</span></code>.</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TSMutexLockTry</span></code> is required if you are tying to lock Traffic
+<li><p><code class="docutils literal notranslate"><span class="pre">TSMutexLockTry</span></code> is required if you are tying to lock Traffic
 Server internal or system resources (such as the network, cache,
-event processor, HTTP state machines, and IO buffers).</li>
-<li><code class="docutils literal notranslate"><span class="pre">TSMutexLockTry</span></code> is required if you are making any blocking calls
-(such as network, cache, or file IO calls).</li>
-<li><code class="docutils literal notranslate"><span class="pre">TSMutexLock</span></code> might not be necessary if you are not making
-blocking calls and if you are only accessing local resources.</li>
+event processor, HTTP state machines, and IO buffers).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSMutexLockTry</span></code> is required if you are making any blocking calls
+(such as network, cache, or file IO calls).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSMutexLock</span></code> might not be necessary if you are not making
+blocking calls and if you are only accessing local resources.</p></li>
 </ul>
 <p>The Traffic Server API uses the <code class="docutils literal notranslate"><span class="pre">TSMutex</span></code> type for a mutex. There are
 two typical uses of mutex. One use is for locking global data or data
@@ -269,17 +269,17 @@ information, see the <a class="reference internal" href="example-plugins/denylis
 start by looking at the <a class="reference internal" href="../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a> function.</p>
 <p>General guidelines for locking shared data are as follows:</p>
 <ol class="arabic simple">
-<li>Create a mutex for the shared data with
-<a class="reference internal" href="../api/functions/TSMutexCreate.en.html#c.TSMutexCreate" title="TSMutexCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexCreate()</span></code></a>.</li>
-<li>Whenever you need to read or modify this data, first lock it by
+<li><p>Create a mutex for the shared data with
+<a class="reference internal" href="../api/functions/TSMutexCreate.en.html#c.TSMutexCreate" title="TSMutexCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexCreate()</span></code></a>.</p></li>
+<li><p>Whenever you need to read or modify this data, first lock it by
 calling
 <a class="reference internal" href="../api/functions/TSMutexLockTry.en.html#c.TSMutexLockTry" title="TSMutexLockTry"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexLockTry()</span></code></a>;
-then read or modify the data.</li>
-<li>When you are done with the data, unlock it with
+then read or modify the data.</p></li>
+<li><p>When you are done with the data, unlock it with
 <a class="reference internal" href="../api/functions/TSMutexUnlock.en.html#c.TSMutexUnlock" title="TSMutexUnlock"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexUnlock()</span></code></a>.
 If you are unlocking data accessed during the processing of an HTTP
 transaction, then you must unlock it before calling
-<a class="reference internal" href="../api/functions/TSHttpTxnReenable.en.html#c.TSHttpTxnReenable" title="TSHttpTxnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnReenable()</span></code></a>.</li>
+<a class="reference internal" href="../api/functions/TSHttpTxnReenable.en.html#c.TSHttpTxnReenable" title="TSHttpTxnReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnReenable()</span></code></a>.</p></li>
 </ol>
 </div>
 <div class="section" id="protecting-a-continuation-s-data">
@@ -287,7 +287,7 @@ transaction, then you must unlock it before calling
 <p>You must create a mutex to protect a continuation’s data if it might be
 accessed by other continuations or processes. Here’s how:</p>
 <ol class="arabic">
-<li><div class="first line-block">
+<li><div class="line-block">
 <div class="line">Create a mutex for the continuation using <code class="docutils literal notranslate"><span class="pre">TSMutexCreate</span></code>.</div>
 <div class="line">For example:</div>
 </div>
@@ -296,7 +296,7 @@ accessed by other continuations or processes. Here’s how:</p>
 </pre></div>
 </div>
 </li>
-<li><div class="first line-block">
+<li><div class="line-block">
 <div class="line">When you create the continuation, specify this mutex as the
 continuation’s mutex.</div>
 <div class="line">For example:</div>
@@ -317,12 +317,12 @@ to lock it. For usage, see the sample Protocol plugin.</p>
 for each HTTP transaction that calls back your plugin.</p>
 <p>Some potential scenarios are listed below.</p>
 <ul class="simple">
-<li>You want to register hooks locally with the new continuation instead
-of registering them globally to the continuation plugin.</li>
-<li>You want to store data specific to each HTTP transaction that you
-might need to reuse across various hooks.</li>
-<li>You’re using APIs (like <code class="docutils literal notranslate"><span class="pre">TSHostLookup</span></code>) that will call back the
-continuation with a certain event.</li>
+<li><p>You want to register hooks locally with the new continuation instead
+of registering them globally to the continuation plugin.</p></li>
+<li><p>You want to store data specific to each HTTP transaction that you
+might need to reuse across various hooks.</p></li>
+<li><p>You’re using APIs (like <code class="docutils literal notranslate"><span class="pre">TSHostLookup</span></code>) that will call back the
+continuation with a certain event.</p></li>
 </ul>
 </div>
 <div class="section" id="how-to-add-the-new-continuation">
@@ -509,7 +509,7 @@ case only, it’s safe to access data shared between <code class="docutils liter
 HTTP transaction <code class="docutils literal notranslate"><span class="pre">txnp</span></code> is the only one that will call back
 <code class="docutils literal notranslate"><span class="pre">txn_contp</span></code>, and you are guaranteed that <code class="docutils literal notranslate"><span class="pre">txn_contp</span></code> will be called
 back only one hook at a time. After processing is finished,
-<code class="docutils literal notranslate"><span class="pre">txn_contp</span></code> will reenable <code class="docutils literal notranslate"><span class="pre">txnp</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">txn_contp</span></code> will re-enable <code class="docutils literal notranslate"><span class="pre">txnp</span></code>.</p>
 <p>In all other cases, you should create a mutex with the continuation. In
 general, a lock is needed when you’re using iocore APIs or any other API
 where <code class="docutils literal notranslate"><span class="pre">txn_contp</span></code> is scheduled to be called back by a processor (such
@@ -556,9 +556,9 @@ continuation created in <code class="docutils literal notranslate"><span class="
 </div>
 <p>The mutex functions are listed below:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../api/functions/TSMutexCreate.en.html#c.TSMutexCreate" title="TSMutexCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexCreate()</span></code></a></li>
-<li><a class="reference internal" href="../api/functions/TSMutexLock.en.html#c.TSMutexLock" title="TSMutexLock"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexLock()</span></code></a></li>
-<li><a class="reference internal" href="../api/functions/TSMutexLockTry.en.html#c.TSMutexLockTry" title="TSMutexLockTry"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexLockTry()</span></code></a></li>
+<li><p><a class="reference internal" href="../api/functions/TSMutexCreate.en.html#c.TSMutexCreate" title="TSMutexCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexCreate()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/functions/TSMutexLock.en.html#c.TSMutexLock" title="TSMutexLock"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexLock()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../api/functions/TSMutexLockTry.en.html#c.TSMutexLockTry" title="TSMutexLockTry"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSMutexLockTry()</span></code></a></p></li>
 </ul>
 </div>
 </div>

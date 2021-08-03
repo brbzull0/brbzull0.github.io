@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -138,7 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -223,14 +223,15 @@ or fail-action.</p>
 <p>The escalate plugin is a remap plugin (not global) and takes a parameter
 with two delimited fields: <code class="docutils literal notranslate"><span class="pre">comma-separated-error-codes:secondary-origin-server</span></code>.  For instance,</p>
 <blockquote>
-<div><code class="docutils literal notranslate"><span class="pre">&#64;pparam=401,404,410,502:second-origin.example.com</span></code></div></blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">&#64;pparam=401,404,410,502:second-origin.example.com</span></code></p>
+</div></blockquote>
 <p>would have Traffic Server send a cache miss to <code class="docutils literal notranslate"><span class="pre">second-origin.example.com</span></code>
 when the origin server in the remap rule returns a 401,
 404, 410, or 502 error code.</p>
-<dl class="docutils">
-<dt>&#64;pparam=–pristine</dt>
-<dd>This option sends the “pristine” Host: header (eg, the Host: header
-that the client sent) to the escalated request.</dd>
+<dl class="simple">
+<dt>&#64;pparam=–pristine</dt><dd><p>This option sends the “pristine” Host: header (eg, the Host: header
+that the client sent) to the escalated request.</p>
+</dd>
 </dl>
 </div>
 <div class="section" id="installation">
@@ -240,7 +241,7 @@ are no special steps necessary for its installation.</p>
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>With this line in <a class="reference internal" href="../files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a></p>
+<p>With this line in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="n">origin</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
   <span class="nd">@plugin</span><span class="o">=</span><span class="n">escalate</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="mi">401</span><span class="p">,</span><span class="mi">404</span><span class="p">,</span><span class="mi">410</span><span class="p">,</span><span class="mi">502</span><span class="p">:</span><span class="n">second</span><span class="o">-</span><span class="n">origin</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">pristine</span>
 </pre></div>

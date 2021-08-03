@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>JSONRPC handler implementation &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>Handler implementation &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Traffic Control Development Guide" href="traffic_ctl-development.en.html" />
-    <link rel="prev" title="JSONRPC" href="jsonrpc-architecture.en.html" /> 
+    <link rel="prev" title="JSONRPC Endpoint" href="jsonrpc-node.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -118,8 +118,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">JSONRPC handler implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-api.en.html">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-node.en.html">JSONRPC Endpoint</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Handler implementation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#json-rpc-manager">Json RPC manager</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#implementing-new-handlers">Implementing new handlers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#testing-the-api-using-autest-framework">Testing the API using autest framework</a></li>
@@ -182,7 +184,7 @@
         
           <li><a href="index.en.html">JSONRPC</a> &raquo;</li>
         
-      <li>JSONRPC handler implementation</li>
+      <li>Handler implementation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -201,32 +203,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="jsonrpc-handler-implementation">
-<span id="jsonrpc-development"></span><h1>JSONRPC handler implementation<a class="headerlink" href="#jsonrpc-handler-implementation" title="Permalink to this headline">¶</a></h1>
-<p>Use this section as a guide for developing new rpc methods inside Traffic Server and how to expose them through the <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> endpoint.
+  <div class="section" id="handler-implementation">
+<span id="jsonrpc-development"></span><h1>Handler implementation<a class="headerlink" href="#handler-implementation" title="Permalink to this headline">¶</a></h1>
+<p>Use this section as a guide for developing new rpc methods inside Traffic Server and how to expose them through the JSONRPC 2.0 endpoint.
 Before we start, it is worth mentioning some of the architecture of the current implementation. The whole RPC mechanism is divided in
 few components.</p>
 <div class="section" id="json-rpc-manager">
 <h2>Json RPC manager<a class="headerlink" href="#json-rpc-manager" title="Permalink to this headline">¶</a></h2>
 <p>This class is the entrance point for both, server calls and registered functions.</p>
-<div class="figure">
+<div class="figure align-default">
 <img alt="../../_images/JsonRPCManager.svg" src="../../_images/JsonRPCManager.svg" /></div>
 <div class="section" id="dispatcher-class">
 <h3>Dispatcher class<a class="headerlink" href="#dispatcher-class" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Class that keeps track of all the registered methods and notifications that can be invoked by the RPC server. This class holds two
-hash tables containing methods and notifications which uses the method name as a key.</li>
-<li>This class internally consumes <code class="docutils literal notranslate"><span class="pre">RPCRequestInfo</span></code> objects and performs the invocation of the respective calls.</li>
-<li>This class handlers the responses from the registered callbacks and it fills the appropriated <code class="docutils literal notranslate"><span class="pre">RPCResponseInfo</span></code> which then is passed
-back to the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> class.</li>
+<li><p>Class that keeps track of all the registered methods and notifications that can be invoked by the RPC server. This class holds two
+hash tables containing methods and notifications which uses the method name as a key.</p></li>
+<li><p>This class internally consumes <code class="docutils literal notranslate"><span class="pre">RPCRequestInfo</span></code> objects and performs the invocation of the respective calls.</p></li>
+<li><p>This class handlers the responses from the registered callbacks and it fills the appropriated <code class="docutils literal notranslate"><span class="pre">RPCResponseInfo</span></code> which then is passed
+back to the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> class.</p></li>
 </ul>
 </div>
 <div class="section" id="jsonrpcmanager-class">
 <h3>JsonRPCManager class<a class="headerlink" href="#jsonrpcmanager-class" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Singleton class that handles the JSONRPC handler registration and JSONRPC handler invocation.</li>
-<li>This class is the main entrance point for the RPC server through <code class="docutils literal notranslate"><span class="pre">handle_call(std::string_view</span> <span class="pre">req)</span></code> function.</li>
-<li>This class is the main entrance point for handler to be able to register in the RPC logic. <code class="docutils literal notranslate"><span class="pre">add_notification_handler</span></code> and <code class="docutils literal notranslate"><span class="pre">remove_notification_handler</span></code>.</li>
+<li><p>Singleton class that handles the JSONRPC handler registration and JSONRPC handler invocation.</p></li>
+<li><p>This class is the main entrance point for the RPC server through <code class="docutils literal notranslate"><span class="pre">handle_call(std::string_view</span> <span class="pre">req)</span></code> function.</p></li>
+<li><p>This class is the main entrance point for handler to be able to register in the RPC logic. <code class="docutils literal notranslate"><span class="pre">add_notification_handler</span></code> and <code class="docutils literal notranslate"><span class="pre">remove_notification_handler</span></code>.</p></li>
 </ul>
 </div>
 </div>
@@ -248,19 +250,19 @@ following signature:</p>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Incoming method request’s id will be passed to the handler, this is read only value as the server is expected to respond with the same value.</li>
-<li><code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> params is expected to be a <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> or a <code class="docutils literal notranslate"><span class="pre">Map</span></code>, as per protocol this cannot be a single value, so do not expect things like:
-<code class="docutils literal notranslate"><span class="pre">param=123</span></code> or <code class="docutils literal notranslate"><span class="pre">param=SomeString</span></code>.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">params</span></code> can be empty and contains no data at all.</li>
+<li><p>Incoming method request’s id will be passed to the handler, this is read only value as the server is expected to respond with the same value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> params is expected to be a <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> or a <code class="docutils literal notranslate"><span class="pre">Map</span></code>, as per protocol this cannot be a single value, so do not expect things like:
+<code class="docutils literal notranslate"><span class="pre">param=123</span></code> or <code class="docutils literal notranslate"><span class="pre">param=SomeString</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> can be empty and contains no data at all.</p></li>
 </ul>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">method</span></code> handlers are expected to respond to the requests, while <code class="docutils literal notranslate"><span class="pre">notifications`</span></code> will not respond with any data nor error. You can find
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">method</span></code> handlers are expected to respond to the requests, while <code class="docutils literal notranslate"><span class="pre">notifications`</span></code> will not respond with any data nor error. You can find
 more information in <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-protocol"><span class="std std-ref">JSONRPC 2.0 Protocol</span></a> or directly in the protocol specs <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a>.</p>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If there is no explicit response from the method, the protocol implementation will respond with <span class="xref std std-ref">success_response</span> unless an error
+<p class="admonition-title">Note</p>
+<p>If there is no explicit response from the method, the protocol implementation will respond with <cite>success_response</cite> unless an error
 was specified.</p>
 </div>
 </div>
@@ -272,33 +274,33 @@ We have defined some generic errors that can be used to respond depending on the
 please check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a> for more info.</p>
 <p>We recommend some ways to deal with this:</p>
 <ol class="arabic simple">
-<li>Using the <code class="docutils literal notranslate"><span class="pre">Errata</span></code> from <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code></li>
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">Errata</span></code> from <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code></p></li>
 </ol>
-<p>This can be set in case you would like to let the server to respond with an <code class="docutils literal notranslate"><span class="pre">JSONRPC</span> <span class="pre">2.0</span></code> error, <code class="docutils literal notranslate"><span class="pre">ExecutionError</span></code> will be used to catch all the
+<p>This can be set in case you would like to let the server to respond with an JSONRPC 2.0 error, <code class="docutils literal notranslate"><span class="pre">ExecutionError</span></code> will be used to catch all the
 errors that are fired from within the function call, either by setting the proper errata or by throwing an exception.
-Please refer to <a href="#id1"><span class="problematic" id="id2">`rpc-error-code`_</span></a> and in particular <code class="docutils literal notranslate"><span class="pre">ExecutionError</span> <span class="pre">=</span> <span class="pre">9</span></code>. Also check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a></p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Errors have preference over any other response, so if you set both, the errata and the <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> response, then the former
+Please check the <cite>rpc-error-code</cite> and in particular <code class="docutils literal notranslate"><span class="pre">ExecutionError</span> <span class="pre">=</span> <span class="pre">9</span></code>. Also check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Errors have preference over any other response, so if you set both, the errata and the <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> response, then the former
 will be set in the response.</p>
 </div>
 <ol class="arabic simple">
-<li>Defining a custom error object and include this as a part of the response object.</li>
+<li><p>Defining a custom error object and include this as a part of the response object.</p></li>
 </ol>
 <ul class="simple">
-<li>This is up to the developer and the errors can be part of the response <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code>.</li>
-<li>The JSONRPC Dispatcher will read that there is no error returned from the call and use the result to build the response. If this is
-what you are willing to respond, then make sure that the error is not set in the <code class="docutils literal notranslate"><span class="pre">ts::Rv</span></code>.</li>
+<li><p>This is up to the developer and the errors can be part of the response <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code>.</p></li>
+<li><p>The JSONRPC Dispatcher will read that there is no error returned from the call and use the result to build the response. If this is
+what you are willing to respond, then make sure that the error is not set in the <code class="docutils literal notranslate"><span class="pre">ts::Rv</span></code>.</p></li>
 </ul>
 <p>Examples:</p>
 <ul>
-<li><p class="first">Respond with an error, no <code class="docutils literal notranslate"><span class="pre">result</span></code> field will be set in the response.</p>
+<li><p>Respond with an error, no <code class="docutils literal notranslate"><span class="pre">result</span></code> field will be set in the response.</p>
 <blockquote>
-<div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span>
-<span class="n">respond_with_an_error</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="p">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="p">::</span><span class="n">Node</span><span class="o">&gt;</span>
+<span class="n">respond_with_an_error</span><span class="p">(</span><span class="n">std</span><span class="p">::</span><span class="n">string_view</span> <span class="n">const</span> <span class="o">&amp;</span><span class="nb">id</span><span class="p">,</span> <span class="n">YAML</span><span class="p">::</span><span class="n">Node</span> <span class="n">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">using</span> <span class="k">namespace</span> <span class="n">rpc</span><span class="o">::</span><span class="n">handlers</span><span class="o">::</span><span class="n">errors</span><span class="p">;</span>
-    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
+    <span class="n">using</span> <span class="n">namespace</span> <span class="n">rpc</span><span class="p">::</span><span class="n">handlers</span><span class="p">::</span><span class="n">errors</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="p">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s2">&quot;Something happened in the server&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -320,15 +322,15 @@ what you are willing to respond, then make sure that the error is not set in the
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last"><code class="docutils literal notranslate"><span class="pre">make_errata</span></code> hides some internal details when creating an errata.</p>
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">make_errata</span></code> hides some internal details when creating an errata.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first">Response with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
+<li><p>Response with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
 have json schemas to enforce any of this on the client side.</p>
 <blockquote>
-<div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span>  ts::Rv&lt;YAML::Node&gt;
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  ts::Rv&lt;YAML::Node&gt;
   respond_with_my_own_error(std::string_view const &amp;id, YAML::Node const &amp;params)
   {
       YAML::Node resp;
@@ -405,10 +407,11 @@ functions as used to register.</p>
 <div class="section" id="important-notes">
 <h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>You can refer to <a class="reference external" href="https://github.com/jbeder/yaml-cpp/wiki/Tutorial">YAML</a> for more info in how code/decode yaml content.</li>
-<li>Remember to update <a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admin-jsonrpc"><span class="std std-ref">JSONRPC API</span></a> if you are adding a new handler.</li>
-<li>If a new handler needs to be exposed through <strong class="program">traffic_ctl</strong> please refer to <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> for a general idea
-and to <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a> for how to implement a new command.</li>
+<li><p>You can refer to <a class="reference external" href="https://github.com/jbeder/yaml-cpp/wiki/Tutorial">YAML</a> for more info in how code/decode yaml content.</p></li>
+<li><p>Remember to update <a class="reference internal" href="jsonrpc-api.en.html#jsonrpc-api"><span class="std std-ref">API</span></a> if you are adding a new handler.</p></li>
+<li><p>If a new handler needs to be exposed through <strong class="program">traffic_ctl</strong> please refer to <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> for a general idea
+and to <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a> for how to implement a new command.</p></li>
+<li><p>To interact directly with the JSONRPC 2.0 node, please check <a class="reference internal" href="jsonrpc-node.en.html#jsonrpc-node"><span class="std std-ref">JSONRPC Endpoint</span></a></p></li>
 </ul>
 <p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
 <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-protocol"><span class="std std-ref">JSONRPC 2.0 Protocol</span></a>
@@ -427,7 +430,7 @@ and to <a class="reference internal" href="traffic_ctl-development.en.html#devel
         <a href="traffic_ctl-development.en.html" class="btn btn-neutral float-right" title="Traffic Control Development Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="jsonrpc-architecture.en.html" class="btn btn-neutral float-left" title="JSONRPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="jsonrpc-node.en.html" class="btn btn-neutral float-left" title="JSONRPC Endpoint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -279,6 +279,9 @@
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
@@ -434,9 +437,9 @@
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
 </pre></div>
 </div>
-<dl class="function">
+<dl class="c function">
 <dt id="c.TSNetAcceptNamedProtocol">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="descname">TSNetAcceptNamedProtocol</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a><em>&nbsp;contp</em>, const char *<em>&nbsp;protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSNetAcceptNamedProtocol" title="Permalink to this definition">¶</a></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSNetAcceptNamedProtocol</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em>, <em class="property">const</em> char *<em>protocol</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSNetAcceptNamedProtocol" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -447,8 +450,8 @@ for all statically configured TLS ports.  When a client using the TLS
 Next Protocol Negotiation extension negotiates the requested protocol,
 Traffic Server will route the request to the given handler <em>contp</em>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Be aware that the protocol is not registered on ports opened by
+<p class="admonition-title">Note</p>
+<p>Be aware that the protocol is not registered on ports opened by
 other plugins.</p>
 </div>
 <p>The event and data provided to the handler are the same as for
@@ -456,8 +459,8 @@ other plugins.</p>
 event code will be <a class="reference internal" href="../types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-data docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a> and the event data
 will be a valid <a class="reference internal" href="TSTypes.en.html#c.TSVConn" title="TSVConn"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSVConn</span></code></a> bound to the accepted connection.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">Neither <em>contp</em> nor <em>protocol</em> are copied. They must remain valid
+<p class="admonition-title">Important</p>
+<p>Neither <em>contp</em> nor <em>protocol</em> are copied. They must remain valid
 for the lifetime of the plugin.</p>
 </div>
 <p><a class="reference internal" href="#c.TSNetAcceptNamedProtocol" title="TSNetAcceptNamedProtocol"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSNetAcceptNamedProtocol</span></code></a> fails if the requested protocol

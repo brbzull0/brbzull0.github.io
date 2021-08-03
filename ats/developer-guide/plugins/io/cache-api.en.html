@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -245,14 +245,14 @@ differs from the HTTP type).</p>
 <p><code class="docutils literal notranslate"><span class="pre">TSCacheRead</span></code> does not really read - it is used for lookups (see the
 sample Protocol plugin). Possible callback events include:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ</span></code> - indicates the lookup was successful.
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ</span></code> - indicates the lookup was successful.
 The data passed back along with this event is a cache vconnection
-that can be used to initiate a read on this keyed data.</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ_FAILED</span></code> - indicates the lookup was
+that can be used to initiate a read on this keyed data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ_FAILED</span></code> - indicates the lookup was
 unsuccessful. Reasons for this event could be that another
 continuation is writing to that cache location, or the cache key
 doesn’t refer to a cached resource. Data payload for this event
-indicates the possible reason the read failed (<code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code>).</li>
+indicates the possible reason the read failed (<code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code>).</p></li>
 </ul>
 </div>
 <div class="section" id="cache-writes">
@@ -261,13 +261,13 @@ indicates the possible reason the read failed (<code class="docutils literal not
 plugin</span></a>). Possible
 callback events include:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_WRITE_READ</span></code> - indicates the lookup was successful.
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_WRITE_READ</span></code> - indicates the lookup was successful.
 The data passed back along with this event is a cache vconnection
-that can be used to initiate a cache write.</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE_FAILED</span></code> - event returned when another
+that can be used to initiate a cache write.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_WRITE_FAILED</span></code> - event returned when another
 continuation is currently writing to this location in the cache. Data
 payload for this event indicates the possible reason for the write
-failing (<code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code>).</li>
+failing (<code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code>).</p></li>
 </ul>
 </div>
 <div class="section" id="cache-removes">
@@ -275,11 +275,11 @@ failing (<code class="docutils literal notranslate"><span class="pre">TSCacheErr
 <p>Use <code class="docutils literal notranslate"><span class="pre">TSCacheRemove</span></code> to remove items from the cache. Possible callback
 events include:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE</span></code> - the item was removed. There is no data
-payload for this event.</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE_FAILED</span></code> - indicates the cache was unable to
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE</span></code> - the item was removed. There is no data
+payload for this event.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_REMOVE_FAILED</span></code> - indicates the cache was unable to
 remove the item identified by the cache key. <code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code> data
-indicates why the remove failed.</li>
+indicates why the remove failed.</p></li>
 </ul>
 </div>
 <div class="section" id="errors">
@@ -287,10 +287,10 @@ indicates why the remove failed.</li>
 <p>Errors pertaining to the failure of various cache operations are
 indicated by <code class="docutils literal notranslate"><span class="pre">TSCacheError</span></code> (enumeration). They are as follows:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_NO_DOC</span></code> - the key does not match a cached resource</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_DOC_BUSY</span></code> - e.g, another continuation could be
-writing to the cache location</li>
-<li><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_NOT_READY</span></code> - the cache is not ready</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_NO_DOC</span></code> - the key does not match a cached resource</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_DOC_BUSY</span></code> - e.g, another continuation could be
+writing to the cache location</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_CACHE_ERROR_NOT_READY</span></code> - the cache is not ready</p></li>
 </ul>
 </div>
 <div class="section" id="example">
@@ -329,9 +329,9 @@ cache vconnections. Also note that the following APIs can only be used
 on transformation vconnections and must not be used on cache
 vconnections or net vconnections:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">TSVConnWriteVIOGet</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">TSVConnReadVIOGet</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">TSVConnClosedGet</span></code></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSVConnWriteVIOGet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSVConnReadVIOGet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TSVConnClosedGet</span></code></p></li>
 </ul>
 <p>APIs such as <code class="docutils literal notranslate"><span class="pre">TSVConnRead</span></code>, <code class="docutils literal notranslate"><span class="pre">TSVConnWrite</span></code>, <code class="docutils literal notranslate"><span class="pre">TSVConnClose</span></code>,
 <code class="docutils literal notranslate"><span class="pre">TSVConnAbort</span></code>, and <code class="docutils literal notranslate"><span class="pre">TSVConnShutdown</span></code> can be used on any kind of

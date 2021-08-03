@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -200,7 +200,7 @@
             
   <div class="section" id="configuration-variable-implementation">
 <h1>Configuration Variable Implementation<a class="headerlink" href="#configuration-variable-implementation" title="Permalink to this headline">¶</a></h1>
-<p>Adding a new configuration variable in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> requires a number
+<p>Adding a new configuration variable in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> requires a number
 of steps which are mostly documented here.</p>
 <p>Before adding a new configuration variable, please discuss it on the mailing
 list. It will commonly be the case that a better name, or a more general
@@ -210,88 +210,84 @@ approach to the problem which solves several different issues, may be suggested.
 <p>To begin, the new configuration variables must be added to <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/mgmt/RecordsConfig.cc"><code class="docutils literal notranslate"><span class="pre">RecordsConfig.cc</span></code></a>.
 This contains a long array of configuration variable records. The fields for
 each record are:</p>
-<dl class="docutils">
-<dt>type:<code class="docutils literal notranslate"><span class="pre">RecT</span></code></dt>
-<dd><p class="first">Type of record. The valid values are:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RECT_NULL</span></code></dt>
-<dd>Undefined record.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECT_CONFIG</span></code></dt>
-<dd>General configuration variable.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECT_PROCESS</span></code></dt>
-<dd>Process related statistic.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECT_NODE</span></code></dt>
-<dd>Local statistic.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECT_PLUGIN</span></code></dt>
-<dd>Plugin created statistic.</dd>
-</dl>
-<p class="last">In general, <code class="docutils literal notranslate"><span class="pre">RECT_CONFIG</span></code> should be used.</p>
+<dl>
+<dt>type:<code class="docutils literal notranslate"><span class="pre">RecT</span></code></dt><dd><p>Type of record. The valid values are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RECT_NULL</span></code></dt><dd><p>Undefined record.</p>
 </dd>
-<dt>name:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt>
-<dd>The fully qualified name of the configuration variable. Although there
+<dt><code class="docutils literal notranslate"><span class="pre">RECT_CONFIG</span></code></dt><dd><p>General configuration variable.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECT_PROCESS</span></code></dt><dd><p>Process related statistic.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECT_NODE</span></code></dt><dd><p>Local statistic.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECT_PLUGIN</span></code></dt><dd><p>Plugin created statistic.</p>
+</dd>
+</dl>
+<p>In general, <code class="docutils literal notranslate"><span class="pre">RECT_CONFIG</span></code> should be used.</p>
+</dd>
+<dt>name:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt><dd><p>The fully qualified name of the configuration variable. Although there
 appears to be a hierarchical naming scheme, that’s just a convention, and it
 is not actually used by the code. Nonetheless, new variables should adhere
-to the hierarchical scheme.</dd>
-<dt>value_type:<code class="docutils literal notranslate"><span class="pre">RecDataT</span></code></dt>
-<dd>The data type of the value. It should be one of <code class="docutils literal notranslate"><span class="pre">RECD_INT</span></code>,
-<code class="docutils literal notranslate"><span class="pre">RECD_STRING</span></code>, <code class="docutils literal notranslate"><span class="pre">RECD_FLOAT</span></code> as appropriate.</dd>
-<dt>default:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt>
-<dd>The default value for the variable. This is always a string regardless of
-the <em>value_type</em>.</dd>
-<dt>update:<code class="docutils literal notranslate"><span class="pre">RecUpdateT</span></code></dt>
-<dd><p class="first">Information about how the variable is updated. The valid values are:</p>
-<dl class="last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RECU_NULL</span></code></dt>
-<dd>Behavior is unknown or unspecified.</dd>
+to the hierarchical scheme.</p>
+</dd>
+<dt>value_type:<code class="docutils literal notranslate"><span class="pre">RecDataT</span></code></dt><dd><p>The data type of the value. It should be one of <code class="docutils literal notranslate"><span class="pre">RECD_INT</span></code>,
+<code class="docutils literal notranslate"><span class="pre">RECD_STRING</span></code>, <code class="docutils literal notranslate"><span class="pre">RECD_FLOAT</span></code> as appropriate.</p>
+</dd>
+<dt>default:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt><dd><p>The default value for the variable. This is always a string regardless of
+the <em>value_type</em>.</p>
+</dd>
+<dt>update:<code class="docutils literal notranslate"><span class="pre">RecUpdateT</span></code></dt><dd><p>Information about how the variable is updated. The valid values are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RECU_NULL</span></code></dt><dd><p>Behavior is unknown or unspecified.</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <blockquote id="id1">
-<div><dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RECU_DYNAMIC</span></code></dt>
-<dd>This can be updated via command line tools.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECD_RESTART_TS</span></code></dt>
-<dd>The <strong class="program">traffic_server</strong> process must be restarted for a new value to take effect.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECD_RESTART_TM</span></code></dt>
-<dd>The <strong class="program">traffic_manager</strong> process must be restarted for a new value to take effect.</dd>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RECU_DYNAMIC</span></code></dt><dd><p>This can be updated via command line tools.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECD_RESTART_TS</span></code></dt><dd><p>The <strong class="program">traffic_server</strong> process must be restarted for a new value to take effect.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECD_RESTART_TM</span></code></dt><dd><p>The <strong class="program">traffic_manager</strong> process must be restarted for a new value to take effect.</p>
+</dd>
 </dl>
 </div></blockquote>
-<dl class="docutils">
-<dt>required:<code class="docutils literal notranslate"><span class="pre">RecordRequiredType</span></code></dt>
-<dd>Effectively a boolean that specifies if the record is required to be present,
+<dl>
+<dt>required:<code class="docutils literal notranslate"><span class="pre">RecordRequiredType</span></code></dt><dd><p>Effectively a boolean that specifies if the record is required to be present,
 with <code class="docutils literal notranslate"><span class="pre">RR_NULL</span></code> meaning not required and <code class="docutils literal notranslate"><span class="pre">RR_REQUIRED</span></code> indicating that it
 is required. Given that using <code class="docutils literal notranslate"><span class="pre">RR_REQUIRED</span></code> would be a major
-incompatibility, <code class="docutils literal notranslate"><span class="pre">RR_NULL</span></code> is generally the better choice.</dd>
-<dt>check:<code class="docutils literal notranslate"><span class="pre">RecCheckT</span></code></dt>
-<dd><p class="first">Additional type checking. It is unclear if this is actually implemented. The
+incompatibility, <code class="docutils literal notranslate"><span class="pre">RR_NULL</span></code> is generally the better choice.</p>
+</dd>
+<dt>check:<code class="docutils literal notranslate"><span class="pre">RecCheckT</span></code></dt><dd><p>Additional type checking. It is unclear if this is actually implemented. The
 valid values are:</p>
-<dl class="last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RECC_NULL</span></code></dt>
-<dd>No additional checking.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECC_STR</span></code></dt>
-<dd>Verify the value is a string.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECC_INT</span></code></dt>
-<dd>Verify the value is an integer.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECC_IP</span></code></dt>
-<dd>Verify the value is an IP address. Unknown if this checks for IPv6.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RECC_NULL</span></code></dt><dd><p>No additional checking.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECC_STR</span></code></dt><dd><p>Verify the value is a string.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECC_INT</span></code></dt><dd><p>Verify the value is an integer.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECC_IP</span></code></dt><dd><p>Verify the value is an IP address. Unknown if this checks for IPv6.</p>
+</dd>
 </dl>
 </dd>
 </dl>
-<dl class="docutils">
-<dt>pattern:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt>
-<dd>This provides a regular expressions (PCRE format) for validating the value,
+<dl>
+<dt>pattern:<code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code></dt><dd><p>This provides a regular expressions (PCRE format) for validating the value,
 beyond the basic type validation performed by <code class="docutils literal notranslate"><span class="pre">RecCheckT</span></code>. This can be
-<code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is no regular expression to use.</dd>
-<dt>access:<code class="docutils literal notranslate"><span class="pre">RecAccessT</span></code></dt>
-<dd><p class="first">Access control. The valid values are:</p>
-<dl class="last docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">RECA_NULL</span></code></dt>
-<dd>The value is read / write.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECA_READ_ONLY</span></code></dt>
-<dd>The value is read only.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">RECA_NO_ACCESS</span></code></dt>
-<dd>No access to the value; only privileged level parts of ATS can access the
-value.</dd>
+<code class="docutils literal notranslate"><span class="pre">NULL</span></code> if there is no regular expression to use.</p>
+</dd>
+<dt>access:<code class="docutils literal notranslate"><span class="pre">RecAccessT</span></code></dt><dd><p>Access control. The valid values are:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RECA_NULL</span></code></dt><dd><p>The value is read / write.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECA_READ_ONLY</span></code></dt><dd><p>The value is read only.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RECA_NO_ACCESS</span></code></dt><dd><p>No access to the value; only privileged level parts of ATS can access the
+value.</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -299,7 +295,7 @@ value.</dd>
 <div class="section" id="variable-infrastructure">
 <h2>Variable Infrastructure<a class="headerlink" href="#variable-infrastructure" title="Permalink to this headline">¶</a></h2>
 <p>The primary effort in defining a configuration variable is handling updates,
-generally via <a class="reference internal" href="../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>. This is handled in a generic way, as
+generally via <a class="reference internal" href="../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>. This is handled in a generic way, as
 described in the next section, or in a <a class="reference internal" href="#http-config-var-impl"><span class="std std-ref">more specialized way</span></a>
 (built on top of the generic mechanism) for HTTP related configuration
 variables. This is only needed if the variable is marked as dynamically
@@ -307,7 +303,7 @@ updatable (<a class="reference internal" href="#id1"><code class="docutils liter
 dynamic if possible.</p>
 <div class="section" id="documentation-and-defaults">
 <h3>Documentation and Defaults<a class="headerlink" href="#documentation-and-defaults" title="Permalink to this headline">¶</a></h3>
-<p>A configuration variable should be documented in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. There
+<p>A configuration variable should be documented in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. There
 are many examples in the file already that can be used for guidance. The general
 format is to use the tag</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.. ts:cv:`variable.name.here`
@@ -318,30 +314,26 @@ documentation generator will pick out key bits and use them to decorate the
 entry. In particular if a value is present it will be removed and used as the
 default value. You can attach some additional options to the variable. These
 are:</p>
-<dl class="docutils">
-<dt>reloadable</dt>
-<dd>The variable can be reloaded via command line on a running Traffic Server.</dd>
-<dt>metric</dt>
-<dd>Specify the units for the value. This is critical for variables that use unexpected or non-obvious metrics, such as minutes instead of seconds, or disk sectors instead of bytes.</dd>
-<dt>deprecated</dt>
-<dd>Mark a variable as deprecated.</dd>
+<dl class="simple">
+<dt>reloadable</dt><dd><p>The variable can be reloaded via command line on a running Traffic Server.</p>
+</dd>
+<dt>metric</dt><dd><p>Specify the units for the value. This is critical for variables that use unexpected or non-obvious metrics, such as minutes instead of seconds, or disk sectors instead of bytes.</p>
+</dd>
+<dt>deprecated</dt><dd><p>Mark a variable as deprecated.</p>
+</dd>
 </dl>
 <div class="topic">
 <p class="topic-title first">Example</p>
-<dl class="docutils">
-<dt>:ts:cv:`custom.variable`</dt>
-<dd><table class="first last docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">reloadable:</th><td class="field-body"></td>
-</tr>
-<tr class="field-even field"><th class="field-name">units:</th><td class="field-body">minutes</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">deprecated:</th><td class="field-body"></td>
-</tr>
-</tbody>
-</table>
+<dl class="simple">
+<dt>:ts:cv:`custom.variable`</dt><dd><dl class="field-list simple">
+<dt class="field-odd">reloadable</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">units</dt>
+<dd class="field-even"><p>minutes</p>
+</dd>
+<dt class="field-odd">deprecated</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 </dd>
 </dl>
 </div>
@@ -352,9 +344,9 @@ can use the form</p>
 </div>
 <p>This will display the name as a link to the full definition.</p>
 <p>In general, a new configuration variable should not be present in the default
-<a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. If it is added, such defaults should be added to the
+<a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. If it is added, such defaults should be added to the
 file <code class="docutils literal notranslate"><span class="pre">proxy/config/records.config.default.in</span></code>. This is used to generate the
-default <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. Just add the variable to the file in an
+default <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. Just add the variable to the file in an
 appropriate place with a proper default as this will now override whatever
 default you put in the code for new installs.</p>
 </div>
@@ -362,7 +354,7 @@ default you put in the code for new installs.</p>
 <h3>Handling Updates<a class="headerlink" href="#handling-updates" title="Permalink to this headline">¶</a></h3>
 <p>The simplest mechanism for handling updates is the <code class="docutils literal notranslate"><span class="pre">REC_EstablishStaticConfigXXX</span></code>
 family of functions. This mechanism will cause the value in the indicated
-instance to be updated in place when an update to <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> occurs.
+instance to be updated in place when an update to <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> occurs.
 This is done asynchronously using atomic operations. Use of these variables must
 keep that in mind.</p>
 <p>If a variable requires additional handling when updated a callback can be
@@ -372,25 +364,25 @@ reads the new value and writes it to storage indicated by the call parameters.
 The functions used are the <code class="docutils literal notranslate"><span class="pre">link_XXX</span></code> static functions in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/lib/records/RecCore.cc"><code class="docutils literal notranslate"><span class="pre">RecCore.cc</span></code></a>.</p>
 <p>To register a configuration variable callback, call <code class="docutils literal notranslate"><span class="pre">RecRegisterConfigUpdateCb</span></code>
 with the arguments:</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code> <em>name</em></dt>
-<dd>The variable name.</dd>
-<dt><em>callback</em></dt>
-<dd>A function with the signature <code class="docutils literal notranslate"><span class="pre">&lt;int</span> <span class="pre">(char</span> <span class="pre">const*</span> <span class="pre">name,</span> <span class="pre">RecDataT</span> <span class="pre">type,</span> <span class="pre">RecData</span> <span class="pre">data,</span> <span class="pre">void*</span> <span class="pre">cookie)&gt;</span></code>.
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">char</span> <span class="pre">const*</span></code> <em>name</em></dt><dd><p>The variable name.</p>
+</dd>
+<dt><em>callback</em></dt><dd><p>A function with the signature <code class="docutils literal notranslate"><span class="pre">&lt;int</span> <span class="pre">(char</span> <span class="pre">const*</span> <span class="pre">name,</span> <span class="pre">RecDataT</span> <span class="pre">type,</span> <span class="pre">RecData</span> <span class="pre">data,</span> <span class="pre">void*</span> <span class="pre">cookie)&gt;</span></code>.
 The <em>name</em> value passed is the same as the <em>name</em> passed to the
 registration function as is the <em>cookie</em> argument. The <em>type</em> and
 <em>data</em> are the new value for the variable. The return value is currently
-ignored. For future compatibility return <code class="docutils literal notranslate"><span class="pre">REC_ERR_OKAY</span></code>.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">void*</span></code> <em>cookie</em></dt>
-<dd>A value passed to the <em>callback</em>. This is only for the callback, the
-internals simply store it and pass it on.</dd>
+ignored. For future compatibility return <code class="docutils literal notranslate"><span class="pre">REC_ERR_OKAY</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">void*</span></code> <em>cookie</em></dt><dd><p>A value passed to the <em>callback</em>. This is only for the callback, the
+internals simply store it and pass it on.</p>
+</dd>
 </dl>
 <p><em>callback</em> is called under lock so it should be quick and not block. If that is
 necessary a <a class="reference internal" href="../appendices/glossary.en.html#term-continuation"><span class="xref std std-term">continuation</span></a> should be scheduled to handle the required
 action.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The callback occurs asynchronously. For HTTP variables as described in the
+<p class="admonition-title">Note</p>
+<p>The callback occurs asynchronously. For HTTP variables as described in the
 next section, this is handled by the more specialized HTTP update mechanisms.
 Otherwise it is the implementer’s responsibility to avoid race conditions.</p>
 </div>
@@ -429,14 +421,14 @@ still apply. The only difference for that is the further <code class="docutils l
 to any custom API functions used to access the value, the following items are
 required for generic access:</p>
 <ol class="arabic simple">
-<li>Add a value to the <code class="docutils literal notranslate"><span class="pre">TSOverridableConfigKey</span></code> enumeration in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/include/ts/apidefs.h.in"><code class="docutils literal notranslate"><span class="pre">apidefs.h.in</span></code></a>.</li>
-<li>Augment <code class="docutils literal notranslate"><span class="pre">Overridable_Map</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/shared/overridable_txn_vars.cc"><code class="docutils literal notranslate"><span class="pre">overridable_txn_vars.cc</span></code></a> to include configuration variable.</li>
-<li>Update the function <code class="docutils literal notranslate"><span class="pre">_conf_to_memberp</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/traffic_server/InkAPI.cc"><code class="docutils literal notranslate"><span class="pre">InkAPI.cc</span></code></a> to have a case for the enumeration value
-in <code class="docutils literal notranslate"><span class="pre">TSOverridableConfigKey</span></code>.</li>
-<li>Update the testing logic in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/traffic_server/InkAPITest.cc"><code class="docutils literal notranslate"><span class="pre">InkAPITest.cc</span></code></a> by adding the string name of the
-configuration variable to the <code class="docutils literal notranslate"><span class="pre">SDK_Overridable_Configs</span></code> array.</li>
-<li>Update the Lua plugin enumeration <code class="docutils literal notranslate"><span class="pre">TSLuaOverridableConfigKey</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/plugins/experimental/ts_lua/ts_lua_http_config.c"><code class="docutils literal notranslate"><span class="pre">ts_lua_http_config.c</span></code></a>.</li>
-<li>Update the documentation of <a class="reference internal" href="api/functions/TSHttpOverridableConfig.en.html#ts-overridable-config"><span class="std std-ref">TSHttpOverridableConfig</span></a> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/doc/reference/api/TSHttpOverridableConfig.en.rst"><code class="docutils literal notranslate"><span class="pre">TSHttpOverridableConfig.en.rst</span></code></a>.</li>
+<li><p>Add a value to the <code class="docutils literal notranslate"><span class="pre">TSOverridableConfigKey</span></code> enumeration in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/include/ts/apidefs.h.in"><code class="docutils literal notranslate"><span class="pre">apidefs.h.in</span></code></a>.</p></li>
+<li><p>Augment <code class="docutils literal notranslate"><span class="pre">Overridable_Map</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/shared/overridable_txn_vars.cc"><code class="docutils literal notranslate"><span class="pre">overridable_txn_vars.cc</span></code></a> to include configuration variable.</p></li>
+<li><p>Update the function <code class="docutils literal notranslate"><span class="pre">_conf_to_memberp</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/traffic_server/InkAPI.cc"><code class="docutils literal notranslate"><span class="pre">InkAPI.cc</span></code></a> to have a case for the enumeration value
+in <code class="docutils literal notranslate"><span class="pre">TSOverridableConfigKey</span></code>.</p></li>
+<li><p>Update the testing logic in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/traffic_server/InkAPITest.cc"><code class="docutils literal notranslate"><span class="pre">InkAPITest.cc</span></code></a> by adding the string name of the
+configuration variable to the <code class="docutils literal notranslate"><span class="pre">SDK_Overridable_Configs</span></code> array.</p></li>
+<li><p>Update the Lua plugin enumeration <code class="docutils literal notranslate"><span class="pre">TSLuaOverridableConfigKey</span></code> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/plugins/experimental/ts_lua/ts_lua_http_config.c"><code class="docutils literal notranslate"><span class="pre">ts_lua_http_config.c</span></code></a>.</p></li>
+<li><p>Update the documentation of <a class="reference internal" href="api/functions/TSHttpOverridableConfig.en.html#ts-overridable-config"><span class="std std-ref">TSHttpOverridableConfig</span></a> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/doc/reference/api/TSHttpOverridableConfig.en.rst"><code class="docutils literal notranslate"><span class="pre">TSHttpOverridableConfig.en.rst</span></code></a>.</p></li>
 </ol>
 </div>
 <div class="section" id="api-conversions">

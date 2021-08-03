@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -219,17 +219,17 @@ algorithms, including LRU, LFU, CLOCK, GDFS and 2Q, called CLFUS (Clocked Least
 Frequently Used by Size). It avoids any patented algorithms and includes the
 following features:</p>
 <ul class="simple">
-<li>Balances Recentness, Frequency and Size to maximize hit rate (not byte hit
-rate).</li>
-<li>Is Scan Resistant and extracts robust hit rates even when the working set does
-not fit in the RAM Cache.</li>
-<li>Supports compression at 3 levels: fastlz, gzip (libz), and xz (liblzma).
-Compression can be moved to another thread.</li>
-<li>Has very low CPU overhead, only slightly more than a basic LRU. Rather than
+<li><p>Balances Recentness, Frequency and Size to maximize hit rate (not byte hit
+rate).</p></li>
+<li><p>Is Scan Resistant and extracts robust hit rates even when the working set does
+not fit in the RAM Cache.</p></li>
+<li><p>Supports compression at 3 levels: fastlz, gzip (libz), and xz (liblzma).
+Compression can be moved to another thread.</p></li>
+<li><p>Has very low CPU overhead, only slightly more than a basic LRU. Rather than
 using an O(lg n) heap, it uses a probabilistic replacement policy for O(1)
-cost with low C.</li>
-<li>Has relatively low memory overhead of approximately 200 bytes per object in
-memory.</li>
+cost with low C.</p></li>
+<li><p>Has relatively low memory overhead of approximately 200 bytes per object in
+memory.</p></li>
 </ul>
 <p>The rationale for emphasizing hit rate over byte hit rate is that the overhead
 of pulling more bytes from secondary storage is low compared to the cost of a
@@ -240,58 +240,58 @@ contains a history of objects which have either recently been in memory or are
 being considered for keeping in memory. The <em>seen</em> hash table is used to make
 the algorithm scan resistant.</p>
 <p>The list entries record the following information:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="18%" />
-<col width="82%" />
+<col style="width: 18%" />
+<col style="width: 82%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Description</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>key</td>
-<td>16 byte unique object identifier</td>
+<tbody>
+<tr class="row-even"><td><p>key</p></td>
+<td><p>16 byte unique object identifier</p></td>
 </tr>
-<tr class="row-odd"><td>auxkeys</td>
-<td>8 bytes worth of version number (in our system, the block in the
+<tr class="row-odd"><td><p>auxkeys</p></td>
+<td><p>8 bytes worth of version number (in our system, the block in the
 partition). When the version of an object changes old entries are
-purged from the cache.</td>
+purged from the cache.</p></td>
 </tr>
-<tr class="row-even"><td>hits</td>
-<td>Number of hits within this clock period.</td>
+<tr class="row-even"><td><p>hits</p></td>
+<td><p>Number of hits within this clock period.</p></td>
 </tr>
-<tr class="row-odd"><td>size</td>
-<td>size of the object in the cache.</td>
+<tr class="row-odd"><td><p>size</p></td>
+<td><p>size of the object in the cache.</p></td>
 </tr>
-<tr class="row-even"><td>len</td>
-<td>Length of the object, which differs from <em>size</em> because of
-compression and padding).</td>
+<tr class="row-even"><td><p>len</p></td>
+<td><p>Length of the object, which differs from <em>size</em> because of
+compression and padding).</p></td>
 </tr>
-<tr class="row-odd"><td>compressed_len</td>
-<td>Compressed length of the object.</td>
+<tr class="row-odd"><td><p>compressed_len</p></td>
+<td><p>Compressed length of the object.</p></td>
 </tr>
-<tr class="row-even"><td>compressed</td>
-<td>Compression type, or <code class="docutils literal notranslate"><span class="pre">none</span></code> if no compression. Possible types
-are: <em>fastlz</em>, <em>libz</em>, and <em>liblzma</em>.</td>
+<tr class="row-even"><td><p>compressed</p></td>
+<td><p>Compression type, or <code class="docutils literal notranslate"><span class="pre">none</span></code> if no compression. Possible types
+are: <em>fastlz</em>, <em>libz</em>, and <em>liblzma</em>.</p></td>
 </tr>
-<tr class="row-odd"><td>uncompressible</td>
-<td>Flag indicating that content cannot be compressed (true), or that
-it mat be compressed (false).</td>
+<tr class="row-odd"><td><p>uncompressible</p></td>
+<td><p>Flag indicating that content cannot be compressed (true), or that
+it mat be compressed (false).</p></td>
 </tr>
-<tr class="row-even"><td>copy</td>
-<td>Whether or not this object should be copied in and copied out
-(e.g. HTTP HDR).</td>
+<tr class="row-even"><td><p>copy</p></td>
+<td><p>Whether or not this object should be copied in and copied out
+(e.g. HTTP HDR).</p></td>
 </tr>
-<tr class="row-odd"><td>LRU link</td>
-<td>&#160;</td>
+<tr class="row-odd"><td><p>LRU link</p></td>
+<td></td>
 </tr>
-<tr class="row-even"><td>HASH link</td>
-<td>&#160;</td>
+<tr class="row-even"><td><p>HASH link</p></td>
+<td></td>
 </tr>
-<tr class="row-odd"><td>IOBufferData</td>
-<td>Smart point to the data buffer.</td>
+<tr class="row-odd"><td><p>IOBufferData</p></td>
+<td><p>Smart point to the data buffer.</p></td>
 </tr>
 </tbody>
 </table>
@@ -357,37 +357,37 @@ uncompressed in the hope that they can be reused in uncompressed form. This is
 a compile time option and may be something we want to change.</p>
 <p>There are 3 algorithms and levels of compression (speed on an Intel i7 920
 series processor using one thread):</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="9%" />
-<col width="21%" />
-<col width="23%" />
-<col width="47%" />
+<col style="width: 9%" />
+<col style="width: 21%" />
+<col style="width: 23%" />
+<col style="width: 47%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Method</th>
-<th class="head">Compression Rate</th>
-<th class="head">Decompression Rate</th>
-<th class="head">Notes</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Method</p></th>
+<th class="head"><p>Compression Rate</p></th>
+<th class="head"><p>Decompression Rate</p></th>
+<th class="head"><p>Notes</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>fastlz</td>
-<td>173 MB/sec</td>
-<td>442 MB/sec</td>
-<td>Basically free since disk or network
-will limit first; ~53% final size.</td>
+<tbody>
+<tr class="row-even"><td><p>fastlz</p></td>
+<td><p>173 MB/sec</p></td>
+<td><p>442 MB/sec</p></td>
+<td><p>Basically free since disk or network
+will limit first; ~53% final size.</p></td>
 </tr>
-<tr class="row-odd"><td>libz</td>
-<td>55 MB/sec</td>
-<td>234 MB/sec</td>
-<td>Almost free, particularly
-decompression; ~37% final size.</td>
+<tr class="row-odd"><td><p>libz</p></td>
+<td><p>55 MB/sec</p></td>
+<td><p>234 MB/sec</p></td>
+<td><p>Almost free, particularly
+decompression; ~37% final size.</p></td>
 </tr>
-<tr class="row-even"><td>liblzma</td>
-<td>3 MB/sec</td>
-<td>50 MB/sec</td>
-<td>Expensive; ~27% final size.</td>
+<tr class="row-even"><td><p>liblzma</p></td>
+<td><p>3 MB/sec</p></td>
+<td><p>50 MB/sec</p></td>
+<td><p>Expensive; ~27% final size.</p></td>
 </tr>
 </tbody>
 </table>

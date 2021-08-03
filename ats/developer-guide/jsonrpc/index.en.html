@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -39,7 +39,7 @@
   <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="JSONRPC" href="jsonrpc-architecture.en.html" />
+    <link rel="next" title="Architecture" href="jsonrpc-architecture.en.html" />
     <link rel="prev" title="Traffic Server Blackbox Testing" href="../testing/blackbox-testing.en.html" /> 
 </head>
 
@@ -118,8 +118,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">JSONRPC</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-api.en.html">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-node.en.html">JSONRPC Endpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html">Handler implementation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control Development Guide</a></li>
 <li class="toctree-l3"><a class="reference internal" href="HandlerError.en.html">API Handler error codes</a></li>
 </ul>
@@ -197,43 +199,32 @@
 <span id="developer-guide-jsonrpc"></span><h1>JSONRPC<a class="headerlink" href="#jsonrpc" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="jsonrpc-architecture.en.html">JSONRPC</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#rpc-architecture">RPC Architecture</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#protocol">Protocol</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#server">Server</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#ipc">IPC</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#using-the-jsonrpc-mechanism">Using the JSONRPC mechanism</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#json-parsing">JSON Parsing</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="jsonrpc-architecture.en.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#protocol">Protocol</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#server">Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#using-the-jsonrpc-mechanism">Using the JSONRPC mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#json-parsing">JSON Parsing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-2-0-protocol">JSONRPC 2.0 Protocol</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#overview">Overview</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#requests">Requests</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html#responses">Responses</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#result">Result</a></li>
-<li class="toctree-l4"><a class="reference internal" href="jsonrpc-architecture.en.html#errors">Errors</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#overview">Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#development-guide">Development Guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jsonrpc-architecture.en.html#see-also">See also</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="jsonrpc-handler-development.en.html">JSONRPC handler implementation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#json-rpc-manager">Json RPC manager</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#dispatcher-class">Dispatcher class</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpcmanager-class">JsonRPCManager class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jsonrpc-api.en.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-api.en.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-api.en.html#administrative-api">Administrative API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-api.en.html#jsonrpc-admin-api">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-api.en.html#jsonapi-management-records">Records</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-api.en.html#metrics">Metrics</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#implementing-new-handlers">Implementing new handlers</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#design">Design</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#error-handling">Error Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="jsonrpc-handler-development.en.html#registration">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jsonrpc-node.en.html">JSONRPC Endpoint</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-node.en.html#ipc-node">IPC Node</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="jsonrpc-handler-development.en.html">Handler implementation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#json-rpc-manager">Json RPC manager</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#implementing-new-handlers">Implementing new handlers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#testing-the-api-using-autest-framework">Testing the API using autest framework</a></li>
 <li class="toctree-l2"><a class="reference internal" href="jsonrpc-handler-development.en.html#important-notes">Important Notes</a></li>
 </ul>
@@ -258,7 +249,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="jsonrpc-architecture.en.html" class="btn btn-neutral float-right" title="JSONRPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="jsonrpc-architecture.en.html" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="../testing/blackbox-testing.en.html" class="btn btn-neutral float-left" title="Traffic Server Blackbox Testing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

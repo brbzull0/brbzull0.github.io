@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -209,24 +209,24 @@
   <div class="section" id="cache-initialization">
 <span id="id1"></span><h1>Cache Initialization<a class="headerlink" href="#cache-initialization" title="Permalink to this headline">¶</a></h1>
 <p>Initialization starts with an instance of <a class="reference internal" href="core-cache-functions.en.html#_CPPv45Store" title="Store"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Store</span></code></a> reading the storage
-configuration file, by default <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std:configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. For each valid element in
+configuration file, by default <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a>. For each valid element in
 the file an instance of <a class="reference internal" href="core-cache-functions.en.html#_CPPv44Span" title="Span"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Span</span></code></a> is created. These are of basically
 four types:</p>
 <ul class="simple">
-<li>File</li>
-<li>Directory</li>
-<li>Disk</li>
-<li>Raw device</li>
+<li><p>File</p></li>
+<li><p>Directory</p></li>
+<li><p>Disk</p></li>
+<li><p>Raw device</p></li>
 </ul>
 <p>After creating all the <a class="reference internal" href="core-cache-functions.en.html#_CPPv44Span" title="Span"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Span</span></code></a> instances, they are grouped by device
 ID to internal linked lists attached to the <a class="reference internal" href="core-cache-functions.en.html#_CPPv4N5Store4diskE" title="Store::disk"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Store::disk</span></code></a>
-array <a class="footnote-reference" href="#store-disk-array" id="id2">[1]</a>. Spans that refer to the same directory, disk, or raw
+array <a class="footnote-reference brackets" href="#store-disk-array" id="id2">1</a>. Spans that refer to the same directory, disk, or raw
 device are coalesced in to a single span. Spans that refer to the same file
-with overlapping offsets are also coalesced <a class="footnote-reference" href="#coalesced-spans" id="id3">[2]</a>. This is all done in
+with overlapping offsets are also coalesced <a class="footnote-reference brackets" href="#coalesced-spans" id="id3">2</a>. This is all done in
 <a class="reference internal" href="core-cache-functions.en.html#_CPPv414ink_cache_init13ModuleVersion" title="ink_cache_init"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">ink_cache_init()</span></code></a> called during startup.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The span logic is also used by the HostDB and more than one otherwise
+<p class="admonition-title">Note</p>
+<p>The span logic is also used by the HostDB and more than one otherwise
 inexplicable feature is provided by the span logic for that module.</p>
 </div>
 <p>After configuration initialization, the cache processor is started by calling
@@ -246,15 +246,15 @@ for an object what stripe that is. The logic described here sets up the stripe a
 from the cache key to a specific stripe.</p>
 <p><a class="reference internal" href="../../appendices/glossary.en.html#term-cache-stripe"><span class="xref std std-term">Cache stripe</span></a> assignment setup is done once all stripes have initialized (that
 is, all stripe header read operations have completed). There is an instance of
-<a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHostRecord</span></code></a> for each line in <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> and one generic instance
+<a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHostRecord</span></code></a> for each line in <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> and one generic instance
 (<a class="reference internal" href="data-structures.en.html#_CPPv4N5Cache9hosttableE" title="Cache::hosttable"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">Cache::hosttable</span></code></a>) for all cache volumes that are not explicitly assigned. If
-<a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std:configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> is empty then all cache volumes will be in the generic record.</p>
+<a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> is empty then all cache volumes will be in the generic record.</p>
 <p><a class="reference internal" href="core-cache-functions.en.html#_CPPv420build_vol_hash_tableP15CacheHostRecord" title="build_vol_hash_table"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">build_vol_hash_table()</span></code></a> in <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/iocore/cache/Cache.cc">iocore/cache/Cache.cc</a> does the work of setting up the
 stripe assignment and is called for each <a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHostRecord</span></code></a> and the generic host record. The
 stripes to be assigned are in <a class="reference internal" href="data-structures.en.html#_CPPv4N15CacheHostRecord4volsE" title="CacheHostRecord::vols"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">CacheHostRecord::vols</span></code></a>.</p>
 <div class="figure align-left" id="id4">
 <img alt="../../_images/cache-init-cachehostrecord.png" src="../../_images/cache-init-cachehostrecord.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="data-structures.en.html#_CPPv4N15CacheHostRecord4volsE" title="CacheHostRecord::vols"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">CacheHostRecord::vols</span></code></a> is the union of all the stripes in the <a class="reference internal" href="data-structures.en.html#_CPPv48CacheVol" title="CacheVol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVol</span></code></a> instances in <a class="reference internal" href="data-structures.en.html#_CPPv4N15CacheHostRecord2cpE" title="CacheHostRecord::cp"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">CacheHostRecord::cp</span></code></a>.</span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="data-structures.en.html#_CPPv4N15CacheHostRecord4volsE" title="CacheHostRecord::vols"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">CacheHostRecord::vols</span></code></a> is the union of all the stripes in the <a class="reference internal" href="data-structures.en.html#_CPPv48CacheVol" title="CacheVol"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVol</span></code></a> instances in <a class="reference internal" href="data-structures.en.html#_CPPv4N15CacheHostRecord2cpE" title="CacheHostRecord::cp"><code class="xref cpp cpp-member docutils literal notranslate"><span class="pre">CacheHostRecord::cp</span></code></a>.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>An indirect index mapping is created to account for stripes that are not available. The total size
 of the stripes is computed at the same time. The <code class="code docutils literal notranslate"><span class="pre">forvol</span></code> and <code class="code docutils literal notranslate"><span class="pre">getvol</span></code> arrays are used
@@ -265,35 +265,35 @@ generator is created based on stripe properties. Another array of pairs of value
 filled using these. For each <code class="code docutils literal notranslate"><span class="pre">VOL_HASH_ALLOC_SIZE</span></code> amount of space in a stripe, a pair is
 generated containing the stripe index and the next random number from that stripe’s generator. This
 array is then sorted in ascending order.</p>
-<div class="figure" id="id5">
+<div class="figure align-default" id="id5">
 <img alt="../../_images/cache-init-rtable-setup.png" src="../../_images/cache-init-rtable-setup.png" />
-<p class="caption"><span class="caption-text">In this example the total size of the stripes is 10 and an <a class="reference external" href="http://random.org">8 bit pseudo random number generator</a> is used.</span></p>
+<p class="caption"><span class="caption-text">In this example the total size of the stripes is 10 and an <a class="reference external" href="http://random.org">8 bit pseudo random number generator</a> is used.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 <p>The result is sampled in sections, the size of the sections selected to yield
 <code class="code docutils literal notranslate"><span class="pre">VOL_HASH_TABLE_SIZE</span></code> sections. For each section the sample value is the midpoint of the
 section.For the example, the number of sections is set to 17 (because the number of sections should
 be a prime number). This yields 17 sections each of width 15 with a sample value equal to 7 more
 than the initial value. The results of applying this to the <code class="code docutils literal notranslate"><span class="pre">rtable</span></code> is</p>
-<div class="figure" id="id6">
+<div class="figure align-default" id="id6">
 <img alt="../../_images/cache-init-rtable-result.png" src="../../_images/cache-init-rtable-result.png" />
-<p class="caption"><span class="caption-text">Sampling results.</span></p>
+<p class="caption"><span class="caption-text">Sampling results.</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
 </div>
 <p>This process can be viewed as dividing a number line in to sampling sections, each section corresponding
 to a stripe assignment slot.</p>
-<div class="figure" id="id7">
+<div class="figure align-default" id="id7">
 <img alt="../../_images/cache-init-sampling.png" src="../../_images/cache-init-sampling.png" />
-<p class="caption"><span class="caption-text">Sample sections.</span></p>
+<p class="caption"><span class="caption-text">Sample sections.</span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
 <p>Each random value for a stripe in the <code class="code docutils literal notranslate"><span class="pre">rtable</span></code> array can be considered a node in this space.
 For one stripe this might look like</p>
-<div class="figure" id="id8">
+<div class="figure align-default" id="id8">
 <img alt="../../_images/cache-init-slots-single.png" src="../../_images/cache-init-slots-single.png" />
-<p class="caption"><span class="caption-text">Random value nodes for a single stripe.</span></p>
+<p class="caption"><span class="caption-text">Random value nodes for a single stripe.</span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
 <p>The full array contains random value nodes for all the stripes.</p>
-<div class="figure" id="id9">
+<div class="figure align-default" id="id9">
 <img alt="../../_images/cache-init-selection.png" src="../../_images/cache-init-selection.png" />
-<p class="caption"><span class="caption-text">Random value nodes for all (four) stripes.</span></p>
+<p class="caption"><span class="caption-text">Random value nodes for all (four) stripes.</span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 <p>The stripe for that section (assignment slot) is the first node at or past the sample value. This
 can be seen as the arrow color in the previous figure. This provides a reasonably proportioned to
@@ -303,9 +303,9 @@ stripes in proportion to their sizes while not changing the assignment of any sl
 the missing stripe. In essence for each sample point (assignment slot) a permutation of the stripes
 is implied by the order of the random value nodes past that sample point. The randomization serves
 to spread re-assigned slots to various stripes instead of a single one.</p>
-<div class="figure" id="id10">
+<div class="figure align-default" id="id10">
 <img alt="../../_images/cache-init-slots-minus-1.png" src="../../_images/cache-init-slots-minus-1.png" />
-<p class="caption"><span class="caption-text">Remove the blue stripe.</span></p>
+<p class="caption"><span class="caption-text">Remove the blue stripe.</span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
 </div>
 <p>If the stripe is restored the assignments will be the same as before the stripe was removed. The
 assignment is very sensitive to the properties of each stripe - changing a stripe size or location
@@ -317,21 +317,17 @@ the pseudo random number generator depends only the properties of the stripes.</
 <a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheHostRecord</span></code></a> instance then picks the stripe assignment slot in the array which
 determines the stripe for the object.</p>
 <p class="rubric">Footnotes</p>
-<table class="docutils footnote" frame="void" id="store-disk-array" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td><a class="reference external" href="https://issues.apache.org/jira/browse/TS-2020">Work is under way</a> on
-extending this to include objects that are in the memory cache.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="coalesced-spans" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>This linked list is mostly ignored in later processing, causing all but one
+<dl class="footnote brackets">
+<dt class="label" id="store-disk-array"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p><a class="reference external" href="https://issues.apache.org/jira/browse/TS-2020">Work is under way</a> on
+extending this to include objects that are in the memory cache.</p>
+</dd>
+<dt class="label" id="coalesced-spans"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>This linked list is mostly ignored in later processing, causing all but one
 file or directory storage units on the same device to be ignored. See
-<a class="reference external" href="https://issues.apache.org/jira/browse/TS-1869">TS-1869</a>.</td></tr>
-</tbody>
-</table>
+<a class="reference external" href="https://issues.apache.org/jira/browse/TS-1869">TS-1869</a>.</p>
+</dd>
+</dl>
 </div>
 </div>
 

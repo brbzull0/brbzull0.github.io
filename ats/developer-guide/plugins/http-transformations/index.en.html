@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -219,11 +219,11 @@
 <p>Transform plugins examine or transform HTTP message body content. For
 example, transform plugins can:</p>
 <ul class="simple">
-<li>Append text to HTML documents</li>
-<li>Compress images</li>
-<li>Do virus checking (on client <code class="docutils literal notranslate"><span class="pre">POST</span></code> data or server response data)</li>
-<li>Do content-based filtering (filter out HTML documents that contain
-certain terms or expressions)</li>
+<li><p>Append text to HTML documents</p></li>
+<li><p>Compress images</p></li>
+<li><p>Do virus checking (on client <code class="docutils literal notranslate"><span class="pre">POST</span></code> data or server response data)</p></li>
+<li><p>Do content-based filtering (filter out HTML documents that contain
+certain terms or expressions)</p></li>
 </ul>
 <p>This chapter explains how to write transform plugins. The following
 examples are discussed in detail:</p>
@@ -269,7 +269,7 @@ relationship between the transformation <code class="docutils literal notranslat
 <code class="docutils literal notranslate"><span class="pre">VIO</span></code>s as follows:</p>
 <div class="figure align-center" id="id2">
 <span id="transformationanditsvios"></span><img alt="A Transformation and its VIOs" src="../../../_images/vconnection.jpg" />
-<p class="caption"><span class="caption-text"><strong>A Transformation and its VIOs</strong></span></p>
+<p class="caption"><span class="caption-text"><strong>A Transformation and its VIOs</strong></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <p>Because the Traffic Server API places transformations directly in the
 response or request data stream, the transformation <code class="docutils literal notranslate"><span class="pre">VConnection</span></code> is
@@ -299,7 +299,7 @@ transformations output (write) data.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">VIO</span></code> or virtual IO is a description of an in progress IO
 operation. The <code class="docutils literal notranslate"><span class="pre">VIO</span></code> data structure is used by <code class="docutils literal notranslate"><span class="pre">VConnection</span></code> users
 to determine how much progress has been made on a particular IO
-operation, and to reenable an IO operation when it stalls due to buffer
+operation, and to re-enable an IO operation when it stalls due to buffer
 space. <code class="docutils literal notranslate"><span class="pre">VConnection</span></code> implementers use <code class="docutils literal notranslate"><span class="pre">VIO</span></code>s to determine the
 buffer for an IO operation, how much work to do on the IO operation, and
 which continuation to call back when progress on the IO operation is
@@ -340,8 +340,8 @@ modifies the IO buffer directly.</p>
 Although the transformation doesn’t provide data back to Traffic Server it can do anything else with the data, such as writing it
 to another output device or process. It must, however, consume all the data for the transaction. There are two primary use cases.</p>
 <ol class="arabic simple">
-<li>Tap in to the transaction to provide the data for external processing.</li>
-<li>Maintain the transaction.</li>
+<li><p>Tap in to the transaction to provide the data for external processing.</p></li>
+<li><p>Maintain the transaction.</p></li>
 </ol>
 <p>For the latter it is important to note that if all consumers of a transaction (primarily the user agent) shut down the transaction is also
 terminated, including the connection to the origin server. A data sink transform, unlike a standard transform, is considered to be a consumer

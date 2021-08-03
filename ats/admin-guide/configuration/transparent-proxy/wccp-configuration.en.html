@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -126,7 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -212,12 +212,12 @@ caches. It is available on most Cisco™ routers although it does not
 appear to be officially supported by Cisco. The primary benefits of WCCP
 are</p>
 <ul class="simple">
-<li>If already have a router that supports WCCP inline you do not
-have to change your network topology.</li>
-<li>WCCP fails open so that if the Traffic Server machine fails, it is
-bypassed and users continue to have Internet access.</li>
+<li><p>If already have a router that supports WCCP inline you do not
+have to change your network topology.</p></li>
+<li><p>WCCP fails open so that if the Traffic Server machine fails, it is
+bypassed and users continue to have Internet access.</p></li>
 </ul>
-<p>Use of WCCP only makes sense for client side transparency <a class="footnote-reference" href="#id5" id="id2">[1]</a>
+<p>Use of WCCP only makes sense for client side transparency <a class="footnote-reference brackets" href="#id5" id="id2">1</a>
 because if the clients are explicitly proxied by Traffic Server there’s
 no benefit to WCCP fail open, as the clients will continue to directly
 access the unresponsive Traffic Server host. It would be better to
@@ -246,22 +246,22 @@ roughly the same way as the standard transparency use.</p>
 <p>Finally Traffic Server itself must be configured for transparency and
 use of WCCP. The former is again very similar to the standard use, while
 WCCP configuration is specific to WCCP and uses a separate configuration
-file, referred to by the <a class="reference internal" href="../../files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file.</p>
+file, referred to by the <a class="reference internal" href="../../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file.</p>
 <p>The primary concern for configuration in which of three basic topologies
 are to be used.</p>
 <ul class="simple">
-<li>Dedicated – Traffic Server traffic goes over an interface that is
-not used for client nor origin server traffic.</li>
-<li>Shared – Traffic Server traffic shares an interface with client or
-server traffic.</li>
-<li>Inside Shared – Traffic Server and client traffic share an
-interface.</li>
-<li>Outside Shared – Traffic Server and
-origin server traffic share an interface.</li>
+<li><p>Dedicated – Traffic Server traffic goes over an interface that is
+not used for client nor origin server traffic.</p></li>
+<li><p>Shared – Traffic Server traffic shares an interface with client or
+server traffic.</p></li>
+<li><p>Inside Shared – Traffic Server and client traffic share an
+interface.</p></li>
+<li><p>Outside Shared – Traffic Server and
+origin server traffic share an interface.</p></li>
 </ul>
 <p>In general the dedicated topology is preferred. However, if the router
 has only two interfaces one of the shared topologies will be
-required <a class="footnote-reference" href="#id6" id="id3">[2]</a> Click the links above for more detailed configuration
+required <a class="footnote-reference brackets" href="#id6" id="id3">2</a> Click the links above for more detailed configuration
 information on a specific topology.</p>
 <div class="section" id="shared-interface-issues">
 <h3>Shared interface issues<a class="headerlink" href="#shared-interface-issues" title="Permalink to this headline">¶</a></h3>
@@ -275,7 +275,7 @@ the dedicated interface case. This enables the packets to be
 distinguished at layer 3. For this reason, layer 2 redirection cannot be
 used because the WCCP configuration cannot distinguish between packets
 returning from the origin server and packets returning from Traffic
-Server as they are distinguished only by layer 2 addressing <a class="footnote-reference" href="#id7" id="id4">[3]</a>.
+Server as they are distinguished only by layer 2 addressing <a class="footnote-reference brackets" href="#id7" id="id4">3</a>.
 Fortunately the GRE tunnel used for packet forwarding and return can be
 used as the simulated interface for Traffic Server.</p>
 </div>
@@ -298,33 +298,26 @@ interface because the tunnel interface uses that to compute its own MTU.</p>
 <div class="section" id="references">
 <h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><a class="reference external" href="http://www.cisco.com/en/US/docs/ios/12_2/configfun/command/reference/frf018.html">WCCP Router Configuration Commands - IOS
-12.2</a></li>
+<li><p><a class="reference external" href="http://www.cisco.com/en/US/docs/ios/12_2/configfun/command/reference/frf018.html">WCCP Router Configuration Commands - IOS
+12.2</a></p></li>
 </ul>
-<table class="docutils footnote" frame="void" id="id5" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Server side transparency should also be used, but it is not as
+<dl class="footnote brackets">
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p>Server side transparency should also be used, but it is not as
 significant. In its absence, however, origin servers may see the
 source address of connections suddenly change from the Traffic Server
 address to client addresses, which could cause problems. Further, the
 primary reason for not having server side transparency is to hide
-client addresses which is defeated if the Traffic Server host fails.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id6" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>If your router has only one interface, it’s hardly a <em>router</em>.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id7" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id4">[3]</a></td><td>This is not fundamentally impossible, as the packets are distinct in
-layer</td></tr>
-</tbody>
-</table>
+client addresses which is defeated if the Traffic Server host fails.</p>
+</dd>
+<dt class="label" id="id6"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>If your router has only one interface, it’s hardly a <em>router</em>.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id4">3</a></span></dt>
+<dd><p>This is not fundamentally impossible, as the packets are distinct in
+layer</p>
+</dd>
+</dl>
 </div>
 </div>
 

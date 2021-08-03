@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -206,16 +206,16 @@ for system processes and statistics.</p>
 </div>
 <div class="section" id="options">
 <h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
-<dl class="option">
-<dt id="cmdoption-traffic-top-s">
-<code class="descname">-s</code><code class="descclassname"> COUNT</code><a class="headerlink" href="#cmdoption-traffic-top-s" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_top-s">
+<span id="cmdoption-traffic-top-s"></span><code class="sig-name descname">-s</code><code class="sig-prename descclassname"> COUNT</code><a class="headerlink" href="#cmdoption-traffic_top-s" title="Permalink to this definition">¶</a></dt>
 <dd><p>Number of seconds in between each polling of the Traffic Server statistics API. The
 default is 5 seconds.</p>
 </dd></dl>
 
-<dl class="option">
-<dt id="cmdoption-traffic-top-arg-url-hostname-hostname-port">
-<code class="descname">URL|hostname|hostname:port</code><code class="descclassname"></code><a class="headerlink" href="#cmdoption-traffic-top-arg-url-hostname-hostname-port" title="Permalink to this definition">¶</a></dt>
+<dl class="std option">
+<dt id="cmdoption-traffic_top-arg-URL-hostname-hostname-port">
+<span id="cmdoption-traffic-top-arg-url-hostname-hostname-port"></span><code class="sig-name descname">URL|hostname|hostname:port</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_top-arg-URL-hostname-hostname-port" title="Permalink to this definition">¶</a></dt>
 <dd><p>Location at which the JSON output of Traffic Server statistics are accessible.</p>
 </dd></dl>
 
@@ -226,7 +226,7 @@ default is 5 seconds.</p>
 the <a class="reference internal" href="../../admin-guide/plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP plugin</span></a> and that the
 machine from which you run <strong class="program">traffic_top</strong> is able to access the HTTP(S)
 end point for the plugin.</p>
-<p>If, for example, you have the following entry in your <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> to
+<p>If, for example, you have the following entry in your <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> to
 enable the plugin:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span> <span class="n">statistics</span>
 </pre></div>
@@ -239,8 +239,8 @@ enable the plugin:</p>
 <p>The hostname, port, and path to the <a class="reference internal" href="../../admin-guide/plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP plugin</span></a> JSON output should be adjusted as necessary to
 match your environment.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">The statistics provided by Traffic Server (through <strong class="program">traffic_ctl</strong> and
+<p class="admonition-title">Important</p>
+<p>The statistics provided by Traffic Server (through <strong class="program">traffic_ctl</strong> and
 <a class="reference internal" href="../../admin-guide/plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a>) expose quite a bit about the inner
 workings of your Traffic Server cache. While consumers of the JSON statistics endpoint
 won’t be able to see or modify the raw contents of your cache, it is still
@@ -252,9 +252,9 @@ very strongly advised to limit access to this URL.</p>
 <p>Upon startup (and successful connection to the
 <a class="reference internal" href="../../admin-guide/plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a> endpoint), you will be presented with a
 curses interface that looks like:</p>
-<div class="figure" id="id15">
+<div class="figure align-default" id="id15">
 <img alt="Main interface for the traffic_top command line program." src="../../_images/traffic_top_tiny.png" />
-<p class="caption"><span class="caption-text">Main interface for the traffic_top command line program.</span></p>
+<p class="caption"><span class="caption-text">Main interface for the traffic_top command line program.</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
 </div>
 <p>Each area of the main interface is explained in the following sections.</p>
 <div class="section" id="cache-information">
@@ -305,8 +305,8 @@ against the origin and received a new object).</p>
 PURGE request).</p>
 <p>Statistic: <a class="reference internal" href="../../admin-guide/monitoring/statistics/core/cache.en.html#proxy-process-http-cache-deletes" title="records.config"><code class="xref ts ts-stat docutils literal notranslate"><span class="pre">proxy.process.http.cache_deletes</span></code></a>.</p>
 </div>
-<div class="section" id="read-activ">
-<h4>Read Activ<a class="headerlink" href="#read-activ" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="read-active">
+<h4>Read Active<a class="headerlink" href="#read-active" title="Permalink to this headline">¶</a></h4>
 <p>Current number of active cache reads.</p>
 <p>Statistic: <a class="reference internal" href="../../admin-guide/monitoring/statistics/core/cache.en.html#proxy-process-cache-read-active" title="records.config"><code class="xref ts ts-stat docutils literal notranslate"><span class="pre">proxy.process.cache.read.active</span></code></a>.</p>
 </div>
@@ -560,8 +560,8 @@ refer to <a class="reference internal" href="../http-status-codes.en.html#append
 <a class="reference internal" href="../../admin-guide/monitoring/statistics/core/http-response-code.en.html#proxy-process-http-404-responses" title="records.config"><code class="xref ts ts-stat docutils literal notranslate"><span class="pre">proxy.process.http.404_responses</span></code></a>,
 <a class="reference internal" href="../../admin-guide/monitoring/statistics/core/http-response-code.en.html#proxy-process-http-502-responses" title="records.config"><code class="xref ts ts-stat docutils literal notranslate"><span class="pre">proxy.process.http.502_responses</span></code></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Traffic Server also provides statistics for every other response code. The keen observer
+<p class="admonition-title">Note</p>
+<p>Traffic Server also provides statistics for every other response code. The keen observer
 will have hopefully already recognized the pattern in statistic names.</p>
 </div>
 </div>

@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -203,10 +203,10 @@ process is recommended.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>A system for git and building.</li>
-<li>A cryptographic key that has been signed by at least two other PMC members.
+<li><p>A system for git and building.</p></li>
+<li><p>A cryptographic key that has been signed by at least two other PMC members.
 This should be preferentially associated with your <code class="docutils literal notranslate"><span class="pre">apache.org</span></code> email
-address but that is not required.</li>
+address but that is not required.</p></li>
 </ul>
 </div>
 <div class="section" id="release-candidate">
@@ -232,17 +232,14 @@ for examples to use as a base.</p>
 <div class="section" id="build">
 <h2>Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h2>
 <ol class="arabic">
-<li><p class="first">Go to the top level source directory.</p>
-</li>
-<li><p class="first">Check the version in <code class="docutils literal notranslate"><span class="pre">configure.ac</span></code>. There are two values near the top that
+<li><p>Go to the top level source directory.</p></li>
+<li><p>Check the version in <code class="docutils literal notranslate"><span class="pre">configure.ac</span></code>. There are two values near the top that
 need to be set, <code class="docutils literal notranslate"><span class="pre">TS_VERSION_S</span></code> and <code class="docutils literal notranslate"><span class="pre">TS_VERSION_N</span></code>. These are the release
-version number in different encodings.</p>
-</li>
-<li><p class="first">Check the variable <code class="docutils literal notranslate"><span class="pre">RC</span></code> in the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code>. This should be
+version number in different encodings.</p></li>
+<li><p>Check the variable <code class="docutils literal notranslate"><span class="pre">RC</span></code> in the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code>. This should be
 the point release value. This needs to be changed for every release
-candidate. The first release candidate is <code class="docutils literal notranslate"><span class="pre">0</span></code> (zero).</p>
-</li>
-<li><p class="first">Execute the following commands to make the distribution files.</p>
+candidate. The first release candidate is <code class="docutils literal notranslate"><span class="pre">0</span></code> (zero).</p></li>
+<li><p>Execute the following commands to make the distribution files.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">autoreconf</span> <span class="o">-</span><span class="n">i</span>
 <span class="o">./</span><span class="n">configure</span>
 <span class="n">make</span> <span class="n">rel</span><span class="o">-</span><span class="n">candidate</span>
@@ -263,7 +260,7 @@ tag of the form <code class="docutils literal notranslate"><span class="pre">X.Y
 <div class="section" id="distribute">
 <h2>Distribute<a class="headerlink" href="#distribute" title="Permalink to this headline">¶</a></h2>
 <p>The release candidate files should be uploaded to some public storage. Your
-personal storage on <em>people.apach.org</em> is a reasonable location to use.</p>
+personal storage on <em>people.apache.org</em> is a reasonable location to use.</p>
 <p>Send the release candidate announcement to the <em>users</em> and <em>dev</em> mailing
 lists, noting that it is a release <em>candidate</em> and providing a link to the
 distribution files you uploaded. This announcement should also call for a vote
@@ -301,12 +298,12 @@ can access with</p>
 </pre></div>
 </div>
 <p>The files of interest are in the <code class="docutils literal notranslate"><span class="pre">content</span></code> directory.</p>
-<dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">index.html</span></code></dt>
-<dd>This is the front page. The places to edit here are any security
-announcements at the top and the “News” section.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">downloads.en.mdtext</span></code></dt>
-<dd>Update the downloads page to point to the new download objects.</dd>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">index.html</span></code></dt><dd><p>This is the front page. The places to edit here are any security
+announcements at the top and the “News” section.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">downloads.en.mdtext</span></code></dt><dd><p>Update the downloads page to point to the new download objects.</p>
+</dd>
 </dl>
 <p>After making changes, commit them and then run</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">publish</span><span class="o">.</span><span class="n">pl</span> <span class="n">trafficserver</span> <span class="o">&lt;</span><span class="n">apache</span><span class="o">-</span><span class="nb">id</span><span class="o">&gt;</span>
@@ -322,10 +319,10 @@ to the ASF announcement list, which must be done using an <code class="docutils 
 address.</p>
 <p>Finally, update various files after the release:</p>
 <ul class="simple">
-<li>The <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> file for master and for the release branch to include this version.</li>
-<li>The <code class="docutils literal notranslate"><span class="pre">CHANGES</span></code> file to have a header for the next version.</li>
-<li><code class="docutils literal notranslate"><span class="pre">configure.ac</span></code> to be set to the next version.</li>
-<li>In the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code> change <code class="docutils literal notranslate"><span class="pre">RC</span></code> to have the value <code class="docutils literal notranslate"><span class="pre">0</span></code>.</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> file for master and for the release branch to include this version.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">CHANGES</span></code> file to have a header for the next version.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">configure.ac</span></code> to be set to the next version.</p></li>
+<li><p>In the top level <code class="docutils literal notranslate"><span class="pre">Makefile.am</span></code> change <code class="docutils literal notranslate"><span class="pre">RC</span></code> to have the value <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p></li>
 </ul>
 </div>
 </div>

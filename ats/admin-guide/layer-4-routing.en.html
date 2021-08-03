@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -116,7 +116,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -210,7 +210,7 @@ examining the destination address in the client TCP packets. This is discussed i
 <span id="id2"></span><h2>SNI Routing<a class="headerlink" href="#sni-routing" title="Permalink to this headline">¶</a></h2>
 <p>Currently the only directly supported layer 4 routing (as of version 8.0) is SNI based routing. This
 imposes the requirement on the traffic that the inbound connection must be TLS.</p>
-<p>SNI routing is configured by <a class="reference internal" href="files/sni.yaml.en.html#std:configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a>.</p>
+<p>SNI routing is configured by <a class="reference internal" href="files/sni.yaml.en.html#std-configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a>.</p>
 <p>If SNI Routing is enabled the initial “<a class="reference external" href="https://tools.ietf.org/html/rfc5246#section-7.4.1.2">CLIENT HELLO</a>” data of an inbound TLS connection is
 examined to extract the “<a class="reference external" href="https://tools.ietf.org/html/rfc3546#section-3.1">SNI</a>” value. This is
 matched against the configuration data to select an action for the inbound connection. In this case
@@ -235,44 +235,44 @@ services.</p>
 <p>The basic set up is therefore</p>
 <div class="figure align-center" id="id3">
 <img alt="../_images/l4-example-cdn-layout.svg" src="../_images/l4-example-cdn-layout.svg" /><p class="caption"><span class="caption-text">A Client connects to an edge Traffic Server which forwards the connection to the internal Service.
-The Client then negotiates TLS with the Service.</span></p>
+The Client then negotiates TLS with the Service.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>For the example, let us define two services inside the corporate network of Example, Inc.
 <code class="docutils literal notranslate"><span class="pre">service-1</span></code> and <code class="docutils literal notranslate"><span class="pre">service-2</span></code>. <code class="docutils literal notranslate"><span class="pre">service-1</span></code> is on port 443 on host <code class="docutils literal notranslate"><span class="pre">app-server-29</span></code> while
 <code class="docutils literal notranslate"><span class="pre">service-2</span></code> is on port 4443 on host <code class="docutils literal notranslate"><span class="pre">app-server-56</span></code>. The SNI routing set up for this would be</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="41%" />
-<col width="59%" />
+<col style="width: 41%" />
+<col style="width: 59%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">SNI value</th>
-<th class="head">Destination</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>SNI value</p></th>
+<th class="head"><p>Destination</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>service-1.example.com</td>
-<td>app-server-29:443</td>
+<tbody>
+<tr class="row-even"><td><p>service-1.example.com</p></td>
+<td><p>app-server-29:443</p></td>
 </tr>
-<tr class="row-odd"><td>service-2.example.com</td>
-<td>app-server-56:4443</td>
+<tr class="row-odd"><td><p>service-2.example.com</p></td>
+<td><p>app-server-56:4443</p></td>
 </tr>
 </tbody>
 </table>
-<p>The <a class="reference internal" href="files/sni.yaml.en.html#std:configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a> contents would be</p>
-<div class="code yaml highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sni</span><span class="p">:</span>
-<span class="o">-</span> <span class="n">tunnel_route</span><span class="p">:</span> <span class="n">app</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="mi">29</span><span class="p">:</span><span class="mi">443</span>
-  <span class="n">fqdn</span><span class="p">:</span> <span class="n">service</span><span class="o">-</span><span class="mf">1.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<p>The <a class="reference internal" href="files/sni.yaml.en.html#std-configfile-sni.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">sni.yaml</span></code></a> contents would be</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">tunnel_route</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-server-29:443</span>
+  <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">service-1.example.com</span>
 
-<span class="o">-</span> <span class="n">tunnel_route</span><span class="p">:</span> <span class="n">app</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="mi">56</span><span class="p">:</span><span class="mi">4443</span>
-  <span class="n">fqdn</span><span class="p">:</span> <span class="n">service</span><span class="o">-</span><span class="mf">2.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+<span class="p p-Indicator">-</span> <span class="nt">tunnel_route</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">app-server-56:4443</span>
+  <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">service-2.example.com</span>
 </pre></div>
 </div>
-<p>In addition to this, in the <a class="reference internal" href="files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file, edit <code class="docutils literal notranslate"><span class="pre">connect_ports</span></code> like so:</p>
+<p>In addition to this, in the <a class="reference internal" href="files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file, edit <code class="docutils literal notranslate"><span class="pre">connect_ports</span></code> like so:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="files/records.config.en.html#proxy-config-http-connect-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_ports</span></code></a>: <code class="docutils literal notranslate"><span class="pre">443</span> <span class="pre">4443</span></code> to allow Traffic Server to connect
-to the destination port</li>
+<li><p><a class="reference internal" href="files/records.config.en.html#proxy-config-http-connect-ports" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_ports</span></code></a>: <code class="docutils literal notranslate"><span class="pre">443</span> <span class="pre">4443</span></code> to allow Traffic Server to connect
+to the destination port</p></li>
 </ul>
 </div></blockquote>
 <p>The sequence of network activity for a Client connecting to <code class="docutils literal notranslate"><span class="pre">service-2</span></code> is</p>
@@ -280,10 +280,10 @@ to the destination port</li>
 <img alt="../_images/l4-sni-routing-seq.svg" src="../_images/l4-sni-routing-seq.svg" /></div>
 <p>Note the destination for the outbound TCP connection and the HTTP <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> is the same. If this
 is a problem (which it will be in general) a plugin is needed to change the URL in the <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code>.
-In this case the proxy request is available in the <a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a> hook. This
+In this case the proxy request is available in the <a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a> hook. This
 cannot be done using remap because for a <code class="docutils literal notranslate"><span class="pre">CONNECT</span></code> there is no remap phase. Note that for a
 tunneled connection like this, the only transaction hooks that will be triggered are
-<a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a> and <a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TS_HTTP_TXN_CLOSE_HOOK" title="TS_HTTP_TXN_CLOSE_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_CLOSE_HOOK</span></code></a>. In addition, because Traffic Server
+<a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_TXN_START_HOOK" title="TS_HTTP_TXN_START_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_START_HOOK</span></code></a> and <a class="reference internal" href="../developer-guide/api/types/TSHttpHookID.en.html#c.TSHttpHookID.TS_HTTP_TXN_CLOSE_HOOK" title="TS_HTTP_TXN_CLOSE_HOOK"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_HTTP_TXN_CLOSE_HOOK</span></code></a>. In addition, because Traffic Server
 does not terminate (and therefore does not decrypt) the connection, it cannot be cached or served from
 cache.</p>
 </div>

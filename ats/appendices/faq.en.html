@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../_static/jquery.js"></script>
-        <script type="text/javascript" src="../_static/underscore.js"></script>
-        <script type="text/javascript" src="../_static/doctools.js"></script>
-        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -247,11 +247,11 @@ the request for the objects), and do not execute on the server.</p>
 <div class="section" id="what-is-recorded-by-the-cqtx-field-in-a-custom-log-file">
 <h2>What is recorded by the <code class="docutils literal notranslate"><span class="pre">cqtx</span></code> field in a custom log file?<a class="headerlink" href="#what-is-recorded-by-the-cqtx-field-in-a-custom-log-file" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>In <em>forward proxy mode</em>, the <code class="docutils literal notranslate"><span class="pre">cqtx</span></code> field records the complete client
-request in the log file (for example, <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">http://www.company.com</span> <span class="pre">HTTP/1.0</span></code>).</li>
-<li>In <em>reverse proxy mode</em>, the <code class="docutils literal notranslate"><span class="pre">cqtx</span></code> field records the hostname or IP
+<li><p>In <em>forward proxy mode</em>, the <code class="docutils literal notranslate"><span class="pre">cqtx</span></code> field records the complete client
+request in the log file (for example, <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">http://www.company.com</span> <span class="pre">HTTP/1.0</span></code>).</p></li>
+<li><p>In <em>reverse proxy mode</em>, the <code class="docutils literal notranslate"><span class="pre">cqtx</span></code> field records the hostname or IP
 address of the origin server because Traffic Server first remaps the
-request as per map rules in the <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</li>
+request as per map rules in the <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.</p></li>
 </ul>
 </div>
 <div class="section" id="does-traffic-server-refresh-entries-in-its-host-database-after-a-certain-period-of-time-if-they-have-not-been-used">
@@ -278,13 +278,13 @@ for any image in an HTML document (i.e., with the full URL in the
 <div class="section" id="can-traffic-server-run-in-forward-proxy-and-reverse-proxy-modes-at-the-same-time">
 <h2>Can Traffic Server run in forward proxy and reverse proxy modes at the same time?<a class="headerlink" href="#can-traffic-server-run-in-forward-proxy-and-reverse-proxy-modes-at-the-same-time" title="Permalink to this headline">¶</a></h2>
 <p>Yes. When you enable reverse proxy mode, Traffic Server remaps incoming
-requests according to the map rules in <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std:configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>. All
+requests according to the map rules in <a class="reference internal" href="../admin-guide/files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>. All
 other requests that do not match a map rule are served in forward
 proxy mode.</p>
 <p>If you want to run in reverse proxy only mode (wherein Traffic Server
 does not serve requests that fail to match a map rule), then you must
 set the configuration variable <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-url-remap-remap-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.remap_required</span></code></a>
-to <code class="docutils literal notranslate"><span class="pre">1</span></code> in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+to <code class="docutils literal notranslate"><span class="pre">1</span></code> in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 </div>
 <div class="section" id="how-do-i-enable-forward-proxy-mode">
 <h2>How do I enable forward proxy mode<a class="headerlink" href="#how-do-i-enable-forward-proxy-mode" title="Permalink to this headline">¶</a></h2>
@@ -296,37 +296,37 @@ to <code class="docutils literal notranslate"><span class="pre">1</span></code> 
 <p>The Via header is an optional HTTP header added by Traffic Server and other HTTP proxies. If a request goes through multiple proxies, each one appends its Via header content to the end of the existing Via header. Via header content is for general information and diagnostic use only and should not be used as a programmatic interface to Traffic Server. The header is cached by each intermediary with the object as received from its downstream node. Thus, the last node in the list to report a cache hit is the end of the transaction for that specific request. Nodes reported earlier were from a previous transaction.</p>
 <p>The form of the Via header is</p>
 <p>Via: &lt;protocol&gt; &lt;proxyname&gt; (&lt;product/version&gt; [&lt;via-codes&gt;])</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>&lt;protocol&gt;</td>
-<td>the scheme and version of the HTTP request</td>
+<tbody>
+<tr class="row-even"><td><p>&lt;protocol&gt;</p></td>
+<td><p>the scheme and version of the HTTP request</p></td>
 </tr>
-<tr class="row-odd"><td>&lt;proxyname&gt;</td>
-<td>the configured name of the proxy server</td>
+<tr class="row-odd"><td><p>&lt;proxyname&gt;</p></td>
+<td><p>the configured name of the proxy server</p></td>
 </tr>
-<tr class="row-even"><td>&lt;product/version&gt;</td>
-<td>the Traffic Server product name and version</td>
+<tr class="row-even"><td><p>&lt;product/version&gt;</p></td>
+<td><p>the Traffic Server product name and version</p></td>
 </tr>
-<tr class="row-odd"><td>&lt;via-codes&gt;</td>
-<td>a string of alphabetic codes presenting status information about the proxy handling of the HTTP request</td>
+<tr class="row-odd"><td><p>&lt;via-codes&gt;</p></td>
+<td><p>a string of alphabetic codes presenting status information about the proxy handling of the HTTP request</p></td>
 </tr>
 </tbody>
 </table>
 <p>For example:
 Via: HTTP/1.0 storm (Traffic-Server/4.0.0   [cMs f ])</p>
 <ul class="simple">
-<li>[u lH o  f  pS eN]     cache hit</li>
-<li>[u lM oS fF pS eN]     cache miss</li>
-<li>[uN l oS f  pS eN]     no-cache origin server fetch</li>
+<li><p>[u lH o  f  pS eN]     cache hit</p></li>
+<li><p>[u lM oS fF pS eN]     cache miss</p></li>
+<li><p>[uN l oS f  pS eN]     no-cache origin server fetch</p></li>
 </ul>
 <p>The short status code shows the cache-lookup, server-info and cache-fill information as listed in the full status code description below. The long status code list provided in older, commercial versions of Traffic Server can be restored by setting the verbose_via_str config variable.
 The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op&gt;] where &lt;request results&gt; represents status information about the results of the client request and &lt;proxy op&gt; represent some information about the proxy operations performed during request processing. The full via-code status format is</p>
@@ -334,31 +334,31 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="u-client-info">
 <h3>u client-info<a class="headerlink" href="#u-client-info" title="Permalink to this headline">¶</a></h3>
 <p>Request headers received from client. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>C</td>
-<td>cookie</td>
+<tbody>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>cookie</p></td>
 </tr>
-<tr class="row-odd"><td>E</td>
-<td>error in request</td>
+<tr class="row-odd"><td><p>E</p></td>
+<td><p>error in request</p></td>
 </tr>
-<tr class="row-even"><td>I</td>
-<td>If Modified Since (IMS)</td>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>If Modified Since (IMS)</p></td>
 </tr>
-<tr class="row-odd"><td>N</td>
-<td>no-cache</td>
+<tr class="row-odd"><td><p>N</p></td>
+<td><p>no-cache</p></td>
 </tr>
-<tr class="row-even"><td>S</td>
-<td>simple request (not conditional)</td>
+<tr class="row-even"><td><p>S</p></td>
+<td><p>simple request (not conditional)</p></td>
 </tr>
 </tbody>
 </table>
@@ -366,34 +366,34 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="c-cache-lookup">
 <h3>c cache-lookup<a class="headerlink" href="#c-cache-lookup" title="Permalink to this headline">¶</a></h3>
 <p>Result of Traffic Server cache lookup for URL. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="11%" />
-<col width="89%" />
+<col style="width: 11%" />
+<col style="width: 89%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>in cache, not acceptable (a cache “MISS”)</td>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>in cache, not acceptable (a cache “MISS”)</p></td>
 </tr>
-<tr class="row-odd"><td>H</td>
-<td>in cache, fresh (a cache “HIT”)</td>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>in cache, fresh (a cache “HIT”)</p></td>
 </tr>
-<tr class="row-even"><td>M</td>
-<td>miss (a cache “MISS”)</td>
+<tr class="row-even"><td><p>M</p></td>
+<td><p>miss (a cache “MISS”)</p></td>
 </tr>
-<tr class="row-odd"><td>R</td>
-<td>in cache, fresh RAM hit (a cache “HIT”)</td>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>in cache, fresh RAM hit (a cache “HIT”)</p></td>
 </tr>
-<tr class="row-even"><td>S</td>
-<td>in cache, stale (a cache “MISS”)</td>
+<tr class="row-even"><td><p>S</p></td>
+<td><p>in cache, stale (a cache “MISS”)</p></td>
 </tr>
-<tr class="row-odd"><td>blank</td>
-<td>no cache lookup performed</td>
+<tr class="row-odd"><td><p>blank</p></td>
+<td><p>no cache lookup performed</p></td>
 </tr>
 </tbody>
 </table>
@@ -401,28 +401,28 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="s-server-info">
 <h3>s server-info<a class="headerlink" href="#s-server-info" title="Permalink to this headline">¶</a></h3>
 <p>Response information received from origin server. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col style="width: 16%" />
+<col style="width: 84%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>E</td>
-<td>error in response</td>
+<tbody>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>error in response</p></td>
 </tr>
-<tr class="row-odd"><td>N</td>
-<td>not-modified</td>
+<tr class="row-odd"><td><p>N</p></td>
+<td><p>not-modified</p></td>
 </tr>
-<tr class="row-even"><td>S</td>
-<td>served</td>
+<tr class="row-even"><td><p>S</p></td>
+<td><p>served</p></td>
 </tr>
-<tr class="row-odd"><td>blank</td>
-<td>no server connection needed</td>
+<tr class="row-odd"><td><p>blank</p></td>
+<td><p>no server connection needed</p></td>
 </tr>
 </tbody>
 </table>
@@ -430,28 +430,28 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="f-cache-fill">
 <h3>f cache-fill<a class="headerlink" href="#f-cache-fill" title="Permalink to this headline">¶</a></h3>
 <p>Result of document write to cache. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="15%" />
-<col width="85%" />
+<col style="width: 15%" />
+<col style="width: 85%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>D</td>
-<td>cached copy deleted</td>
+<tbody>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>cached copy deleted</p></td>
 </tr>
-<tr class="row-odd"><td>U</td>
-<td>updated old cache copy</td>
+<tr class="row-odd"><td><p>U</p></td>
+<td><p>updated old cache copy</p></td>
 </tr>
-<tr class="row-even"><td>W</td>
-<td>written into cache (new copy)</td>
+<tr class="row-even"><td><p>W</p></td>
+<td><p>written into cache (new copy)</p></td>
 </tr>
-<tr class="row-odd"><td>blank</td>
-<td>no cache write performed</td>
+<tr class="row-odd"><td><p>blank</p></td>
+<td><p>no cache write performed</p></td>
 </tr>
 </tbody>
 </table>
@@ -459,25 +459,25 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="p-proxy-info">
 <h3>p proxy-info<a class="headerlink" href="#p-proxy-info" title="Permalink to this headline">¶</a></h3>
 <p>Proxy operation result. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col style="width: 16%" />
+<col style="width: 84%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>N</td>
-<td>not-modified</td>
+<tbody>
+<tr class="row-even"><td><p>N</p></td>
+<td><p>not-modified</p></td>
 </tr>
-<tr class="row-odd"><td>R</td>
-<td>origin server revalidated</td>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>origin server revalidated</p></td>
 </tr>
-<tr class="row-even"><td>S</td>
-<td>served</td>
+<tr class="row-even"><td><p>S</p></td>
+<td><p>served</p></td>
 </tr>
 </tbody>
 </table>
@@ -485,49 +485,49 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="e-error-codes">
 <h3>e error-codes<a class="headerlink" href="#e-error-codes" title="Permalink to this headline">¶</a></h3>
 <p>Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="16%" />
-<col width="84%" />
+<col style="width: 16%" />
+<col style="width: 84%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>authorization failure</td>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>authorization failure</p></td>
 </tr>
-<tr class="row-odd"><td>C</td>
-<td>connection to server failed</td>
+<tr class="row-odd"><td><p>C</p></td>
+<td><p>connection to server failed</p></td>
 </tr>
-<tr class="row-even"><td>D</td>
-<td>dns failure</td>
+<tr class="row-even"><td><p>D</p></td>
+<td><p>dns failure</p></td>
 </tr>
-<tr class="row-odd"><td>L</td>
-<td>loop detected</td>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>loop detected</p></td>
 </tr>
-<tr class="row-even"><td>F</td>
-<td>request forbidden</td>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>request forbidden</p></td>
 </tr>
-<tr class="row-odd"><td>H</td>
-<td>header syntax unacceptable</td>
+<tr class="row-odd"><td><p>H</p></td>
+<td><p>header syntax unacceptable</p></td>
 </tr>
-<tr class="row-even"><td>N</td>
-<td>no error</td>
+<tr class="row-even"><td><p>N</p></td>
+<td><p>no error</p></td>
 </tr>
-<tr class="row-odd"><td>R</td>
-<td>cache read error</td>
+<tr class="row-odd"><td><p>R</p></td>
+<td><p>cache read error</p></td>
 </tr>
-<tr class="row-even"><td>M</td>
-<td>moved temporarily</td>
+<tr class="row-even"><td><p>M</p></td>
+<td><p>moved temporarily</p></td>
 </tr>
-<tr class="row-odd"><td>S</td>
-<td>server related error</td>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>server related error</p></td>
 </tr>
-<tr class="row-even"><td>T</td>
-<td>connection timed out</td>
+<tr class="row-even"><td><p>T</p></td>
+<td><p>connection timed out</p></td>
 </tr>
 </tbody>
 </table>
@@ -536,37 +536,37 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="t-tunnel-info">
 <h3>t tunnel-info<a class="headerlink" href="#t-tunnel-info" title="Permalink to this headline">¶</a></h3>
 <p>Proxy-only service operation. Value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="7%" />
-<col width="93%" />
+<col style="width: 7%" />
+<col style="width: 93%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>A</td>
-<td>tunnel authorization</td>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>tunnel authorization</p></td>
 </tr>
-<tr class="row-odd"><td>F</td>
-<td>tunneling due to a header field (such as presence of If-Range header)</td>
+<tr class="row-odd"><td><p>F</p></td>
+<td><p>tunneling due to a header field (such as presence of If-Range header)</p></td>
 </tr>
-<tr class="row-even"><td>M</td>
-<td>tunneling due to a method (e.g. CONNECT)</td>
+<tr class="row-even"><td><p>M</p></td>
+<td><p>tunneling due to a method (e.g. CONNECT)</p></td>
 </tr>
-<tr class="row-odd"><td>N</td>
-<td>tunneling due to no forward</td>
+<tr class="row-odd"><td><p>N</p></td>
+<td><p>tunneling due to no forward</p></td>
 </tr>
-<tr class="row-even"><td>O</td>
-<td>tunneling because cache is turned off</td>
+<tr class="row-even"><td><p>O</p></td>
+<td><p>tunneling because cache is turned off</p></td>
 </tr>
-<tr class="row-odd"><td>U</td>
-<td>tunneling because of url (url suggests dynamic content)</td>
+<tr class="row-odd"><td><p>U</p></td>
+<td><p>tunneling because of url (url suggests dynamic content)</p></td>
 </tr>
-<tr class="row-even"><td>blank</td>
-<td>no tunneling</td>
+<tr class="row-even"><td><p>blank</p></td>
+<td><p>no tunneling</p></td>
 </tr>
 </tbody>
 </table>
@@ -575,75 +575,75 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <h3>c cache-type and cache-lookup<a class="headerlink" href="#c-cache-type-and-cache-lookup" title="Permalink to this headline">¶</a></h3>
 <p>cache result values (2 characters)</p>
 <p>cache-type character value is one of</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="15%" />
-<col width="85%" />
+<col style="width: 15%" />
+<col style="width: 85%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>C</td>
-<td>cache</td>
+<tbody>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>cache</p></td>
 </tr>
-<tr class="row-odd"><td>L</td>
-<td>cluster, (not used)</td>
+<tr class="row-odd"><td><p>L</p></td>
+<td><p>cluster, (not used)</p></td>
 </tr>
-<tr class="row-even"><td>P</td>
-<td>parent</td>
+<tr class="row-even"><td><p>P</p></td>
+<td><p>parent</p></td>
 </tr>
-<tr class="row-odd"><td>S</td>
-<td>server</td>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>server</p></td>
 </tr>
-<tr class="row-even"><td>blank</td>
-<td>cache miss or no cache lookup</td>
+<tr class="row-even"><td><p>blank</p></td>
+<td><p>cache miss or no cache lookup</p></td>
 </tr>
 </tbody>
 </table>
 <p>cache-lookup-result character value is one of:</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="6%" />
-<col width="94%" />
+<col style="width: 6%" />
+<col style="width: 94%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>C</td>
-<td>cache hit, but config forces revalidate</td>
+<tbody>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>cache hit, but config forces revalidate</p></td>
 </tr>
-<tr class="row-odd"><td>D</td>
-<td>cache hit, but method forces revalidated (e.g. ftp, not anonymous)</td>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>cache hit, but method forces revalidated (e.g. ftp, not anonymous)</p></td>
 </tr>
-<tr class="row-even"><td>H</td>
-<td>cache hit</td>
+<tr class="row-even"><td><p>H</p></td>
+<td><p>cache hit</p></td>
 </tr>
-<tr class="row-odd"><td>I</td>
-<td>conditional miss (client sent conditional, fresh in cache, returned 412)</td>
+<tr class="row-odd"><td><p>I</p></td>
+<td><p>conditional miss (client sent conditional, fresh in cache, returned 412)</p></td>
 </tr>
-<tr class="row-even"><td>K</td>
-<td>cookie miss</td>
+<tr class="row-even"><td><p>K</p></td>
+<td><p>cookie miss</p></td>
 </tr>
-<tr class="row-odd"><td>M</td>
-<td>cache miss (url not in cache)</td>
+<tr class="row-odd"><td><p>M</p></td>
+<td><p>cache miss (url not in cache)</p></td>
 </tr>
-<tr class="row-even"><td>N</td>
-<td>conditional hit (client sent conditional, doc fresh in cache, returned 304)</td>
+<tr class="row-even"><td><p>N</p></td>
+<td><p>conditional hit (client sent conditional, doc fresh in cache, returned 304)</p></td>
 </tr>
-<tr class="row-odd"><td>S</td>
-<td>cache hit, but expired</td>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>cache hit, but expired</p></td>
 </tr>
-<tr class="row-even"><td>U</td>
-<td>cache hit, but client forces revalidate (e.g. Pragma: no-cache)</td>
+<tr class="row-even"><td><p>U</p></td>
+<td><p>cache hit, but client forces revalidate (e.g. Pragma: no-cache)</p></td>
 </tr>
-<tr class="row-odd"><td>blank</td>
-<td>no cache lookup</td>
+<tr class="row-odd"><td><p>blank</p></td>
+<td><p>no cache lookup</p></td>
 </tr>
 </tbody>
 </table>
@@ -651,25 +651,25 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="p-parent-proxy">
 <h3>p parent-proxy<a class="headerlink" href="#p-parent-proxy" title="Permalink to this headline">¶</a></h3>
 <p>parent proxy connection status</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>F</td>
-<td>connection open failed</td>
+<tbody>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>connection open failed</p></td>
 </tr>
-<tr class="row-odd"><td>S</td>
-<td>connection opened successfully</td>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>connection opened successfully</p></td>
 </tr>
-<tr class="row-even"><td>blank</td>
-<td>no parent proxy</td>
+<tr class="row-even"><td><p>blank</p></td>
+<td><p>no parent proxy</p></td>
 </tr>
 </tbody>
 </table>
@@ -677,25 +677,25 @@ The character strings in the via-code show [&lt;request results&gt;:&lt;proxy op
 <div class="section" id="s-server-conn-info">
 <h3>s server-conn-info<a class="headerlink" href="#s-server-conn-info" title="Permalink to this headline">¶</a></h3>
 <p>origin server connection status</p>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="14%" />
-<col width="86%" />
+<col style="width: 14%" />
+<col style="width: 86%" />
 </colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Value</th>
-<th class="head">Meaning</th>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Meaning</p></th>
 </tr>
 </thead>
-<tbody valign="top">
-<tr class="row-even"><td>F</td>
-<td>connection open failed</td>
+<tbody>
+<tr class="row-even"><td><p>F</p></td>
+<td><p>connection open failed</p></td>
 </tr>
-<tr class="row-odd"><td>S</td>
-<td>connection opened successfully</td>
+<tr class="row-odd"><td><p>S</p></td>
+<td><p>connection opened successfully</p></td>
 </tr>
-<tr class="row-even"><td>blank</td>
-<td>no server connection</td>
+<tr class="row-even"><td><p>blank</p></td>
+<td><p>no server connection</p></td>
 </tr>
 </tbody>
 </table>
@@ -716,24 +716,23 @@ a light load. A heavier load yields a more accurate statistic.</p>
 <div class="section" id="you-are-unable-to-execute-traffic-control-commands">
 <h2>You are unable to execute Traffic Control commands<a class="headerlink" href="#you-are-unable-to-execute-traffic-control-commands" title="Permalink to this headline">¶</a></h2>
 <p><strong class="program">traffic_ctl</strong> commands do not execute under the following conditions:</p>
-<dl class="docutils">
-<dt><strong>When the traffic_manager process is not running</strong></dt>
-<dd><p class="first">Check to see if the <strong class="program">traffic_manager</strong> process is running by entering the
+<dl>
+<dt><strong>When the traffic_manager process is not running</strong></dt><dd><p>Check to see if the <strong class="program">traffic_manager</strong> process is running by entering the
 following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pgrep</span> <span class="o">-</span><span class="n">l</span> <span class="n">traffic_manager</span>
 </pre></div>
 </div>
 <p>If the <strong class="program">traffic_manager</strong> process is not running, then enter the
 following command from the Traffic Server <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory to start it:</p>
-<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">traffic_manager</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">traffic_manager</span>
 </pre></div>
 </div>
 </dd>
 </dl>
-<dl class="docutils">
-<dt><strong>When you are not executing the command from $TSHome/bin</strong></dt>
-<dd>If the Traffic Server <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory is not in your path, then prepend the
-Traffic Control commands with <code class="docutils literal notranslate"><span class="pre">./</span></code> (for example, <code class="docutils literal notranslate"><span class="pre">./traffic_ctl</span> <span class="pre">-h</span></code>).</dd>
+<dl class="simple">
+<dt><strong>When you are not executing the command from $TSHome/bin</strong></dt><dd><p>If the Traffic Server <code class="docutils literal notranslate"><span class="pre">bin</span></code> directory is not in your path, then prepend the
+Traffic Control commands with <code class="docutils literal notranslate"><span class="pre">./</span></code> (for example, <code class="docutils literal notranslate"><span class="pre">./traffic_ctl</span> <span class="pre">-h</span></code>).</p>
+</dd>
 </dl>
 <p><strong>When multiple Traffic Server installations are present and you are not
 executing the Traffic Control command from the active Traffic Server path
@@ -764,19 +763,19 @@ with the following message:</p>
 <p>Make sure the system is configured correctly and that Traffic Server can
 read the name resolution file:</p>
 <ul class="simple">
-<li>Check if the server can resolve DNS lookups by issuing the nslookup
-command (for example, <code class="docutils literal notranslate"><span class="pre">nslookup</span> <span class="pre">www.myhost.com</span></code>).</li>
-<li>Check if the <em class="manpage">resolv.conf(5)</em> file contains valid IP addresses
-for your DNS servers.</li>
-<li>On some systems, if the <em class="manpage">resolv.conf(5)</em> file is unreadable or
+<li><p>Check if the server can resolve DNS lookups by issuing the nslookup
+command (for example, <code class="docutils literal notranslate"><span class="pre">nslookup</span> <span class="pre">www.myhost.com</span></code>).</p></li>
+<li><p>Check if the <em class="manpage">resolv.conf(5)</em> file contains valid IP addresses
+for your DNS servers.</p></li>
+<li><p>On some systems, if the <em class="manpage">resolv.conf(5)</em> file is unreadable or
 has no name server entry, then the operating system uses
 <code class="docutils literal notranslate"><span class="pre">localhost</span></code> as a name server. Traffic Server, however, does not use
 this convention. If you want to use <code class="docutils literal notranslate"><span class="pre">localhost</span></code> as a name server,
 then you must add a name server entry for <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> or
-<code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> in the <em class="manpage">resolv.conf(5)</em> file.</li>
-<li>Check that the Traffic Server user account has permission to read the
+<code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> in the <em class="manpage">resolv.conf(5)</em> file.</p></li>
+<li><p>Check that the Traffic Server user account has permission to read the
 <em class="manpage">resolv.conf(5)</em> file. If it does not, then change the file
-permissions to <code class="docutils literal notranslate"><span class="pre">rw-r--r--</span></code> (<code class="docutils literal notranslate"><span class="pre">644</span></code>).</li>
+permissions to <code class="docutils literal notranslate"><span class="pre">rw-r--r--</span></code> (<code class="docutils literal notranslate"><span class="pre">644</span></code>).</p></li>
 </ul>
 </div>
 <div class="section" id="maximum-document-size-exceeded-message-in-the-system-log-file">
@@ -801,18 +800,18 @@ exist.</p>
 <p>If Traffic Server is not idle, and you still do not see log files being
 generated, verify the following:</p>
 <ul class="simple">
-<li>Make sure you’re looking in the correct directory. By default, Traffic
+<li><p>Make sure you’re looking in the correct directory. By default, Traffic
 Server creates log files in the <code class="docutils literal notranslate"><span class="pre">logs</span></code> directory. This can be modified
-by changing <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-log-logfile-dir" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logfile_dir</span></code></a> in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Check that the log directory has read/write permissions for the Traffic
+by changing <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-log-logfile-dir" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logfile_dir</span></code></a> in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Check that the log directory has read/write permissions for the Traffic
 Server user account. If the log directory does not have the correct
 permissions, then the <strong class="program">traffic_server</strong> process will be unable to
-open or create log files.</li>
-<li>Check that logging is enabled by checking the value of the
-<a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-log-logging-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logging_enabled</span></code></a> variable in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Check that a log format is enabled. In <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, select
+open or create log files.</p></li>
+<li><p>Check that logging is enabled by checking the value of the
+<a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-log-logging-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.logging_enabled</span></code></a> variable in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Check that a log format is enabled. In <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>, select
 the standard or custom format by editing variables in the Logging Config
-section.</li>
+section.</p></li>
 </ul>
 </div>
 <div class="section" id="traffic-server-shows-an-error-indicating-too-many-network-connections">
@@ -826,24 +825,24 @@ occurs, Traffic Server continues processing all existing connections but
 will not accept new client connection requests until the connection
 count falls below the limit.</p>
 <p>Connection throttle events can occur under the following conditions:</p>
-<dl class="docutils">
-<dt>Connection Spike</dt>
-<dd>Too many client requests (enough to exceed your configured maximum connections)
+<dl class="simple">
+<dt>Connection Spike</dt><dd><p>Too many client requests (enough to exceed your configured maximum connections)
 all reach Traffic Server at the same time. Such events are typically transient
 and require no corrective action if your connection limits are already
-configured appropriately for your Traffic Server and origin resources.</dd>
-<dt>Service Overload</dt>
-<dd>Client requests are arriving at a rate faster than that which Traffic
+configured appropriately for your Traffic Server and origin resources.</p>
+</dd>
+<dt>Service Overload</dt><dd><p>Client requests are arriving at a rate faster than that which Traffic
 Server can service them. This may indicate network problems between Traffic
 Server and origin servers or that Traffic Server may require more memory, CPU,
-cache disks, or other resources to handle the client load.</dd>
+cache disks, or other resources to handle the client load.</p>
+</dd>
 </dl>
 <p>If necessary, you can adjust the maximum number of connections supported
 by Traffic Server by editing <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-net-connections-throttle" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.net.connections_throttle</span></code></a> in
-<a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
+<a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Do not increase the connection throttle limit unless the system has adequate
+<p class="admonition-title">Note</p>
+<p>Do not increase the connection throttle limit unless the system has adequate
 memory to handle the client connections required. A system with limited RAM
 might need a throttle limit lower than the default value. Do not set this
 variable below the minimum value of <code class="docutils literal notranslate"><span class="pre">100</span></code>.</p>
@@ -882,7 +881,7 @@ allow the config to be pre-checked for possible service disruptions due to synta
 origin servers. If you cannot avoid such timeouts by otherwise addressing the
 performance on your origin servers, you may adjust the origin connection timeout
 in Traffic Server by changing <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_timeout</span></code></a>
-in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> to a larger value.</p>
+in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> to a larger value.</p>
 </div>
 </div>
 

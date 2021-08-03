@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -221,12 +221,12 @@
 <p>This section describes how to write, compile, configure, and run a
 simple Traffic Server plugin. You’ll follow the steps below:</p>
 <ol class="arabic simple">
-<li>Make sure that your plugin source code contains an <a class="reference internal" href="../../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a>
-initialization function.</li>
-<li>Compile your plugin source code, creating a shared library.</li>
-<li>Add an entry to <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</li>
-<li>Add the path to your plugin shared library into <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</li>
-<li>Restart Traffic Server.</li>
+<li><p>Make sure that your plugin source code contains an <a class="reference internal" href="../../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a>
+initialization function.</p></li>
+<li><p>Compile your plugin source code, creating a shared library.</p></li>
+<li><p>Add an entry to <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p></li>
+<li><p>Add the path to your plugin shared library into <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>.</p></li>
+<li><p>Restart Traffic Server.</p></li>
 </ol>
 <div class="section" id="compile-your-plugin">
 <h2>Compile Your Plugin<a class="headerlink" href="#compile-your-plugin" title="Permalink to this headline">¶</a></h2>
@@ -252,8 +252,8 @@ could use the following commands to build a shared library:</p>
 <div class="section" id="update-the-plugin-configuration-file">
 <h2>Update the plugin configuration file<a class="headerlink" href="#update-the-plugin-configuration-file" title="Permalink to this headline">¶</a></h2>
 <p>Your next step is to tell Traffic Server about the plugin by adding the
-following line to <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> file. Since our simple plugin
-does not require any arguments, the following <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> will
+following line to <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> file. Since our simple plugin
+does not require any arguments, the following <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> will
 work:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># a simple plugin.config for hello_world</span>
 <span class="n">hello_world</span><span class="o">.</span><span class="n">so</span>
@@ -261,13 +261,13 @@ work:</p>
 </div>
 <p>Traffic Server can accommodate multiple plugins. If several plugin
 functions are triggered by the same event, then Traffic Server invokes
-each plugin’s function in the order each was defined in <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std:configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
+each plugin’s function in the order each was defined in <a class="reference internal" href="../../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
 </div>
 <div class="section" id="specify-the-plugin-s-location">
 <span id="specify-the-plugins-location"></span><h2>Specify the Plugin’s Location<a class="headerlink" href="#specify-the-plugin-s-location" title="Permalink to this headline">¶</a></h2>
 <p>All plugins must be located in the directory specified by the
 configuration variable <code class="docutils literal notranslate"><span class="pre">proxy.config.plugin.plugin_dir</span></code>, which is
-located in the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file. The directory can be specified
+located in the <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file. The directory can be specified
 as an absolute or relative path.</p>
 <p>If a relative path is used, then the starting directory will be the
 Traffic Server installation directory as specified in
@@ -293,10 +293,10 @@ plugin.</p>
 </pre></div>
 </div>
 <div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">In the example above, Traffic Server notes are directed to the
+<p class="admonition-title">Note</p>
+<p>In the example above, Traffic Server notes are directed to the
 console by specifying <code class="docutils literal notranslate"><span class="pre">E</span></code> for <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-diags-output-note" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.output.note</span></code></a> in
-<a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std:configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. The second note shows Traffic Server attempting to
+<a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>. The second note shows Traffic Server attempting to
 load the <code class="docutils literal notranslate"><span class="pre">hello_world</span></code> plugin. The third line of Traffic Server output
 is from your plugin.</p>
 </div>

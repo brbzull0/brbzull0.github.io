@@ -24,10 +24,10 @@
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
@@ -130,7 +130,7 @@
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -206,7 +206,7 @@
             
   <div class="section" id="ssl-multicert-config">
 <h1>ssl_multicert.config<a class="headerlink" href="#ssl-multicert-config" title="Permalink to this headline">¶</a></h1>
-<p id="std:configfile-ssl_multicert.config">The <a class="reference internal" href="#std:configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> file lets you configure Traffic
+<p id="std-configfile-ssl_multicert.config"><span id="std:configfile-ssl_multicert.config"></span>The <a class="reference internal" href="#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> file lets you configure Traffic
 Server to use multiple SSL server certificates to terminate the SSL
 sessions. If you have a Traffic Server system with more than one
 IP address assigned to it, then you can assign a different SSL
@@ -218,16 +218,15 @@ will be presented for connections requesting any of the hostnames
 found in the certificate. Wildcard names are supported, but only
 of the form <cite>*.domain.com</cite>, ie. where <cite>*</cite> is the leftmost domain
 component.</p>
-<p>Changes to <a class="reference internal" href="#std:configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> can be applied to a running
-Traffic Server using <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic-ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>.</p>
+<p>Changes to <a class="reference internal" href="#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> can be applied to a running
+Traffic Server using <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a>.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
-<p>Each <a class="reference internal" href="#std:configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> line consists of a sequence of
+<p>Each <a class="reference internal" href="#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> line consists of a sequence of
 <cite>key=value</cite> fields that specify how Traffic Server should use a
 particular SSL certificate.</p>
-<dl class="docutils">
-<dt>ssl_cert_name=FILENAME[,FILENAME …]</dt>
-<dd><p class="first">The name of the file containing the TLS certificate. <em>FILENAME</em>
+<dl>
+<dt>ssl_cert_name=FILENAME[,FILENAME …]</dt><dd><p>The name of the file containing the TLS certificate. <em>FILENAME</em>
 is located relative to the directory specified by the
 <a class="reference internal" href="records.config.en.html#proxy-config-ssl-server-cert-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.cert.path</span></code></a> configuration variable.
 It may also include the intermediate CA certificates, sorted from
@@ -245,10 +244,9 @@ subjects and alternate names. The first certificate is used to
 to match the client’s SNI request.</p>
 <p>You can also configure multiple leaf certificates in a same chain
 with OpenSSL 1.0.1.</p>
-<p class="last">This is the only field that is required to be present.</p>
+<p>This is the only field that is required to be present.</p>
 </dd>
-<dt>dest_ip=ADDRESS (optional)</dt>
-<dd>The IP (v4 or v6) address that the certificate should be presented
+<dt>dest_ip=ADDRESS (optional)</dt><dd><p>The IP (v4 or v6) address that the certificate should be presented
 on. This is now only used as a fallback in the case that the TLS
 ServerNameIndication extension is not supported. If <em>ADDRESS</em> is
 <cite>*</cite>, the corresponding certificate will be used as the global
@@ -256,48 +254,48 @@ default fallback if no other match can be made. The address may
 contain a port specifier, in which case the corresponding certificate
 will only match for connections accepted on the specified port.
 IPv6 addresses must be enclosed by square brackets if they have
-a port, eg, [::1]:80. Care should be taken to make each ADDRESS unique.</dd>
-<dt>ssl_key_name=FILENAME (optional)</dt>
-<dd>The name of the file containing the private key for this certificate.
+a port, eg, [::1]:80. Care should be taken to make each ADDRESS unique.</p>
+</dd>
+<dt>ssl_key_name=FILENAME (optional)</dt><dd><p>The name of the file containing the private key for this certificate.
 If the key is contained in the certificate file, this field can
 be omitted, otherwise <em>FILENAME</em> is resolved relative to the
-<a class="reference internal" href="records.config.en.html#proxy-config-ssl-server-private-key-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.private_key.path</span></code></a> configuration variable.</dd>
-<dt>ssl_ca_name=FILENAME (optional)</dt>
-<dd>If the certificate is issued by an authority that is not in the
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-server-private-key-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.server.private_key.path</span></code></a> configuration variable.</p>
+</dd>
+<dt>ssl_ca_name=FILENAME (optional)</dt><dd><p>If the certificate is issued by an authority that is not in the
 system CA bundle, additional certificates may be needed to validate
 the certificate chain. <em>FILENAME</em> is resolved relative to the
-<a class="reference internal" href="records.config.en.html#proxy-config-ssl-ca-cert-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.CA.cert.path</span></code></a> configuration variable.</dd>
-<dt>ssl_ocsp_name=FILENAME (optional)</dt>
-<dd>The name of the file containing the prefetched OCSP stapling response
+<a class="reference internal" href="records.config.en.html#proxy-config-ssl-ca-cert-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.CA.cert.path</span></code></a> configuration variable.</p>
+</dd>
+<dt>ssl_ocsp_name=FILENAME (optional)</dt><dd><p>The name of the file containing the prefetched OCSP stapling response
 for this certificate. This field can be omitted to let trafficserver
 fetch OCSP responses dynamically. Otherwise, when included, the administrator is
 responsible for updating the file’s content. <em>FILENAME</em> is resolved
 relative to the <a class="reference internal" href="records.config.en.html#proxy-config-ssl-ocsp-response-path" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.ocsp.response.path</span></code></a>
-configuration variable.</dd>
-<dt>ssl_ticket_enabled=1|0 (optional)</dt>
-<dd>Enable <a class="reference external" href="https://tools.ietf.org/html/rfc5077.html">RFC 5077</a> stateless TLS session tickets. To support this,
+configuration variable.</p>
+</dd>
+<dt>ssl_ticket_enabled=1|0 (optional)</dt><dd><p>Enable <a class="reference external" href="https://tools.ietf.org/html/rfc5077.html">RFC 5077</a> stateless TLS session tickets. To support this,
 OpenSSL should be upgraded to version 0.9.8f or higher. This
-option must be set to <cite>0</cite> to disable session ticket support.</dd>
-<dt>ssl_ticket_number=INTEGER (optional)</dt>
-<dd>Specifies the number of TLSv1.3 session tickets that are issued.
-This defaults to 2 (the OpenSSL default)</dd>
-<dt>ssl_key_dialog=builtin|”exec:/path/to/program [args]” (optional)</dt>
-<dd><p class="first">Method used to provide a pass phrase for encrypted private keys.  If the
+option must be set to <cite>0</cite> to disable session ticket support.</p>
+</dd>
+<dt>ssl_ticket_number=INTEGER (optional)</dt><dd><p>Specifies the number of TLSv1.3 session tickets that are issued.
+This defaults to 2 (the OpenSSL default)</p>
+</dd>
+<dt>ssl_key_dialog=builtin|”exec:/path/to/program [args]” (optional)</dt><dd><p>Method used to provide a pass phrase for encrypted private keys.  If the
 pass phrase is incorrect, SSL negotiation for this dest_ip will fail for
 clients who attempt to connect.
 Two options are supported: builtin and exec:</p>
-<blockquote class="last">
-<div><dl class="docutils">
-<dt><code class="docutils literal notranslate"><span class="pre">builtin</span></code> - Requests pass phrase via stdin/stdout. User will be</dt>
-<dd>provided the ssl_cert_name and be prompted for the pass phrase.
-Useful for debugging.</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">exec:</span></code> - Executes program /path/to/program and passes args, if</dt>
-<dd>specified, to the program and reads the output from stdout for
+<blockquote>
+<div><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">builtin</span></code> - Requests pass phrase via stdin/stdout. User will be</dt><dd><p>provided the ssl_cert_name and be prompted for the pass phrase.
+Useful for debugging.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">exec:</span></code> - Executes program /path/to/program and passes args, if</dt><dd><p>specified, to the program and reads the output from stdout for
 the pass phrase.  If args are provided then the entire exec: string
 must be quoted with “” (see examples).  Arguments with white space
 are supported by single quoting (‘).  The intent is that this
 program runs a security check to ensure that the system is not
-compromised by an attacker before providing the pass phrase.</dd>
+compromised by an attacker before providing the pass phrase.</p>
+</dd>
 </dl>
 </div></blockquote>
 </dd>
