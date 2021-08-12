@@ -2,41 +2,44 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Plugins &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="AWS S3 Authentication plugin" href="s3_auth.en.html" />
@@ -84,6 +87,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -149,8 +153,10 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
@@ -168,7 +174,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -179,6 +184,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -213,11 +219,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -226,7 +234,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/admin-guide/plugins/index.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -316,7 +324,7 @@ $ make
 </div>
 <div class="toctree-wrapper compound">
 </div>
-<dl class="simple">
+<dl>
 <dt><a class="reference internal" href="access_control.en.html"><span class="doc">Access Control</span></a></dt><dd><p>Access control plugin that handles various access control use-cases.</p>
 </dd>
 <dt><a class="reference internal" href="certifier.en.html"><span class="doc">Certifier</span></a></dt><dd><p>Manages and/or generates certificates for incoming HTTPS requests.</p>
@@ -355,12 +363,22 @@ experimental upstreams.</p>
 </dd>
 <dt><a class="reference internal" href="prefetch.en.html"><span class="doc">Prefetch</span></a></dt><dd><p>Pre-fetch objects based on the requested URL path pattern.</p>
 </dd>
+<dt><a class="reference internal" href="parent_select.en.html"><span class="doc">Parent Select</span></a></dt><dd><p>This remap plugin allows selection of parent proxies or origins during requests. This
+provides the same functionality as the core <a class="reference internal" href="../files/parent.config.en.html#std-configfile-parent.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">parent.config</span></code></a> and <a class="reference internal" href="../files/strategies.yaml.en.html#std-configfile-strategies.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">strategies.yaml</span></code></a> config files.</p>
+</dd>
 <dt><a class="reference internal" href="rate_limit.en.html"><span class="doc">Rate Limit</span></a></dt><dd><p>Simple transaction rate limiting.</p>
 </dd>
 <dt><a class="reference internal" href="remap_purge.en.html"><span class="doc">Remap Purge</span></a></dt><dd><p>This remap plugin allows the administrator to easily setup remotely
 controlled <code class="docutils literal notranslate"><span class="pre">PURGE</span></code> for the content of an entire remap rule.</p>
 </dd>
-<dt><a class="reference internal" href="url_sig.en.html"><span class="doc">Signed URLs</span></a></dt><dd><p>Adds support for verifying URL signatures for incoming requests to either deny or redirect access.</p>
+<dt><a class="reference internal" href="uri_signing.en.html"><span class="doc">URI Signing</span></a></dt><dd><p>Adds support for verifying URL signatures for incoming requests to either deny or redirect access,
+implementing the IETF URI Signing draft RFC.</p>
+</dd>
+<dt><a class="reference internal" href="url_sig.en.html"><span class="doc">Legacy Signed URLs</span></a></dt><dd><p>Adds support for verifying URL signatures for incoming requests to either deny or redirect access.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>URL Sig is old and unlikely to be standardized. Prefer URI Signing.</p>
+</div>
 </dd>
 <dt><a class="reference internal" href="slice.en.html"><span class="doc">Slice</span></a></dt><dd><p>Slice full file or range based requests into deterministic chunks, allowing large files to be
 spread across multiple cache stripes. Allows arbitrary range requests to be satisfied by stitching
@@ -385,29 +403,29 @@ these chunks together.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="s3_auth.en.html" class="btn btn-neutral float-right" title="AWS S3 Authentication plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../storage/index.en.html" class="btn btn-neutral float-left" title="Cache Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="s3_auth.en.html" class="btn btn-neutral float-right" title="AWS S3 Authentication plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../storage/index.en.html" class="btn btn-neutral float-left" title="Cache Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, dev@trafficserver.apache.org
+        &#169; Copyright 2021, dev@trafficserver.apache.org.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -415,7 +433,6 @@ these chunks together.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

@@ -2,41 +2,44 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Threads and Event Processing &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Cache Architecture" href="cache-architecture/index.en.html" />
@@ -84,6 +87,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -125,7 +129,6 @@
 <li class="toctree-l2"><a class="reference internal" href="design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="testing/index.en.html">Testing Traffic Server</a></li>
-<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../appendices/index.en.html">Appendices</a></li>
@@ -134,6 +137,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -168,11 +172,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html">Docs</a> &raquo;</li>
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -181,7 +187,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../_sources/developer-guide/threads-and-events.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -263,41 +269,41 @@ during thread initialization.</p>
 <h2>Types<a class="headerlink" href="#types" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp type">
 <dt id="_CPPv49EventType">
-<span id="_CPPv39EventType"></span><span id="_CPPv29EventType"></span><span id="EventType"></span><em class="property">type </em><code class="sig-name descname">EventType</code><a class="headerlink" href="#_CPPv49EventType" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv39EventType"></span><span id="_CPPv29EventType"></span><span id="EventType"></span><em class="property"><span class="pre">type</span> </em><code class="sig-name descname"><span class="pre">EventType</span></code><a class="headerlink" href="#_CPPv49EventType" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A thread classification value that represents the type of events the thread is expected to process.</p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt id="_CPPv47ET_CALL">
-<span id="_CPPv37ET_CALL"></span><span id="_CPPv27ET_CALL"></span><span id="ET_CALL__EventType"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <code class="sig-name descname">ET_CALL</code><a class="headerlink" href="#_CPPv47ET_CALL" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37ET_CALL"></span><span id="_CPPv27ET_CALL"></span><span id="ET_CALL__EventType"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <code class="sig-name descname"><span class="pre">ET_CALL</span></code><a class="headerlink" href="#_CPPv47ET_CALL" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A predefined <a class="reference internal" href="#_CPPv49EventType" title="EventType"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EventType</span></code></a> which always exists. This is deprecated, use <a class="reference internal" href="#_CPPv46ET_NET" title="ET_NET"><code class="xref cpp cpp-var docutils literal notranslate"><span class="pre">ET_NET</span></code></a> instead.</p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt id="_CPPv46ET_NET">
-<span id="_CPPv36ET_NET"></span><span id="_CPPv26ET_NET"></span><span id="ET_NET__EventType"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <code class="sig-name descname">ET_NET</code><a class="headerlink" href="#_CPPv46ET_NET" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36ET_NET"></span><span id="_CPPv26ET_NET"></span><span id="ET_NET__EventType"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <code class="sig-name descname"><span class="pre">ET_NET</span></code><a class="headerlink" href="#_CPPv46ET_NET" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A synonym for <a class="reference internal" href="#_CPPv47ET_CALL" title="ET_CALL"><code class="xref cpp cpp-var docutils literal notranslate"><span class="pre">ET_CALL</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp var">
 <dt id="_CPPv414eventProcessor">
-<span id="_CPPv314eventProcessor"></span><span id="_CPPv214eventProcessor"></span><span id="eventProcessor__EventProcessor"></span><a class="reference internal" href="#_CPPv414EventProcessor" title="EventProcessor">EventProcessor</a> <code class="sig-name descname">eventProcessor</code><a class="headerlink" href="#_CPPv414eventProcessor" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314eventProcessor"></span><span id="_CPPv214eventProcessor"></span><span id="eventProcessor__EventProcessor"></span><a class="reference internal" href="#_CPPv414EventProcessor" title="EventProcessor"><span class="pre">EventProcessor</span></a> <code class="sig-name descname"><span class="pre">eventProcessor</span></code><a class="headerlink" href="#_CPPv414eventProcessor" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The global single instance of <a class="reference internal" href="#_CPPv414EventProcessor" title="EventProcessor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EventProcessor</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv414ThreadFunction">
-<span id="_CPPv314ThreadFunction"></span><span id="_CPPv214ThreadFunction"></span><span id="ThreadFunction"></span><em class="property">type </em><code class="sig-name descname">ThreadFunction</code><a class="headerlink" href="#_CPPv414ThreadFunction" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314ThreadFunction"></span><span id="_CPPv214ThreadFunction"></span><span id="ThreadFunction"></span><em class="property"><span class="pre">type</span> </em><code class="sig-name descname"><span class="pre">ThreadFunction</span></code><a class="headerlink" href="#_CPPv414ThreadFunction" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The type of function invoked by <a class="reference internal" href="#_CPPv4N6Thread5startEPKcPv6size_tRK14ThreadFunction" title="Thread::start"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Thread::start()</span></code></a>. It is a function returning <code class="code docutils literal notranslate"><span class="pre">void*</span></code> and taking no arguments.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv46Thread">
-<span id="_CPPv36Thread"></span><span id="_CPPv26Thread"></span><span id="Thread"></span><em class="property">class </em><code class="sig-name descname">Thread</code><a class="headerlink" href="#_CPPv46Thread" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36Thread"></span><span id="_CPPv26Thread"></span><span id="Thread"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Thread</span></code><a class="headerlink" href="#_CPPv46Thread" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Wrapper for system level thread.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N6Thread5startEPKcPv6size_tRK14ThreadFunction">
-<span id="_CPPv3N6Thread5startEPKcPv6size_tRK14ThreadFunction"></span><span id="_CPPv2N6Thread5startEPKcPv6size_tRK14ThreadFunction"></span><span id="Thread::start__cCP.voidP.s.ThreadFunctionCR"></span><code class="sig-name descname">start</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, void *<em>stack</em>, <a class="reference internal" href="api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>stacksize</em>, <a class="reference internal" href="#_CPPv414ThreadFunction" title="ThreadFunction">ThreadFunction</a> <em class="property">const</em> &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Thread5startEPKcPv6size_tRK14ThreadFunction" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N6Thread5startEPKcPv6size_tRK14ThreadFunction"></span><span id="_CPPv2N6Thread5startEPKcPv6size_tRK14ThreadFunction"></span><span id="Thread::start__cCP.voidP.s.ThreadFunctionCR"></span><code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">name</span></em>, <span class="pre">void</span> <span class="pre">*</span><em><span class="pre">stack</span></em>, <a class="reference internal" href="api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">stacksize</span></em>, <a class="reference internal" href="#_CPPv414ThreadFunction" title="ThreadFunction"><span class="pre">ThreadFunction</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">f</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Thread5startEPKcPv6size_tRK14ThreadFunction" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Start the underlying thread. It is given the name <em>name</em>. If <em>stack</em> is
 <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> then a stack is allocated for it of size <em>stacksize</em>. Once the thread is
 started, <em>f</em> is invoked in the context of the thread if non <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>, otherwise
@@ -308,7 +314,7 @@ termination.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4N6Thread7executeEv">
-<span id="_CPPv3N6Thread7executeEv"></span><span id="_CPPv2N6Thread7executeEv"></span><span id="Thread::execute"></span>void <code class="sig-name descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Thread7executeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N6Thread7executeEv"></span><span id="_CPPv2N6Thread7executeEv"></span><span id="Thread::execute"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">execute</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Thread7executeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A pure virtual method that must be overridden in a subclass.</p>
 </dd></dl>
 
@@ -316,17 +322,17 @@ termination.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv47EThread">
-<span id="_CPPv37EThread"></span><span id="_CPPv27EThread"></span><span id="EThread"></span><em class="property">class </em><code class="sig-name descname">EThread</code><a class="headerlink" href="#_CPPv47EThread" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37EThread"></span><span id="_CPPv27EThread"></span><span id="EThread"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">EThread</span></code><a class="headerlink" href="#_CPPv47EThread" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Event processing thread.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N7EThread17registerEventTypeEPKc">
-<span id="_CPPv3N7EThread17registerEventTypeEPKc"></span><span id="_CPPv2N7EThread17registerEventTypeEPKc"></span><span id="EThread::registerEventType__cCP"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <code class="sig-name descname">registerEventType</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7EThread17registerEventTypeEPKc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7EThread17registerEventTypeEPKc"></span><span id="_CPPv2N7EThread17registerEventTypeEPKc"></span><span id="EThread::registerEventType__cCP"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <code class="sig-name descname"><span class="pre">registerEventType</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7EThread17registerEventTypeEPKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Register an event type by name. This reserves an event type index which is returned as <a class="reference internal" href="#_CPPv49EventType" title="EventType"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">EventType</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7EThread7executeEv">
-<span id="_CPPv3N7EThread7executeEv"></span><span id="_CPPv2N7EThread7executeEv"></span><span id="EThread::execute"></span>void <code class="sig-name descname">execute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7EThread7executeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7EThread7executeEv"></span><span id="_CPPv2N7EThread7executeEv"></span><span id="EThread::execute"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">execute</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7EThread7executeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Call the start continuation, if any. If a regular (not dedicated) thread, continuously process the event queue.</p>
 </dd></dl>
 
@@ -334,16 +340,16 @@ termination.</p>
 
 <dl class="cpp enum">
 <dt id="_CPPv410ThreadType">
-<span id="_CPPv310ThreadType"></span><span id="_CPPv210ThreadType"></span><em class="property">enum </em><code class="sig-name descname">ThreadType</code><a class="headerlink" href="#_CPPv410ThreadType" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv310ThreadType"></span><span id="_CPPv210ThreadType"></span><em class="property"><span class="pre">enum</span> </em><code class="sig-name descname"><span class="pre">ThreadType</span></code><a class="headerlink" href="#_CPPv410ThreadType" title="Permalink to this definition">¶</a><br /></dt>
 <dd><dl class="cpp enumerator">
 <dt id="_CPPv4N10ThreadType9DEDICATEDE">
-<span id="_CPPv3N10ThreadType9DEDICATEDE"></span><span id="_CPPv2N10ThreadType9DEDICATEDE"></span><em class="property">enumerator </em><code class="sig-name descname">DEDICATED</code><a class="headerlink" href="#_CPPv4N10ThreadType9DEDICATEDE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10ThreadType9DEDICATEDE"></span><span id="_CPPv2N10ThreadType9DEDICATEDE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">DEDICATED</span></code><a class="headerlink" href="#_CPPv4N10ThreadType9DEDICATEDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A thread which executes only the start continuation and then exits.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N10ThreadType7REGULARE">
-<span id="_CPPv3N10ThreadType7REGULARE"></span><span id="_CPPv2N10ThreadType7REGULARE"></span><em class="property">enumerator </em><code class="sig-name descname">REGULAR</code><a class="headerlink" href="#_CPPv4N10ThreadType7REGULARE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10ThreadType7REGULARE"></span><span id="_CPPv2N10ThreadType7REGULARE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">REGULAR</span></code><a class="headerlink" href="#_CPPv4N10ThreadType7REGULARE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A thread which executes the start continuation and then processes its event queue.</p>
 </dd></dl>
 
@@ -351,7 +357,7 @@ termination.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv412Continuation">
-<span id="_CPPv312Continuation"></span><span id="_CPPv212Continuation"></span><span id="Continuation"></span><em class="property">class </em><code class="sig-name descname">Continuation</code><a class="headerlink" href="#_CPPv412Continuation" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv312Continuation"></span><span id="_CPPv212Continuation"></span><span id="Continuation"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Continuation</span></code><a class="headerlink" href="#_CPPv412Continuation" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A future computation. A continuation has a handler which is a class method with a
 specific signature. A continuation is invoked by calling its handler. A future computation can be
 referenced by an <a class="reference internal" href="#_CPPv46Action" title="Action"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Action</span></code></a> instance. This is used primarily to allow the future work to be
@@ -360,34 +366,34 @@ canceled.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv46Action">
-<span id="_CPPv36Action"></span><span id="_CPPv26Action"></span><span id="Action"></span><em class="property">class </em><code class="sig-name descname">Action</code><a class="headerlink" href="#_CPPv46Action" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv36Action"></span><span id="_CPPv26Action"></span><span id="Action"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Action</span></code><a class="headerlink" href="#_CPPv46Action" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reference to a future computation for a <a class="reference internal" href="#_CPPv412Continuation" title="Continuation"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Continuation</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv45Event">
-<span id="_CPPv35Event"></span><span id="_CPPv25Event"></span><span id="Event"></span><em class="property">class </em><code class="sig-name descname">Event</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv46Action" title="Action">Action</a><a class="headerlink" href="#_CPPv45Event" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35Event"></span><span id="_CPPv25Event"></span><span id="Event"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Event</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <a class="reference internal" href="#_CPPv46Action" title="Action"><span class="pre">Action</span></a><a class="headerlink" href="#_CPPv45Event" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reference to code to dispatch. Note that an <a class="reference internal" href="#_CPPv45Event" title="Event"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Event</span></code></a> is a type of <a class="reference internal" href="#_CPPv46Action" title="Action"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Action</span></code></a>. This class combines the future computational reference of <a class="reference internal" href="#_CPPv46Action" title="Action"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Action</span></code></a></p>
 </dd></dl>
 
 <dl class="cpp type">
 <dt id="_CPPv419ThreadSpawnFunction">
-<span id="_CPPv319ThreadSpawnFunction"></span><span id="_CPPv219ThreadSpawnFunction"></span><span id="ThreadSpawnFunction"></span><em class="property">type </em><code class="sig-name descname">ThreadSpawnFunction</code><a class="headerlink" href="#_CPPv419ThreadSpawnFunction" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv319ThreadSpawnFunction"></span><span id="_CPPv219ThreadSpawnFunction"></span><span id="ThreadSpawnFunction"></span><em class="property"><span class="pre">type</span> </em><code class="sig-name descname"><span class="pre">ThreadSpawnFunction</span></code><a class="headerlink" href="#_CPPv419ThreadSpawnFunction" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A function that takes a single argument of pointer to <a class="reference internal" href="#_CPPv47EThread" title="EThread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EThread</span></code></a> and returns <code class="code docutils literal notranslate"><span class="pre">void</span></code>. The argument will be the <a class="reference internal" href="#_CPPv47EThread" title="EThread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EThread</span></code></a> in which the function is executing.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv414EventProcessor">
-<span id="_CPPv314EventProcessor"></span><span id="_CPPv214EventProcessor"></span><span id="EventProcessor"></span><em class="property">class </em><code class="sig-name descname">EventProcessor</code><a class="headerlink" href="#_CPPv414EventProcessor" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314EventProcessor"></span><span id="_CPPv214EventProcessor"></span><span id="EventProcessor"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">EventProcessor</span></code><a class="headerlink" href="#_CPPv414EventProcessor" title="Permalink to this definition">¶</a><br /></dt>
 <dd><dl class="cpp function">
 <dt id="_CPPv4N14EventProcessor19register_event_typeEPKc">
-<span id="_CPPv3N14EventProcessor19register_event_typeEPKc"></span><span id="_CPPv2N14EventProcessor19register_event_typeEPKc"></span><span id="EventProcessor::register_event_type__cCP"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <code class="sig-name descname">register_event_type</code><span class="sig-paren">(</span>char <em class="property">const</em> *<em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor19register_event_typeEPKc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14EventProcessor19register_event_typeEPKc"></span><span id="_CPPv2N14EventProcessor19register_event_typeEPKc"></span><span id="EventProcessor::register_event_type__cCP"></span><a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <code class="sig-name descname"><span class="pre">register_event_type</span></code><span class="sig-paren">(</span><span class="pre">char</span> <em class="property"><span class="pre">const</span></em> <span class="pre">*</span><em><span class="pre">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor19register_event_typeEPKc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Register an event type with the name <em>name</em>. The unique type index is returned.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv">
-<span id="_CPPv3N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv"></span><span id="_CPPv2N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv"></span><span id="EventProcessor::schedule_spawn__ContinuationP.EventType.i.voidP"></span><a class="reference internal" href="#_CPPv45Event" title="Event">Event</a> *<code class="sig-name descname">schedule_spawn</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412Continuation" title="Continuation">Continuation</a> *<em>c</em>, <a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <em>ev_type</em>, int <em>event</em> = <a class="reference internal" href="api/types/TSEvent.en.html#_CPPv415EVENT_IMMEDIATE" title="EVENT_IMMEDIATE">EVENT_IMMEDIATE</a>, void *<em>cookie</em> = nullptr<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv"></span><span id="_CPPv2N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv"></span><span id="EventProcessor::schedule_spawn__ContinuationP.EventType.i.voidP"></span><a class="reference internal" href="#_CPPv45Event" title="Event"><span class="pre">Event</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">schedule_spawn</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412Continuation" title="Continuation"><span class="pre">Continuation</span></a> <span class="pre">*</span><em><span class="pre">c</span></em>, <a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <em><span class="pre">ev_type</span></em>, <span class="pre">int</span> <em><span class="pre">event</span></em> <span class="pre">=</span> <a class="reference internal" href="api/types/TSEvent.en.html#_CPPv415EVENT_IMMEDIATE" title="EVENT_IMMEDIATE"><span class="pre">EVENT_IMMEDIATE</span></a>, <span class="pre">void</span> <span class="pre">*</span><em><span class="pre">cookie</span></em> <span class="pre">=</span> <span class="pre">nullptr</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor14schedule_spawnEP12Continuation9EventTypeiPv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>When the <a class="reference internal" href="#_CPPv414EventProcessor" title="EventProcessor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EventProcessor</span></code></a> starts a thread of type <em>ev_type</em>, <em>c</em> will be
 called before any events are dispatched by the thread. The handler for <em>c</em> will be called
 with an event code of <em>event</em> and data pointer of <em>cookie</em>.</p>
@@ -395,7 +401,7 @@ with an event code of <em>event</em> and data pointer of <em>cookie</em>.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType">
-<span id="_CPPv3N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType"></span><span id="_CPPv2N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType"></span><a class="reference internal" href="#_CPPv45Event" title="Event">Event</a> *<code class="sig-name descname">schedule_spawn</code><span class="sig-paren">(</span>void (*<em>f</em>)<span class="sig-paren">(</span><a class="reference internal" href="#_CPPv47EThread" title="EThread">EThread</a>*<span class="sig-paren">)</span>, <a class="reference internal" href="#_CPPv49EventType" title="EventType">EventType</a> <em>ev_type</em>, <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType"></span><span id="_CPPv2N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType"></span><a class="reference internal" href="#_CPPv45Event" title="Event"><span class="pre">Event</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">schedule_spawn</span></code><span class="sig-paren">(</span><span class="pre">void</span> <span class="pre">(</span><span class="pre">*</span><em><span class="pre">f</span></em><span class="pre">)</span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv47EThread" title="EThread"><span class="pre">EThread</span></a><span class="pre">*</span><span class="sig-paren">)</span>, <a class="reference internal" href="#_CPPv49EventType" title="EventType"><span class="pre">EventType</span></a> <em><span class="pre">ev_type</span></em>, <span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14EventProcessor14schedule_spawnEPFvP7EThreadE9EventType" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>When the <a class="reference internal" href="#_CPPv414EventProcessor" title="EventProcessor"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EventProcessor</span></code></a> starts a thread of type <em>ev_type</em> the function <em>f</em>
 will be called with a pointer to the <a class="reference internal" href="#_CPPv47EThread" title="EThread"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">EThread</span></code></a> instance which is starting.</p>
 </dd></dl>
@@ -410,29 +416,29 @@ will be called with a pointer to the <a class="reference internal" href="#_CPPv4
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="cache-architecture/index.en.html" class="btn btn-neutral float-right" title="Cache Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="debugging/memory-leaks.en.html" class="btn btn-neutral float-left" title="Memory Leaks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="cache-architecture/index.en.html" class="btn btn-neutral float-right" title="Cache Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="debugging/memory-leaks.en.html" class="btn btn-neutral float-left" title="Memory Leaks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, dev@trafficserver.apache.org
+        &#169; Copyright 2021, dev@trafficserver.apache.org.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -440,7 +446,6 @@ will be called with a pointer to the <a class="reference internal" href="#_CPPv4
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

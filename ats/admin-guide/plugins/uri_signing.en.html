@@ -1,0 +1,548 @@
+
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>URI Signing Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Signed URL Plugin" href="url_sig.en.html" />
+    <link rel="prev" title="Rate Limit Plugin" href="rate_limit.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>URI Signing Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/admin-guide/plugins/uri_signing.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="uri-signing-plugin">
+<span id="admin-plugins-uri-signing"></span><h1>URI Signing Plugin<a class="headerlink" href="#uri-signing-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This remap plugin implements the draft URI Signing protocol documented <a class="reference external" href="https://tools.ietf.org/html/draft-ietf-cdni-uri-signing-21">here</a>.</p>
+<p>It takes a single argument: the name of a config file that contains key information.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Take care in ordering the plugins. In general, this plugin
+should be first on the remap line. This is for two reasons. First, if no valid
+token is present, it is probably not useful to continue processing the request
+in future plugins.  Second, and more importantly, the signature should be
+verified <em>before</em> any other plugins modify the request. If another plugin drops
+or modifies the query string, the token might be missing entirely by the time
+this plugin gets the URI.</p>
+</div>
+<div class="section" id="config">
+<h2>Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="keys">
+<h3>Keys<a class="headerlink" href="#keys" title="Permalink to this headline">¶</a></h3>
+<p>The config file should be a JSON object that maps issuer names to JWK-sets.
+Exactly one of these JWK-sets must have an additional member indicating the
+renewal key.</p>
+<div class="highlight-JSON notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;Kabletown URI Authority&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;renewal_kid&quot;</span><span class="p">:</span> <span class="s2">&quot;Second Key&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;First Key&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;oct&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;k&quot;</span><span class="p">:</span> <span class="s2">&quot;Kh_RkUMj-fzbD37qBnDf_3e_RvQ3RP9PaSmVEpE24AM&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;Second Key&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;kty&quot;</span><span class="p">:</span> <span class="s2">&quot;oct&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;k&quot;</span><span class="p">:</span> <span class="s2">&quot;fZBpDBNbk2GqhwoB_DGBAsBxqQZVix04rIoLJ7p_RlE&quot;</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If there is not precisely one renewal key, the plugin will not load.</p>
+<p>Although the <code class="docutils literal notranslate"><span class="pre">kid</span></code> and <code class="docutils literal notranslate"><span class="pre">alg</span></code> parameters are optional in JWKs generally, both
+members must be present in keys used for URI signing.</p>
+</div>
+<div class="section" id="auth-directives">
+<h3>Auth Directives<a class="headerlink" href="#auth-directives" title="Permalink to this headline">¶</a></h3>
+<p>It’s occasionally useful to allow un-signed access to specific paths. To
+that end, the <code class="docutils literal notranslate"><span class="pre">auth_directives</span></code> parameter is supported. It can be used
+like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+  &quot;Kabletown URI Authority&quot;: {
+    &quot;renewal_kid&quot;: &quot;Second Key&quot;,
+    &quot;auth_directives&quot;: [
+      { auth: &quot;allow&quot;, uri: &quot;uri-regex:.*crossdomain.xml&quot; },
+      { auth: &quot;deny&quot;,  uri: &quot;uri-regex:https?://[^/]*/public/secret.xml.*&quot; },
+      { auth: &quot;allow&quot;, uri: &quot;uri-regex:https?://[^/]*/public/.*&quot; },
+      { auth: &quot;allow&quot;, uri: &quot;uri-regex:.*favicon.ico&quot; }
+    ]
+    &quot;keys&quot;: [
+      ⋮
+    ]
+}
+</pre></div>
+</div>
+<p>Each of the <code class="docutils literal notranslate"><span class="pre">auth_directives</span></code> will be evaluated in order for each url
+that does not have a valid token. If it matches an allowed path before
+it matches a denied one, it will be served anyway. If it matches no
+<code class="docutils literal notranslate"><span class="pre">auth_directives</span></code>, it will not be served.</p>
+<p>It’s worth noting that multiple issuers can provide <code class="docutils literal notranslate"><span class="pre">auth_directives</span></code>.
+Each issuer will be processed in order and any issuer can provide access to
+a path.</p>
+</div>
+<div class="section" id="more-configuration-options">
+<h3>More Configuration Options<a class="headerlink" href="#more-configuration-options" title="Permalink to this headline">¶</a></h3>
+<dl>
+<dt>Strip Token</dt><dd><p>When the strip_token parameter is set to true, the plugin removes the
+token from both the url that is sent upstream to the origin and the url that
+is used as the cache key. The strip_token parameter defaults to false and should
+be set by only one issuer.</p>
+</dd>
+<dt>ID</dt><dd><p>The id field takes a string indicating the identification of the entity processing the request.
+This is used in aud claim checks to ensure that the receiver is the intended audience of a
+tokenized request. The id parameter can only be set by one issuer.</p>
+<p>Example:</p>
+</dd>
+</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>{
+  &quot;Kabletown URI Authority&quot;: {
+    &quot;renewal_kid&quot;: &quot;Second Key&quot;,
+    &quot;strip_token&quot; : true,
+    &quot;id&quot; : &quot;mycdn&quot;,
+    &quot;auth_directives&quot;: [
+      ⋮
+    ]
+    &quot;keys&quot;: [
+      ⋮
+    ]
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The URI signing plugin will block all requests that do not bear a valid JWT, as
+defined by the URI Signing protocol. Clients that do not present a valid JWT
+will receive a <code class="docutils literal notranslate"><span class="pre">403</span> <span class="pre">Forbidden</span></code> response, instead of receiving content.</p>
+<p>Tokens will be found in either of these places:</p>
+<ul class="simple">
+<li><p>A query parameter named <code class="docutils literal notranslate"><span class="pre">URISigningPackage</span></code>. The value must be the JWT.</p></li>
+<li><p>A path parameter named <code class="docutils literal notranslate"><span class="pre">URISigningPackage</span></code>. The value must be the JWT.</p></li>
+<li><p>A cookie named <code class="docutils literal notranslate"><span class="pre">URISigningPackage</span></code>. The value of the cookie must be the JWT.</p></li>
+</ul>
+<div class="section" id="supported-claims">
+<h3>Supported Claims<a class="headerlink" href="#supported-claims" title="Permalink to this headline">¶</a></h3>
+<p>The following claims are understood:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">iss</span></code>: Must be present. The issuer is used to locate the key for verification.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub</span></code>: May be present, but is not validated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exp</span></code>: Expired tokens are not valid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbf</span></code>: Tokens processed before this time are not valid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">aud</span></code>: Token aud claim strings must match the configured id to be considered valid.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">iat</span></code>: May be present, but is not validated.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdniv</span></code>: Must be missing or 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdniuc</span></code>: Validated last, after key verificationD. <strong>Only</strong> <code class="docutils literal notranslate"><span class="pre">regex</span></code> <strong>is supported!</strong></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdniets</span></code>: If cdnistt is 1, this must be present and non-zero.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdnistt</span></code>: If present, must be 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdnistd</span></code>: Renewal token cookies will have cdnistd path segments of the request in their path attribute.</p></li>
+</ul>
+</div>
+<div class="section" id="unsupported-claims">
+<h3>Unsupported Claims<a class="headerlink" href="#unsupported-claims" title="Permalink to this headline">¶</a></h3>
+<p>These claims are not supported. If they are present, the token will not validate:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">jti</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdnicrit</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdniip</span></code></p></li>
+</ul>
+<p>In addition, the <code class="docutils literal notranslate"><span class="pre">cdniuc</span></code> container of <code class="docutils literal notranslate"><span class="pre">hash</span></code> is <strong>not supported</strong>.</p>
+</div>
+<div class="section" id="token-renewal">
+<h3>Token Renewal<a class="headerlink" href="#token-renewal" title="Permalink to this headline">¶</a></h3>
+<p>If the <code class="docutils literal notranslate"><span class="pre">cdnistt</span></code> and <code class="docutils literal notranslate"><span class="pre">cdniets</span></code> claims are present, the token will be renewed.
+The new token will be returned via a <code class="docutils literal notranslate"><span class="pre">Set-Cookie</span></code> header as a session cookie.</p>
+<p>However, instead of setting the expiration to be <code class="docutils literal notranslate"><span class="pre">cdniets</span></code> seconds from the
+expiration of the previous cookie, it is set to <code class="docutils literal notranslate"><span class="pre">cdniets</span></code> seconds from the time
+it was validated. This is to prevent a crafty client from repeatedly renewing
+tokens in quick succession to create a super-token that lasts long into the
+future, thereby circumventing the intent of the <code class="docutils literal notranslate"><span class="pre">exp</span></code> claim.</p>
+</div>
+<div class="section" id="jose-header">
+<h3>JOSE Header<a class="headerlink" href="#jose-header" title="Permalink to this headline">¶</a></h3>
+<p>The JOSE header of the JWT should contain a <cite>kid</cite> parameter. This is used to
+quickly select the key that was used to sign the token. If it is provided, only
+the key with a matching <cite>kid</cite> will be used for validation. Otherwise, all
+possible keys for that issuer must be tried, which is considerably more
+expensive.</p>
+</div>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<p>To build from source, you will need these libraries installed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="https://github.com/cisco/cjose">cjose</a></p></li>
+<li><p><a class="reference external" href="https://github.com/akheron/jansson">jansson</a></p></li>
+<li><p>pcre</p></li>
+<li><p>OpenSSL</p></li>
+</ul>
+</div></blockquote>
+<p>… as well as compiler toolchain.</p>
+<p>This builds in-tree with the rest of the ATS plugins. Of special note, however,
+are the first two libraries: cjose and jansson. These libraries are not
+currently used anywhere else, so they may not be installed.</p>
+<p>Note that the default prefix value for cjose is <code class="docutils literal notranslate"><span class="pre">/usr/local</span></code>. Ensure this is visible to
+any executables that are being run using this library.</p>
+<p>As of this writing, both libraries install a dynamic library and a static
+archive. However, by default, the static archive is not compiled with Position
+Independent Code. The build script will detect this and build a dynamic
+dependency on these libraries, so they will have to be distributed with the
+plugin.</p>
+<p>If you would like to statically link them, you will need to ensure that they are
+compiled with the <code class="docutils literal notranslate"><span class="pre">-fPIC</span></code> flag in their CFLAGs. If the archives have PIC, the
+build scripts will automatically statically link them.</p>
+<p>Here are some sample commands for building jansson, cjose and trafficserver
+locally using static linking.  This assumes all source is under ${HOME}/git.</p>
+<div class="section" id="sample">
+<h3>Sample<a class="headerlink" href="#sample" title="Permalink to this headline">¶</a></h3>
+<p>If using local jansson:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git
+git clone https://github.com/akheron/jansson.git
+<span class="nb">cd</span> jansson
+autoreconf -i
+./configure --disable-shared <span class="nv">CC</span><span class="o">=</span><span class="s2">&quot;gcc -fpic&quot;</span>
+make -j<span class="sb">`</span>nproc<span class="sb">`</span>
+
+<span class="c1"># Needed for ATS configure</span>
+ln -s src/.libs lib
+ln -s src include
+</pre></div>
+</div>
+<p>If using local cjose:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git
+git clone https://github.com/cisco/cjose.git
+<span class="nb">cd</span> cjose
+autoreconf -i
+./configure --with-jansson<span class="o">=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git/jansson --disable-shared <span class="nv">CC</span><span class="o">=</span><span class="s2">&quot;gcc -fpic&quot;</span>
+make -j<span class="sb">`</span>nproc<span class="sb">`</span>
+
+<span class="c1"># Needed for ATS configure</span>
+ln -s src/.libs lib
+</pre></div>
+</div>
+<p>ATS:</p>
+<div class="highlight-Bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git/
+git clone https://github.com/apache/trafficserver.git
+<span class="nb">cd</span> trafficserver
+autoreconf -i
+./configure --enable-experimental-plugins --with-jansson<span class="o">=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git/jansson --with-cjose<span class="o">=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span>/git/cjose
+make -j<span class="sb">`</span>nproc<span class="sb">`</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="url_sig.en.html" class="btn btn-neutral float-right" title="Signed URL Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rate_limit.en.html" class="btn btn-neutral float-left" title="Rate Limit Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, dev@trafficserver.apache.org.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -2,41 +2,44 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Traffic Dump Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+
+  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Webp Transform Plugin" href="webp_transform.en.html" />
@@ -84,6 +87,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -125,8 +129,10 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
-<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
 <li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
@@ -144,7 +150,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -155,6 +160,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -189,11 +195,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +212,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="../../_sources/admin-guide/plugins/traffic_dump.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -231,31 +239,31 @@
 <blockquote>
 <div><dl class="std option">
 <dt id="cmdoption-traffic_dump.so-logdir">
-<span id="cmdoption-traffic-dump-so-logdir"></span><code class="sig-name descname">--logdir</code><code class="sig-prename descclassname"> &lt;path_to_dump&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-logdir" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-traffic-dump-so-logdir"></span><code class="sig-name descname"><span class="pre">--logdir</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;path_to_dump&gt;</span></code><a class="headerlink" href="#cmdoption-traffic_dump.so-logdir" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the directory for writing all dump files. If the path is relative it is considered relative to the Traffic Server directory. The plugin will use the first three characters of the client’s IP to create subdirs in an attempt to spread dumps evenly and avoid too many files in a single directory.</p>
 <dl class="std option">
 <dt id="cmdoption-traffic_dump.so-sample">
-<span id="cmdoption-traffic-dump-so-sample"></span><code class="sig-name descname">--sample</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sample" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-traffic-dump-so-sample"></span><code class="sig-name descname"><span class="pre">--sample</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;N&gt;</span></code><a class="headerlink" href="#cmdoption-traffic_dump.so-sample" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the sampling ratio N. Traffic Dump will capture every one out of N sessions. This ratio can also be changed via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> without restarting ATS.</p>
 <dl class="std option">
 <dt id="cmdoption-traffic_dump.so-limit">
-<span id="cmdoption-traffic-dump-so-limit"></span><code class="sig-name descname">--limit</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-limit" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-traffic-dump-so-limit"></span><code class="sig-name descname"><span class="pre">--limit</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;N&gt;</span></code><a class="headerlink" href="#cmdoption-traffic_dump.so-limit" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>required</cite>) - Specifies the max disk usage to N bytes (approximate). Traffic Dump will stop capturing new sessions once disk usage exceeds this limit.</p>
 <dl class="std option">
 <dt id="cmdoption-traffic_dump.so-sensitive-fields">
-<span id="cmdoption-traffic-dump-so-sensitive-fields"></span><code class="sig-name descname">--sensitive-fields</code><code class="sig-prename descclassname"> &lt;field1,field2,...,fieldn&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sensitive-fields" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-traffic-dump-so-sensitive-fields"></span><code class="sig-name descname"><span class="pre">--sensitive-fields</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;field1,field2,...,fieldn&gt;</span></code><a class="headerlink" href="#cmdoption-traffic_dump.so-sensitive-fields" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>) - A comma separated list of HTTP case-insensitive field names whose values are considered sensitive information. Traffic Dump will not dump the incoming field values for any of these fields but will instead dump a generic value for them of the same length as the original. If this option is not used, a default list of “Cookie,Set-Cookie” is used. Providing this option overwrites that default list with whatever values the user provides. Pass a quoted empty string as the argument to specify that no fields are sensitive,</p>
 <dl class="std option">
 <dt id="cmdoption-traffic_dump.so-sni-filter">
-<span id="cmdoption-traffic-dump-so-sni-filter"></span><code class="sig-name descname">--sni-filter</code><code class="sig-prename descclassname"> &lt;SNI_Name&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sni-filter" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-traffic-dump-so-sni-filter"></span><code class="sig-name descname"><span class="pre">--sni-filter</span></code><code class="sig-prename descclassname"> <span class="pre">&lt;SNI_Name&gt;</span></code><a class="headerlink" href="#cmdoption-traffic_dump.so-sni-filter" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>(<cite>optional</cite>) - An SNI with which to filter sessions. Only HTTPS sessions with the provided SNI will be dumped. The sample option will apply a sampling rate to these filtered sessions. Thus, with a sample value of 2, 1/2 of all sessions with the specified SNI will be dumped.</p>
@@ -301,29 +309,29 @@
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="webp_transform.en.html" class="btn btn-neutral float-right" title="Webp Transform Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="system_stats.en.html" class="btn btn-neutral float-left" title="System Stats Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="webp_transform.en.html" class="btn btn-neutral float-right" title="Webp Transform Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="system_stats.en.html" class="btn btn-neutral float-left" title="System Stats Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2021, dev@trafficserver.apache.org
+        &#169; Copyright 2021, dev@trafficserver.apache.org.
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -331,7 +339,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {
