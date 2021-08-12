@@ -33,7 +33,7 @@ rm -rf *
 cp -r ${TXNB_SRCDIR}/docbuild/html/* .
 #cp -r ${TS_SRCDIR}/docbuild/html/.nojekyll ats/
 cp -r ${TXNB_SRCDIR}/docbuild/html/.buildinfo .
-
+rm -rf src
 echo "" > .nojekyll
 git add .nojekyll
 git add *
