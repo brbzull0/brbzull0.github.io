@@ -1,0 +1,1095 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Directive Reference &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Comparison Reference" href="ComparisonReference.en.html" />
+    <link rel="prev" title="Extractor Reference" href="ExtractorReference.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Directive Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fundamental">Fundamental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user-agent-request">User Agent Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#proxy-request">Proxy Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upstream-response">Upstream Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#proxy-response">Proxy Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction">Transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utility">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ipspace">IPSpace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compatibility">Compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Directive Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/DirectiveReference.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="directive-reference">
+<span id="id1"></span><h1>Directive Reference<a class="headerlink" href="#directive-reference" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fundamental">
+<h2>Fundamental<a class="headerlink" href="#fundamental" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="when">
+<span id="when"></span><code class="descname">when</code><a class="headerlink" href="#when" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Secondary Keys</dt>
+<dd class="field-odd"><dl class="field-list">
+<dt class="field-odd">do</dt>
+<dd class="field-odd">Directive List</dd>
+</dl>
+</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">hook</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Specify the hook for other directives. The <code class="docutils literal notranslate"><span class="pre">do</span></code> key has the list of directives to invoke for the specified <em>hook</em>. To set the field “Best-Band” to the correct value “Delain” on the proxy response (using <a class="reference internal" href="#proxy-rsp-field" title="proxy-rsp-field"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">proxy-rsp-field</span></code></a>)</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-rsp</span>
+<span class="nt">do</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-field&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+<p class="compound-last">The top level directive(s) in a global configuration file must be this directive, which forces every directive to be associated with a specific hook. It can also be used as a normal directive to cause the invocation of directives on another hook (which must not be a prior hook). The action of the directive is to “schedule” its nested directives for later invocation on the specified hook. Therefore if the directive is not invoked its nested directives will not be either. This enables conditional invocation of those directives using data that may not be available in the later hook (e.g. the pre-remap request URL). Although any feature expressions in nested directives will be evaluated in the later hook, not at the time this directive is invoked, the decision on whether to invoke those directives can use current hook information.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="with">
+<span id="with"></span><code class="descname">with</code><a class="headerlink" href="#with" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Secondary Keys</dt>
+<dd class="field-odd"><dl class="field-list">
+<dt class="field-odd">select</dt>
+<dd class="field-odd">Comparison list</dd>
+<dt class="field-even">do</dt>
+<dd class="field-even">Directive list</dd>
+<dt class="field-odd">continue</dt>
+<dd class="field-odd"></dd>
+</dl>
+</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">expression</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Conditional invoke a list of directives. The <em>expression</em> evaluates a feature expression to
+create the <em>active feature</em>. This feature is then compared against the list comparisons attached
+to the <code class="docutils literal notranslate"><span class="pre">select</span></code> keyword. Each element of that list is an object. Each object can have a
+<a class="reference internal" href="ComparisonReference.en.html#comparison-reference"><span class="std std-ref">comparison</span></a> and a list of directives under the <code class="docutils literal notranslate"><span class="pre">do</span></code> key. The
+feature for <em>expression</em> is compared in order by the comparisons and the first successful
+comparison is selected and the directives for the comparison invoked.</p>
+<p class="compound-middle">As a fundamental principle, once a comparison is selected and the directives invoked, this
+terminates the invocation of directives for the most recent <a class="reference internal" href="#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> or <a class="reference internal" href="#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a>. That
+is, normally there is no return from inside a <a class="reference internal" href="#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> because an outer <a class="reference internal" href="#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> will
+normally also return immediately up to the top level <a class="reference internal" href="#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a>. This can be overridden for a
+specific instance by adding the key <cite>continue</cite>. If present then subsequent directives will be
+invoked. This should be used sparingly as the point of this rule is to make it unambiguous which
+directives were invoked for a transaction. Note that if no comparison is successful subsequent
+directives are invoked and the <a class="reference internal" href="#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> has no effect. See
+<a class="reference internal" href="../examples.en.html#example-path-tweaking"><span class="std std-ref">this</span></a> as an example of how to use <code class="code docutils literal notranslate"><span class="pre">continue</span></code>.</p>
+<p class="compound-middle">A comparison is not required to have <code class="docutils literal notranslate"><span class="pre">do</span></code> in which case if it is matched, nothing is done but
+it counts as a match for the purposes of no return.</p>
+<p class="compound-middle">A comparison does not require an actual comparison but can consist only of <code class="docutils literal notranslate"><span class="pre">do</span></code>. In this case
+it always matches and this form serves as a convenient “match anything” comparison. Obviously it
+should always be the last comparison if used.</p>
+<p class="compound-last">The <code class="docutils literal notranslate"><span class="pre">do</span></code> key can be used to invoke directives before any of the comparisons. This is useful
+primarily for access to the feature for <em>expression</em> via the <a class="reference internal" href="ExtractorReference.en.html" title="..."><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">...</span></code></a> extractor which
+extracts that feature. If there is a nested <a class="reference internal" href="#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> that will terminate the list of <code class="docutils literal notranslate"><span class="pre">do</span></code>
+directives but will not prevent the comparisons and their associated directives.</p>
+</div>
+</div>
+<div class="section" id="user-agent-request">
+<h2>User Agent Request<a class="headerlink" href="#user-agent-request" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-url">
+<span id="ua-req-url"></span><code class="descname">ua-req-url</code><a class="headerlink" href="#ua-req-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the URL of the user agent request to <em>string</em>. This must be the full, parsable URL. To
+set more specific elements of the URL use the more specific directives.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-host">
+<span id="ua-req-host"></span><code class="descname">ua-req-host</code><a class="headerlink" href="#ua-req-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the host for the user agent request to <em>value</em>. This updates both the URL and the
+<code class="docutils literal notranslate"><span class="pre">Host</span></code> field as needed. This has no effect on the request port.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-url-host">
+<span id="ua-req-url-host"></span><code class="descname">ua-req-url-host</code><a class="headerlink" href="#ua-req-url-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the host in the URL for the user agent request to <em>value</em>. This has no effect on the
+port nor on the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+<p class="compound-last">This can interact with with the Traffic Server core in odd ways on the <code class="docutils literal notranslate"><span class="pre">remap</span></code> hook. By default, after
+URL rewriting Traffic Server will itself update the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header to match the host in the URL. This can
+be prevented by enabling <a class="reference external" href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/records.config.en.html#proxy.config.url_remap.pristine_host_hdr">pristine host header</a>
+or overridden by using <a class="reference internal" href="#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> to revert the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field on a later hook (such as
+<code class="docutils literal notranslate"><span class="pre">post-remap</span></code>). The former  can be done globally as configuration, or locally using
+<a class="reference internal" href="#txn-conf" title="txn-conf"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">txn-conf</span></code></a>.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-port">
+<span id="ua-req-port"></span><code class="descname">ua-req-port</code><a class="headerlink" href="#ua-req-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer</dd>
+</dl>
+<div class="compound">
+<p>Set the port for the request. This updates the URL and <code class="docutils literal notranslate"><span class="pre">Host</span></code> field as needed. This has no
+effect on the host.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-url-port">
+<span id="ua-req-url-port"></span><code class="descname">ua-req-url-port</code><a class="headerlink" href="#ua-req-url-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer</dd>
+</dl>
+<div class="compound">
+<p>Set the port in the user agent request to <em>value</em>. This has no effect on the host in the
+URL nor the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-loc">
+<span id="ua-req-loc"></span><code class="descname">ua-req-loc</code><a class="headerlink" href="#ua-req-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string, tuple</dd>
+</dl>
+<div class="compound">
+<p>Set the location for the request. This is the host and optional port specifier as a single string or
+as a tuple of a string (the host) and an integer (the port).</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-url-loc">
+<span id="ua-req-url-loc"></span><code class="descname">ua-req-url-loc</code><a class="headerlink" href="#ua-req-url-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string, tuple</dd>
+</dl>
+<div class="compound">
+<p>Set the location for the URL. This is the host and optional port specifier as a single string or
+as a tuple of a string (the host) and an integer (the port).</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-path">
+<span id="ua-req-path"></span><code class="descname">ua-req-path</code><a class="headerlink" href="#ua-req-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the path in the user agent request to <em>value</em>. A leading slash is ignored.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-query">
+<span id="ua-req-query"></span><code class="descname">ua-req-query</code><a class="headerlink" href="#ua-req-query" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Sets the query string for the user agent request.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-query-value">
+<span id="ua-req-query-value"></span><code class="descname">ua-req-query-value</code><a class="headerlink" href="#ua-req-query-value" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">Query parameter key.</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string</dd>
+</dl>
+<div class="compound">
+<p>Set the value for a specific query parameter, identified by key. This assumes the standard format
+for a query string, key / value pairs (joined by ‘=’) separated by ‘&amp;’ or ‘;’. The key comparison
+is case insensitive. If the value is <code class="docutils literal notranslate"><span class="pre">NULL</span></code> the key and value are removed from the query string.
+Otherwise, if the key is not present it is added, then the value updated.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-fragment">
+<span id="ua-req-fragment"></span><code class="descname">ua-req-fragment</code><a class="headerlink" href="#ua-req-fragment" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the fragment of the URL. If <em>string</em> is empty or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> the fragment is removed.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="ua-req-field">
+<span id="ua-req-field"></span><code class="descname">ua-req-field</code><a class="headerlink" href="#ua-req-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">name</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string, tuple of strings</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the field named <em>name</em> to the <em>value</em>. If <em>value</em> is a tuple of strings,
+create a field for every element of the tuple and set the value for that field to the tuple
+element.</p>
+<p class="compound-middle">Set the field names “X-Swoc” to “Potzrebie”</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-field&lt;X-Swoc&gt;</span><span class="p">:</span> <span class="s">&quot;Potzrebie&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="proxy-request">
+<h2>Proxy Request<a class="headerlink" href="#proxy-request" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-url">
+<span id="proxy-req-url"></span><code class="descname">proxy-req-url</code><a class="headerlink" href="#proxy-req-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the URL of the proxy request to <em>string</em>. This must be the full, parsable URL. To set
+more specific elements of the URL use the more specific directives.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-host">
+<span id="proxy-req-host"></span><code class="descname">proxy-req-host</code><a class="headerlink" href="#proxy-req-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the host for the proxy request to <em>value</em>. This updates both the URL and the <code class="docutils literal notranslate"><span class="pre">Host</span></code>
+field as needed. This has no effect on the request port.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-url-host">
+<span id="proxy-req-url-host"></span><code class="descname">proxy-req-url-host</code><a class="headerlink" href="#proxy-req-url-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the host in the URL for the proxy request to <em>value</em>. This has no effect on the
+port nor on the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-port">
+<span id="proxy-req-port"></span><code class="descname">proxy-req-port</code><a class="headerlink" href="#proxy-req-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer</dd>
+</dl>
+<div class="compound">
+<p>Set the port for the request. This updates the URL and <code class="docutils literal notranslate"><span class="pre">Host</span></code> field as needed. This has no
+effect on the host.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-url-port">
+<span id="proxy-req-url-port"></span><code class="descname">proxy-req-url-port</code><a class="headerlink" href="#proxy-req-url-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer</dd>
+</dl>
+<div class="compound">
+<p>Set the port in the user agent request to <em>value</em>. This has no effect on the host in the
+URL nor the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-loc">
+<span id="proxy-req-loc"></span><code class="descname">proxy-req-loc</code><a class="headerlink" href="#proxy-req-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string, tuple</dd>
+</dl>
+<div class="compound">
+<p>Set the location for the request. This is the host and optional port specifier as a single string or
+as a tuple of a string (the host) and an integer (the port).</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-url-loc">
+<span id="proxy-req-url-loc"></span><code class="descname">proxy-req-url-loc</code><a class="headerlink" href="#proxy-req-url-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string, tuple</dd>
+</dl>
+<div class="compound">
+<p>Set the location for the URL. This is the host and optional port specifier as a single string or
+as a tuple of a string (the host) and an integer (the port).</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-query">
+<span id="proxy-req-query"></span><code class="descname">proxy-req-query</code><a class="headerlink" href="#proxy-req-query" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Sets the query string for the proxy request.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-query-value">
+<span id="proxy-req-query-value"></span><code class="descname">proxy-req-query-value</code><a class="headerlink" href="#proxy-req-query-value" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">Query parameter key.</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string</dd>
+</dl>
+<div class="compound">
+<p>Set the value for a specific query parameter, identified by key. This assumes the standard format
+for a query string, key / value pairs (joined by ‘=’) separated by ‘&amp;’ or ‘;’. The key comparison
+is case insensitive. If the value is <code class="docutils literal notranslate"><span class="pre">NULL</span></code> the key and value are removed from the query string.
+Otherwise, if the key is not present it is added, then the value updated.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-fragment">
+<span id="proxy-req-fragment"></span><code class="descname">proxy-req-fragment</code><a class="headerlink" href="#proxy-req-fragment" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Set the fragment of the URL. If <em>string</em> is empty or <code class="docutils literal notranslate"><span class="pre">NULL</span></code> the fragment is removed.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-req-field">
+<span id="proxy-req-field"></span><code class="descname">proxy-req-field</code><a class="headerlink" href="#proxy-req-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">name</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string, tuple of strings.</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the field named <em>name</em> to the <em>value</em>. If <em>value</em> is a tuple of strings,
+create a field for every element of the tuple and set the value for that field to the tuple
+element.</p>
+<p class="compound-middle">To set the field named “Best-Band” to the correct value “Delain” -</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="upstream-response">
+<h2>Upstream Response<a class="headerlink" href="#upstream-response" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="upstream-rsp-field">
+<span id="upstream-rsp-field"></span><code class="descname">upstream-rsp-field</code><a class="headerlink" href="#upstream-rsp-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">name</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string, tuple of strings.</dd>
+</dl>
+<div class="compound">
+<p>Set the field named <em>name</em> to the <em>value</em>. If <em>value</em> is a tuple of strings,
+create a field for every element of the tuple and set the value for that field to the tuple
+element.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="upstream-rsp-status">
+<span id="upstream-rsp-status"></span><code class="descname">upstream-rsp-status</code><a class="headerlink" href="#upstream-rsp-status" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer, tuple of integer, string</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the upstream response status. If the value is an integer, the response status is set to
+that value. If the value is a list, it must two elements, an integer and a string. The status
+is set to the integer value and the reason is set to the string.</p>
+<p class="compound-middle">Set the status to 403</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">upstream-rsp-status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">403</span>
+</pre></div>
+</div>
+<p class="compound-middle">Set the status to 404 with the reason “Desk too messy”</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">upstream-rsp-status</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">404</span><span class="p p-Indicator">,</span> <span class="s">&quot;Desk</span><span class="nv"> </span><span class="s">too</span><span class="nv"> </span><span class="s">messy&quot;</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="upstream-rsp-body">
+<span id="upstream-rsp-body"></span><code class="descname">upstream-rsp-body</code><a class="headerlink" href="#upstream-rsp-body" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">string</dd>
+</dl>
+<div class="compound">
+<p>Replace the upstream response body with the value of this directive.</p>
+</div>
+</div>
+<div class="section" id="proxy-response">
+<h2>Proxy Response<a class="headerlink" href="#proxy-response" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="proxy-rsp-field">
+<span id="proxy-rsp-field"></span><code class="descname">proxy-rsp-field</code><a class="headerlink" href="#proxy-rsp-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">name</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">string, tuple of strings.</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the field named <em>name</em> to the <em>value</em>. If <em>value</em> is a tuple of strings,
+create a field for every element of the tuple and set the value for that field to the tuple
+element.</p>
+<p class="compound-middle">To set the field named “Best-Band” to the correct value “Delain” -</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-rsp-field&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-rsp-status">
+<span id="proxy-rsp-status"></span><code class="descname">proxy-rsp-status</code><a class="headerlink" href="#proxy-rsp-status" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd">integer, tuple of integer, string</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the proxy response status. If the value is an integer, the response status is set to
+that value. If the value is a list, it must two elements, an integer and a string. The status
+is set to the integer value and the reason is set to the string.</p>
+<p class="compound-middle">Set the status to 403</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-rsp-status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">403</span>
+</pre></div>
+</div>
+<p class="compound-middle">Set the status to 404 with the reason “Desk too messy”</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-rsp-status</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">404</span><span class="p p-Indicator">,</span> <span class="s">&quot;Desk</span><span class="nv"> </span><span class="s">too</span><span class="nv"> </span><span class="s">messy&quot;</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="transaction">
+<h2>Transaction<a class="headerlink" href="#transaction" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="var">
+<span id="var"></span><code class="descname">var</code><a class="headerlink" href="#var" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">*name*</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">*any*</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Set the transaction local variable <em>name</em> to <em>value</em>. <em>value</em> is evaluated in
+the directive context then stored in the variable for the current transaction. This has no effect
+on the value in any other transaction. The value persists until changed or the transaction ends.</p>
+<p class="compound-middle">Example - set the variable “Best-Band” to the value “Delain”</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">var&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+<p class="compound-middle">Example - stash the user agent request host and path before remap in the variable “save”.</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">var&lt;save&gt;</span><span class="p">:</span> <span class="s">&quot;{ua-req-host}/{ua-req-path}&quot;</span>
+</pre></div>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="txn-conf">
+<span id="txn-conf"></span><code class="descname">txn-conf</code><a class="headerlink" href="#txn-conf" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">*configuration variable name*</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">*any*</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">This sets a transaction overridable configuration variable. The argument is the full name of the
+configuration variable. The value should be the type appropriate for that configuration variable.</p>
+<p class="compound-middle">Example - disable caching for this transaction</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">txn-conf&lt;proxy.config.http.cache.http&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">disable</span>
+</pre></div>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="proxy-reply">
+<span id="proxy-reply"></span><code class="descname">proxy-reply</code><a class="headerlink" href="#proxy-reply" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first"><code class="code docutils literal notranslate"><span class="pre">proxy-reply:</span> <span class="pre">status</span></code></p>
+<p class="compound-middle"><code class="code docutils literal notranslate"><span class="pre">proxy-reply:</span> <span class="pre">[</span> <span class="pre">status,</span> <span class="pre">reason</span> <span class="pre">]</span></code></p>
+<div class="compound-middle highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-reply</span><span class="p">:</span>
+   <span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;status code&gt;</span>
+   <span class="nt">reason</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;reason phrase&gt;</span>
+   <span class="nt">body</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;response body&gt;</span>
+</pre></div>
+</div>
+<p class="compound-last">Cause the proxy to reply to the user agent without connecting to an upstream. This must be
+invoked before a connection attempt is made to the upstream (post remap hook or earlier).
+<em>status</em> is required but <em>reason</em> and <em>body</em> are optional. If <em>body</em> is not
+provided the standard
+<a class="reference external" href="https://docs.trafficserver.apache.org/en/latest/admin-guide/monitoring/error-messages.en.html#html-messages-sent-to-clients">error response templates</a>
+are used.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="redirect">
+<span id="redirect"></span><code class="descname">redirect</code><a class="headerlink" href="#redirect" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first"><code class="code docutils literal notranslate"><span class="pre">redirect</span> <span class="pre">&lt;location&gt;</span></code></p>
+<p class="compound-middle"><code class="code docutils literal notranslate"><span class="pre">redirect</span> <span class="pre">[</span> <span class="pre">&lt;status&gt;,</span> <span class="pre">&lt;location&gt;</span> <span class="pre">]</span></code></p>
+<div class="compound-middle highlight-YAML notranslate"><div class="highlight"><pre><span></span><span class="nt">redirect</span><span class="p">:</span>
+   <span class="nt">to</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;location&gt;</span>
+   <span class="nt">status</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;status&gt;</span>
+   <span class="nt">reason</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;reason phrase&gt;</span>
+   <span class="nt">body</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;response body&gt;</span>
+</pre></div>
+</div>
+<p class="compound-middle">This directive generates a redirect response to the user agent without an upstream request. This
+must be used before the upstream request is made (post remap hook or earlier).</p>
+<p class="compound-middle">This could be done using <a class="reference internal" href="#proxy-reply" title="proxy-reply"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">proxy-reply</span></code></a> and <a class="reference internal" href="#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> but is a common enough case to
+warrant a directive.</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span>      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;reply/&quot;</span>
+        <span class="nt">do</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">proxy-reply</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">302</span>
+        <span class="p p-Indicator">-</span> <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-rsp</span>
+          <span class="nt">do</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-field&lt;Location&gt;</span><span class="p">:</span> <span class="s">&quot;http://reply.ex/{ua-req-path}&quot;</span>
+</pre></div>
+</div>
+<p class="compound-last">One slight difference is when the feature expression for the location is extracted - for this
+directive that is done when the directive is invoked and the result cached for later use, whereas
+in the above example extraction is done during the proxy response hook.</p>
+</div>
+</div>
+<div class="section" id="utility">
+<h2>Utility<a class="headerlink" href="#utility" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="debug">
+<span id="debug"></span><code class="descname">debug</code><a class="headerlink" href="#debug" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first"><code class="code docutils literal notranslate"><span class="pre">debug:</span> <span class="pre">&lt;message&gt;</span></code></p>
+<p class="compound-middle"><code class="code docutils literal notranslate"><span class="pre">debug:</span> <span class="pre">[</span> <span class="pre">&lt;tag&gt;,</span> <span class="pre">&lt;message&gt;</span> <span class="pre">]</span></code></p>
+<p class="compound-last">Generate a plugin debug message. If <em>tag</em> is specified it is used as the debug tag, otherwise
+the plugin tag “txn_box” is used.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="text-block-define">
+<span id="text-block-define"></span><code class="descname">text-block-define</code><a class="headerlink" href="#text-block-define" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Define a text block. This is valid only in the <code class="docutils literal notranslate"><span class="pre">post-load</span></code> hook. A text block can be read
+from a file or config based text, or both. If a file is specified it can be set to be checked
+for modifications and reloaded if changed. The keys are</p>
+<dl class="compound-middle simple">
+<dt>name</dt><dd><p>Name of the text block. This is used to reference the contents via <a class="reference internal" href="ExtractorReference.en.html#text-block" title="text-block"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">text-block</span></code></a>. This is
+required.</p>
+</dd>
+<dt>path</dt><dd><p>Path to a file with content for the text block.</p>
+</dd>
+<dt>text</dt><dd><p>Explicit text content for the text block.</p>
+</dd>
+<dt>duration</dt><dd><p>An optional value that specifies how often to check the file for changes. An implicit <a class="reference internal" href="ModifierReference.en.html#as-duration" title="as-duration"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">as-duration</span></code></a> is applied to the value.</p>
+</dd>
+<dt>notify</dt><dd><p>A feature expression that must be a string. This generates an INFO level message using the
+string in the diagnostic log when the content is reloaded. This is optional - if missing no
+notification is done.</p>
+</dd>
+</dl>
+<p class="compound-last">One of <code class="docutils literal notranslate"><span class="pre">path</span></code> and <code class="docutils literal notranslate"><span class="pre">text</span></code> must be present. If both are present <code class="docutils literal notranslate"><span class="pre">path</span></code> takes precedence. The
+file contents are used if the file can be read, otherwise the value in <code class="docutils literal notranslate"><span class="pre">text</span></code> is used. If
+only <code class="docutils literal notranslate"><span class="pre">path</span></code> is present it is a configuration error if the file specified by <code class="docutils literal notranslate"><span class="pre">path</span></code> cannot
+be read.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="error">
+<span id="error"></span><code class="descname">error</code><a class="headerlink" href="#error" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p>Generate a “ERROR” level log entry. The value of the directive is used as the entry text.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="warning">
+<span id="warning"></span><code class="descname">warning</code><a class="headerlink" href="#warning" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Generate a “WARNING” level log entry. The value of the directive is used as the entry text.</p>
+<div class="compound-last admonition note">
+<p class="admonition-title">Note</p>
+<p>On versions of Traffic Server before 10 this will generate an “ERROR” log entry because the
+plugin API does not support other log levels.</p>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="note">
+<span id="note"></span><code class="descname">note</code><a class="headerlink" href="#note" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Generate a “NOTE” level log entry. The value of the directive is used as the entry text.</p>
+<div class="compound-last admonition note">
+<p class="admonition-title">Note</p>
+<p>On versions of Traffic Server before 10 this will generate an “ERROR” log entry because the
+plugin API does not support other log levels.</p>
+</div>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="stat-define">
+<span id="stat-define"></span><code class="descname">stat-define</code><a class="headerlink" href="#stat-define" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Define a plugin statistic, which can be externally accessed. Currently Traffic Server limits plugin
+statistics to integers.</p>
+<dl class="compound-middle simple">
+<dt>name</dt><dd><p>Name of the statistic. This is used internally to specify the statistic.</p>
+</dd>
+<dt>prefix</dt><dd><p>Prefix for external name of the statistic. This is optional. The default is “plugin.txn_box”.
+This creates the name used for external access by prepending it with a dot separator to
+<em>name</em>.</p>
+</dd>
+<dt>value</dt><dd><p>Initial value. This is optional. If not present the value zero is used.</p>
+</dd>
+<dt>persistent</dt><dd><p>Whether the statistic is persistent, the value must be a boolean. This is optional. If not
+present the statistic is not persistent.</p>
+</dd>
+</dl>
+<p class="compound-middle">Because of the default value for <em>prefix</em>, a stat named “delain” is accessed via external
+utilities as “plugin.txn_box.delain”. This is consistent with recommended practice but can be
+overridden if necessary.</p>
+<p class="compound-middle">During configuration load, if the statistic already exists it is not recreated nor the value
+reset. It is not possible to destroy an existing statistic during a reload. Removal of a
+statistic requires a full restart.</p>
+<p class="compound-last">Finally, note statistics have multiple seconds of lag and are therefore only eventually
+consistent even when using the extractor <a class="reference internal" href="ExtractorReference.en.html#stat" title="stat"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">stat</span></code></a>.</p>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="stat-update">
+<span id="stat-update"></span><code class="descname">stat-update</code><a class="headerlink" href="#stat-update" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">*name*</dd>
+<dt class="field-even">Value</dt>
+<dd class="field-even">integer</dd>
+</dl>
+<div class="compound">
+<p>Change the value of the plugin statistic <em>name</em>. If the value is present it must be an
+integer, which is added to the value of the statistic. If not present the statistic is
+incremented by 1.</p>
+</div>
+</div>
+<div class="section" id="ipspace">
+<h2>IPSpace<a class="headerlink" href="#ipspace" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="ip-space-define">
+<span id="ip-space-define"></span><code class="descname">ip-space-define</code><a class="headerlink" href="#ip-space-define" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">This must be used on the <code class="docutils literal notranslate"><span class="pre">post-load</span></code> hook. It defines and loads an IP space. This is a mapping
+from IP addresses to an array of data items, called a <em>row</em>. Each element of the array is a
+<em>column</em> in the space, so that every address in the space maps to a row containing the same
+columns. The input data is a CSV file where the first element is an IP address range, network,
+or singleton. The other elements must correspond to the columns defined in this directive.</p>
+<p class="compound-middle">It has the following keys.</p>
+<dl class="compound-middle">
+<dt>name</dt><dd><p>Name of the IP space.</p>
+</dd>
+<dt>path</dt><dd><p>Path to the IP space data file.</p>
+</dd>
+<dt>columns</dt><dd><p>A list of column definitions, each one a map. Each map can have the keys</p>
+<dl>
+<dt>name</dt><dd><p>Name of the column. This is optional.</p>
+</dd>
+<dt>type</dt><dd><p>Type of the data in the column. This must be one of the strings</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">string</span></code></dt><dd><p>A string value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">integer</span></code></dt><dd><p>An integer value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">enum</span></code></dt><dd><p>One of a set of specific string keys.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">flags</span></code></dt><dd><p>A subset of a set of specific string keys.</p>
+</dd>
+</dl>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">keys</span></code></dt><dd><p>The strings that are the keys for <code class="docutils literal notranslate"><span class="pre">enum</span></code> or <code class="docutils literal notranslate"><span class="pre">flags</span></code>. This is required for a <code class="docutils literal notranslate"><span class="pre">flags</span></code>
+column. If present for an <code class="docutils literal notranslate"><span class="pre">enum</span></code> column, the input values are checked agains this list.
+If not, any key is valid. It is ignored for <code class="docutils literal notranslate"><span class="pre">string</span></code> or <code class="docutils literal notranslate"><span class="pre">integer</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="compound-middle">Columns can be accessed by name or index. The indices start at 1, column 0 is predefined to be
+the matched IP address.</p>
+<p class="compound-last">See the modifier <a class="reference internal" href="ModifierReference.en.html#ip-space" title="ip-space"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">ip-space</span></code></a> and extractor <a class="reference internal" href="ExtractorReference.en.html#ip-col" title="ip-col"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">ip-col</span></code></a> for how to access the data once defined.</p>
+</div>
+</div>
+<div class="section" id="compatibility">
+<h2>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt class="directive-title" id="apply-remap-rule">
+<span id="apply-remap-rule"></span><code class="descname">apply-remap-rule</code><a class="headerlink" href="#apply-remap-rule" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Valid only in the <code class="docutils literal notranslate"><span class="pre">REMAP</span></code> hook, this applies the URL rewriting of the remap rule that matched.
+The use of this is for backwards compatibility between ATS 9 and previous versions. Earlier
+versions would not apply the rule URL rewriting until after the first remap plugin had been
+called and this would also be dependent on the return value from that call. Starting with ATS 9,
+the URL rewrite is always applied before any remap plugin is called. This directive enables
+simulating the ATS 9 behavior in earlier versions by making this the first directive when TxnBox
+is the first remap plugin. Unfortunately correct use requires knowing this, but it’s the best
+that can be done.</p>
+<p class="compound-middle">Things to note -</p>
+<ul class="compound-last simple">
+<li><p>If only a portion of the URL is to be changed,  this needs to be used to prevent ATS from
+wiping out that change, while still getting the effect of updating the post-rewrite URL.</p></li>
+<li><p>When matching on the client request, this (and the pre-ATS 9 URL rewriting) changes the client
+request URL and therefore changes what will be matched. See <a class="reference internal" href="ExtractorReference.en.html#ex-pre-remap"><span class="std std-ref">pre-remap extractors</span></a> for additional information.</p></li>
+<li><p>It is possible to execute other directives first but this requires much care and isn’t
+portable across ATS versions because it is impossible to replicate as of ATS 9.</p></li>
+</ul>
+</div>
+<dl class="directive">
+<dt class="directive-title" id="did-remap">
+<span id="did-remap"></span><code class="descname">did-remap</code><a class="headerlink" href="#did-remap" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list simple">
+</dl>
+<div class="compound">
+<p class="compound-first">Valid only in the <code class="docutils literal notranslate"><span class="pre">REMAP</span></code> hook. This sets whether the Traffic Server core will consider TxnBox to have done
+the URL rewriting for a rule. If so, then the core will <em>not</em> do the rule URL rewriting. If no
+value is provide, this will mark the plugin as having done the URL rewrite. If there is a value
+if it is equivalent to <code class="docutils literal notranslate"><span class="pre">true</span></code> then the plugin will be marked as having done the rewrite, and if
+if the equivalent of <code class="docutils literal notranslate"><span class="pre">false</span></code> will be marked as <em>not</em> having done the rewrite. The last instance
+invoked in a hook determines the effective value. This makes it easier to, for instance, mark as
+rewriting and then unmark if not actually done.</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span>  <span class="nt">did-remap</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span> <span class="c1"># assume something will match and rewrite.</span>
+<span class="p p-Indicator">-</span>  <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-path</span>
+   <span class="nt">select</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/search&quot;</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;staging.app.ex&quot;</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/api&quot;</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span>  <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;staging.api.app.ex&quot;</span>
+<span class="p p-Indicator">-</span>  <span class="nt">did-remap</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span> <span class="c1"># only get here if nothing matched in the with</span>
+</pre></div>
+</div>
+<p class="compound-last">This is useful for versions of Traffic Server before 9. Starting with Traffic Server 9 the URL rewriting is done
+before any plugin is called and therefore cannot be prevented by a plugin. In contrast with
+earlier versions if TxnBox is the first plugin, the rewrite done by TxnBox can be wiped out by the
+core rewrite. This directive can be necessary to prevent that. This is nicely compatible because
+for version 9 and later it has no effect and can therefore be included in configurations used in
+different versions.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ComparisonReference.en.html" class="btn btn-neutral float-right" title="Comparison Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ExtractorReference.en.html" class="btn btn-neutral float-left" title="Extractor Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

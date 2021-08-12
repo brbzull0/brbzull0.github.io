@@ -1,0 +1,493 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Usage Guide &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.en.html" />
+    <link rel="prev" title="Selection" href="selection.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-tips">Basic Tips</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-do-it">How to “do” it</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-http-fields">Working with HTTP fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rewriting-urls">Rewriting URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-variables">Using Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#filter-techniques">Filter Techniques</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Usage Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/guide.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="usage-guide">
+<span id="guide"></span><h1>Usage Guide<a class="headerlink" href="#usage-guide" title="Permalink to this headline">¶</a></h1>
+<p>This section focuses on tasks rather than mechanism, to illustrate how to use the mechanisms.</p>
+<div class="section" id="basic-tips">
+<h2>Basic Tips<a class="headerlink" href="#basic-tips" title="Permalink to this headline">¶</a></h2>
+<p>Based on production deployment experience, there are a few general items to keep in mind.</p>
+<div class="section" id="how-to-do-it">
+<h3>How to “do” it<a class="headerlink" href="#how-to-do-it" title="Permalink to this headline">¶</a></h3>
+<p>Except for top level <a class="reference internal" href="user/DirectiveReference.en.html#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> directives for global configuration, all directives are grouped
+under a <code class="code docutils literal notranslate"><span class="pre">do</span></code> keyword in some object. This makes the most important context for a directive
+which <code class="code docutils literal notranslate"><span class="pre">do</span></code> contains it and transitively which object contains that <code class="code docutils literal notranslate"><span class="pre">do</span></code>. It is that
+object that will determine whether the nested directives are invoked.</p>
+<p>For example to invoke directives conditionally, a comparison is used. The comparison contains a
+<code class="code docutils literal notranslate"><span class="pre">do</span></code> and the directives attached to that are invoked if the comparison succeeds. Because of
+YAML structuring this is very sensitive to indentation. Consider this example from actual production
+use.</p>
+<p>The goal is to shift traffic unless the query string contains the “qx” key. The original attempt was</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-remap-query</span>
+</span><span class="hll"><span class="nt">select</span><span class="p">:</span>
+</span><span class="p p-Indicator">-</span>  <span class="nt">none-of</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">contains</span><span class="p">:</span> <span class="s">&quot;qx=&quot;</span>
+<span class="hll"><span class="nt">do</span><span class="p">:</span>
+</span><span class="p p-Indicator">-</span>  <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;beta.service.ex&quot;</span>
+</pre></div>
+</div>
+<p>This didn’t work because the <code class="code docutils literal notranslate"><span class="pre">do</span></code> was in the wrong location. Because YAML nodes are order
+independent this is identical to</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-remap-query</span>
+</span><span class="hll"><span class="nt">do</span><span class="p">:</span>
+</span><span class="p p-Indicator">-</span>  <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;beta.service.ex&quot;</span>
+<span class="hll"><span class="nt">select</span><span class="p">:</span>
+</span><span class="p p-Indicator">-</span>  <span class="nt">none-of</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">contains</span><span class="p">:</span> <span class="s">&quot;qx=&quot;</span>
+</pre></div>
+</div>
+<p>Now the problem is clear - the traffic shifting is always done and the comparison has no directives.
+The correct configuration is</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-remap-query</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="hll"><span class="p p-Indicator">-</span>  <span class="nt">none-of</span><span class="p">:</span>
+</span>   <span class="p p-Indicator">-</span>  <span class="nt">contains</span><span class="p">:</span> <span class="s">&quot;qx=&quot;</span>
+<span class="hll">   <span class="nt">do</span><span class="p">:</span>
+</span>   <span class="p p-Indicator">-</span>  <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;beta.service.ex&quot;</span>
+</pre></div>
+</div>
+<p>The key rule here is to line up the <code class="code docutils literal notranslate"><span class="pre">do</span></code> with the containing object that should trigger the
+directives. In this case it is the comparison <a class="reference internal" href="user/ComparisonReference.en.html#none-of" title="none-of"><code class="xref txb txb-cmp docutils literal notranslate"><span class="pre">none-of</span></code></a> because the traffic should be shifted
+if that matches (i.e. <a class="reference internal" href="user/ComparisonReference.en.html#contains" title="contains"><code class="xref txb txb-cmp docutils literal notranslate"><span class="pre">contains</span></code></a> does <em>not</em> match). Therefore the <code class="code docutils literal notranslate"><span class="pre">do</span></code> should line up
+with <code class="code docutils literal notranslate"><span class="pre">none-of</span></code> so it is triggered by <code class="code docutils literal notranslate"><span class="pre">none-of</span></code>. In the erroneous case the <code class="code docutils literal notranslate"><span class="pre">do</span></code>
+lined up with <code class="code docutils literal notranslate"><span class="pre">with</span></code> and so was triggered by that <code class="code docutils literal notranslate"><span class="pre">with</span></code>. This is a bit clearer in the
+example because the configuration isn’t deeply nested. In production the difference between 5 levels
+of indentation and 6 is not always so obvious.</p>
+<p class="rubric">Summary</p>
+<p>Always line up <code class="code docutils literal notranslate"><span class="pre">do</span></code> with the directive or comparison that should trigger the directives
+in the <code class="code docutils literal notranslate"><span class="pre">do</span></code>.</p>
+</div>
+</div>
+<div class="section" id="working-with-http-fields">
+<h2>Working with HTTP fields<a class="headerlink" href="#working-with-http-fields" title="Permalink to this headline">¶</a></h2>
+<p>A main use of TxnBox is to manipulate the fields in the HTTP header. There are a variety of
+directives and extractors, classified primarily by which HTTP message is to be modified or examined
+If a particular directive or extractor is not allowed on a hook, that indicates it’s not useful. For
+instance, there is no use in changing anything in the client request during the “send proxy
+response” hook, as it would have no observable effect. Conversely the proxy response can’t be
+changed during the “read client request” hook because the proxy response doesn’t exist.</p>
+<p>The four prefixes used are</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>ua-req</p></td>
+<td><p>User agent request (inbound to proxy)</p></td>
+</tr>
+<tr class="row-even"><td><p>proxy-req</p></td>
+<td><p>Proxy request (outbound from proxy)</p></td>
+</tr>
+<tr class="row-odd"><td><p>upstream-rsp</p></td>
+<td><p>Upstream response (inbound to proxy)</p></td>
+</tr>
+<tr class="row-even"><td><p>proxy-rsp</p></td>
+<td><p>Proxy response (outbound from proxy)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The field related directives and extractors require an argument, which is the name of the HTTP
+field. This name is case insensitive because the HTTP fields names are case insensitive. The value
+is a feature expression which should evaluate to a string or a list of strings. A list of strings
+represents a list of duplicate fields, all with the sane name but distinct values, one for each
+element of the list.</p>
+<p>To set the field “Best-Band” to the string “Delain” in the proxy request</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+<p>To set the field “TLS-Source” to the SNI name and the client IP address (see <a class="reference internal" href="user/ExtractorReference.en.html#inbound-sni" title="inbound-sni"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">inbound-sni</span></code></a> and
+<a class="reference internal" href="user/ExtractorReference.en.html#inbound-addr-remote" title="inbound-addr-remote"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">inbound-addr-remote</span></code></a>)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;TLS-Source&gt;</span><span class="p">:</span> <span class="s">&quot;{inbound-sni}@{inbound-addr-remote}&quot;</span>
+</pre></div>
+</div>
+<p>For a connection that had an SNI of “delain.nl” from the address 10.12.97.156, the proxy request
+sent to the upstream would have “TLS-Source: <a class="reference external" href="mailto:delain&#46;nl&#37;&#52;&#48;10&#46;12&#46;97&#46;256">delain<span>&#46;</span>nl<span>&#64;</span>10<span>&#46;</span>12<span>&#46;</span>97<span>&#46;</span>256</a>”.</p>
+<p>Consider the case where various requests get remapped to the same upstream host name, but the upstream
+needs the value of the “Host” field from the original request. This could by copying the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field
+to the <code class="docutils literal notranslate"><span class="pre">Org-Host</span></code> field -</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Org-Host&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-field&lt;Host&gt;</span>
+</pre></div>
+</div>
+<p>If this was intended for debugging and therefore to be more human readable, it could be done as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Org-Host&gt;</span><span class="p">:</span> <span class="s">&quot;Original</span><span class="nv"> </span><span class="s">host</span><span class="nv"> </span><span class="s">was</span><span class="nv"> </span><span class="s">{ua-req-field&lt;Host&gt;}&quot;</span>
+</pre></div>
+</div>
+<p>Another common use case is to have a default value. For instance, set the field “Accept-Encoding” to
+“identity” if not already set.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Accept-Encoding&gt;</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">proxy-req-field&lt;Accept-Encoding&gt;</span> <span class="p p-Indicator">,</span> <span class="p p-Indicator">{</span><span class="nt"> else</span><span class="p">:</span> <span class="s">&quot;identity&quot;</span> <span class="p p-Indicator">}</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>This assigns to “Accept-Encoding” as before, but the modifier <a class="reference internal" href="user/ModifierReference.en.html#else" title="else"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">else</span></code></a> is applied after
+retrieving the current value of that field. This modifier keeps the original value unless it’s
+empty, in which case it uses its own value.</p>
+<p>Because the input is YAML, the previous example could also be written in long hand as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Accept-Encoding&gt;</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">proxy-req-field&lt;Accept-Encoding&gt;</span>
+<span class="p p-Indicator">-</span> <span class="nt">else</span><span class="p">:</span> <span class="s">&quot;identity&quot;</span>
+</pre></div>
+</div>
+<p>From the TxnBox point of view, these are indistinguishable. In both cases the feature expression is
+a list of an unquoted string and an object, the first treated as an extractor and the second as
+modifier. Further note the extractor being the same field as the directive is happenstance - it
+could be any field, or any extractor or feature expression. This is how values can be easily copied
+between fields.</p>
+<p>A field can also be removed by assigning it the <code class="code docutils literal notranslate"><span class="pre">NULL</span></code> value. To remove the “X-Forwarded-For”
+field from the client request</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-field&lt;X-Forwarded-For&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NULL</span>
+</pre></div>
+</div>
+<p>Note this is distinct from assigning the string “NULL”</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-field&lt;X-Forwarded-For&gt;</span><span class="p">:</span> <span class="s">&quot;NULL&quot;</span>
+</pre></div>
+</div>
+<p>and not the same as assigning the empty string, such that the field is present but without a value</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-field&lt;X-Forwarded-For&gt;</span><span class="p">:</span> <span class="s">&quot;&quot;</span>
+</pre></div>
+</div>
+<p>For a list based example consider the <code class="docutils literal notranslate"><span class="pre">Via</span></code> header. This can extend over multiple fields. For this
+reason the extractor <code class="code docutils literal notranslate"><span class="pre">proxy-req-field</span></code> can return a list.</p>
+</div>
+<div class="section" id="rewriting-urls">
+<h2>Rewriting URLs<a class="headerlink" href="#rewriting-urls" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of ways to rewrite URLs in a client request. It can be done by specifying the
+entire replacement URL or by changing it piecewise.</p>
+<p>The primary directive for this in a remap invoked configuration is the <a class="reference internal" href="user/DirectiveReference.en.html#ua-req-url" title="ua-req-url"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">ua-req-url</span></code></a> directive. This always applies to
+the user agent request, and takes a full URL as its value. The user agent request is updated to be to that
+URL. If the existing URL is a full URL, it is changed to the URL in the value. Otherwise only
+the path is copied over. If the value URL scheme is different, the request is modified to use
+that scheme (e.g., if the value URL has “<a class="reference external" href="https://">https://</a>” then the proxy request will use TLS). The
+“Host field is also updated to contain the host from the value URL.</p>
+<p>For instance, to send the request to the upstream “app.txnbox”</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;app.txnbox&quot;</span>
+</pre></div>
+</div>
+<p>This will change the host in the URL if already present and set the “Host” field. This could also
+be done as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ua-req-url-host</span><span class="p">:</span> <span class="s">&quot;app.txnbox&quot;</span>
+<span class="nt">ua-req-field&lt;Host&gt;</span><span class="p">:</span> <span class="s">&quot;app.txnbox&quot;</span>
+</pre></div>
+</div>
+<p>The difference is this will cause the host to be in the URL regardless if it was already present.</p>
+</div>
+<div class="section" id="using-variables">
+<h2>Using Variables<a class="headerlink" href="#using-variables" title="Permalink to this headline">¶</a></h2>
+<p>For each transaction, TxnBox supports a set of named variables. The names can be arbitrary strings
+and the value any feature. A variable is set using the <a class="reference internal" href="user/DirectiveReference.en.html#var" title="var"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">var</span></code></a> directive with an
+argument of the variable name and the value a feature. To set the variable “Best-Band” to “Delain”</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">var&lt;Best-Band&gt;</span><span class="p">:</span> <span class="s">&quot;Delain&quot;</span>
+</pre></div>
+</div>
+<p>To later set the field “X-Best-Band” to the value of that variable</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;X-Best-Band&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">var&lt;Best-Band&gt;</span>
+</pre></div>
+</div>
+<p>Note variables are not fields in the HTTP transaction, they are entirely an internal feature of
+TxnBox. In the preceding example, there is only a relationship between the variable “Best-Band” and
+the proxy request field “X-Best-Band” because of the explicit assignment. If either is changed
+later, the other is not <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. Each transaction starts with no variables set, variables do not carry
+over from one transaction to any other.</p>
+<p>One common use case for variables is to cache a value in an early hook for use in a later hook. Note
+there is only one transaction name space for variables and variables set in global hooks are
+available in remap and vice versa. This is handy if some remap behavior should depend on the
+original client request URL or host, and not on the post-remap one. This can be done, in a limited
+way, with the “proxy.config.http.pristine_host_header” configuration, but that has other potential
+side effects and may not be usable because of other constraints. In contrast, caching the original
+host name in a variable is easy</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req</span>
+<span class="nt">do</span><span class="p">:</span>
+   <span class="nt">var&lt;pristine-host&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-host</span>
+</pre></div>
+</div>
+<p>A specific use case for this is handling cross site scripting fields, where these should be set
+unless the original request was to the static image server at “images.txnbox”, which may have been
+remapped to a different upstream shard, changing the host in the client request. This could be done
+by selecting on the “pristine-host” variable and setting the cross site fields if that is not
+“image.txnbox” or a subdomain of it.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-sp</span>
+<span class="nt">do</span><span class="p">:</span>
+   <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">var&lt;pristine-host&gt;</span>
+   <span class="nt">select</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">none-of</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span>  <span class="nt">tld</span><span class="p">:</span> <span class="s">&quot;image.txnbox&quot;</span> <span class="c1"># This domain or any subdomain</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span>  <span class="nt">proxy-rsp-field&lt;Expect-CT&gt;</span><span class="p">:</span> <span class="s">&quot;max-age=31536000,</span><span class="nv"> </span><span class="s">report-uri=\&quot;http://csp.txnbox\&quot;&quot;</span>
+      <span class="p p-Indicator">-</span>  <span class="nt">proxy-rsp-field&lt;X-XSS-Protection&gt;</span><span class="p">:</span> <span class="s">&quot;1;</span><span class="nv"> </span><span class="s">mode=block&quot;</span>
+</pre></div>
+</div>
+<p>Variables can be used to simplify configurations, if there is a complex configuration needed in
+multiple places, the results can be placed in a variable and then that variable’s value used later,
+avoiding much of the complexity. For instance, remap rules could set a variable as a flag to
+indicate which remap rule triggered.</p>
+<div class="section" id="filter-techniques">
+<span id="filter-guide"></span><h3>Filter Techniques<a class="headerlink" href="#filter-techniques" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="user/ModifierReference.en.html#filter" title="filter"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">filter</span></code></a> modifier can be used to perform a variety of tasks. The most common is to
+filter out elements in a list.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">filter</span></code> can also be used as a primitive lookup table, akin to a “switch” or “case” statement.
+Consider an example where a proxy request field should be set to “high” for a set of domains,
+“medium” for another, and “low” for any other domain. This could be done as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">proxy-req-field&lt;Priority&gt;</span><span class="p">:</span>
+<span class="p p-Indicator">-</span>  <span class="l l-Scalar l-Scalar-Plain">ua-req-host</span>
+<span class="p p-Indicator">-</span>  <span class="nt">filter</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">tld</span><span class="p">:</span> <span class="s">&quot;important.tld&quot;</span>
+      <span class="nt">replace</span><span class="p">:</span> <span class="s">&quot;high&quot;</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">tld</span><span class="p">:</span> <span class="s">&quot;interesting.tld&quot;</span>
+      <span class="nt">replace</span><span class="p">:</span> <span class="s">&quot;medium&quot;</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">replace</span><span class="p">:</span> <span class="s">&quot;low&quot;</span>
+</pre></div>
+</div>
+<p>In essence, each comparison does a <code class="docutils literal notranslate"><span class="pre">replace</span></code> to provide the translated value, with a final
+<code class="docutils literal notranslate"><span class="pre">replace</span></code> with no comparison that matches anything not already matched.</p>
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>These are similar to the “&#64;” headers for core Traffic Server, but don’t have any name restriction and are
+not related to any specific header. They are stored entirely inside the TxnBox plugin.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="examples.en.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="selection.en.html" class="btn btn-neutral float-left" title="Selection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

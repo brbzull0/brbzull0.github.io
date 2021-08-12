@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Extractor Development &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Directive Development" href="dev-directive.en.html" />
+    <link rel="prev" title="Memory Mangement" href="memory-management.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dev-guide.en.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.en.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory-management.en.html">Memory Mangement</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Extractor Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-methods">Required Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#string-extractor">String Extractor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev-directive.en.html">Directive Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-guide.en.html#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="dev-guide.en.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Extractor Development</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/dev-extractor.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extractor-development">
+<span id="dev-extractor"></span><h1>Extractor Development<a class="headerlink" href="#extractor-development" title="Permalink to this headline">¶</a></h1>
+<p>Extractors are referenced by feature expressions. This means every extractor must be able to output
+to a string, and may optionally provide typed data.</p>
+<p>Unlike other elements, use of an extractor involves referencing a global instance, rather than
+instantiating an instance per use. This is because</p>
+<ul class="simple">
+<li><p>Extractors are used far more frequently.</p></li>
+<li><p>Most extractors do not require any local storage or state.</p></li>
+</ul>
+<p>All extractors are implemented by a class. This must be a subclass of <span>Extractor</span>. By
+convention the name of the class should be “Ex_” followed by the extractor name. For example the
+class <code class="code docutils literal notranslate"><span class="pre">Ex_ua_req_url</span></code> is the implementation of the “ua-req-url” extractor.</p>
+<p>By convention, a <code class="code docutils literal notranslate"><span class="pre">TextView</span></code> named <code class="code docutils literal notranslate"><span class="pre">NAME</span></code> is declared to define the name of the
+extractor. This isn’t required, the name is defined by the registration call, but it’s convenient.</p>
+<p>There are several methods that are needed to be fully functional. Several of them take a
+<span>Extractor::Spec</span> parameter. For any specific use of an extractor there is a single instance of
+this class which is passed to all methods of the extractor. In some sense, this represents the
+per use instance data. This class is a subclass of the BufferWriter specifier to provide additional
+members. These are</p>
+<dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">_exf</span></code></dt><dd><p>A pointer to the extractor instance. This is used to call the extractor during feature extraction.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">_name</span></code></dt><dd><p>The name of the extractor used in the feature expression.</p>
+</dd>
+<dt><code class="code docutils literal notranslate"><span class="pre">_data</span></code></dt><dd><p>A memory span which is by default empty. It can be used to store per instance data if needed as
+described below in the examples.</p>
+</dd>
+</dl>
+<div class="section" id="required-methods">
+<h2>Required Methods<a class="headerlink" href="#required-methods" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">swoc</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">ActiveType</span><span class="o">&gt;</span> <span class="n">validate</span><span class="p">(</span><span class="n">Config</span> <span class="o">&amp;</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">Spec</span> <span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">swoc</span><span class="o">::</span><span class="n">TextView</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">arg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This is called during configuration loading when the extractor is parsed. It is expected to do two things -</p>
+<ul class="simple">
+<li><p>Validate the argument if any.</p></li>
+<li><p>Indicate the return type.</p></li>
+</ul>
+<p>If the extractor can only return a string and has no argument, the base implementation can be used,
+which will always return the types <code class="docutils literal notranslate"><span class="pre">STRING</span></code> and <code class="docutils literal notranslate"><span class="pre">NIL</span></code> and no errors.</p>
+<dl class="simple">
+<dt><em>cfg</em></dt><dd><p>The configuration object, representing the configuration being loaded.</p>
+</dd>
+<dt><em>spec</em></dt><dd><p>The parsed specifier for the extractor. This can also be used to store instance data if needed.</p>
+</dd>
+<dt><em>arg</em></dt><dd><p>The argument to the extractor, if any. Arguments are specified by adding angle enclosed text
+after the extractor. For instance the proxy response field extrator <a class="reference internal" href="../user/ExtractorReference.en.html#proxy-rsp-field" title="proxy-rsp-field"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">proxy-rsp-field</span></code></a>
+requires an argument that is the field name - <code class="code docutils literal notranslate"><span class="pre">proxy-rsp-field&lt;Best-Band&gt;</span></code> to get the field
+with the name “Best-Band’. If an argument is required, the <code class="code docutils literal notranslate"><span class="pre">validate</span></code> method must parse the
+argument and validate it, returning an error if it is invalid.</p>
+</dd>
+</dl>
+<p>An extractor that returns any type other than a string must override this method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Feature</span> <span class="nf">extract</span><span class="p">(</span><span class="n">Context</span> <span class="o">&amp;</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">Spec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This method must be overridden. This is called when the value for the extractor is needed and should
+perform the extraction, returning the result.</p>
+<dl class="simple">
+<dt><em>ctx</em></dt><dd><p>The context for the transaction.</p>
+</dd>
+<dt><em>spec</em></dt><dd><p>The parsed specifier. This is the same instance passed to <code class="code docutils literal notranslate"><span class="pre">validate</span></code>.</p>
+</dd>
+</dl>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">swoc</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span> <span class="nf">format</span><span class="p">(</span><span class="n">swoc</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">Spec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">Context</span> <span class="o">&amp;</span> <span class="n">ctx</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This method is called when the value for the extractor is needed in a string. The method must output
+the extracted value to the buffer as a string.</p>
+<dl class="simple">
+<dt><em>w</em></dt><dd><p>The output buffer.</p>
+</dd>
+<dt><em>spec</em></dt><dd><p>The parsed specifier. This is the same instance passed to <code class="code docutils literal notranslate"><span class="pre">validate</span></code>.</p>
+</dd>
+<dt><em>ctx</em></dt><dd><p>The context instance.</p>
+</dd>
+</dl>
+<p>The <code class="code docutils literal notranslate"><span class="pre">extract</span></code> and <code class="code docutils literal notranslate"><span class="pre">format</span></code> mehods are closely related and generally one will invoke the
+other, most frequently <code class="code docutils literal notranslate"><span class="pre">format</span></code> calling <code class="code docutils literal notranslate"><span class="pre">extract</span></code> and passing the result to
+<code class="code docutils literal notranslate"><span class="pre">bwformat</span></code> to generate the string output. Therefore there is a default implementation of this
+method.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">return</span> <span class="n">bwformat</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">extract</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">spec</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>If this suffices, then it does not be to be overridden. There are cases where this is necessary
+which is why the methods are separate.</p>
+<p>In some cases an extractor needs to store instance related information. This should be allocated
+from configuration memory. The specifier has a member <span>Extractor::Spec::_data</span> which holds a
+<code class="code docutils literal notranslate"><span class="pre">MemSpan&lt;void&gt;</span></code>. Because the same specifier instance is passed to <code class="code docutils literal notranslate"><span class="pre">validate</span></code> and
+<code class="code docutils literal notranslate"><span class="pre">extract</span></code> a configuration allocated span can be stored there for later retrieval. While any
+span can be assigned to a void span, the <code class="code docutils literal notranslate"><span class="pre">MemSpan::rebind&lt;T&gt;</span></code> method must be used to retrieve the actual
+type.</p>
+<div class="section" id="string-extractor">
+<h3>String Extractor<a class="headerlink" href="#string-extractor" title="Permalink to this headline">¶</a></h3>
+<p>For performance reasons string extractors are required to extract into transient context memory. If the
+output size isn’t reasonably bounded at extraction time then it may be necessary to attempt the
+extraction, detect the transient memory length being insufficient, and trying again. To simplify this
+there is a class, <span>StringExtractor</span> to help with the implementation. This requires the extractor
+to implement the <code class="code docutils literal notranslate"><span class="pre">format</span></code> method and uses that to implement the <code class="code docutils literal notranslate"><span class="pre">extract</span></code> method.</p>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Consider an extractor for the inbound transaction count. The code is in <a class="reference external" href="https://github.com/solidwallofcode/txn_box/tree/0.4.0/plugin/src/Ex_Ssn.cc">plugin/src/Ex_Ssn.cc</a>.</p>
+<p>The implementation is done in two parts</p>
+<p>Specifically for extractor, the Traffic Server plugin API support must be extended to call
+<code class="code docutils literal notranslate"><span class="pre">TSHttpSsnTransactionCount</span></code> to perform the actual extraction. This is straight forward. A
+method is added to the HTTP session support class <code class="code docutils literal notranslate"><span class="pre">ts::HttpSsn</span></code> in
+<a class="reference external" href="https://github.com/solidwallofcode/txn_box/tree/0.4.0/plugin/include/txn_box/ts_util.h">plugin/include/txn_box/ts_util.h</a>.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">unsigned</span> <span class="nf">HttpSsn::txn_count</span><span class="p">()</span> <span class="k">const</span> <span class="p">{</span> <span class="k">return</span> <span class="n">TSHttpSsnTransactionCount</span><span class="p">(</span><span class="n">_ssn</span><span class="p">);</span> <span class="p">};</span>
+</pre></div>
+</div>
+<p>Given access to the data to be extracted, the next step is to define the extractor class.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Ex_inbound_txn_count</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Extractor</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+  <span class="k">static</span> <span class="k">constexpr</span> <span class="n">TextView</span> <span class="n">NAME</span> <span class="p">{</span> <span class="s">&quot;inbound-txn-count&quot;</span> <span class="p">};</span>
+
+  <span class="n">Rv</span><span class="o">&lt;</span><span class="n">ActiveType</span><span class="o">&gt;</span> <span class="n">validate</span><span class="p">(</span><span class="n">Config</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Extractor</span><span class="o">::</span><span class="n">Spec</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">TextView</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+
+  <span class="n">Feature</span> <span class="nf">extract</span><span class="p">(</span><span class="n">Context</span> <span class="o">&amp;</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">Spec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">)</span>  <span class="k">override</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>This is a minimal implementation. The method implemtations are straight forward.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">ActiveType</span><span class="o">&gt;</span> <span class="n">Ex_inbound_txn_count</span><span class="o">::</span><span class="n">validate</span><span class="p">(</span><span class="n">Config</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">Extractor</span><span class="o">::</span><span class="n">Spec</span><span class="o">&amp;</span><span class="p">,</span> <span class="n">TextView</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">ActiveType</span><span class="p">{</span> <span class="n">INTEGER</span> <span class="p">};</span> <span class="c1">// never a problem, just return the type.</span>
+<span class="p">}</span>
+
+<span class="n">Feature</span> <span class="n">Ex_inbound_txn_count</span><span class="o">::</span><span class="n">extract</span><span class="p">(</span><span class="n">Context</span> <span class="o">&amp;</span><span class="n">ctx</span><span class="p">,</span> <span class="n">Spec</span> <span class="k">const</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">feature_type_for</span><span class="o">&lt;</span><span class="n">INTEGER</span><span class="o">&gt;</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">inbound_ssn</span><span class="p">().</span><span class="n">txn_count</span><span class="p">());</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="code docutils literal notranslate"><span class="pre">validate</span></code> method doesn’t check for any errors (as there is no argument) and returns an
+active type of “INTEGER” which is the type of value extracted. The <code class="code docutils literal notranslate"><span class="pre">extract</span></code> method retrieves
+the inbound session from the context instance and then gets the transaction count from there. The
+method is required to return a <span>Feature</span> instance. This type can be constructed from any of the
+valid feature types. The meta-function <span>feature_type_for</span> is used to retrieve the feature type
+used for INTEGER values and the methods constructions casts the transaction count to that type and
+returns it, which in turn constructs a feature with the value and type.</p>
+<p>This provides the implementation but the extractor must be declared and registered to be used. This is
+done in a static initializer in the source file.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="p">{</span>
+   <span class="n">Ex_inbound_txn_count</span> <span class="n">inbound_txn_count</span><span class="p">;</span>
+
+   <span class="p">[[</span><span class="n">maybe_unused</span><span class="p">]]</span> <span class="kt">bool</span> <span class="n">INITIALIZED</span> <span class="o">=</span> <span class="p">[]</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">bool</span> <span class="p">{</span>
+     <span class="n">Extractor</span><span class="o">::</span><span class="n">define</span><span class="p">(</span><span class="n">Ex_inbound_txn_count</span><span class="o">::</span><span class="n">NAME</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">inbound_txn_count</span><span class="p">);</span>
+
+     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+   <span class="p">}</span> <span class="p">();</span>
+<span class="p">}</span> <span class="c1">// namespace</span>
+</pre></div>
+</div>
+<p>This declares a file scope instance of the extractor class and a static <code class="code docutils literal notranslate"><span class="pre">bool</span></code> variable
+“INITIALIZED”. The value is set to the result of a lambda that takes no arguments. The point of this
+is to force the invocation of the lambda which in turns calls <span>Extractor::define</span> to define the
+“inbound-txn-count” extractor, passing the extractor name and implementation class instance. The
+enclosing anonymous <code class="code docutils literal notranslate"><span class="pre">namespace</span></code> helps avoid name collisions by preventing any external
+linkage.</p>
+<p>As an example of instance storage, the random extractor (<span>Ex_random</span>) must store two integers
+which are the limits of the generated value. The argument for this is parsed in <code class="code docutils literal notranslate"><span class="pre">validate</span></code> and
+stored using the code</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">values</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">.</span><span class="n">alloc_span</span><span class="o">&lt;</span><span class="n">feature_type_for</span><span class="o">&lt;</span><span class="n">INTEGER</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">spec</span><span class="p">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">values</span><span class="p">;</span> <span class="c1">// remember where the storage is.</span>
+</pre></div>
+</div>
+<p><em>values</em> gets a configuratin allocated span the size of two integers. This is then cached in
+the specifier and other code parses the arguments and sets the values in the span. During invocation
+in <code class="code docutils literal notranslate"><span class="pre">extract</span></code> the values are retrieved.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">values</span> <span class="o">=</span> <span class="n">spec</span><span class="p">.</span><span class="n">_data</span><span class="p">.</span><span class="n">rebind</span><span class="o">&lt;</span><span class="n">feature_type_for</span><span class="o">&lt;</span><span class="n">INTEGER</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>As before, <em>values</em> is a <code class="code docutils literal notranslate"><span class="pre">MemSpan&lt;feature_type_for&lt;INTEGER&gt;&gt;</span></code> of size 2 and therefore the
+values can be accessed as <code class="code docutils literal notranslate"><span class="pre">values[0]</span></code> and <code class="code docutils literal notranslate"><span class="pre">values[1]</span></code>.</p>
+<p>More commonly a nested class will be defined and used as the configuration type, allocating a span
+of size 1, but the mechanism is the same.</p>
+<p>Note this memory is uninitialized. If a class instance is to be stored it must be completely
+assigned by the code (as is the case for <code class="code docutils literal notranslate"><span class="pre">Ex_random</span></code>) or placement <code class="code docutils literal notranslate"><span class="pre">new</span></code> should be used
+to construct to a known state. It is usually the case that all of the members are set (because if
+the member isn’t set during configuration load, why is it there?) but sometimes more complex
+initialization is required.</p>
+<p>For the random extractor this could have been done with</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="n">I</span> <span class="o">=</span> <span class="n">feature_type_for</span><span class="o">&lt;</span><span class="n">INTEGER</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="k">auto</span> <span class="n">values</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">.</span><span class="n">alloc_span</span><span class="o">&lt;</span><span class="n">I</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">values</span><span class="p">.</span><span class="n">apply</span><span class="p">([](</span><span class="n">I</span><span class="o">&amp;</span> <span class="n">i</span><span class="p">)</span> <span class="p">{</span> <span class="k">new</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">i</span><span class="p">)</span> <span class="n">I</span><span class="p">;</span> <span class="p">});</span>
+<span class="n">spec</span><span class="p">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">values</span><span class="p">;</span> <span class="c1">// remember where the storage is.</span>
+</pre></div>
+</div>
+<p>While clearly not really useful for an integral type, the technique is identical for a class, only
+the type is the class intead of the feature integer value type.</p>
+<p>Or, if zero initialized memory suffices</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">auto</span> <span class="n">values</span> <span class="o">=</span> <span class="n">cfg</span><span class="p">.</span><span class="n">alloc_span</span><span class="o">&lt;</span><span class="n">feature_type_for</span><span class="o">&lt;</span><span class="n">INTEGER</span><span class="o">&gt;&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">memset</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="n">spec</span><span class="p">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">values</span><span class="p">;</span> <span class="c1">// remember where the storage is.</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This configuration allocated memory is <em>per configuration</em>. That means it can be accessed from
+multiple threads in different transactions simultaneously.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dev-directive.en.html" class="btn btn-neutral float-right" title="Directive Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="memory-management.en.html" class="btn btn-neutral float-left" title="Memory Mangement" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

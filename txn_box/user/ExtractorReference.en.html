@@ -1,0 +1,1592 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Extractor Reference &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Directive Reference" href="DirectiveReference.en.html" />
+    <link rel="prev" title="Architecture" href="../arch.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#extractors">Extractors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#http-messages">HTTP Messages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#host-and-port-handling">Host and Port Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paths">Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-agent-request">User Agent Request</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pre-remap">Pre-Remap</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#rewrite-rule-urls">Rewrite Rule URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proxy-request">Proxy Request</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upstream-response">Upstream Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#proxy-response">Proxy Response</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#transaction">Transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#duration">Duration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#utility">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Extractor Reference</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/ExtractorReference.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extractor-reference">
+<span id="id1"></span><h1>Extractor Reference<a class="headerlink" href="#extractor-reference" title="Permalink to this headline">¶</a></h1>
+<p>A feature is created by applying a feature expression, which consists of a mix of literal strings
+and extractors.</p>
+<p>For convenience, because a single extractor is by far the most common case, unquoted strings
+are treated as a single extractor. Consider the extractor <a class="reference internal" href="#ua-req-host" title="ua-req-host"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">ua-req-host</span></code></a>. This can be
+used in the following feature expressions, presuming the host is “example.one”.</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 47%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature String</p></th>
+<th class="head"><p>Extracted Feature</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;Host</span> <span class="pre">=</span> <span class="pre">{ua-req-host}&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Host</span> <span class="pre">=</span> <span class="pre">example.one</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;Host</span> <span class="pre">=</span> <span class="pre">{uareq-host:*&lt;15}&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Host</span> <span class="pre">=</span> <span class="pre">example.one***</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ua-req-host</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">example.one</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;ua-req-host&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ua-req-host</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;{ua-req-host}&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">example.one</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;{{ua-req-host}}&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{ua-req-host}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">!literal</span> <span class="pre">&quot;{ua-req-host}&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{ua-req-host}</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Extractors may have or require parameters that affect what is extracted which are supplied as
+an argument. This enables using these parameters inside a feature expression.</p>
+</div>
+<div class="section" id="extractors">
+<h1>Extractors<a class="headerlink" href="#extractors" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="http-messages">
+<h2>HTTP Messages<a class="headerlink" href="#http-messages" title="Permalink to this headline">¶</a></h2>
+<p>There is a lot of information in the HTTP messages handled by Traffic Server and many extractors to access it.
+These are divided in to families, each one based around one of the basic messages -</p>
+<ul class="simple">
+<li><p>User Agent Request - the request sent by the user agent to Traffic Server.</p></li>
+<li><p>Proxy Request - the request sent by Traffic Server (the proxy) to the upstream.</p></li>
+<li><p>Upstream Response - the response sent by the upstream to Traffic Server in response to the Proxy Request.</p></li>
+<li><p>Proxy Response - the response sent by Traffic Server to the user agent.</p></li>
+</ul>
+<p>There is also the “pre-remap” or “pristine” user agent URL. This is a URL only, not a request, and
+is a copy of the user agent URL just before URL rewriting.</p>
+<p>In addition, for the remap hook, there are two other URLs (not requests) that are available. These
+are the “target” and “replacement” URLs which are the values literally specified in the URL rewrite
+rule. Note these can be problematic for regular expression remap rules as they are frequently not
+valid URLs.</p>
+<div class="section" id="host-and-port-handling">
+<h3>Host and Port Handling<a class="headerlink" href="#host-and-port-handling" title="Permalink to this headline">¶</a></h3>
+<p>The host and port for a request or URL require special handling due to vagaries in the HTTP
+specification. The most important distinction is these can appear in two different places, the URL
+itself or in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field of the request, or both. This can make modifying them in a specific
+way challenging. The complexity described here is to make it possible to do exactly what is needed.
+In particular, although the HTTP specification says if the host and port are in the URL and in the
+<code class="docutils literal notranslate"><span class="pre">Host</span></code> header, these must be the same, in _practice_ many proxies are configured to make them
+different before sending the request upstream from the proxy, generally so that the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field
+is based on what the user agent sent and the URL is changed to be where the proxy routes the
+request. Therefore there are extactors which work on the request as a whole, considering both the
+URL and the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field, and others that always use the URL.</p>
+<p>Beyond this, the port is optional and this presents some problems. One is a result of the ATS plugin
+API which makes it impossible to distinguish between “<a class="reference external" href="http://delain.nl">http://delain.nl</a>” and “<a class="reference external" href="http://delain.nl:80">http://delain.nl:80</a>”.
+Both port 80 and port 443 are treated specially, the former for scheme “HTTP” and the latter for
+“HTTPS”. I intend to add that at some point but currently it cannot be done. The result is it is
+difficult to impossible to properly set these values in a configuration language such as TxnBox has
+and even if possible would be rather painful to do repeatedly. Therefore TxnBox has the concept of
+“location” which corresponds to the host and port (the HTTP specification calls this the <a class="reference external" href="https://tools.ietf.org/html/rfc3986#section-3.2">authority</a> but everyone thought using the term was a
+terrible idea). This makes it easy to access the host, the port, or both. This is more important
+when interacting with directives to set those values. Here is a chart to illustrate the three terms</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 27%" />
+<col style="width: 5%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>url</p></th>
+<th class="head"><p>host</p></th>
+<th class="head"><p>port</p></th>
+<th class="head"><p>loc</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="http://evil-kow.ex/path">http://evil-kow.ex/path</a></p></td>
+<td><p>evil-kow.ex</p></td>
+<td><p>80</p></td>
+<td><p>evil-kow.ex</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="http://evil-kow.ex/path:80">http://evil-kow.ex/path:80</a></p></td>
+<td><p>evil-kow.ex</p></td>
+<td><p>80</p></td>
+<td><p>evil-kow.ex</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://evil-kow.ex/path">https://evil-kow.ex/path</a></p></td>
+<td><p>evil-kow.ex</p></td>
+<td><p>443</p></td>
+<td><p>evil-kow.ex</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="http://evil-kow.ex:4443/path">http://evil-kow.ex:4443/path</a></p></td>
+<td><p>evil-kow.ex</p></td>
+<td><p>4443</p></td>
+<td><p>evil-kow.ex:4443</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="https://evil-kow.ex:4443/path">https://evil-kow.ex:4443/path</a></p></td>
+<td><p>evil-kow.ex</p></td>
+<td><p>4443</p></td>
+<td><p>evil-kow.ex:4443</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="paths">
+<h3>Paths<a class="headerlink" href="#paths" title="Permalink to this headline">¶</a></h3>
+<p>Unfortunately due to how the plugin API works, paths are a bit odd. One result is</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Paths do not have a leading slash</p>
+</div>
+<p>Given the URL “<a class="reference external" href="http://delain.nl/pix">http://delain.nl/pix</a>”, the path is “pix”, not “/pix”. The existence of the slash is
+implied by the existence of the path. There is, unfortunately, no way to distinguish a missing from
+an empty path. E.g. “<a class="reference external" href="http://delain.nl">http://delain.nl</a>” and “<a class="reference external" href="http://delain.nl/">http://delain.nl/</a>” are not distinguishable by looking at
+the value from a path extractor, both will yield an empty string. This matters less than it appears
+because both ATS and the upstream will treat them identically. Note this applies only to the slash
+separating the “authority” / “location” from the path. The path for the URLs
+“<a class="reference external" href="http://delain.nl/pix/charlotte">http://delain.nl/pix/charlotte</a>” and “<a class="reference external" href="http://delain.nl/pix/charlotte/">http://delain.nl/pix/charlotte/</a>” are distinguishable.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#ex-user-agent"><span class="std std-ref">User Agent Request</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-pre-remap"><span class="std std-ref">Pre-Remap</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-rewrite-rule-urls"><span class="std std-ref">Rewrite Rule URLs</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-proxy-request"><span class="std std-ref">Proxy Request</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-upstream-response"><span class="std std-ref">Upstream Response</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-proxy-response"><span class="std std-ref">Proxy Response</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-transaction"><span class="std std-ref">Transaction</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-session"><span class="std std-ref">Session</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-duration"><span class="std std-ref">Duration</span></a></p></li>
+<li><p><a class="reference internal" href="#ex-utility"><span class="std std-ref">Utility</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="user-agent-request">
+<span id="ex-user-agent"></span><h3>User Agent Request<a class="headerlink" href="#user-agent-request" title="Permalink to this headline">¶</a></h3>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-method">
+<code class="descname">ua-req-method</code><a class="headerlink" href="#ua-req-method" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The user agent request method.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-url">
+<code class="descname">ua-req-url</code><a class="headerlink" href="#ua-req-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The URL in the user agent request.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-scheme">
+<code class="descname">ua-req-scheme</code><a class="headerlink" href="#ua-req-scheme" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The URL scheme in the user agent request.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-loc">
+<code class="descname">ua-req-loc</code><a class="headerlink" href="#ua-req-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The location for the request, consisting of the host and the optional port. This is retrieved
+from the URL if present, otherwise from the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-host">
+<code class="descname">ua-req-host</code><a class="headerlink" href="#ua-req-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>Host for the user agent request. This is retrieved from the URL if present, otherwise from the
+<code class="docutils literal notranslate"><span class="pre">Host</span></code> field. This does not include the port.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-port">
+<code class="descname">ua-req-port</code><a class="headerlink" href="#ua-req-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port for the user agent request. This is pulled from the URL if present, otherwise from
+the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field. If not specified, the canonical default based on the scheme is used.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-path">
+<code class="descname">ua-req-path</code><a class="headerlink" href="#ua-req-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The path of the URL in the user agent request. This does not include a leading slash.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-query">
+<code class="descname">ua-req-query</code><a class="headerlink" href="#ua-req-query" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The query string for the user agent request if present, an empty string if not.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-query-value">
+<code class="descname">ua-req-query-value</code><a class="headerlink" href="#ua-req-query-value" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Query parameter key.</dd>
+</dl>
+<div class="compound">
+<p>The value for a specific query parameter, identified by key. This assumes the standard format for
+a query string, key / value pairs (joined by ‘=’) separated by ‘&amp;’ or ‘;’. The key comparison
+is case insensitive. <code class="docutils literal notranslate"><span class="pre">NIL</span></code> is returned if the key is not found.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-fragment">
+<code class="descname">ua-req-fragment</code><a class="headerlink" href="#ua-req-fragment" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The fragment of the URL in the user agent request if present, an empty string if not.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-url-host">
+<code class="descname">ua-req-url-host</code><a class="headerlink" href="#ua-req-url-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>Host for the user agent request URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-url-port">
+<code class="descname">ua-req-url-port</code><a class="headerlink" href="#ua-req-url-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port for the user agent request URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-url-loc">
+<code class="descname">ua-req-url-loc</code><a class="headerlink" href="#ua-req-url-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The location for the user agent request URL, consisting of the host and the optional port.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ua-req-field">
+<code class="descname">ua-req-field</code><a class="headerlink" href="#ua-req-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>NULL, string, string list</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">name</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">The value of a field in the client request. This requires a field name as a argument. To
+get the value of the “Host” field the extractor would be “ua-req-field&lt;Host&gt;”. The field name is
+case insensitive.</p>
+<p class="compound-last">If the field is not present, the <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is returned. Note this is distinct from the
+empty string which is returned if the field is present but has no value. If there are duplicate
+fields then a string list is returned, each element of which corresponds to a field.</p>
+</div>
+<div class="section" id="pre-remap">
+<span id="ex-pre-remap"></span><h4>Pre-Remap<a class="headerlink" href="#pre-remap" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><p>The following extractors extract data from the user agent request URL, but from the URL as it was
+before URL rewriting (“remapping”). Only the URL is preserved, not any of the fields or the
+method. These are referred to elsewhere as “pristine” but that is a misnomer. If the user agent
+request is altered before URL rewriting, that will be reflected in the data from these
+extractors. These do not necessarily return the URL as it was received by ATS from the user
+agent. All of these have an alias with “pristine” instead of “pre-remap” for old school
+operations staff. There are no directives to modify these values, they are read only.</p>
+</div></blockquote>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-scheme">
+<code class="descname">pre-remap-scheme</code><a class="headerlink" href="#pre-remap-scheme" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The URL scheme in the pre-remap user agent request URL.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-url">
+<code class="descname">pre-remap-url</code><a class="headerlink" href="#pre-remap-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The full URL of the pre-remap user agent request.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-path">
+<code class="descname">pre-remap-path</code><a class="headerlink" href="#pre-remap-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The URL path in the pre-remap user agent request URL. This does not include a leading slash.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-host">
+<code class="descname">pre-remap-host</code><a class="headerlink" href="#pre-remap-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The host in the pre-remap user agent request URL. This does not include the port.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-port">
+<code class="descname">pre-remap-port</code><a class="headerlink" href="#pre-remap-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The port in the pre-remap user agent request URL. If not specified, the canonical default based
+on the scheme is used.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-query">
+<code class="descname">pre-remap-query</code><a class="headerlink" href="#pre-remap-query" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>The query string for the pre-remap user agent request URL.</p>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-query-value">
+<code class="descname">pre-remap-query-value</code><a class="headerlink" href="#pre-remap-query-value" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Query parameter key.</dd>
+</dl>
+<div class="compound">
+<p>The value for a specific query parameter, identified by key. This assumes the standard format for
+a query string, key / value pairs (joined by ‘=’) separated by ‘&amp;’ or ‘;’. The key comparison
+is case insensitive. <code class="docutils literal notranslate"><span class="pre">NIL</span></code> is returned if the key is not found.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="pre-remap-fragment">
+<code class="descname">pre-remap-fragment</code><a class="headerlink" href="#pre-remap-fragment" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The fragment of the URL in the pre-remap user agent request if present, an empty string if not.</p>
+</div>
+</div>
+</div>
+<div class="section" id="rewrite-rule-urls">
+<span id="ex-rewrite-rule-urls"></span><h3>Rewrite Rule URLs<a class="headerlink" href="#rewrite-rule-urls" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>During URL rewriting there are two additional URLs available, <a class="reference external" href="https://docs.trafficserver.apache.org/en/latest/admin-guide/files/remap.config.en.html#format">the “target” and the “replacement”
+URL</a>.
+These are fixed values from the rule itself, not the user agent. For this reason there are
+extractors to get data from these URLs but no directives to modify them. These values are
+available only for the “remap” hook, that is directives invoked from a rule in “remap.config”.
+Query values are not permitted in these URLs and so no extractor for that is provided.</p>
+</div></blockquote>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-url">
+<code class="descname">remap-target-url</code><a class="headerlink" href="#remap-target-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The full target URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-scheme">
+<code class="descname">remap-target-scheme</code><a class="headerlink" href="#remap-target-scheme" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The scheme in the target URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-loc">
+<code class="descname">remap-target-loc</code><a class="headerlink" href="#remap-target-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The network location of the target URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-host">
+<code class="descname">remap-target-host</code><a class="headerlink" href="#remap-target-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The host in the target URL. This does not include the port, if any.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-port">
+<code class="descname">remap-target-port</code><a class="headerlink" href="#remap-target-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port in the target URL. If not specified, the default based on the scheme is extracted.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-target-path">
+<code class="descname">remap-target-path</code><a class="headerlink" href="#remap-target-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The path in the target URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-url">
+<code class="descname">remap-replacement-url</code><a class="headerlink" href="#remap-replacement-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The full replacement URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-scheme">
+<code class="descname">remap-replacement-scheme</code><a class="headerlink" href="#remap-replacement-scheme" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The scheme in the replacement URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-loc">
+<code class="descname">remap-replacement-loc</code><a class="headerlink" href="#remap-replacement-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The network location in the replacement URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-host">
+<code class="descname">remap-replacement-host</code><a class="headerlink" href="#remap-replacement-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The host in the replacement URL. This does not include the port, if any.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-port">
+<code class="descname">remap-replacement-port</code><a class="headerlink" href="#remap-replacement-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port in the replacement URL. If not specified, the default based on the scheme is extracted.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="remap-replacement-path">
+<code class="descname">remap-replacement-path</code><a class="headerlink" href="#remap-replacement-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The path in the replacement URL.</p>
+</div>
+</div>
+<div class="section" id="proxy-request">
+<span id="ex-proxy-request"></span><h3>Proxy Request<a class="headerlink" href="#proxy-request" title="Permalink to this headline">¶</a></h3>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-method">
+<code class="descname">proxy-req-method</code><a class="headerlink" href="#proxy-req-method" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The proxy request method.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-url">
+<code class="descname">proxy-req-url</code><a class="headerlink" href="#proxy-req-url" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The URL in the request.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-scheme">
+<code class="descname">proxy-req-scheme</code><a class="headerlink" href="#proxy-req-scheme" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The URL scheme in the proxy request.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-loc">
+<code class="descname">proxy-req-loc</code><a class="headerlink" href="#proxy-req-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The network location in the request. This is retrieved from the URL if present, otherwise from
+the <code class="docutils literal notranslate"><span class="pre">Host</span></code> field.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-host">
+<code class="descname">proxy-req-host</code><a class="headerlink" href="#proxy-req-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>Host for the request. This is retrieved from the URL if present, otherwise from the <code class="docutils literal notranslate"><span class="pre">Host</span></code>
+field. This does not include the port.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-path">
+<code class="descname">proxy-req-path</code><a class="headerlink" href="#proxy-req-path" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The path of the URL in the request. This does not include a leading slash.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-port">
+<code class="descname">proxy-req-port</code><a class="headerlink" href="#proxy-req-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port for the request. This is pulled from the URL if present, otherwise from the <code class="docutils literal notranslate"><span class="pre">Host</span></code>
+field.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-query">
+<code class="descname">proxy-req-query</code><a class="headerlink" href="#proxy-req-query" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The query string in the proxy request.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-query-value">
+<code class="descname">proxy-req-query-value</code><a class="headerlink" href="#proxy-req-query-value" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Query parameter key.</dd>
+</dl>
+<div class="compound">
+<p>The value for a specific query parameter, identified by key. This assumes the standard format for
+a query string, key / value pairs (joined by ‘=’) separated by ‘&amp;’ or ‘;’. The key comparison
+is case insensitive. <code class="docutils literal notranslate"><span class="pre">NIL</span></code> is returned if the key is not found.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-fragment">
+<code class="descname">proxy-req-fragment</code><a class="headerlink" href="#proxy-req-fragment" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The fragment of the URL in the proxy request if present, an empty string if not.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-url-host">
+<code class="descname">proxy-req-url-host</code><a class="headerlink" href="#proxy-req-url-host" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The host in the request URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-url-port">
+<code class="descname">proxy-req-url-port</code><a class="headerlink" href="#proxy-req-url-port" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The port in the request URL.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-url-loc">
+<code class="descname">proxy-req-url-loc</code><a class="headerlink" href="#proxy-req-url-loc" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The location in the URL if present, an empty string if not.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-req-field">
+<code class="descname">proxy-req-field</code><a class="headerlink" href="#proxy-req-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>NULL, string, string list</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">name</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">The value of a field. This requires a field name as a argument. To get the value of the “Host”
+field the extractor would be “proxy-req-field&lt;Host&gt;”. The field name is case insensitive.</p>
+<p class="compound-last">If the field is not present, the <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is returned. Note this is distinct from the
+empty string which is returned if the field is present but has no value. If there are duplicate
+fields then a string list is returned, each element of which corresponds to a field.</p>
+</div>
+</div>
+<div class="section" id="upstream-response">
+<span id="ex-upstream-response"></span><h3>Upstream Response<a class="headerlink" href="#upstream-response" title="Permalink to this headline">¶</a></h3>
+<dl class="extractor">
+<dt class="directive-title" id="upstream-rsp-status">
+<code class="descname">upstream-rsp-status</code><a class="headerlink" href="#upstream-rsp-status" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The code of the response status.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="upstream-rsp-status-reason">
+<code class="descname">upstream-rsp-status-reason</code><a class="headerlink" href="#upstream-rsp-status-reason" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The reason of the response status.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="upstream-rsp-field">
+<code class="descname">upstream-rsp-field</code><a class="headerlink" href="#upstream-rsp-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>NULL, string, string list</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">name</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">The value of a field. This requires a field name as a argument. The field name is case
+insensitive.</p>
+<p class="compound-last">If the field is not present, the <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is returned. Note this is distinct from the
+empty string which is returned if the field is present but has no value. If there are duplicate
+fields then a string list is returned, each element of which corresponds to a field.</p>
+</div>
+</div>
+<div class="section" id="proxy-response">
+<span id="ex-proxy-response"></span><h3>Proxy Response<a class="headerlink" href="#proxy-response" title="Permalink to this headline">¶</a></h3>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-rsp-status">
+<code class="descname">proxy-rsp-status</code><a class="headerlink" href="#proxy-rsp-status" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The code of the response status.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-rsp-status-reason">
+<code class="descname">proxy-rsp-status-reason</code><a class="headerlink" href="#proxy-rsp-status-reason" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The reason of the response status.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="proxy-rsp-field">
+<code class="descname">proxy-rsp-field</code><a class="headerlink" href="#proxy-rsp-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>NULL, string, string list</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">name</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">The value of a field. This requires a field name as a argument. The field name is case
+insensitive.</p>
+<p class="compound-last">If the field is not present, the <code class="docutils literal notranslate"><span class="pre">NULL</span></code> value is returned. Note this is distinct from the
+empty string which is returned if the field is present but has no value. If there are duplicate
+fields then a string list is returned, each element of which corresponds to a field.</p>
+</div>
+</div>
+</div>
+<div class="section" id="transaction">
+<span id="ex-transaction"></span><h2>Transaction<a class="headerlink" href="#transaction" title="Permalink to this headline">¶</a></h2>
+<dl class="extractor">
+<dt class="directive-title" id="is-internal">
+<code class="descname">is-internal</code><a class="headerlink" href="#is-internal" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>boolean</em></dd>
+</dl>
+<div class="compound">
+<p>This returns a boolean value, <code class="docutils literal notranslate"><span class="pre">true</span></code> if the request is an internal request, and <code class="docutils literal notranslate"><span class="pre">false</span></code> if not.</p>
+</div>
+</div>
+<div class="section" id="session">
+<span id="ex-session"></span><h2>Session<a class="headerlink" href="#session" title="Permalink to this headline">¶</a></h2>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-txn-count">
+<code class="descname">inbound-txn-count</code><a class="headerlink" href="#inbound-txn-count" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The number of transactions, including the current on, that have occurred on the inbound
+transaction.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-addr-remote">
+<code class="descname">inbound-addr-remote</code><a class="headerlink" href="#inbound-addr-remote" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>IP address</em></dd>
+</dl>
+<div class="compound">
+<p>The remote address for the inbound connection. This is also known as the “client address”, the
+address from which the connection originates.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-addr-local">
+<code class="descname">inbound-addr-local</code><a class="headerlink" href="#inbound-addr-local" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>IP address</em></dd>
+</dl>
+<div class="compound">
+<p>The local address for the inbound connection, which is the address used accept the inbound session.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-sni">
+<code class="descname">inbound-sni</code><a class="headerlink" href="#inbound-sni" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+</dl>
+<div class="compound">
+<p>The SNI name sent on the inbound session.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="has-inbound-protocol-prefix">
+<code class="descname">has-inbound-protocol-prefix</code><a class="headerlink" href="#has-inbound-protocol-prefix" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>boolean</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">protocol tag prefix</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">For the inbound session there is a <a class="reference external" href="https://docs.trafficserver.apache.org/en/latest/developer-guide/api/functions/TSClientProtocolStack.en.html">list of protocol tags</a>
+that describe the network protocols used for that network connection. This extractor checks the
+inbound session list to see if it contains a tag that has a specific prefix. The most common use
+is to determine if the inbound session is TLS</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">has-inbound-protocol-prefix&lt;tls&gt;</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span>  <span class="nt">is-true</span><span class="p">:</span>
+   <span class="nt">do</span><span class="p">:</span> <span class="c1"># TLS only stuff.</span>
+</pre></div>
+</div>
+<div class="compound-middle admonition note">
+<p class="admonition-title">Note</p>
+<p>Checking a request for the scheme “https” is not identical to checking for TLS. Nothing
+prevents a user agent from sending a scheme at variance with the network protocol stack. This
+extractor checks the network protocol, not the request.</p>
+</div>
+<p class="compound-middle">Checking for IPv6 can be done in a similar way.</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">has-inbound-protocol-prefix&lt;ipv6&gt;</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">is-true</span><span class="p">:</span>
+  <span class="nt">do</span><span class="p">:</span> <span class="c1"># IPv6 special handling.</span>
+</pre></div>
+</div>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-protocol">
+<code class="descname">inbound-protocol</code><a class="headerlink" href="#inbound-protocol" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">protocol tag prefix</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">For the inbound session there is a <a class="reference external" href="https://docs.trafficserver.apache.org/en/latest/developer-guide/api/functions/TSClientProtocolStack.en.html">list of protocol tags</a>
+that describe the network protocols used for that network connection. This extractor searches the
+inbound session list and if there is a prefix match, returns the matched protocol tag. This can
+be used to check for different versions of TLS.</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inbound-protocol&lt;tls&gt;</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span>  <span class="nt">match</span><span class="p">:</span> <span class="s">&quot;tls/1.3&quot;</span>
+   <span class="nt">do</span><span class="p">:</span> <span class="c1"># TLS 1.3 only stuff.</span>
+<span class="p p-Indicator">-</span>  <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;tls&quot;</span>
+   <span class="nt">do</span><span class="p">:</span> <span class="c1"># Older TLS stuff.</span>
+<span class="p p-Indicator">-</span>  <span class="nt">otherwise</span><span class="p">:</span>
+   <span class="nt">do</span><span class="p">:</span> <span class="c1"># Non-TLS stuff.</span>
+</pre></div>
+</div>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-protocol-stack">
+<code class="descname">inbound-protocol-stack</code><a class="headerlink" href="#inbound-protocol-stack" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>tuple of strings</em></dd>
+</dl>
+<div class="compound">
+<p class="compound-first">This extracts the entire stack of tags for the network protocols of the inbound connection as a
+tuple. This could be used to check for an IPv4 connection</p>
+<div class="compound-middle highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">inbound-protocol-stack</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span>  <span class="nt">for-any</span><span class="p">:</span>
+      <span class="nt">match</span><span class="p">:</span> <span class="s">&quot;ipv4&quot;</span>
+   <span class="nt">do</span><span class="p">:</span>
+   <span class="c1"># IPv4 only things.</span>
+</pre></div>
+</div>
+<p class="compound-last">In general, though, <a class="reference internal" href="#has-inbound-protocol-prefix" title="has-inbound-protocol-prefix"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">has-inbound-protocol-prefix</span></code></a> is usually a better choice for doing such
+checking unless the full stack or a full tag is needed.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-cert-verify-result">
+<code class="descname">inbound-cert-verify-result</code><a class="headerlink" href="#inbound-cert-verify-result" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p>The result of verifying the inbound remote (client) certificate. Due to issues in the OpenSSL
+library this can be a bit odd. If the the inbound session is not TLS the result will be
+<code class="docutils literal notranslate"><span class="pre">X509_V_ERR_INVALID_CALL</span></code> which as of this writing has the value 69 (:<a class="reference external" href="https://www.openssl.org/docs/man1.1.0/man1/verify.html">reference</a>). Otherwise, if no client certificate
+was provided and was not required the result is <code class="docutils literal notranslate"><span class="pre">X509_V_OK</span></code> which has the value 0. This lack
+can be detected indirectly by all of the certificate extractors returning empty strings.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-cert-local-issuer-field">
+<code class="descname">inbound-cert-local-issuer-field</code><a class="headerlink" href="#inbound-cert-local-issuer-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Entry name.</dd>
+</dl>
+<div class="compound">
+<p>Extract the value for an entry in the local (server) certificate issuer for an inbound session.
+This will accept a short or long name as the argument. Note these names are case sensitive.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-cert-local-subject-field">
+<code class="descname">inbound-cert-local-subject-field</code><a class="headerlink" href="#inbound-cert-local-subject-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Entry name.</dd>
+</dl>
+<div class="compound">
+<p>Extract the value for an entry in the local (server) certificate subject for an inbound session.
+This will accept a short or long name as the argument. Note these names are case sensitive.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-cert-remote-issuer-field">
+<code class="descname">inbound-cert-remote-issuer-field</code><a class="headerlink" href="#inbound-cert-remote-issuer-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Entry name.</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Extract the value for an entry in the remote (client) certificate issuer for an inbound session.
+This will accept a short or long name as the argument. Note these names are case sensitive.</p>
+<p class="compound-last">If a client certificate wasn’t provided or failed validation, this will yield an empty string.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-cert-remote-subject-field">
+<code class="descname">inbound-cert-remote-subject-field</code><a class="headerlink" href="#inbound-cert-remote-subject-field" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Entry name.</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Extract the value for an entry in the remote (client) certificate subject for an inbound session.
+This will accept a short or long name as the argument. Note these names are case sensitive.</p>
+<p class="compound-last">If a client certificate wasn’t provided or failed validation, this will yield an empty string.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="outbound-txn-count">
+<code class="descname">outbound-txn-count</code><a class="headerlink" href="#outbound-txn-count" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<p class="compound-first">The number of transactions between the Traffic Server proxy and the origin server from a single session.
+Any value greater than zero indicates connection reuse.</p>
+<div class="compound-last highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">outbound-txn-count</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">gt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+  <span class="nt">do</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-field&lt;Connection&gt;</span><span class="p">:</span> <span class="s">&quot;close&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For ATS versions before 10, this will return <cite>0</cite> and the value should not be taken
+into consideration to determine connection reuse.</p>
+</div>
+</div>
+<div class="section" id="duration">
+<span id="ex-duration"></span><h2>Duration<a class="headerlink" href="#duration" title="Permalink to this headline">¶</a></h2>
+<p>A “duration” is a span of time. This is specified by one of a set of extractors.</p>
+<dl class="extractor">
+<dt class="directive-title" id="milliseconds">
+<code class="descname">milliseconds</code><a class="headerlink" href="#milliseconds" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>duration</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">count</dd>
+</dl>
+<div class="compound">
+<p>A duration of <em>count</em> milliseconds.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="seconds">
+<code class="descname">seconds</code><a class="headerlink" href="#seconds" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>duration</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">count</dd>
+</dl>
+<div class="compound">
+<p>A duration of <em>count</em> seconds.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="minutes">
+<code class="descname">minutes</code><a class="headerlink" href="#minutes" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>duration</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">count</dd>
+</dl>
+<div class="compound">
+<p>A duration of <em>count</em> minutes.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="hours">
+<code class="descname">hours</code><a class="headerlink" href="#hours" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>duration</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">count</dd>
+</dl>
+<div class="compound">
+<p>A duration of <em>count</em> hours.</p>
+</div>
+</div>
+<div class="section" id="utility">
+<span id="ex-utility"></span><h2>Utility<a class="headerlink" href="#utility" title="Permalink to this headline">¶</a></h2>
+<p>This is an ecletic collection of extractors that do not depend on transaction or session data.</p>
+<dl class="extractor">
+<dt class="directive-title" id="">
+<code class="descname">...</code><a class="headerlink" href="#" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>any</em></dd>
+</dl>
+<div class="compound">
+<p>The feature for the most recent <a class="reference internal" href="DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a>.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="random">
+<code class="descname">random</code><a class="headerlink" href="#random" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+</dl>
+<div class="compound">
+<blockquote>
+<div><p>Generate a random integer in a uniform distribution. The default range is 0..99 because the most
+common use is for a percentage. This can be changed by adding arguments. A single number argument
+changes the upper bound. Two arguments changes the range. E.g.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">random&lt;199&gt;</span></code> generates integers in the range 0..199.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">random&lt;1,100&gt;</span></code> generates integers in the range 1..100.</p>
+<p>The usual style for using this in a percentage form is</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">random</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span> <span class="c1"># match 5% of the time</span>
+  <span class="nt">do</span><span class="p">:</span> <span class="c1"># ...</span>
+<span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="nt">25</span><span class="p">:</span> <span class="c1"># match 20% of the time - 25% less the previous 5%</span>
+  <span class="nt">do</span><span class="p">:</span> <span class="c1"># ...</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="text-block">
+<code class="descname">text-block</code><a class="headerlink" href="#text-block" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">name</dd>
+</dl>
+<div class="compound">
+<p>Extract the content of the text block (defined by a <a class="reference internal" href="DirectiveReference.en.html#text-block-define" title="text-block-define"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">text-block-define</span></code></a>) for <em>name</em>.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="ip-col">
+<code class="descname">ip-col</code><a class="headerlink" href="#ip-col" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Argument</dt>
+<dd class="field-odd">Column name or index</dd>
+</dl>
+<div class="compound">
+<p>This must be used in the context of the modifier <a class="reference internal" href="ModifierReference.en.html#ip-space" title="ip-space"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">ip-space</span></code></a> which creates the row context
+needed to extract the column value for that row. The argument can be the name of the column, if
+it has a name, or the index. Note index 0 is the IP address range, and data columns start at
+index 1.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="stat">
+<code class="descname">stat</code><a class="headerlink" href="#stat" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Plugin statistic name.</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">This extracts the value of a plugin statistic, which is currently limited to integers by Traffic Server.</p>
+<p class="compound-last">Note statistic values are eventually consistent, there can be multiple second delays between
+incrementing a statistic with <a class="reference internal" href="DirectiveReference.en.html#stat-update" title="stat-update"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">stat-update</span></code></a> and the value changing.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="env">
+<code class="descname">env</code><a class="headerlink" href="#env" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>string</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Variable name</dd>
+</dl>
+<div class="compound">
+<p>Extract the value of the named variable from the process environment.</p>
+</div>
+<dl class="extractor">
+<dt class="directive-title" id="inbound-tcp-info">
+<code class="descname">inbound-tcp-info</code><a class="headerlink" href="#inbound-tcp-info" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Result</dt>
+<dd class="field-odd"><em>integer</em></dd>
+<dt class="field-even">Argument</dt>
+<dd class="field-even">Field name</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">Extracts a field value from the <a class="reference external" href="https://man7.org/linux/man-pages/man7/tcp.7.html">tcp_info</a>
+data available on some operating systems. If not available, <code class="docutils literal notranslate"><span class="pre">NULL</span></code> is returned.</p>
+<p class="compound-middle">The currently supported fields are</p>
+<dl class="compound-middle simple">
+<dt>rtt</dt><dd><p>Round trip time.</p>
+</dd>
+<dt>rto</dt><dd><p>Retransmission timeout.</p>
+</dd>
+<dt>retrans</dt><dd><p>Retransmits.</p>
+</dd>
+<dt>snd-cwnd</dt><dd><p>Outbound congestion window.</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="DirectiveReference.en.html" class="btn btn-neutral float-right" title="Directive Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../arch.en.html" class="btn btn-neutral float-left" title="Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

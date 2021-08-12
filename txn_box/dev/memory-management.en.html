@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Memory Mangement &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Extractor Development" href="dev-extractor.en.html" />
+    <link rel="prev" title="Reference" href="class-reference.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dev-guide.en.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.en.html">Design Notes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Memory Mangement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-storage">Configuration Storage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#context-storage">Context Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev-extractor.en.html">Extractor Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-directive.en.html">Directive Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-guide.en.html#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="dev-guide.en.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Memory Mangement</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/memory-management.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="memory-mangement">
+<span id="memory-management"></span><h1>Memory Mangement<a class="headerlink" href="#memory-mangement" title="Permalink to this headline">¶</a></h1>
+<p>While most elements do not require additional memory, this is not always the case. TxnBox provides
+a number of mechanisms for allocating memory efficiently in the context of handling transactions.</p>
+<p>The primary reason to use TxnBox memory instead of <code class="code docutils literal notranslate"><span class="pre">malloc</span></code> is memory lifetime management.
+Using the internal mechanisms memory that has exactly the lifetime of a configuration or a
+transaction is straightforward. In many cases the code can simply allocate without concern of leaks.
+In addition this restriction also makes the allocation much faster than with <code class="code docutils literal notranslate"><span class="pre">malloc</span></code>.</p>
+<p>Another reason is avoiding race conditions and collisions. Because configurations can be dynamically
+reloaded, pointers to configuration local memory that are stored statically can go bad or become
+corrupted during reload as the pointers are moved while a configuration is still in use. Use of the
+internal mechanisms ties the memory to a particular configuration or transaction context, avoiding
+this problem.</p>
+<div class="section" id="configuration-storage">
+<h2>Configuration Storage<a class="headerlink" href="#configuration-storage" title="Permalink to this headline">¶</a></h2>
+<p>The root of memomry management is the configuration instance, represented by an instance of
+<span>Config</span>. While allocating memory for its own uses, directives can request memmory in the
+configuration to be reserved for that directive. This is per directive class, not per directive
+instance. Access to the memory is via the inherited pointer <span>Directive::_rtti</span>.</p>
+<p>When the directive is defined with <span>Config::define</span> there is an options structure of type
+<span>Directive::Options</span> that can specify the amount of reserved storage in bytes in the
+<code class="code docutils literal notranslate"><span class="pre">_cfg_store_required</span></code> member. If the directive is used, the specified amount of storage is
+reserved. It is accessed by <code class="code docutils literal notranslate"><span class="pre">_rtti-&gt;_cfg_store</span></code>. This is of type <code class="code docutils literal notranslate"><span class="pre">MemSpan&lt;void&gt;</span></code> and
+specifies the reserved memory.</p>
+<p>The most challenging aspect is finding configuration allocated memory later. If the configuration
+based memory is used per directive instance, this is not a problem - a span can be stored in the
+directive instance. But if the memory is to be shared across instances more is required because
+otherwise the instances can’t find the same memory. This is the problem the <code class="code docutils literal notranslate"><span class="pre">_rtti</span></code>
+indirection solves.</p>
+<p>Note - directive instances are per configuration which means invocations are multi-threaded. It is
+entirely possible to have the same directive instance being invoked simultaneously for different
+transactions. If the requirement is to set up shared status this can be done via the configuration
+initializer argument to <span>Config::define</span>. If the templated overload is used then the method
+<span>Directive::cfg_init</span> is used as the initializer. The base class method does nothing therefore
+this method can be omitted if not needed.</p>
+<p>When configuration storage is needed, it is frequently the case this is because the directive needs
+to share state with extractors or modifiers. These can access the directive configuration storage by
+using the <span>Config::drtv_info</span> method with the name of the directive to get the configuration
+static information for the directive, which includes the reserved configuration memory.</p>
+<p>In some cases the configuration allocated memory will need additional cleanup beyond simply being
+released. This can be done via <span>Config::mark_for_cleanup</span>. This takes a pointer and destructs
+the object using <code class="code docutils literal notranslate"><span class="pre">std::destroy_at&lt;T&gt;</span></code> just before the configuration memory is released during
+config destruction, where <code class="code docutils literal notranslate"><span class="pre">T</span></code> is the type of the pointer passed to
+<span>Config::mark_for_cleanup</span>.</p>
+</div>
+<div class="section" id="context-storage">
+<h2>Context Storage<a class="headerlink" href="#context-storage" title="Permalink to this headline">¶</a></h2>
+<p>Elements can request storage local to a transaction context, represented by <span>Context</span>. This
+memory is much faster to acquire than standard <code class="code docutils literal notranslate"><span class="pre">malloc</span></code> but will be released when the
+transaction ends. For many uses the latter is a benefit, not a cost, and in such cases context
+memory should be used. Note the context memory is released only at context destruction after the
+transaction finishes, it cannot be released at any other time. Abandoned memory isn’t leaked, it is
+cleaned up along with all of the context local memory.</p>
+<p>Simple allocation is done with <span>Context::alloc_span</span> which allocates sufficient memory to
+hold an array of the specified type and count. This is raw memory - no initialization is done. If
+that is necessary it could be done as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">auto span = ctx.alloc_span&lt;Alpha&gt;(count); // get space for @a count instances of @c Alpha</span>
+<span class="l l-Scalar l-Scalar-Plain">span.apply([](Alpha &amp;alpha) -&gt; void { new (&amp;alpha) Alpha; });</span>
+</pre></div>
+</div>
+<p>If cleanup is needed the same mechanism can be used to invoke the destructor on the elements.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">span.apply([](Alpha &amp;alpha) -&gt; void { std::destroy_at(&amp;alpha); });</span>
+</pre></div>
+</div>
+<p>This is necessary only when there are references to memory or stateful objects outside of the
+context. Generally this memory should reference nothing, or only other context memory in which case
+no clean up is needed. For instance, the most common use is as string storage which needs no
+cleanup.</p>
+<p>If the context allocation needs to be shared or accessed from different hooks, this is a bit more
+challenging. A pointer can’t be stored directly in the element instance because it would be
+different for every transaction creating a self-dependency loop where to find the memory the pointer
+needs to be found which is in the memory …</p>
+<p>To break this loop memory in the context can be reserved and present in every context at the same
+offset in context memory. Information about this is stored in an instance of <span>ReservedSpan</span>
+which is not a memory span but an offset and length which can be converted to a memory span in a
+specific context using <span>Context::storage_for</span>. The reserved span can be stored in a class
+member if every instance needs access to the memory, or in configuration reserved storage if
+different elements need to share the same context memory. In contrast to directly allocated context
+memory, reserved context memory is zero initialized to enable simple initialization checking by
+different methods in an element or different elements entirely. <span>Context::storage_for</span> does
+nothing further, it simply converts the offset and size to a span inside the context instance.</p>
+<p>If the memory needs to be initialized beyond being zero initialized, it could be difficult to
+determine when exactly the initalization should be done. To deal with this the method
+<span>Context::initialized_storage_for</span> method is provided. The context tracks whether this method
+has been called for a specific context and reserved span and if not, the constructor for the span
+type is invoked on the span. This is done exactly as above, the difference being the memory is
+constructed in place at most once for each context. Therefore different elements can all call this
+method with the guarantee only the first one invoked for a transaction will initialize the span.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dev-extractor.en.html" class="btn btn-neutral float-right" title="Extractor Development" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="class-reference.en.html" class="btn btn-neutral float-left" title="Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

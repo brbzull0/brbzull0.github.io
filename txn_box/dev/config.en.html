@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Configuration &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reference" href="class-reference.en.html" />
+    <link rel="prev" title="Design Notes" href="design.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dev-guide.en.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="design.en.html">Design Notes</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#directive-handling">Directive Handling</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="class-reference.en.html">Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.en.html#background">Background</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.en.html#notes">Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="design.en.html#history">History</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="memory-management.en.html">Memory Mangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-extractor.en.html">Extractor Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-directive.en.html">Directive Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-guide.en.html#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="dev-guide.en.html">Developer Guide</a> &raquo;</li>
+        
+          <li><a href="design.en.html">Design Notes</a> &raquo;</li>
+        
+      <li>Configuration</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/config.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="configuration">
+<span id="imp-config"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>Configuration state is managed by the <span>Config</span> class. An instance of this represents a
+configuration of TxnBox. The instance is similar to the global data for a process - data that is
+tied to a configuration in general and not to any particular configuration element is stored here.
+An instance of <span>Config</span> acts as the “context” for parsing configuration.</p>
+<div class="section" id="directive-handling">
+<h2>Directive Handling<a class="headerlink" href="#directive-handling" title="Permalink to this headline">¶</a></h2>
+<p>Directives interact heavily with this class. The :cpp:class::<cite>Directive::FactoryInfo</cite> contains the
+static information about a directive. In addition, it has an “index” field which is used to track
+which directives are used in a configuration.</p>
+<p>To make a directive available it must register by using the <span>Config::define</span> method.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="class-reference.en.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="design.en.html" class="btn btn-neutral float-left" title="Design Notes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

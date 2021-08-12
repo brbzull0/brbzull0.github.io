@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Concepts &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Building" href="building.en.html" />
+    <link rel="prev" title="Transaction Box" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hooks">Hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Concepts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/txn_box.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="concepts">
+<span id="txn-box"></span><h1>Concepts<a class="headerlink" href="#concepts" title="Permalink to this headline">¶</a></h1>
+<p>TxnBox is based on the idea that for a given transaction and hook in Traffic Server, the administrator wants to
+consider some subset of the information in the transaction and, based on that, perform specific
+actions. There is a further presumption that the common use will be multiple comparisons against the
+same data, each comparison associated with different actions. This is a generalization of how URL
+rewriting happens currently in Traffic Server via “remap.config”. The difference between this and remapping is
+the latter considers only a fixed, very small subset of data in the transaction, the set of actions
+is limited, and there is only one decision point.</p>
+<p>To aid further explanation, some terms need to be defined.</p>
+<p>Every action in TxnBox is associated with a specific <a class="reference internal" href="reference.en.html#term-hook"><span class="xref std std-term">hook</span></a>. A TxnBox hook is essentially the
+same as a hook in Traffic Server. In addition to the hooks in Traffic Server, TxnBox has additional hooks specific to
+TxnBox.</p>
+<p>TxnBox has two phases of operation, <a class="reference internal" href="reference.en.html#term-load-time"><span class="xref std std-term">load time</span></a> and <a class="reference internal" href="reference.en.html#term-run-time"><span class="xref std std-term">run time</span></a>. Load time is the
+time during which the configuration is being loaded and run time is when processing transactions.
+Operations during load time are done by associating the action with a hook that triggers during
+load time.</p>
+<p>A <a class="reference internal" href="reference.en.html#term-feature"><span class="xref std std-term">feature</span></a> is data of interest for a transaction. A feature is created by <a class="reference internal" href="reference.en.html#term-extraction"><span class="xref std std-term">Extraction</span></a>
+which is specifed by a <a class="reference internal" href="reference.en.html#term-feature-expression"><span class="xref std std-term">feature expression</span></a>, which is a series of literals and
+<a class="reference internal" href="reference.en.html#term-extractor"><span class="xref std std-term">extractor</span></a>s. Each extractor retrieves a specific datum and the combination of those and
+(optional) literals defines the resulting feature. Features can be one of several types, the most
+common being a string.</p>
+<p>A <a class="reference internal" href="reference.en.html#term-directive"><span class="xref std std-term">directive</span></a> is an action to be performed. Some directives can have an <a class="reference internal" href="reference.en.html#term-argument"><span class="xref std std-term">argument</span></a> which
+provides additional control of the directive’s action.</p>
+<p>A <a class="reference internal" href="reference.en.html#term-comparison"><span class="xref std std-term">comparison</span></a> is an operation that compares two features.</p>
+<p><a class="reference internal" href="reference.en.html#term-selection"><span class="xref std std-term">Selection</span></a> is using comparisons can to select specific directives to perform. This is the way
+in which conditional actions are done in TxnBox.</p>
+<p>A TxnBox configuration is organized at the top level by hooks, to which are attached the directives
+that specify what TxnBox should do to manipulate the transaction. These directives can be conditional
+based on comparisons to extracted features. This yields a very flexible and powerful mechanism for
+manipulating transactions.</p>
+</div>
+<div class="section" id="configuration">
+<h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>TxnBox can be configured as a global plugin or a remap plugin. In both cases it takes a configuration
+file that is YAML.</p>
+<p>For a global configuration, the top level directives must all be <a class="reference internal" href="user/DirectiveReference.en.html#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> thereby
+associating every directive with a specific hook. For a remap configuration, all directives are
+grouped in an implied <code class="code docutils literal notranslate"><span class="pre">when:</span> <span class="pre">remap</span></code> and therefore no explicit <code class="code docutils literal notranslate"><span class="pre">when</span></code> is required.</p>
+<p>Each directive and extractor has an associated set of hooks in which it is valid, therefore some
+will be available in a remap configuration and some will not. In particular there are several
+directives which are specific to remap because they interact with the data passed to a remap plugin
+which is not available in any other context.</p>
+<p>For both global and remap plugins the configuration file must be specified. A specific key in the
+file is used as the base of the configuration, ignoring any other data. For global configuration
+this is by default the <code class="code docutils literal notranslate"><span class="pre">txn_box</span></code> key at the top level. For remap it is the top level node in
+the file (generally the entire file). This can be overridden by a second parameter, which is a path
+to the root configuration node. This must be a sequence of keys in maps, starting from the top. The
+path is specified by a dot separated list of these keys. For example, consider a file with this at
+the top node level.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">txn_box</span><span class="p">:</span> <span class="c1"># path - &quot;txn_box&quot;</span>
+   <span class="nt">example-1</span><span class="p">:</span> <span class="c1"># path - &quot;txn_box.example-1&quot;</span>
+      <span class="nt">inner-1</span><span class="p">:</span> <span class="c1"># path - &quot;txn_box.examle-1.inner-1&quot;</span>
+   <span class="nt">example-2</span><span class="p">:</span> <span class="c1"># path &quot;txn_box.example-2&quot;</span>
+</pre></div>
+</div>
+<p>If “example-1” was to be the root, the path would be “txn_box.example-1”. The global default,
+“txn_box”, would select “txn_box”” as the root node. The path could also be
+“txn_box.example-1.inner-1” to select the inner most node. As a special case, the path “.” means
+“the unnamed top level node”. Note this is problematic in the case of keys that contains “.”, which
+should be avoided.</p>
+<p>The point of specifying a key is to enable TxnBox configuration to exist inside a file that contains
+other configuration, or to enable having a single file that provides configuration for multiple
+instances of TxnBox.</p>
+<div class="section" id="hooks">
+<h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
+<p>The directive key <a class="reference internal" href="user/DirectiveReference.en.html#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a> can be used to specify on which hook directives should be performed.
+Each <code class="code docutils literal notranslate"><span class="pre">when</span></code> must also have a <code class="code docutils literal notranslate"><span class="pre">do</span></code> key which contains the directives. The value of <code class="code docutils literal notranslate"><span class="pre">when</span></code>
+is the hook name, which must be one of</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 19%" />
+<col style="width: 18%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Hook</p></th>
+<th class="head"><p>when</p></th>
+<th class="head"><p>Abbreviation</p></th>
+<th class="head"><p>Plugin API Name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Client Request</p></td>
+<td><p>read-request</p></td>
+<td><p>ua-req</p></td>
+<td><p>READ_REQUEST_HDR_HOOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>Proxy Request</p></td>
+<td><p>send-request</p></td>
+<td><p>proxy-req</p></td>
+<td><p>SEND_REQUEST_HDR_HOOK</p></td>
+</tr>
+<tr class="row-even"><td><p>Upstream Response</p></td>
+<td><p>read-response</p></td>
+<td><p>upstream-rsp</p></td>
+<td><p>READ_RESPONSE_HDR_HOOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>Proxy Response</p></td>
+<td><p>send-response</p></td>
+<td><p>proxy-rsp</p></td>
+<td><p>SEND_RESPONSE_HDR_HOOK</p></td>
+</tr>
+<tr class="row-even"><td><p>Pre remap</p></td>
+<td><p>pre-remap</p></td>
+<td></td>
+<td><p>PRE_REMAP_HOOK</p></td>
+</tr>
+<tr class="row-odd"><td><p>Post remap</p></td>
+<td><p>post-remap</p></td>
+<td></td>
+<td><p>POST_REMAP_HOOK</p></td>
+</tr>
+<tr class="row-even"><td><p>Transaction Open</p></td>
+<td><p>txn-open</p></td>
+<td></td>
+<td><p>TXN_START</p></td>
+</tr>
+<tr class="row-odd"><td><p>Load time</p></td>
+<td><p>post-load</p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The abbreviations are primarily for consistency between hook tags, extractors, and directives.</p>
+<p>For a global plugin, the top level directives must be <a class="reference internal" href="user/DirectiveReference.en.html#when" title="when"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">when</span></code></a>. To set the HTTP header field
+<code class="docutils literal notranslate"><span class="pre">swoc</span></code> to <code class="docutils literal notranslate"><span class="pre">invoked</span></code> immediately after the client request has been read, it would be</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">txn_box</span><span class="p">:</span>
+<span class="p p-Indicator">-</span>  <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req</span>
+   <span class="nt">do</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span>  <span class="nt">ua-req-field&lt;swoc&gt;</span><span class="p">:</span> <span class="s">&quot;invoked&quot;</span>
+</pre></div>
+</div>
+<p>For a remap plugin, the directives are wrapped in a notional code:<cite>when: remap</cite> directive, so no
+explicit <code class="code docutils literal notranslate"><span class="pre">when</span></code> directive is needed and all top level directives are performed during remap.
+If <code class="code docutils literal notranslate"><span class="pre">when</span></code> is used the <code class="code docutils literal notranslate"><span class="pre">when</span></code> is exectued during remap, scheduling the contained
+directives for the future hook on that transaction.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">post-load</span></code> hook is invoked immediately after the configuration is loaded and parsed.
+Directives on this hook may return errors which prevents the configuration from successfully
+loading. It is used to create resources that persist for the entire time the configuration is in
+use.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="building.en.html" class="btn btn-neutral float-right" title="Building" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Transaction Box" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

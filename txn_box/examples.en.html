@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Examples &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Architecture" href="arch.en.html" />
+    <link rel="prev" title="Usage Guide" href="guide.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#default-accept-encoding">Default Accept-Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#traffic-ramping">Traffic Ramping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#static-file-serving">Static File Serving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#path-tweaking">Path Tweaking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/examples.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="examples">
+<span id="id1"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>TxnBox is a large, complex plugin and it can be challenging to get started. This section provides a
+number of example uses, all of which are based on actual production use of TxnBox.</p>
+<div class="section" id="default-accept-encoding">
+<h2>Default Accept-Encoding<a class="headerlink" href="#default-accept-encoding" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Goal</dt><dd><p>Force all proxy requests to have a value for the “Accept-Encoding” field. If not already set, it
+should be set to “identity”.</p>
+</dd>
+</dl>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-req</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">proxy-req-field&lt;Accept-Encoding&gt;</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">proxy-req-field&lt;Accept-Encoding&gt;</span> <span class="p p-Indicator">,</span> <span class="p p-Indicator">{</span><span class="nt"> else</span><span class="p">:</span> <span class="s">&quot;identity&quot;</span> <span class="p p-Indicator">}</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>This acts on the proxy request hook. The “Accept-Encoding” field is extracted and then modified
+using the <a class="reference internal" href="user/ModifierReference.en.html#else" title="else"><code class="xref txb txb-mod docutils literal notranslate"><span class="pre">else</span></code></a> which modifies the feature only if the feature is null or the empty string.</p>
+</div>
+<div class="section" id="traffic-ramping">
+<h2>Traffic Ramping<a class="headerlink" href="#traffic-ramping" title="Permalink to this headline">¶</a></h2>
+<p>For the purposes of this example, there is presumed to exist a remap rule for a specific externally
+visible host, “base.ex”. A new version is being staged on the host “stage.video.ex”. The goal is to
+redirect a fixed percentage of traffic from the existing host to the staging host, in way that is
+easy to change. In addition it should be easy to have multiple ramping values for different URL
+paths. The paths for the two hosts are identical, only the host for the request needs to be changed.</p>
+<p>The simplest way to do this would be</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">pre-remap-path</span>
+  <span class="nt">select</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">any-of</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/search/&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/alias/&quot;</span>
+    <span class="nt">do</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">random</span>
+      <span class="nt">select</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+        <span class="nt">do</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;stage.video.ex&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/channels/&quot;</span>
+    <span class="nt">do</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">random</span>
+      <span class="nt">select</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+        <span class="nt">do</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;stage.video.ex&quot;</span>
+</pre></div>
+</div>
+<p>This has two buckets, the first at 30% and the second at 10%. <a class="reference internal" href="user/ExtractorReference.en.html#random" title="random"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">random</span></code></a> is used to generate
+random numbers in the range 0..99 which means the extracted value is <code class="code docutils literal notranslate"><span class="pre">lt:</span> <span class="pre">30</span></code> roughly 30 times
+out of every hundred, or 30% of the time. The buckets are selected by first checking the pre-remap
+path (so that it is not affected by other plugins which may run earlier in remapping). Two paths
+are in the 30% bucket and one in the 10% bucket. Adding additional paths is easy, as is changing
+the percent diversion. Other buckets can be added with little effort.</p>
+<p>This can be done in another way by generating the random value once and checking it multiple times.
+Given the no backtrack rule, this is challenging to do by checking the percentage first. Instead the
+use of tuples makes it possible to check both the value and the path together.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">random</span><span class="p p-Indicator">,</span> <span class="nv">pre-remap-path</span> <span class="p p-Indicator">]</span>
+  <span class="nt">select</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+    <span class="p p-Indicator">-</span> <span class="nt">any-of</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/search/&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/alias/&quot;</span>
+    <span class="nt">do</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;stage.video.ex&quot;</span>
+  <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+    <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/channels/&quot;</span>
+    <span class="nt">do</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;stage.video.ex&quot;</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="user/DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> is provided with a tuple of size 2, the random value and the pre-remap path. Each
+comparison uses <a class="reference internal" href="user/ComparisonReference.en.html#as-tuple" title="as-tuple"><code class="xref txb txb-cmp docutils literal notranslate"><span class="pre">as-tuple</span></code></a> to perform parallel comparisons on the tuple. The first comparison
+is applied to the first tuple element, the value, and the second comparison to the second value, the
+path. Because there is no nested <a class="reference internal" href="user/DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> there is no need to backtrack.</p>
+<p>It might be reasonable to split every path in to a different bucket to make adjusting the percentage
+easier. In that case the previous example could be changed to look like</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">random</span><span class="p p-Indicator">,</span> <span class="nv">pre-remap-path</span> <span class="p p-Indicator">]</span>
+  <span class="nt">select</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">any-of</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/search/&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">30</span>
+      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/alias/&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">lt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="p p-Indicator">-</span> <span class="nt">prefix</span><span class="p">:</span> <span class="s">&quot;v1/video/channels/&quot;</span>
+    <span class="nt">do</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">ua-req-host</span><span class="p">:</span> <span class="s">&quot;stage.video.ex&quot;</span>
+</pre></div>
+</div>
+<p>This style presumes the bucket action is identical for all buckets. If not, the previous style would
+be better. Note the <code class="code docutils literal notranslate"><span class="pre">do</span></code> is attached to the <a class="reference internal" href="user/ComparisonReference.en.html#any-of" title="any-of"><code class="xref txb txb-cmp docutils literal notranslate"><span class="pre">any-of</span></code></a> so that if any of the nested comparisons
+succeed the action is performed.</p>
+</div>
+<div class="section" id="static-file-serving">
+<h2>Static File Serving<a class="headerlink" href="#static-file-serving" title="Permalink to this headline">¶</a></h2>
+<p>TxnBox enables serving defined content. This can be done with the <a class="reference internal" href="user/DirectiveReference.en.html#upstream-rsp-body" title="upstream-rsp-body"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">upstream-rsp-body</span></code></a> directive
+to replace content from the upstream with configuration specified content. This is enhanced with
+“text blocks” which allow obtaining content from external files.</p>
+<dl class="simple">
+<dt>Goal</dt><dd><p>Provide a default <a class="reference external" href="https://securitytxt.org">security.txt file</a> if an upstream doesn’t provide
+one.</p>
+</dd>
+</dl>
+<p>Example configuration</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">upstream-rsp</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">upstream-rsp-status</span> <span class="p p-Indicator">,</span> <span class="nv">proxy-req-path</span> <span class="p p-Indicator">]</span>
+        <span class="nt">select</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">eq</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">404</span>
+          <span class="p p-Indicator">-</span> <span class="nt">match</span><span class="p">:</span> <span class="s">&quot;security.txt&quot;</span>
+          <span class="nt">do</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">debug</span><span class="p">:</span> <span class="s">&quot;Resetting</span><span class="nv"> </span><span class="s">upstream</span><span class="nv"> </span><span class="s">response&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">upstream-rsp-status</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">200</span> <span class="p p-Indicator">,</span> <span class="s">&quot;OK&quot;</span> <span class="p p-Indicator">]</span>
+          <span class="p p-Indicator">-</span> <span class="nt">upstream-rsp-body</span><span class="p">:</span> <span class="nv">*secure-text</span>
+          <span class="p p-Indicator">-</span> <span class="nt">upstream-rsp-field&lt;Cache-Control&gt;</span><span class="p">:</span> <span class="s">&quot;max-age=3600&quot;</span>
+</pre></div>
+</div>
+<p>This checks on the upstream response. If the status is 404 (not found) and the path is exactly
+“security.txt” then change the response to a 200 and provide a hard wired default for the content.
+The text is retrieved via a YAML reference to an anchor.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>  <span class="nt">secure_text</span><span class="p">:</span> <span class="nl">&amp;secure-text</span> <span class="s">&quot;#</span><span class="nv"> </span><span class="s">Yoyodyne</span><span class="nv"> </span><span class="s">uses</span><span class="nv"> </span><span class="s">SmackerTwo</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">responsible</span><span class="nv"> </span><span class="s">disclosure.\n\</span>
+                             <span class="s">#</span><span class="nv"> </span><span class="s">To</span><span class="nv"> </span><span class="s">report</span><span class="nv"> </span><span class="s">abusive</span><span class="nv"> </span><span class="s">behavior</span><span class="nv"> </span><span class="s">please</span><span class="nv"> </span><span class="s">visit</span><span class="nv"> </span><span class="s">http://yoyodyne.ex\n\</span>
+                             <span class="s">Contact:</span><span class="nv"> </span><span class="s">mailto:security@yoyodyne.ex\n\</span>
+                            <span class="s">&quot;</span>
+</pre></div>
+</div>
+<p>Unfortunately this is insufficient because in some situations there will be no proxy request and
+therefore no upstream response. Because of limitations in the plugin API this can’t be handled
+directly and requires an additional bit of configuration for that case. This is the reason for using
+the anchor and reference in the previous configuration, to make sure the exact same text is used in
+both cases. Note this is done during YAML parsing, not at runtime, and is identical to using literal
+strings in both cases.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-rsp</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="c1"># If this is checking it could be because there was an early failure. In that case the proxy</span>
+      <span class="c1"># request may never have been created and proxy-req-path will be NULL. This syntax tries</span>
+      <span class="c1"># proxy-req-path and if it is NULL, tries ua-req-path instead which will always be something.</span>
+      <span class="p p-Indicator">-</span> <span class="nt">debug</span><span class="p">:</span> <span class="s">&quot;id</span><span class="nv"> </span><span class="s">{ua-req-field&lt;UUID&gt;}</span><span class="nv"> </span><span class="s">proxy-rsp-status</span><span class="nv"> </span><span class="s">{proxy-rsp-status}</span><span class="nv"> </span><span class="s">proxy-req-path</span><span class="nv"> </span><span class="s">{proxy-req-path}&quot;</span>
+      <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">proxy-rsp-status</span> <span class="p p-Indicator">,</span> <span class="p p-Indicator">[</span> <span class="nv">proxy-req-path</span> <span class="p p-Indicator">,</span> <span class="p p-Indicator">{</span><span class="nt"> else</span><span class="p">:</span> <span class="nv">ua-req-path</span> <span class="p p-Indicator">}</span> <span class="p p-Indicator">]</span> <span class="p p-Indicator">]</span>
+        <span class="nt">select</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">as-tuple</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">eq</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">404</span>
+          <span class="p p-Indicator">-</span> <span class="nt">match</span><span class="p">:</span> <span class="s">&quot;security.txt&quot;</span>
+          <span class="nt">do</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">debug</span><span class="p">:</span> <span class="s">&quot;Resetting</span><span class="nv"> </span><span class="s">proxy</span><span class="nv"> </span><span class="s">response&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-status</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">200</span> <span class="p p-Indicator">,</span> <span class="s">&quot;OK&quot;</span> <span class="p p-Indicator">]</span>
+          <span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-body</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">*secure-text</span> <span class="p p-Indicator">,</span> <span class="s">&quot;text/plain&quot;</span> <span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Note only one of these will trigger on a specific transaction, because if the upstream check
+activates, the status will not be 404 when it is checked here. This is also a bit more complex
+because in some situations for which this is checking the proxy request will not have been created,
+e.g. if there is a failure to remap the request. As a result the path uses a modifier so that if
+<a class="reference internal" href="user/ExtractorReference.en.html#proxy-req-path" title="proxy-req-path"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">proxy-req-path</span></code></a> isn’t available due to the proxy request not having been created, it falls back
+to <a class="reference internal" href="user/ExtractorReference.en.html#ua-req-path" title="ua-req-path"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">ua-req-path</span></code></a> to get the path the user agent sent. It would also be reasonable to only use
+<a class="reference internal" href="user/ExtractorReference.en.html#ua-req-path" title="ua-req-path"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">ua-req-path</span></code></a> in both cases so that only if the user agent specifically requested “security.txt”
+would the default be used.</p>
+<dl class="simple">
+<dt>Goal</dt><dd><p>Provide a default <a class="reference external" href="https://tools.ietf.org/html/rfc7519">JSON web token</a>.</p>
+</dd>
+</dl>
+<p>The utility here is to bootstrap into an established JWT infrastructure. On a first request into a
+CDN the default token is provided to enable access to the resources needed to get a personalized
+token. For security reasons the tokens expire on a regular basis which includes the default token.
+It would be too expensive to restart or reload Traffic Server on every expiration. Presuming an infrastructure
+that pushes default tokens to the file “/var/www/jwt/default-token.jwt”, a text block can be defined
+to load that file and check it for changes every 12 hours. If the file is missing, a special marker
+“N/A” that signals this problem to the upstream.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>      <span class="p p-Indicator">-</span> <span class="nt">text-block-define</span><span class="p">:</span>
+          <span class="nt">name</span><span class="p">:</span> <span class="s">&quot;default-jwt&quot;</span>
+          <span class="nt">path</span><span class="p">:</span> <span class="s">&quot;/var/www/jwt/default-token.jwt&quot;</span>
+          <span class="nt">text</span><span class="p">:</span> <span class="s">&quot;N/A&quot;</span>
+          <span class="nt">duration</span><span class="p">:</span> <span class="s">&quot;12h&quot;</span>
+</pre></div>
+</div>
+<p>To use this, the proxy request is checked for the “Author-i-tay” field. If set it is passed through
+on the presumption it is a valid token. If not, then the default token is added.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-rsp</span>
+      <span class="nt">do</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">proxy-req-field&lt;Author-i-tay&gt;</span>
+        <span class="nt">select</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">is-empty</span><span class="p">:</span>
+          <span class="nt">do</span><span class="p">:</span>
+          <span class="p p-Indicator">-</span> <span class="nt">proxy-rsp-field&lt;Author-i-tay&gt;</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">text-block&lt;default-jwt&gt;</span>
+</pre></div>
+</div>
+<p>Once this is set up, pushes of new tokens to the file system on the production system takes no more
+than 12 hours to show up in the default tokens used.</p>
+</div>
+<div class="section" id="path-tweaking">
+<span id="example-path-tweaking"></span><h2>Path Tweaking<a class="headerlink" href="#path-tweaking" title="Permalink to this headline">¶</a></h2>
+<p>This example also serves to illustrate the use of <code class="code docutils literal notranslate"><span class="pre">continue</span></code> in <a class="reference internal" href="user/DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a>. The goal is to
+adjust a file name in a path depending on the presence of specific query parameters, which are then
+discarded. If the parameter “ma=0” is present, then the base file name must have the string “_noma”
+attached. If the parameter “mc=1” is present, then the base filename must have the string “_mac”
+attached. If both are present then both strings are added.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span>    <span class="p p-Indicator">-</span> <span class="nt">var&lt;path&gt;</span><span class="p">:</span> <span class="s">&quot;boot&quot;</span> <span class="c1"># base file name stem.</span>
+    <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-query</span> <span class="c1"># Check for ma=0</span>
+      <span class="nt">select</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">contains</span><span class="p">:</span> <span class="s">&quot;ma=0&quot;</span>
+        <span class="nt">do</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">var&lt;path&gt;</span><span class="p">:</span> <span class="s">&quot;{var&lt;path&gt;}_noma&quot;</span>
+      <span class="nt">continue</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-query</span> <span class="c1"># Check for mc=1</span>
+      <span class="nt">select</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="nt">contains</span><span class="p">:</span> <span class="s">&quot;mc=1&quot;</span>
+        <span class="nt">do</span><span class="p">:</span>
+        <span class="p p-Indicator">-</span> <span class="nt">var&lt;path&gt;</span><span class="p">:</span> <span class="s">&quot;{var&lt;path&gt;}_mac&quot;</span>
+      <span class="nt">continue</span><span class="p">:</span>
+    <span class="c1"># Correct file name is assembled, update the path.</span>
+    <span class="p p-Indicator">-</span> <span class="nt">ua-req-path</span><span class="p">:</span> <span class="s">&quot;edge/file/{var&lt;path&gt;}.ipxe.img&quot;</span>
+    <span class="p p-Indicator">-</span> <span class="nt">ua-req-query</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">NULL</span> <span class="c1"># Do not pass the query parameters upstream.</span>
+</pre></div>
+</div>
+<p>The configuration uses <a class="reference internal" href="user/DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> to check for the query parameters and adjust a variable
+containing the file name as needed. The <code class="code docutils literal notranslate"><span class="pre">continue</span></code> causes the invocation to proceed past the
+<a class="reference internal" href="user/DirectiveReference.en.html#with" title="with"><code class="xref txb txb-drtv docutils literal notranslate"><span class="pre">with</span></code></a> even if it matches. At the end, the path is assembled and set and the query parameters
+cleared.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="arch.en.html" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="guide.en.html" class="btn btn-neutral float-left" title="Usage Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

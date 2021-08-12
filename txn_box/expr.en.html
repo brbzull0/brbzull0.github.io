@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Feature Expressions &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Directives" href="directive.en.html" />
+    <link rel="prev" title="Installing" href="install.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Feature Expressions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-expressions">Basic Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scoped-extractors">Scoped Extractors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#regular-expression-scope">Regular Expression Scope</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Feature Expressions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/expr.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="feature-expressions">
+<span id="expr"></span><h1>Feature Expressions<a class="headerlink" href="#feature-expressions" title="Permalink to this headline">¶</a></h1>
+<p>A feature expression specifies how to extract a feature. At run time, if the feature is needed, the
+expression is applied and the result is the feature. The feature can be any of the types</p>
+<table class="docutils align-center">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>String</p></td>
+<td><p>Text.</p></td>
+</tr>
+<tr class="row-odd"><td><p>NULL</p></td>
+<td><p>The null value, no value.</p></td>
+</tr>
+<tr class="row-even"><td><p>Integer</p></td>
+<td><p>A signed integral value.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Boolean</p></td>
+<td><p>A value that is <code class="docutils literal notranslate"><span class="pre">true</span></code> or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>IP Address</p></td>
+<td><p>An IP address.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Duration</p></td>
+<td><p>A time span.</p></td>
+</tr>
+<tr class="row-even"><td><p>Tuple</p></td>
+<td><p>A list of features.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Expressions vary from simple to very complex, but ultimately produce a feature of one of these types.</p>
+<div class="section" id="basic-expressions">
+<h2>Basic Expressions<a class="headerlink" href="#basic-expressions" title="Permalink to this headline">¶</a></h2>
+<p>Basic feature expressions are very similar to <a class="reference external" href="https://docs.python.org/3.4/library/string.html#format-string-syntax">Python format strings</a> which contains a mixture
+of literal strings and extractors. Extractors are referenced by what Python calls a “replacement
+field” which are set off by braces. The underlying format structure is</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>**{** [ *name* ] [ **:** [ *format* ] [ **:** *extension* ] ] **}**
+</pre></div>
+</div>
+<p><code class="code docutils literal notranslate"><span class="pre">name</span></code> specifies the extractor, <code class="code docutils literal notranslate"><span class="pre">format</span></code> makes it possible to control the output of the
+extractor (such as width), and <code class="code docutils literal notranslate"><span class="pre">extension</span></code> is used to pass extra data to the extractor.</p>
+<p>In general the result of a quoted string is a string feature. All extractors can generate text output
+and so can be used in a feature expression.. As a special case, if the format expression consists of
+a single extractor and no literal text then the result type is the result type of the extractor.</p>
+<p>A feature expression can be preceded by the YAML type tag <code class="docutils literal notranslate"><span class="pre">!literal</span></code> in which case the string is
+treated as a literal string, no extractors are invoked. Doubling braces will escape the braces and
+yield a single one, the same way as for Python.</p>
+<p>And finally, as unquoted string is parsed differently. It is checked if it can be parsed as one of
+a particular set of literals and if so is treated as such.</p>
+<ul class="simple">
+<li><p>The string “NULL”, which yields the no value feature.</p></li>
+<li><p>integer</p></li>
+<li><p>boolean</p></li>
+<li><p>IP address</p></li>
+</ul>
+<p>If none of these, it is treated as an extractor, e.g. as if it had been enclosed by <code class="docutils literal notranslate"><span class="pre">&quot;{}&quot;</span></code>. This
+is by far the most common case and so it is useful and clearer to skip the quotes and braces.</p>
+<p>A feature expression can include <a class="reference internal" href="reference.en.html#term-modifier"><span class="xref std std-term">modifier</span></a>s. These modify or transform an extracted feature.
+The base expression is used to extract a feature, then the modifiers are applied to the feature
+sequentially to yield the feature. TxnBox uses a <a class="reference external" href="https://en.wikipedia.org/wiki/Dataflow_programming">data flow</a> style where most feature manipulations are
+expected to be done by modifiers on expressions.</p>
+<p>Some examples -</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;Delain concert&quot;
+</pre></div>
+</div>
+<p>The literal string “Delain concert”.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;Forwarded for {inbound-addr-remote} to {ua-req-host}&quot;
+</pre></div>
+</div>
+<p>This extracts a string that could be “Forwarded for 192.23.34.99 to apache.org”. It invokes the
+extractors <code class="docutils literal notranslate"><span class="pre">inbound-addr-remote</span></code> and <code class="docutils literal notranslate"><span class="pre">ua-req-host</span></code> which extract the client IP address and
+the host for the client request respectively.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>!literal &quot;Forwarded for {inbound-addr-remote} to {ua-req-host}&quot;
+</pre></div>
+</div>
+<p>The literal string “Forwarded for {inbound-addr-remote} to {ua-req-host}”.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;Forwarded for {{inbound-addr-remote}} to {{ua-req-host}}&quot;
+</pre></div>
+</div>
+<p>The literal string “Forwarded for {inbound-addr-remote} to {ua-req-host}”.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>56
+</pre></div>
+</div>
+<p>The integer constant 56.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>NULL
+</pre></div>
+</div>
+<p>The null feature.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;NULL&quot;
+</pre></div>
+</div>
+<p>The literal string “NULL”.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>inbound-addr-remote
+</pre></div>
+</div>
+<p>The extractor <code class="docutils literal notranslate"><span class="pre">inbound-addr-remote</span></code> which extracts an IP address feature with the value of the
+client source address. This extracts a feature of type <code class="docutils literal notranslate"><span class="pre">IP_Address</span></code>. This identical to</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;{inbound-addr-remote}&quot;
+</pre></div>
+</div>
+</div>
+<div class="section" id="formatting">
+<h2>Formatting<a class="headerlink" href="#formatting" title="Permalink to this headline">¶</a></h2>
+<p>The second part of an extractor supports controlling the format of the output. This is not generally
+required but in some cases it is quite useful. A good example is the extractor
+<a class="reference internal" href="user/ExtractorReference.en.html#is-internal" title="is-internal"><code class="xref txb txb-ex docutils literal notranslate"><span class="pre">is-internal</span></code></a>. This returns a true or false value, which is in the C style mapped to 1
+and 0. However, it can be changed to “true” and “false” by specifying the output as a string.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proxy-req-field&lt;Carp-Internal&gt;: is-internal:s
+</pre></div>
+</div>
+<p>Formatting is most commonly useful when setting values, such as field values. The extracted strings
+can be justified, limited in width, and in particular IP addresses can be formatted in a variety of
+ways.</p>
+</div>
+<div class="section" id="scoped-extractors">
+<h2>Scoped Extractors<a class="headerlink" href="#scoped-extractors" title="Permalink to this headline">¶</a></h2>
+<p>There are sets of extractors that extract data from a <a class="reference internal" href="reference.en.html#term-scope"><span class="xref std std-term">scope</span></a>. A scope becomes <a class="reference internal" href="reference.en.html#term-active"><span class="xref std std-term">active</span></a>
+at a specific point in a configuration and remains active for all nested configuration unless
+overridden by a scope of the same type. Multiple scopes of the same type nest in the standard scope
+semantics, where when a scope becomes inactive the most recently active scope becomes active again.
+Any scope extractors extract data from the most recent / innermost scope.</p>
+<div class="section" id="regular-expression-scope">
+<h3>Regular Expression Scope<a class="headerlink" href="#regular-expression-scope" title="Permalink to this headline">¶</a></h3>
+<p>If a regular expression comparison is successful matched, or explicitly applied, this creates a
+scope where the capture groups are accessible via index extractors.These are numbered in the
+standard way, with <code class="docutils literal notranslate"><span class="pre">0</span></code> meaning the entire matched string, <code class="docutils literal notranslate"><span class="pre">1</span></code> the first capture group, <code class="docutils literal notranslate"><span class="pre">2</span></code> the
+second capture group, and so on. It is an error to use an index that is larger than the available
+capture groups, or outside an active scope. For example if a header named “mail-check” should be set
+if the host contains the domain “mail”, it could be done as</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">with</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">ua-req-host</span>
+<span class="nt">select</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">rxp</span><span class="p">:</span> <span class="s">&quot;^(?:(.*?)[.])?mail(?:[.](.*?))?$&quot;</span>
+   <span class="nt">do</span><span class="p">:</span>
+   <span class="p p-Indicator">-</span> <span class="nt">proxy-req-field&lt;mail-check&gt;</span><span class="p">:</span> <span class="s">&quot;You&#39;ve</span><span class="nv"> </span><span class="s">got</span><span class="nv"> </span><span class="s">mail</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">{2}!&quot;</span>
+</pre></div>
+</div>
+<p>This is a case where a feature string must be used instead of an unquoted extractor. That is</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proxy-req-field&lt;mail-check&gt;: 2
+</pre></div>
+</div>
+<p>sets the field to the integer value 2, which fails. Similarly</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proxy-req-field&lt;mail-check&gt;: &quot;2&quot;
+</pre></div>
+</div>
+<p>sets the field to the string “2”. The correct usage is</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>proxy-req-field&lt;mail-check&gt;: &quot;{2}&quot;
+</pre></div>
+</div>
+<p>sets the field to the second capture group.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="directive.en.html" class="btn btn-neutral float-right" title="Directives" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="install.en.html" class="btn btn-neutral float-left" title="Installing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

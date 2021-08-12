@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Transaction Box &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Concepts" href="txn_box.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="#" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Transaction Box</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transaction-box">
+<h1>Transaction Box<a class="headerlink" href="#transaction-box" title="Permalink to this headline">¶</a></h1>
+<p>Transaction Box, or TxnBox, is an Apache Traffic Server plugin to manipulate
+<a class="reference internal" href="reference.en.html#term-transaction"><span class="xref std std-term">transaction</span></a>s. The functionality is based on requests I have received over the years from
+users and admnistrators for Traffic Server. The primary points of interest are</p>
+<ul class="simple">
+<li><p>YAML based configuration.</p></li>
+<li><p>Smooth interaction between global and remap hooks.</p></li>
+<li><p>Consistent access to data, a single way to access data usable in all circumstances.</p></li>
+</ul>
+<p>TxnBox is designed as a very general plugin which can replace a number of other plugins. It is also
+intended, in the long run, to replace “remap.config”.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="txn_box.en.html#configuration">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="txn_box.en.html#hooks">Hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install.en.html">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install.en.html#global">Global</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install.en.html#remap">Remap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="expr.en.html">Feature Expressions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="expr.en.html#basic-expressions">Basic Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expr.en.html#formatting">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expr.en.html#scoped-extractors">Scoped Extractors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="directive.en.html">Directives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="directive.en.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="guide.en.html">Usage Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="guide.en.html#basic-tips">Basic Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide.en.html#working-with-http-fields">Working with HTTP fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide.en.html#rewriting-urls">Rewriting URLs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="guide.en.html#using-variables">Using Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.en.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.en.html#default-accept-encoding">Default Accept-Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.en.html#traffic-ramping">Traffic Ramping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.en.html#static-file-serving">Static File Serving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.en.html#path-tweaking">Path Tweaking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="arch.en.html">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="arch.en.html#extending">Extending</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ExtractorReference.en.html#extractors">Extractors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/ExtractorReference.en.html#http-messages">HTTP Messages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ExtractorReference.en.html#transaction">Transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ExtractorReference.en.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ExtractorReference.en.html#duration">Duration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ExtractorReference.en.html#utility">Utility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/DirectiveReference.en.html">Directive Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#fundamental">Fundamental</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#user-agent-request">User Agent Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#proxy-request">Proxy Request</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#upstream-response">Upstream Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#proxy-response">Proxy Response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#transaction">Transaction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#utility">Utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#ipspace">IPSpace</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/DirectiveReference.en.html#compatibility">Compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/ComparisonReference.en.html">Comparison Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/ComparisonReference.en.html#comparisons">Comparisons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/ModifierReference.en.html">Modifier Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/ModifierReference.en.html#modifiers">Modifiers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="future.en.html">Future Work</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="future.en.html#session">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="future.en.html#feature-modifiers">Feature Modifiers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="misc.en.html">Miscellaneous</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="misc.en.html#issues">Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="misc.en.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/dev-guide.en.html">Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/design.en.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/memory-management.en.html">Memory Mangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/dev-extractor.en.html">Extractor Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/dev-directive.en.html">Directive Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/dev-guide.en.html#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference.en.html">Glossary</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="txn_box.en.html" class="btn btn-neutral float-right" title="Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

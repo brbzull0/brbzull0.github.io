@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Directive Development &mdash; Transaction Box</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Glossary" href="../reference.en.html" />
+    <link rel="prev" title="Extractor Development" href="dev-extractor.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Transaction Box Plugin
+          
+
+          
+            
+            <img src="../_static/balcora-gate-400x400.jpg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html">Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../txn_box.en.html#configuration">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../building.en.html">Building</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install.en.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../expr.en.html">Feature Expressions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../directive.en.html">Directives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../selection.en.html">Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.en.html">Usage Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.en.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.en.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html">Extractor Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ExtractorReference.en.html#extractors">Extractors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/DirectiveReference.en.html">Directive Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ComparisonReference.en.html">Comparison Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/ModifierReference.en.html">Modifier Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../future.en.html">Future Work</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc.en.html">Miscellaneous</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="dev-guide.en.html">Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="design.en.html">Design Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory-management.en.html">Memory Mangement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev-extractor.en.html">Extractor Development</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Directive Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-methods">Required Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#instance-loader">Instance Loader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#optional-methods">Optional Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-initializer">Configuration Initializer</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev-guide.en.html#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference.en.html">Glossary</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Transaction Box Plugin</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="dev-guide.en.html">Developer Guide</a> &raquo;</li>
+        
+      <li>Directive Development</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/dev-directive.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="directive-development">
+<span id="dev-directive"></span><h1>Directive Development<a class="headerlink" href="#directive-development" title="Permalink to this headline">¶</a></h1>
+<p>Directives are implemented by a class, which must be a subclass of <span>Directive</span>. Each use of
+the directive in a configuraiton creates a new instance of the class.</p>
+<div class="section" id="required-methods">
+<h2>Required Methods<a class="headerlink" href="#required-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="instance-loader">
+<h3>Instance Loader<a class="headerlink" href="#instance-loader" title="Permalink to this headline">¶</a></h3>
+<p>The first requirement for a directive implementation is creating the instance loader. This is a
+functor to be invoked by the configuration loader when the directive is used to create the instance.
+By convention this is named <code class="code docutils literal notranslate"><span class="pre">load</span></code>.</p>
+<p>The signature is</p>
+<dl class="function">
+<dt id="_CPPv44loadR6ConfigPK13CfgStaticDataN4YAML4NodeERKN4swoc8TextViewERKN4swoc8TextViewEN4YAML4NodeE">
+<span id="_CPPv34loadR6ConfigPK13CfgStaticDataN4YAML4NodeERKN4swoc8TextViewERKN4swoc8TextViewEN4YAML4NodeE"></span><span id="_CPPv24loadR6ConfigPK13CfgStaticDataN4YAML4NodeERKN4swoc8TextViewERKN4swoc8TextViewEN4YAML4NodeE"></span><span id="load__ConfigR.CfgStaticDataCP.YAML::Node.swoc::TextViewCR.swoc::TextViewCR.YAML::Node"></span>swoc::Rv&lt;<a class="reference internal" href="class-reference.en.html#_CPPv49Directive" title="Directive">Directive</a>::Handle&gt; <code class="descname">load</code><span class="sig-paren">(</span><a class="reference internal" href="class-reference.en.html#_CPPv46Config" title="Config">Config</a> &amp;<em>cfg</em>, CfgStaticData <em class="property">const</em> *<em>rtti</em>, YAML::Node <em>drtv_node</em>, swoc::TextView <em class="property">const</em> &amp;<em>name</em>, swoc::TextView <em class="property">const</em> &amp;<em>arg</em>, YAML::Node <em>key_value</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44loadR6ConfigPK13CfgStaticDataN4YAML4NodeERKN4swoc8TextViewERKN4swoc8TextViewEN4YAML4NodeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cfg</strong> – Configuration instance.</p></li>
+<li><p><strong>rtti</strong> – Directive static data.</p></li>
+<li><p><strong>drtv_node</strong> – YAML node for the directive use.</p></li>
+<li><p><strong>name</strong> – Name of the directive.</p></li>
+<li><p><strong>arg</strong> – Argument to the directive.</p></li>
+<li><p><strong>key_value</strong> – Value of <em>drtv_node</em>.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is responsible for either creating a fully initialized instance of the directive class or
+an error report if that fails.</p>
+</dd></dl>
+
+<p>The configuration instance <em>cfg</em> is the configuration that is loading.</p>
+<p>For each directive class, there is some configuration static data. This is passed via the
+<em>rtti</em> parameter which points at an instance of <span>CfgStaticData</span>. This value will also be
+available to the instance later via <span>Directive::_rtti</span>. This will be set by the configuration
+loader, it does not need to be set by the instance loader. In some cases, however, it is needed by
+the instance loader and because the instance has not yet been created it can’t be loaded from the
+directive instance.</p>
+<p>A directive is always a map. <em>drtv_node</em> is the map node and <em>key_value</em> is the node for
+the value of the key that determined which directive the map is. <em>name</em> is the name of the
+directive as used to look up the instance loader and <em>arg</em> is the argument, if any. I.e. if the
+directive key is “proxy-rsp-field&lt;Best-Band&gt;” then <em>name</em> will be “proxy-rsp-field” and
+<em>arg</em> will be “Best-Band”.</p>
+<p>The instance loader is responsible for all directive parsing, including any nested keys and the
+argument.</p>
+</div>
+</div>
+<div class="section" id="optional-methods">
+<h2>Optional Methods<a class="headerlink" href="#optional-methods" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration-initializer">
+<h3>Configuration Initializer<a class="headerlink" href="#configuration-initializer" title="Permalink to this headline">¶</a></h3>
+<p>A directive can specify a static method to invoke the first time the directive is used in a configuration.</p>
+<dl class="function">
+<dt id="_CPPv48cfg_initR6ConfigPK13CfgStaticData">
+<span id="_CPPv38cfg_initR6ConfigPK13CfgStaticData"></span><span id="_CPPv28cfg_initR6ConfigPK13CfgStaticData"></span><span id="cfg_init__ConfigR.CfgStaticDataCP"></span>swoc::Errata <code class="descname">cfg_init</code><span class="sig-paren">(</span><a class="reference internal" href="class-reference.en.html#_CPPv46Config" title="Config">Config</a> &amp;<em>cfg</em>, CfgStaticData <em class="property">const</em> *<em>rtti</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv48cfg_initR6ConfigPK13CfgStaticData" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cfg</strong> – Configuration instance.</p></li>
+<li><p><strong>rtti</strong> – Directive static data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p><em>cfg`is the configuration instance and :arg:`rtti</em> is the directive related static information.
+The primary use of this is a data structure that is shared among instances. This can be constructed
+in this method and stored in the <em>rtti</em> member <code class="code docutils literal notranslate"><span class="pre">_cfg_store</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../reference.en.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dev-extractor.en.html" class="btn btn-neutral float-left" title="Extractor Development" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2020, Verizon Media.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
