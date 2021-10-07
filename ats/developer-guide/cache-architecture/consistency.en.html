@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Cache Tools &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RAM Cache" href="ram-cache.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -139,6 +135,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -147,7 +144,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -182,13 +178,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -199,7 +193,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/cache-architecture/consistency.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -322,14 +316,14 @@ they differ on the unimportant parts) a url containing only the important parts
 could be created and used.</p>
 <p>For example, suppose the URL for Network Geographics content encoded both the
 document GUID and a referral key.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">1.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="mf">.2511635</span><span class="o">.</span><span class="n">UQB_zCc8B8H</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">1.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="o">.</span><span class="mf">2511635.</span><span class="n">UQB_zCc8B8H</span>
 </pre></div>
 </div>
 <p>We don’t want to serve the same content for every possible referrer. Instead,
 we could use a plugin to convert this to the previous example and requests that
 differed only in the referrer key would all reference the same cache entry.
 Note that we would also map the following to the same cache key</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">56.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="mf">.2511635</span><span class="o">.</span><span class="n">UQB_zCc8B8H</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">56.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="o">.</span><span class="mf">2511635.</span><span class="n">UQB_zCc8B8H</span>
 </pre></div>
 </div>
 <p>This can be handy for sharing content between servers when that content is
@@ -353,29 +347,29 @@ affect the content to minimize cache footprint and improve cache hit rates.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="ram-cache.en.html" class="btn btn-neutral float-right" title="RAM Cache" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="api-functions.en.html" class="btn btn-neutral float-left" title="API functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="ram-cache.en.html" class="btn btn-neutral float-right" title="RAM Cache" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api-functions.en.html" class="btn btn-neutral float-left" title="API functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -383,6 +377,7 @@ affect the content to minimize cache footprint and improve cache hit rates.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

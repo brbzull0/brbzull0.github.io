@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Layer 4 Routing &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Performance Tuning" href="performance/index.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -116,10 +112,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#example">Example</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-warming-tls-tunnel">Pre-warming TLS Tunnel</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -130,7 +131,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -165,13 +165,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../index.html">Docs</a> &raquo;</li>
         
           <li><a href="index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -180,7 +178,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../_sources/admin-guide/layer-4-routing.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -239,9 +237,9 @@ internal services without each internal service having to stand up its own edge.
 do not require global routable addresses as long as the edge Traffic Server instances can route to the
 services.</p>
 <p>The basic set up is therefore</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id4">
 <img alt="../_images/l4-example-cdn-layout.svg" src="../_images/l4-example-cdn-layout.svg" /><p class="caption"><span class="caption-text">A Client connects to an edge Traffic Server which forwards the connection to the internal Service.
-The Client then negotiates TLS with the Service.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+The Client then negotiates TLS with the Service.</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
 <p>For the example, let us define two services inside the corporate network of Example, Inc.
 <code class="docutils literal notranslate"><span class="pre">service-1</span></code> and <code class="docutils literal notranslate"><span class="pre">service-2</span></code>. <code class="docutils literal notranslate"><span class="pre">service-1</span></code> is on port 443 on host <code class="docutils literal notranslate"><span class="pre">app-server-29</span></code> while
@@ -294,6 +292,47 @@ does not terminate (and therefore does not decrypt) the connection, it cannot be
 cache.</p>
 </div>
 </div>
+<div class="section" id="pre-warming-tls-tunnel">
+<span id="id3"></span><h2>Pre-warming TLS Tunnel<a class="headerlink" href="#pre-warming-tls-tunnel" title="Permalink to this headline">¶</a></h2>
+<p>Pre-warming TLS Tunnel reduces the latency of TLS connections (<code class="docutils literal notranslate"><span class="pre">forward_route</span></code> and <code class="docutils literal notranslate"><span class="pre">partial_blind_route</span></code> type SNI
+Routing). When this feature is enabled, each ET_NET thread makes TLS connections pool per routing type, SNI, and ALPN.</p>
+<div class="figure align-center">
+<img alt="../_images/l4-pre-warming-overview.svg" src="../_images/l4-pre-warming-overview.svg" /></div>
+<p>Stats for connection pools are registered dynamically on start up. Details in <a class="reference internal" href="monitoring/statistics/core/ssl.en.html#pre-warming-tls-tunnel-stats"><span class="std std-ref">Pre-warming TLS Tunnel</span></a>.</p>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">sni</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">fqdn</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">foo.com</span>
+  <span class="nt">http2</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">off</span>
+  <span class="nt">partial_blind_route</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">bar.com</span>
+  <span class="nt">client_sni_policy</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">server_name</span>
+  <span class="nt">tunnel_prewarm</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+  <span class="nt">tunnel_prewarm_connect_timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+  <span class="nt">tunnel_prewarm_inactive_timeout</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
+  <span class="nt">tunnel_prewarm_max</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+  <span class="nt">tunnel_prewarm_min</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+  <span class="nt">tunnel_alpn</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">h2</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">current_init</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">current_open</span> <span class="mi">10</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">total_hit</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">total_miss</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">total_handshake_time</span> <span class="mi">1106250000</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">total_handshake_count</span> <span class="mi">10</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">total_retry</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">current_init</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">current_open</span> <span class="mi">10</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">total_hit</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">total_miss</span> <span class="mi">0</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">total_handshake_time</span> <span class="mi">1142368000</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">total_handshake_count</span> <span class="mi">10</span>
+<span class="n">proxy</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">tunnel</span><span class="o">.</span><span class="n">prewarm</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mf">443.</span><span class="n">tls</span><span class="o">.</span><span class="n">http2</span><span class="o">.</span><span class="n">total_retry</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 
 
@@ -301,29 +340,29 @@ cache.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="performance/index.en.html" class="btn btn-neutral float-right" title="Performance Tuning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="configuring-traffic-server.en.html" class="btn btn-neutral float-left" title="Configuring Traffic Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="performance/index.en.html" class="btn btn-neutral float-right" title="Performance Tuning" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="configuring-traffic-server.en.html" class="btn btn-neutral float-left" title="Configuring Traffic Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -331,6 +370,7 @@ cache.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

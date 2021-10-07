@@ -2,48 +2,45 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>TSContScheduleOnPool &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="TSContScheduleOnThread" href="TSContScheduleOnThread.en.html" />
-    <link rel="prev" title="TSContScheduleEveryOnPool" href="TSContScheduleEveryOnPool.en.html" /> 
+    <link rel="prev" title="TSContScheduleEvery" href="TSContScheduleEvery.en.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -130,7 +126,8 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContSchedule.en.html">TSContSchedule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEvery.en.html">TSContScheduleEvery</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">TSContScheduleOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
@@ -365,6 +362,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
@@ -373,7 +371,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -408,13 +405,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -427,7 +422,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../../_sources/developer-guide/api/functions/TSContScheduleOnPool.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -450,21 +445,16 @@
 </div>
 <dl class="c function">
 <dt id="c.TSContScheduleOnPool">
-<a class="reference internal" href="TSTypes.en.html#c.TSAction" title="TSAction"><span class="pre">TSAction</span></a> <code class="sig-name descname"><span class="pre">TSContScheduleOnPool</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont"><span class="pre">TSCont</span></a> <em><span class="pre">contp</span></em>, <a class="reference internal" href="TSTypes.en.html#c.TSHRTime" title="TSHRTime"><span class="pre">TSHRTime</span></a> <em><span class="pre">timeout</span></em>, <a class="reference internal" href="../types/TSThreadPool.en.html#c.TSThreadPool" title="TSThreadPool"><span class="pre">TSThreadPool</span></a> <em><span class="pre">tp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSContScheduleOnPool" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSAction" title="TSAction">TSAction</a> <code class="sig-name descname">TSContScheduleOnPool</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSHRTime" title="TSHRTime">TSHRTime</a> <em>timeout</em>, <a class="reference internal" href="../types/TSThreadPool.en.html#c.TSThreadPool" title="TSThreadPool">TSThreadPool</a> <em>tp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSContScheduleOnPool" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>Schedules <em>contp</em> to run <em>timeout</em> milliseconds in the future, on a random thread that
-belongs to <em>tp</em>. The <em>timeout</em> is an approximation, meaning it will be at least
-<em>timeout</em> milliseconds but possibly more. Resolutions finer than roughly 5 milliseconds will
-not be effective. Note that <em>contp</em> is required to have a mutex, which is provided to
-<a class="reference internal" href="TSContCreate.en.html#c.TSContCreate" title="TSContCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCreate()</span></code></a>.</p>
-<p>The continuation is scheduled for a particular thread selected from a group of similar threads,
-as indicated by <em>tp</em>. If <em>contp</em> already has an thread affinity set, and the thread
-type of thread affinity is the same as <em>tp</em>, then <em>contp</em> will be scheduled on the
-thread specified by thread affinity.</p>
+<p>Mostly the same as <a class="reference internal" href="TSContSchedule.en.html#c.TSContSchedule" title="TSContSchedule"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContSchedule()</span></code></a>. Schedules <em>contp</em> on a random thread that belongs to <em>tp</em>.
+If thread type of the thread specified by thread affinity is the same as <em>tp</em>, the <em>contp</em> will
+be scheduled on the thread specified by thread affinity.</p>
+<p>The continuation is scheduled for a particular thread selected from a group of similar threads, as indicated by <em>tp</em>.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 24%" />
@@ -495,15 +485,12 @@ recommended. The <code class="docutils literal notranslate"><span class="pre">TS
 called and continuations that use them have the same restrictions. <code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_TASK</span></code> threads
 are threads that exist to perform long or blocking actions, although sufficiently long operation can
 impact system performance by blocking other continuations on the threads.</p>
-<p>The return value can be used to cancel the scheduled event via <a class="reference internal" href="TSActionCancel.en.html#c.TSActionCancel" title="TSActionCancel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionCancel()</span></code></a>. This is
-effective until the continuation <em>contp</em> is being dispatched. However, if it is scheduled on
-another thread this can be problematic to be correctly timed. The return value can be checked with
-<a class="reference internal" href="TSActionDone.en.html#c.TSActionDone" title="TSActionDone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionDone()</span></code></a> to see if the continuation ran before the return, which is possible if
-<em>timeout</em> is <cite>0</cite>.</p>
-<p>If <em>contp</em> has no thread affinity set, the thread it is now scheduled on will be set
-as its thread affinity thread.</p>
 <p>Note that the TSContSchedule() family of API shall only be called from an ATS EThread.
 Calling it from raw non-EThreads can result in unpredictable behavior.</p>
+<p>Note that some times if the TASK threads are not ready when you schedule a “contp” on the  <code class="docutils literal notranslate"><span class="pre">TS_THREAD_POOL_TASK</span></code> then
+the “contp” could end up being executed in a <code class="docutils literal notranslate"><span class="pre">ET_NET</span></code> thread instead, more likely this is not what you want.
+To avoid this you can use the <code class="docutils literal notranslate"><span class="pre">TS_LIFECYCLE_TASK_THREADS_READY_HOOK</span></code> to make sure that the task threads
+have been started when you schedule a “contp”. You can refer to <a class="reference internal" href="TSLifecycleHookAdd.en.html#c.TSLifecycleHookAdd" title="TSLifecycleHookAdd"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSLifecycleHookAdd()</span></code></a> for more details.</p>
 </div>
 <div class="section" id="example-scenarios">
 <h2>Example Scenarios<a class="headerlink" href="#example-scenarios" title="Permalink to this headline">¶</a></h2>
@@ -561,8 +548,10 @@ the same continuation on two different threads of the same type.</p>
 </div>
 <div class="section" id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="TSContScheduleEveryOnPool.en.html"><span class="doc">TSContScheduleEveryOnPool</span></a>
-<a class="reference internal" href="TSContScheduleOnThread.en.html"><span class="doc">TSContScheduleOnThread</span></a></p>
+<p><a class="reference internal" href="TSContSchedule.en.html"><span class="doc">TSContSchedule</span></a>
+<a class="reference internal" href="TSContScheduleEvery.en.html"><span class="doc">TSContScheduleEvery</span></a>
+<a class="reference internal" href="TSContScheduleOnThread.en.html"><span class="doc">TSContScheduleOnThread</span></a>
+<a class="reference internal" href="TSLifecycleHookAdd.en.html"><span class="doc">TSLifecycleHookAdd</span></a></p>
 </div>
 </div>
 
@@ -571,29 +560,29 @@ the same continuation on two different threads of the same type.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="TSContScheduleOnThread.en.html" class="btn btn-neutral float-right" title="TSContScheduleOnThread" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="TSContScheduleEveryOnPool.en.html" class="btn btn-neutral float-left" title="TSContScheduleEveryOnPool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="TSContScheduleOnThread.en.html" class="btn btn-neutral float-right" title="TSContScheduleOnThread" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSContScheduleEvery.en.html" class="btn btn-neutral float-left" title="TSContScheduleEvery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -601,6 +590,7 @@ the same continuation on two different threads of the same type.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

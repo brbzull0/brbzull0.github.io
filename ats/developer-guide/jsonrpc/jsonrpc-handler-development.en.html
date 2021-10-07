@@ -1,0 +1,637 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Handler implementation &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Traffic Server JSONRPC Node C++ Client Implementation" href="jsonrpc-client-api.en.html" />
+    <link rel="prev" title="JSONRPC Endpoint" href="jsonrpc-node.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">JSONRPC</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-architecture.en.html">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-api.en.html">API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-node.en.html">JSONRPC Endpoint</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Handler implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#json-rpc-manager">Json RPC manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#implementing-new-handlers">Implementing new handlers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unit-test">Unit test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#important-notes">Important Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc-client-api.en.html">Traffic Server JSONRPC Node C++ Client Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl-development.en.html">Traffic Control Development Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HandlerError.en.html">API Handler error codes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">JSONRPC</a> &raquo;</li>
+        
+      <li>Handler implementation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/jsonrpc/jsonrpc-handler-development.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="handler-implementation">
+<span id="jsonrpc-development"></span><h1>Handler implementation<a class="headerlink" href="#handler-implementation" title="Permalink to this headline">¶</a></h1>
+<p>Use this section as a guide for developing new rpc methods inside Traffic Server and how to expose them through the JSONRPC 2.0 endpoint.
+Before we start, it is worth mentioning some of the architecture of the current implementation. The whole RPC mechanism is divided in
+few components.</p>
+<div class="section" id="json-rpc-manager">
+<h2>Json RPC manager<a class="headerlink" href="#json-rpc-manager" title="Permalink to this headline">¶</a></h2>
+<p>This class is the entrance point for both server calls and registered functions.</p>
+<div class="figure align-default">
+<img alt="../../_images/JsonRPCManager.svg" src="../../_images/JsonRPCManager.svg" /></div>
+<div class="section" id="dispatcher-class">
+<h3>Dispatcher class<a class="headerlink" href="#dispatcher-class" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Class that keeps track of all the registered methods and notifications that can be invoked by the RPC server. This class holds two
+hash tables containing methods and notifications which use the method name as a key.</p></li>
+<li><p>This class internally consumes <code class="docutils literal notranslate"><span class="pre">RPCRequestInfo</span></code> objects and performs the invocation of the respective calls.</p></li>
+<li><p>This class handlers the responses from the registered callbacks and it fills the appropriated <code class="docutils literal notranslate"><span class="pre">RPCResponseInfo</span></code> which then is passed
+back to the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> class.</p></li>
+</ul>
+</div>
+<div class="section" id="jsonrpcmanager-class">
+<h3>JsonRPCManager class<a class="headerlink" href="#jsonrpcmanager-class" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Singleton class that handles the JSONRPC handler registration and JSONRPC handler invocation.</p></li>
+<li><p>This class is the main entrance point for the RPC server through the <code class="docutils literal notranslate"><span class="pre">handle_call(std::string_view</span> <span class="pre">req)</span></code> function.</p></li>
+<li><p>This class is the main entrance point for the handler to be able to register in the RPC logic. <code class="docutils literal notranslate"><span class="pre">add_notification_handler</span></code> and <code class="docutils literal notranslate"><span class="pre">remove_notification_handler</span></code>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="implementing-new-handlers">
+<h2>Implementing new handlers<a class="headerlink" href="#implementing-new-handlers" title="Permalink to this headline">¶</a></h2>
+<p>There a a few basic concepts that needs to be known before implementing a new handler, this is an easy process and the complexity depends on
+the nature of the handler that you want to implement.
+Dealing with incoming and outgoing parameters is up to the developer, we will touch on some ways to deal with this through this guide.</p>
+<div class="section" id="design">
+<span id="jsonrpc-development-design"></span><h3>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h3>
+<p>As requirement from the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> in order to be able to register inside the RPC management a function should implement the
+following signature:</p>
+<p>Methods:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">your_rpc_handler_function_name</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Notifications:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">your_rpc_handler_function_name</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Incoming method request’s id will be passed to the handler, this is read only value as the server is expected to respond with the same value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> params is expected to be a <code class="docutils literal notranslate"><span class="pre">Sequence</span></code> or a <code class="docutils literal notranslate"><span class="pre">Map</span></code>, as per protocol this cannot be a single value, so do not expect things like:
+<code class="docutils literal notranslate"><span class="pre">param=123</span></code> or <code class="docutils literal notranslate"><span class="pre">param=SomeString</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">params</span></code> can be empty and contains no data at all.</p></li>
+</ul>
+<p>It is important to know that <code class="docutils literal notranslate"><span class="pre">method</span></code> handlers are expected to respond to the requests, while <code class="docutils literal notranslate"><span class="pre">notifications`</span></code> will not respond with
+any data nor error. You can find more information in <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-protocol"><span class="std std-ref">JSONRPC 2.0 Protocol</span></a> or directly in the protocol specs <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If there is no explicit response from the method, the protocol implementation will respond with <cite>success_response</cite> unless an error
+was specified.</p>
+</div>
+</div>
+<div class="section" id="registration-and-handling">
+<h3>Registration and Handling<a class="headerlink" href="#registration-and-handling" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="jsonrpc-manager-api">
+<h4>JSONRPC Manager API<a class="headerlink" href="#jsonrpc-manager-api" title="Permalink to this headline">¶</a></h4>
+<p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object. Note that there are a set of convenient helper
+functions that can be used to achieve registration through the singleton object.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">rpc</span> <span class="p">{</span>
+    <span class="c1">// this set of functions will call the singleton object and perform the same as by using the singleton directly.</span>
+    <span class="n">add_method_handler</span><span class="p">(...)</span>
+    <span class="n">add_notification_handler</span><span class="p">(...)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Handler implementation</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span>
+<span class="n">my_handler_impl</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">rpc</span><span class="o">::</span><span class="n">handlers</span><span class="o">::</span><span class="n">errors</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The actual registration:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;rpc/jsonrpc/JsonRPC.h&quot;</span><span class="cp"></span>
+<span class="p">...</span>
+<span class="n">rpc</span><span class="o">::</span><span class="n">add_method_handler</span><span class="p">(</span><span class="s">&quot;my_handler_impl&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_handler_impl</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This API also accepts a RPCRegistryInfo pointer which will provide a context data for the particular handler, for instance it will
+display the provider’s name when the service descriptor gets called. There is a global object created for this purpose which can be used
+As a generic registry context object,  <code class="docutils literal notranslate"><span class="pre">core_ats_rpc_service_provider_handle</span></code> is defined in the  <code class="docutils literal notranslate"><span class="pre">JsonRPC.h</span></code> header. Please check
+<cite>get_service_descriptor</cite> for more information.</p>
+<p>Notification example:</p>
+<p>As mentioned before, notifications do not need to respond, as they are “fire and forget” calls, no id will be provided as part of the api.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
+<span class="nf">my_notification_handler</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// do something</span>
+    <span class="c1">// all errors will be ignored by the server.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Registration for notifications uses a different API:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;rpc/jsonrpc/JsonRPC.h&quot;</span><span class="cp"></span>
+<span class="n">rpc</span><span class="o">::</span><span class="n">add_notification_handler</span><span class="p">(</span><span class="s">&quot;my_notification_handler&quot;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">my_notification_handler</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The registration API allows the client to pass a  <code class="docutils literal notranslate"><span class="pre">RPCRegistryInfo</span></code> which provides extra information for a particular handler. Non plugins handlers
+should use the default provided Registry Info, located in the <cite>JsonRPC.h</cite> header file.</p>
+</div>
+</div>
+<div class="section" id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>JSONRPC Manager API<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>There are several ways to deal with internal handler errors. Errors are expected to be sent back to the client if the API was expressed that way
+and if the request was a <code class="docutils literal notranslate"><span class="pre">method</span></code>.
+We have defined some generic errors that can be used to respond depending on the nature of the registered handler,
+please check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a> for more info.</p>
+<p>We recommend some ways to deal with this:</p>
+<ol class="arabic simple">
+<li><p>Using the <code class="docutils literal notranslate"><span class="pre">Errata</span></code> from <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code></p></li>
+</ol>
+<p>This can be set in case you would like to let the server to respond with an JSONRPC 2.0 error, <code class="docutils literal notranslate"><span class="pre">ExecutionError</span></code> will be used to catch all the
+errors that are fired from within the function call, either by setting the proper errata or by throwing an exception.
+Please check the <cite>rpc-error-code</cite> and in particular <code class="docutils literal notranslate"><span class="pre">ExecutionError</span> <span class="pre">=</span> <span class="pre">9</span></code>. Also check <a class="reference internal" href="HandlerError.en.html#jsonrpc-handler-errors"><span class="std std-ref">API Handler error codes</span></a></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Errors have preference over any other response, so if you set both, the errata and the <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code> response, then the former
+will be set in the response.</p>
+</div>
+<ol class="arabic simple">
+<li><p>Defining a custom error object and make it part of the response object.</p></li>
+</ol>
+<ul class="simple">
+<li><p>This is up to the developer and the errors can be part of the response <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code>.</p></li>
+<li><p>The JSONRPC Dispatcher will read that there is no error returned from the call and use the result to build the response. If this is
+what you are willing to respond to, then make sure that the error is not set in the <code class="docutils literal notranslate"><span class="pre">ts::Rv</span></code>.</p></li>
+</ul>
+<ol class="arabic">
+<li><p>Exception.</p>
+<blockquote>
+<div><p>As long as the exception inherit from <code class="docutils literal notranslate"><span class="pre">std::exception</span></code> it will be handled by the jsonrpc manager, this error will be
+handled as like using the <code class="docutils literal notranslate"><span class="pre">Errata</span></code> object, this kind of errors will be part of the <code class="docutils literal notranslate"><span class="pre">ExecutionError</span></code>.</p>
+<p>The following example will generate this JSON response:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">some_unhandled_operation_that_throws</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>Examples:</p>
+<ul>
+<li><p>Respond with an error, no <code class="docutils literal notranslate"><span class="pre">result</span></code> field will be set in the response.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="p">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="p">::</span><span class="n">Node</span><span class="o">&gt;</span>
+<span class="n">respond_with_an_error</span><span class="p">(</span><span class="n">std</span><span class="p">::</span><span class="n">string_view</span> <span class="n">const</span> <span class="o">&amp;</span><span class="nb">id</span><span class="p">,</span> <span class="n">YAML</span><span class="p">::</span><span class="n">Node</span> <span class="n">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">using</span> <span class="n">namespace</span> <span class="n">rpc</span><span class="p">::</span><span class="n">handlers</span><span class="p">::</span><span class="n">errors</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="p">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s2">&quot;Something happened in the server&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Server’s response.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;error&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="mi">9</span><span class="p">,</span>
+        <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Error during execution&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;data&quot;</span><span class="p">:[</span>
+            <span class="p">{</span>
+                <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="mi">3000</span><span class="p">,</span>
+                <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;Something happened in the server&quot;</span>
+            <span class="p">}</span>
+        <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;abcd-id&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">make_errata</span></code> hides some internal details when creating an errata.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p>Response with custom handler error. In this case, make sure that the API definition and documentation reflects this as so far we do not
+have json schemas to enforce any of this on the client side.</p>
+<blockquote>
+<div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  ts::Rv&lt;YAML::Node&gt;
+  respond_with_my_own_error(std::string_view const &amp;id, YAML::Node const &amp;params)
+  {
+      YAML::Node resp;
+      resp[&quot;HandlerErrorDescription&quot;] = &quot;I can set up my own error in the result field.&quot;;
+      return resp;
+  }
+
+The &quot;error&quot; is part of the ``result``, in this case this could be used as any other field, the example would be the same.
+</pre></div>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;jsonrpc&quot;</span><span class="p">:</span><span class="s2">&quot;2.0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;result&quot;</span><span class="p">:{</span>
+      <span class="nt">&quot;HandlerErrorDescription&quot;</span><span class="p">:</span><span class="s2">&quot;I can set up my own error in the result field.&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;abcd-id&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>We have selected the <code class="docutils literal notranslate"><span class="pre">ts::Rv&lt;YAML::Node&gt;</span></code> as a message interface as this can hold the actual response/error.</p>
+</div>
+</div>
+</div>
+<div class="section" id="unit-test">
+<span id="jsonrpc-handler-unit-test"></span><h2>Unit test<a class="headerlink" href="#unit-test" title="Permalink to this headline">¶</a></h2>
+<p>All new methods exposed through the RPC server can be tested using the jsonrpc autest extension.</p>
+<div class="section" id="jsonrpc-client-test-text">
+<h3>jsonrpc_client.test.text<a class="headerlink" href="#jsonrpc-client-test-text" title="Permalink to this headline">¶</a></h3>
+<p>This extension provides the ability to interact with the JSONRPC interface by using <strong class="program">traffic_ctl</strong> as a client. As a helper
+for all new autest that needs to write and read jsonrpc message, there is also a new module <cite>jsonrpc.py</cite> which provides
+a nice and easy interface to write methods and notifications.
+This extension also provides the facility to write custom jsonrpc validations. Please check some of the following examples:</p>
+<ol class="arabic">
+<li><p>Write custom jsonrpc message</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">The newly added jsonrpc method was named &#39;foo_bar&#39; and is expected to accept a list of fqdn.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">tr</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">AddTestRun</span><span class="p">(</span><span class="s2">&quot;Test JSONRPC foo_bar()&quot;</span><span class="p">)</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">The following call to the Request object will generate this:</span>
+<span class="sd">{</span>
+<span class="sd">    &quot;id&quot;: &quot;850d32a8-d5a7-11eb-bebc-fa163e6d2ec5&quot;,</span>
+<span class="sd">    &quot;jsonrpc&quot;: &quot;2.0&quot;,</span>
+<span class="sd">    &quot;method&quot;: &quot;foo_bar&quot;,</span>
+<span class="sd">    &quot;params&quot;: {</span>
+<span class="sd">        &quot;fqdn&quot;: [&quot;yahoo.com&quot;, &quot;trafficserver.org&quot;]</span>
+<span class="sd">    }</span>
+<span class="sd">}</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="o">.</span><span class="n">foo_bar</span><span class="p">(</span><span class="n">fqdn</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;yahoo.com&quot;</span><span class="p">,</span> <span class="s2">&quot;trafficserver.org&quot;</span><span class="p">])</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">AddJsonRPCClientRequest</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Custom response validation</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">AddTestRun</span><span class="p">(</span><span class="s2">&quot;Test update_host_status&quot;</span><span class="p">)</span>
+
+<span class="n">Params</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;yahoo&#39;</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;up&#39;</span><span class="p">}</span>
+<span class="p">]</span>
+
+<span class="n">tr</span><span class="o">.</span><span class="n">AddJsonRPCClientRequest</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">Request</span><span class="o">.</span><span class="n">update_host_status</span><span class="p">(</span><span class="n">hosts</span><span class="o">=</span><span class="n">Params</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">check_no_error_on_response</span><span class="p">(</span><span class="n">resp</span><span class="p">:</span> <span class="n">Response</span><span class="p">):</span>
+    <span class="c1"># we only check if it&#39;s an error.</span>
+    <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">is_error</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">resp</span><span class="o">.</span><span class="n">error_as_str</span><span class="p">())</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;All good&quot;</span><span class="p">)</span>
+
+<span class="n">tr</span><span class="o">.</span><span class="n">Processes</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">Streams</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">Testers</span><span class="o">.</span><span class="n">CustomJSONRPCResponse</span><span class="p">(</span><span class="n">check_no_error_on_response</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<div class="section" id="customjsonrpcresponse">
+<h4>CustomJSONRPCResponse<a class="headerlink" href="#customjsonrpcresponse" title="Permalink to this headline">¶</a></h4>
+<p>A tester class that will let you write your own response validation by dealing with the jsonrpc.Response object,
+please check the <code class="docutils literal notranslate"><span class="pre">CustomJSONRPCResponse</span></code> tester for more information.</p>
+</div>
+<div class="section" id="addjsonrpcclientrequest">
+<h4>AddJsonRPCClientRequest<a class="headerlink" href="#addjsonrpcclientrequest" title="Permalink to this headline">¶</a></h4>
+<p>This function will generate a json response as an output, internally it ses <strong class="program">traffic_ctl file --format json</strong> as client.
+The output can be used and compared with a gold file. This also provides schema validation for the entire JSONRPC protocol as well as
+the <code class="docutils literal notranslate"><span class="pre">param</span></code> field against a specific schema file. You can specify <code class="docutils literal notranslate"><span class="pre">schema_file_name</span></code> with a valid json schema file to validate
+the entire JSONRPC 2.0 request(except the content of the <code class="docutils literal notranslate"><span class="pre">params</span></code> field). You can also set <code class="docutils literal notranslate"><span class="pre">params_field_schema_file_name</span></code> with a
+valid json schema file to validate only the <code class="docutils literal notranslate"><span class="pre">params</span></code> field.</p>
+<p>Example:</p>
+<blockquote>
+<div><p>The following, beside sending the request, will perform a JSONRPC 2.0 schema validation as well as the <code class="docutils literal notranslate"><span class="pre">param</span></code> field.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">schema_file_name</span> <span class="o">=</span> <span class="s1">&#39;schemas/jsonrpc20_request_schema.json&#39;</span>
+<span class="n">params_schema_file_name</span> <span class="o">=</span> <span class="s1">&#39;schemas/join_strings_request_params_schema.json&#39;</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">AddJsonRPCClientRequest</span><span class="p">(</span>
+    <span class="n">ts</span><span class="p">,</span>
+    <span class="n">file</span><span class="o">=</span><span class="s2">&quot;join_strings_request.json&quot;</span><span class="p">,</span>
+    <span class="n">schema_file_name</span><span class="o">=</span><span class="n">schema_file_name</span><span class="p">,</span>
+    <span class="n">params_field_schema_file_name</span><span class="o">=</span><span class="n">params_schema_file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="jsonrpcresponseschemavalidator">
+<h4>JSONRPCResponseSchemaValidator<a class="headerlink" href="#jsonrpcresponseschemavalidator" title="Permalink to this headline">¶</a></h4>
+<p>A tester class to perform a schema validation of the entire JSONRPC 2.0 request as well as the <code class="docutils literal notranslate"><span class="pre">result</span></code> param.
+You can specify <code class="docutils literal notranslate"><span class="pre">schema_file_name</span></code> with a valid json schema file to validate the entire JSONRPC 2.0 response(except the content of the <code class="docutils literal notranslate"><span class="pre">result</span></code> field).
+Also you can set <code class="docutils literal notranslate"><span class="pre">result_field_schema_file_name</span></code> with a valid json schema file to validate only the <code class="docutils literal notranslate"><span class="pre">result</span></code> field.</p>
+<p>Example:</p>
+<blockquote>
+<div><p>The following will add a Tester for a JSONRPC 2.0 schema validation as well as the <code class="docutils literal notranslate"><span class="pre">result</span></code> field.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tr</span> <span class="o">=</span> <span class="n">Test</span><span class="o">.</span><span class="n">AddTestRun</span><span class="p">(</span><span class="s1">&#39;test valid response schema&#39;</span><span class="p">)</span>
+<span class="n">schema_file_name</span> <span class="o">=</span> <span class="s1">&#39;schemas/jsonrpc20_response_schema.json&#39;</span>
+<span class="n">result_schema_file_name</span> <span class="o">=</span> <span class="s1">&#39;schemas/join_strings_request_result_schema.json&#39;</span>
+
+<span class="c1"># Add a tester.</span>
+<span class="n">tr</span><span class="o">.</span><span class="n">Processes</span><span class="o">.</span><span class="n">Default</span><span class="o">.</span><span class="n">Streams</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">Testers</span><span class="o">.</span><span class="n">JSONRPCResponseSchemaValidator</span><span class="p">(</span>
+    <span class="n">schema_file_name</span><span class="o">=</span><span class="n">response_schema_file_name</span><span class="p">,</span>
+    <span class="n">result_field_schema_file_name</span><span class="o">=</span><span class="n">result_schema_file_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="important-notes">
+<h2>Important Notes<a class="headerlink" href="#important-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>You can refer to <a class="reference external" href="https://github.com/jbeder/yaml-cpp/wiki/Tutorial">YAML</a> for more info in how code/decode yaml content.</p></li>
+<li><p>Remember to update <a class="reference internal" href="jsonrpc-api.en.html#jsonrpc-api"><span class="std std-ref">API</span></a> if you are adding a new handler.</p></li>
+<li><p>If a new handler needs to be exposed through <strong class="program">traffic_ctl</strong> please refer to <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a> for a general idea
+and to <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a> for how to implement a new command.</p></li>
+<li><p>To interact directly with the JSONRPC 2.0 node, please check <a class="reference internal" href="jsonrpc-node.en.html#jsonrpc-node"><span class="std std-ref">JSONRPC Endpoint</span></a></p></li>
+</ul>
+<p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>
+<a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-protocol"><span class="std std-ref">JSONRPC 2.0 Protocol</span></a>
+<a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="jsonrpc-client-api.en.html" class="btn btn-neutral float-right" title="Traffic Server JSONRPC Node C++ Client Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jsonrpc-node.en.html" class="btn btn-neutral float-left" title="JSONRPC Endpoint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

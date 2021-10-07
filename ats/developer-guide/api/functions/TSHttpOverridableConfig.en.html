@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>TSHttpOverridableConfig &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="TSHttpParserCreate" href="TSHttpParserCreate.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -130,7 +126,8 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContSchedule.en.html">TSContSchedule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEvery.en.html">TSContScheduleEvery</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
@@ -365,6 +362,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
@@ -373,7 +371,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -408,13 +405,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -427,7 +422,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../../_sources/developer-guide/api/functions/TSHttpOverridableConfig.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -450,37 +445,37 @@
 </div>
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigIntSet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigIntSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt"><span class="pre">TSMgmtInt</span></a> <em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntSet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigIntSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigIntGet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigIntGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt"><span class="pre">TSMgmtInt</span></a> <span class="pre">*</span><em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntGet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigIntGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtInt" title="TSMgmtInt">TSMgmtInt</a> *<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigIntGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigFloatSet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigFloatSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat"><span class="pre">TSMgmtFloat</span></a> <em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatSet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigFloatSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat">TSMgmtFloat</a> <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigFloatGet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigFloatGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat"><span class="pre">TSMgmtFloat</span></a> <span class="pre">*</span><em><span class="pre">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatGet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigFloatGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMgmtFloat" title="TSMgmtFloat">TSMgmtFloat</a> *<em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFloatGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigStringSet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigStringSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">value</span></em>, <span class="pre">int</span> <em><span class="pre">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringSet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigStringSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <em class="property">const</em> char *<em>value</em>, int <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigStringGet">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigStringGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <em><span class="pre">key</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><span class="pre">*</span><em><span class="pre">value</span></em>, <span class="pre">int</span> <span class="pre">*</span><em><span class="pre">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringGet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigStringGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> <em>key</em>, <em class="property">const</em> char **<em>value</em>, int *<em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigStringGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnConfigFind">
-<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode"><span class="pre">TSReturnCode</span></a> <code class="sig-name descname"><span class="pre">TSHttpTxnConfigFind</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">name</span></em>, <span class="pre">int</span> <em><span class="pre">length</span></em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey"><span class="pre">TSOverridableConfigKey</span></a> <span class="pre">*</span><em><span class="pre">key</span></em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType"><span class="pre">TSRecordDataType</span></a> <span class="pre">*</span><em><span class="pre">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFind" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="../types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSHttpTxnConfigFind</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>name</em>, int <em>length</em>, <a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TSOverridableConfigKey" title="TSOverridableConfigKey">TSOverridableConfigKey</a> *<em>key</em>, <a class="reference internal" href="../types/TSRecordDataType.en.html#c.TSRecordDataType" title="TSRecordDataType">TSRecordDataType</a> *<em>type</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnConfigFind" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -734,26 +729,32 @@ return the key and data type.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS" title="TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_NUMBER_OF_REDIRECTIONS</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-number-of-redirections" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.number_of_redirections</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD" title="TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT" title="TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_CONNECT_ATTEMPT_TIMEOUT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.connect_attempts_timeout</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD" title="TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_FAIL_THRESHOLD</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-fail-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.fail_threshold</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME" title="TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME" title="TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_RETRY_TIME</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-retry-time" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.retry_time</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PARENT_PROXY_TOTAL_CONNECT_ATTEMPTS</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-total-connect-attempts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.total_connect_attempts</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS" title="TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_PARENT_CONNECT_ATTEMPTS</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-parent-proxy-per-parent-connect-attempts" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.parent_proxy.per_parent_connect_attempts</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MATCH</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-per-server-connection-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.match</span></code></a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX" title="TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_PER_SERVER_CONNECTION_MAX</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-per-server-connection-max" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.max</span></code></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED" title="TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED" title="TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_POST_CHECK_CONTENT_LENGTH_ENABLED</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-post-check-content-length-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post.check.content_length.enabled</span></code></a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT" title="TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_POST_CONNECT_ATTEMPTS_TIMEOUT</span></code></a></p></td>
+<td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-post-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.post_connect_attempts_timeout</span></code></a></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../types/TSOverridableConfigKey.en.html#c.TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY" title="TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY"><code class="xref c c-enumerator docutils literal notranslate"><span class="pre">TS_CONFIG_HTTP_REDIRECT_USE_ORIG_CACHE_KEY</span></code></a></p></td>
 <td><p><a class="reference internal" href="../../../admin-guide/files/records.config.en.html#proxy-config-http-redirect-use-orig-cache-key" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.redirect_use_orig_cache_key</span></code></a></p></td>
@@ -895,29 +896,29 @@ high water mark of <code class="docutils literal notranslate"><span class="pre">
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="TSHttpParserCreate.en.html" class="btn btn-neutral float-right" title="TSHttpParserCreate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="TSHttpHookAdd.en.html" class="btn btn-neutral float-left" title="TSHttpHookAdd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="TSHttpParserCreate.en.html" class="btn btn-neutral float-right" title="TSHttpParserCreate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSHttpHookAdd.en.html" class="btn btn-neutral float-left" title="TSHttpHookAdd" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -925,6 +926,7 @@ high water mark of <code class="docutils literal notranslate"><span class="pre">
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

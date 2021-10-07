@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Multiplexer &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MySQL Remap Plugin" href="mysql_remap.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -150,6 +146,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -160,7 +157,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -195,13 +191,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -212,7 +206,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/multiplexer.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -228,25 +222,33 @@
             
   <div class="section" id="name">
 <h1>Multiplexer<a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h1>
-<p>Multiplexer is a remap plug-in that allows a request to be multiplexed one or more times and sent to
-different remap entries. Both headers and body (in case of POST or PUT methods, only) are copied
-into the new requests. Optionally POST/PUT requests can be skipped via
+<p>Multiplexer is a remap plug-in that allows requests to certain origins to be multiplexed (i.e.,
+duplicated and dispatched in parallel) to one or more other hosts.  The headers are copied into the
+new requests as well as POST bodies.  Optionally POST and PUT requests can be skipped via
 <code class="docutils literal notranslate"><span class="pre">pparam=proxy.config.multiplexer.skip_post_put=1</span></code>.</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>Actions:</p>
+<p>Multiplexer does the following for requests it is configured to multiplex:</p>
 <ol class="arabic simple">
-<li><p>Adds <code class="docutils literal notranslate"><span class="pre">X-Multiplexer:</span> <span class="pre">original</span></code> header into client’s request.</p></li>
-<li><p>Copies client’s request (bodies are copied by transforming the request)</p></li>
-<li><p>Changes <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</p></li>
-<li><p>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span> <span class="pre">header</span></code> to “copy”.</p></li>
-<li><p>Sends the copied request with <code class="code docutils literal notranslate"><span class="pre">TSHttpConnect</span></code>.</p></li>
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">X-Multiplexer:</span> <span class="pre">original</span></code> header into the client’s request.</p></li>
+<li><p>For each host in <code class="docutils literal notranslate"><span class="pre">pparam</span></code> of the remap rule:</p>
+<ol class="arabic simple">
+<li><p>Copies the resulting request (POST bodies are copied via the <a class="reference internal" href="../../developer-guide/plugins/http-transformations/index.en.html#developer-plugins-http-transformations"><span class="std std-ref">HTTP Transform</span></a> mechanism).</p></li>
+<li><p>Changes the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</p></li>
+<li><p>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span></code> header value to <code class="docutils literal notranslate"><span class="pre">copy</span></code> instead of <code class="docutils literal notranslate"><span class="pre">original</span></code>.</p></li>
+<li><p>Asynchronously sends the copied request with <a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnect.en.html#c.TSHttpConnect" title="TSHttpConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnect()</span></code></a>.</p></li>
 </ol>
-<p>Multiplexer dispatches the request in background without blocking the original request. Multiplexed
-responses are drained and discarded.</p>
-<p>A global timeout can be overwritten through <code class="docutils literal notranslate"><span class="pre">multiplexer__timeout</span></code> environment variable representing how many nanoseconds to wait. A default 1s timeout is hard-coded.</p>
-<p>Please use <code class="docutils literal notranslate"><span class="pre">multiplexer</span></code> tag for debugging purposes. While debugging, multiplexed requests and
-responses are printed into the logs.</p>
+</li>
+</ol>
+<p>Multiplexer dispatches the requests in the background without blocking the original request. Multiplexed
+responses are drained and discarded. Note that these multiplexed requests are made using
+<a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnect.en.html#c.TSHttpConnect" title="TSHttpConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnect()</span></code></a> and are thus HTTP (not HTTPS) connections.</p>
+<p>A default <code class="docutils literal notranslate"><span class="pre">1</span></code> second timeout is configured when communicating with each of the hosts receiving the
+multiplexed requests. This timeout can be overwritten via the <code class="docutils literal notranslate"><span class="pre">multiplexer__timeout</span></code> environment
+variable representing how many nanoseconds to wait.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">multiplexer</span></code> debug tag can be used for debugging purposes (see
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-diags-debug-tags" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.diags.debug.tags</span></code></a>). While debugging, multiplexed requests and responses are
+printed into the logs.</p>
 <p>Multiplexer produces the following statistics consumed with <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>:</p>
 <ul class="simple">
 <li><p>failures: number of failed multiplexed requests</p></li>
@@ -256,13 +258,24 @@ responses are printed into the logs.</p>
 <li><p>timeouts: number of multiplexed requests which timed-out</p></li>
 <li><p>size(avg): average size of multiplexed responses</p></li>
 </ul>
-<p>Example remap.config:</p>
+<p>Here are some example <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> configuration lines:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/a http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com</span>
 <span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/b http://www.example.com/ @plugin=multiplexer.so @pparam=host2.example.com</span>
 <span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/c http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com</span>
 <span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/d http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com @pparam=proxy.config.multiplexer.skip_post_put=1</span>
 </pre></div>
 </div>
+<ol class="arabic simple">
+<li><p>The first entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/a</span></code>
+to <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code>.</p></li>
+<li><p>The second entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/b</span></code>
+to <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>.</p></li>
+<li><p>The third entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/c</span></code>
+to both <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> and <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>.</p></li>
+<li><p>The fourth entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/d</span></code>
+to both <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> and <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>, but POST and PUT requests will
+not be multiplexed.</p></li>
+</ol>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
@@ -316,13 +329,6 @@ kEnd --&gt; [*]
 </div>
 </div>
 </div>
-<div class="section" id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This should be moved to the Traffic Server documentation.</p>
-</div>
-</div>
 </div>
 
 
@@ -330,29 +336,29 @@ kEnd --&gt; [*]
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mysql_remap.en.html" class="btn btn-neutral float-right" title="MySQL Remap Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="mp4.en.html" class="btn btn-neutral float-left" title="MP4 Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="mysql_remap.en.html" class="btn btn-neutral float-right" title="MySQL Remap Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="mp4.en.html" class="btn btn-neutral float-left" title="MP4 Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -360,6 +366,7 @@ kEnd --&gt; [*]
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

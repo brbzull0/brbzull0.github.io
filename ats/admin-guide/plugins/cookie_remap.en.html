@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Cookie Based Routing Inside TrafficServer Using cookie_remap &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ESI Plugin" href="esi.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -142,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -152,7 +149,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -187,13 +183,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +198,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/cookie_remap.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -223,45 +217,44 @@
 <ul class="simple">
 <li><p><a class="reference external" href="#cookie-based-routing-inside-trafficserver-using-cookie_remap">Cookie Based Routing Inside TrafficServer Using cookie_remap</a></p>
 <ul>
-<li><p><a class="reference external" href="#features">Features</a></p></li>
-<li><p><a class="reference external" href="#limitations">Limitations</a></p></li>
-<li><p><a class="reference external" href="#setup">Setup</a></p></li>
-<li><p><a class="reference external" href="#operations">Operations</a></p>
+<li><p><a class="reference internal" href="#features"><span class="std std-ref">Features</span></a></p></li>
+<li><p><a class="reference internal" href="#limitations"><span class="std std-ref">Limitations</span></a></p></li>
+<li><p><a class="reference internal" href="#setup"><span class="std std-ref">Setup</span></a></p></li>
+<li><p><a class="reference internal" href="#operations"><span class="std std-ref">Operations</span></a></p>
 <ul>
-<li><p><a class="reference external" href="#comments">Comments</a></p></li>
-<li><p><a class="reference external" href="#cookie-xxy">cookie: X|X.Y</a></p></li>
-<li><p><a class="reference external" href="#purl">target: puri</a></p></li>
-<li><p><a class="reference external" href="#operation-existsnot-existsstringregexbucket">operation: exists|not exists|string|regex|bucket</a></p></li>
-<li><p><a class="reference external" href="#match-str">match: str</a></p></li>
-<li><p><a class="reference external" href="#regex-str">regex: str</a></p></li>
-<li><p><a class="reference external" href="#buckethash-xy">bucket|hash: X/Y</a></p></li>
-<li><p><a class="reference external" href="#sendtourl-url">sendto|url: url</a></p></li>
-<li><p><a class="reference external" href="#status-http-status-code">status: HTTP status-code</a></p></li>
-<li><p><a class="reference external" href="#else-url-optional">else: url [optional]</a></p></li>
-<li><p><a class="reference external" href="#connector-and">connector: and</a></p></li>
+<li><p><a class="reference internal" href="#comments"><span class="std std-ref">Comments</span></a></p></li>
+<li><p><a class="reference internal" href="#cookie-xxy"><span class="std std-ref">cookie: X|X.Y</span></a></p></li>
+<li><p><a class="reference internal" href="#purl"><span class="std std-ref">target: puri</span></a></p></li>
+<li><p><a class="reference internal" href="#operation-existsnot-existsstringregexbucket"><span class="std std-ref">operation: exists|not exists|string|regex|bucket</span></a></p></li>
+<li><p><a class="reference internal" href="#match-str"><span class="std std-ref">match: str</span></a></p></li>
+<li><p><a class="reference internal" href="#regex-str"><span class="std std-ref">regex: str</span></a></p></li>
+<li><p><a class="reference internal" href="#buckethash-xy"><span class="std std-ref">bucket|hash: X/Y</span></a></p></li>
+<li><p><a class="reference internal" href="#sendtourl-url"><span class="std std-ref">sendto|url: url</span></a></p></li>
+<li><p><a class="reference internal" href="#status-http-status-code"><span class="std std-ref">status: HTTP status-code</span></a></p></li>
+<li><p><a class="reference internal" href="#else-url-optional"><span class="std std-ref">else: url [optional]</span></a></p></li>
+<li><p><a class="reference internal" href="#connector-and"><span class="std std-ref">connector: and</span></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference external" href="#reserved-path-expressions">Reserved path expressions</a></p>
+<li><p><a class="reference internal" href="#reserved-path-expressions"><span class="std std-ref">Reserved path expressions</span></a></p>
 <ul>
-<li><p><a class="reference external" href="#cr_req_url-v-15">$cr_req_url</a></p></li>
-<li><p><a class="reference external" href="#cr_urlencode-v-15">$cr_urlencode()</a></p></li>
-<li><p><a class="reference external" href="#path">$path</a></p></li>
-<li><p><a class="reference external" href="#unmatched_path">$unmatched_path</a></p></li>
+<li><p><a class="reference internal" href="#cr-req-url-v-15"><span class="std std-ref">$cr_req_url</span></a></p></li>
+<li><p><a class="reference internal" href="#cr-urlencode-v-15"><span class="std std-ref">$cr_urlencode()</span></a></p></li>
+<li><p><a class="reference internal" href="#path"><span class="std std-ref">$path</span></a></p></li>
+<li><p><a class="reference internal" href="#unmatched-path"><span class="std std-ref">$unmatched_path</span></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference external" href="#an-example-configuration-file">An example configuration file</a></p></li>
-<li><p><a class="reference external" href="#debugging-things">Debugging things</a></p>
+<li><p><a class="reference internal" href="#an-example-configuration-file"><span class="std std-ref">An example configuration file</span></a></p></li>
+<li><p><a class="reference internal" href="#debugging-things"><span class="std std-ref">Debugging things</span></a></p>
 <ul>
-<li><p><a class="reference external" href="#initial-output">Initial output</a></p></li>
+<li><p><a class="reference internal" href="#initial-output"><span class="std std-ref">Initial output</span></a></p></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <p>This remap plugin makes decisions about where to send your request based on properties present (or absent) within the HTTP Cookie header.  It can also make decisions based on your uri (url path + query.)</p>
-<div class="section" id="id2">
-<h2>Features<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+<div class="section" id="features">
+<span id="id2"></span><h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Also supports sub-level cookies</p>
 <ul>
@@ -276,23 +269,21 @@
 <li><p>Can url encode dynamic data</p></li>
 </ul>
 </div>
-<div class="section" id="id3">
-<h2>Limitations<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+<div class="section" id="limitations">
+<span id="id3"></span><h2>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Does not support <a class="reference internal" href="../files/remap.config.en.html#remap-config-plugin-chaining"><span class="std std-ref">Plugin Chaining</span></a></p></li>
 </ul>
 </div>
-<div class="section" id="id4">
-<h2>Setup<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+<div class="section" id="setup">
+<span id="id4"></span><h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
 <p>The plugin is specified in remap.config using a syntax similar to:</p>
-<pre>
-map http://foo.com http://bar.com @plugin=/usr/bin/trafficserver/libexec64/cookie_remap.so @pparam=/home/trafficserver/conf/cookie_remap/cookie_remap.txt
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">bar</span><span class="o">.</span><span class="n">com</span> <span class="nd">@plugin</span><span class="o">=/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">libexec64</span><span class="o">/</span><span class="n">cookie_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">cookie_remap</span><span class="o">/</span><span class="n">cookie_remap</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
-<div class="section" id="id5">
-<h2>Operations<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="operations">
+<span id="id5"></span><h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
 <p>All operations are specified in a YAML configuration file you pass as &#64;pparam on the plugin configuration line. YAML is very simple syntax. See the example configuration files below.</p>
 <p>Each operation results in a sendto action. That means that, if matched, cookie_remap forwards the request to the given <code class="docutils literal notranslate"><span class="pre">sendto</span></code> url. It can be proxied or redirected. An <code class="docutils literal notranslate"><span class="pre">else</span></code> sendto can be specified, in which case a failure to match will forward the request also. Once a sendto is invoked:</p>
 <ul class="simple">
@@ -300,14 +291,12 @@ map http://foo.com http://bar.com @plugin=/usr/bin/trafficserver/libexec64/cooki
 <li><p>the default destination specified in the remap.config file will not be used; it will be replaced by the <code class="docutils literal notranslate"><span class="pre">sendto</span></code></p></li>
 </ul>
 <p>Each <code class="docutils literal notranslate"><span class="pre">operation</span></code> can have multiple “sub-operations”, connected with an conjunction operator.  Currently, only the <code class="docutils literal notranslate"><span class="pre">and</span></code> operator is supported. So, you can say, “if cookie exists, <code class="docutils literal notranslate"><span class="pre">and</span></code> uri is <code class="docutils literal notranslate"><span class="pre">x</span></code>, then redirect.”</p>
-<div class="section" id="id6">
-<h3>Comments<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="comments">
+<span id="id6"></span><h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
 <p>Comments are allowed in the configuration file if they begin with ‘#’</p>
 </div>
-<div class="section" id="id7">
-<h3>cookie: X|X.Y<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="cookie-x-x-y">
+<span id="cookie-xxy"></span><h3>cookie: X|X.Y<a class="headerlink" href="#cookie-x-x-y" title="Permalink to this headline">¶</a></h3>
 <p>This sub-operation is testing against the X cookie or X.Y cookie where X.Y denotes the X cookie, sub cookie Y
 e.g</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A=ACOOKIE;B=data&amp;f=fsub&amp;z=zsub;
@@ -317,15 +306,13 @@ e.g</p>
 <p>B will operate on <code class="docutils literal notranslate"><span class="pre">data&amp;f=fsub&amp;z=zsub</span></code></p>
 <p>B.f will operate on <code class="docutils literal notranslate"><span class="pre">fsub</span></code></p>
 </div>
-<div class="section" id="id8">
-<h3>target: puri<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="target-puri">
+<span id="purl"></span><h3>target: puri<a class="headerlink" href="#target-puri" title="Permalink to this headline">¶</a></h3>
 <p>When the cookie key is omitted, the operation is applied to the request uri instead.  If this key and value
 is specified, the uri for the operation will be the pre-remapped, rather than the remapped, uri.</p>
 </div>
-<div class="section" id="id9">
-<h3>operation: exists|not exists|string|regex|bucket<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="operation-exists-not-exists-string-regex-bucket">
+<span id="operation-existsnot-existsstringregexbucket"></span><h3>operation: exists|not exists|string|regex|bucket<a class="headerlink" href="#operation-exists-not-exists-string-regex-bucket" title="Permalink to this headline">¶</a></h3>
 <p>This keyword actually denotes a “suboperation” - it can be specified multiple times, connected with <code class="docutils literal notranslate"><span class="pre">and</span></code>, and send the user to a given destination.</p>
 <ul class="simple">
 <li><p>exists: Test for the existence of a cookie</p></li>
@@ -337,110 +324,109 @@ is specified, the uri for the operation will be the pre-remapped, rather than th
 <p>The <code class="docutils literal notranslate"><span class="pre">cookie</span></code> operator must be specified in the YAML file just before the suboperation that will apply to the cookie.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">string</span></code>, <code class="docutils literal notranslate"><span class="pre">regex</span></code> and <code class="docutils literal notranslate"><span class="pre">bucket</span></code> operate on the specified cookie, or if no cookie is specified, they will operate on the uri of the request.</p>
 </div>
-<div class="section" id="id10">
-<h3>match: str<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="match-str">
+<span id="id7"></span><h3>match: str<a class="headerlink" href="#match-str" title="Permalink to this headline">¶</a></h3>
 <p>Match the cookie data to str.  If no cookie is specified, match to the request uri.</p>
 </div>
-<div class="section" id="id11">
-<h3>regex: str<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="regex-str">
+<span id="id8"></span><h3>regex: str<a class="headerlink" href="#regex-str" title="Permalink to this headline">¶</a></h3>
 <p>Sets the regex to str. Matching is enabled with $1-$9 (replaced in sendto).  Note that only the final regex match in an operation will be used to populate the substitutions $1-$9.  If no cookie is specified, match to the request uri.</p>
 </div>
-<div class="section" id="id12">
-<h3>bucket|hash: X/Y<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="bucket-hash-x-y">
+<span id="buckethash-xy"></span><h3>bucket|hash: X/Y<a class="headerlink" href="#bucket-hash-x-y" title="Permalink to this headline">¶</a></h3>
 <p>Hashes (bucketizes) the data in Y buckets. If you fall into the first X of them, this suboperation passes. If no cookie is specified, match to the request uri.</p>
-<pre>
-bucket: 1/100
-will effectively bucketize 1% of your users
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bucket</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">100</span>
+<span class="n">will</span> <span class="n">effectively</span> <span class="n">bucketize</span> <span class="mi">1</span><span class="o">%</span> <span class="n">of</span> <span class="n">your</span> <span class="n">users</span>
 </pre></div>
-<div class="section" id="id13">
-<h3>sendto|url: url<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="sendto-url-url">
+<span id="sendtourl-url"></span><h3>sendto|url: url<a class="headerlink" href="#sendto-url-url" title="Permalink to this headline">¶</a></h3>
 <p>if the sub-operation(s) all match, send to url</p>
 </div>
-<div class="section" id="id14">
-<h3>status: HTTP status-code<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="status-http-status-code">
+<span id="id9"></span><h3>status: HTTP status-code<a class="headerlink" href="#status-http-status-code" title="Permalink to this headline">¶</a></h3>
 <p>if the sub-operation(s) all match, set the status code (e.g. set it to 302). In the case of a redirect, the sendto URL becomes the redirect URL.</p>
 </div>
-<div class="section" id="id15">
-<h3>else: url [optional]<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="else-url-optional">
+<span id="id10"></span><h3>else: url [optional]<a class="headerlink" href="#else-url-optional" title="Permalink to this headline">¶</a></h3>
 <p>If one of the sub-operations fails, send to url. This is optional. If there is no ‘else’, we will continue to process operations until either one succeeds, there is an else in one of the operations or we fall through to the default mapping from remap.config</p>
 </div>
-<div class="section" id="id16">
-<h3>connector: and<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="connector-and">
+<span id="id11"></span><h3>connector: and<a class="headerlink" href="#connector-and" title="Permalink to this headline">¶</a></h3>
 <p>‘and’ is the only supported connector</p>
 </div>
 </div>
-<div class="section" id="id17">
-<h2>Reserved path expressions<a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+<div class="section" id="reserved-path-expressions">
+<span id="id12"></span><h2>Reserved path expressions<a class="headerlink" href="#reserved-path-expressions" title="Permalink to this headline">¶</a></h2>
 <p>The following expressions can be used in either the sendto <strong>or</strong> <code class="docutils literal notranslate"><span class="pre">else</span></code> URLs, and will be expanded.</p>
-<div class="section" id="id18">
-<h3>$cr_req_url<a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="section" id="cr-req-url">
+<span id="cr-req-url-v-15"></span><h3>$cr_req_url<a class="headerlink" href="#cr-req-url" title="Permalink to this headline">¶</a></h3>
 <p>Replaced with the full original url.</p>
 <p>Therefore, a rule like:</p>
-<pre>
-op:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>op:
   cookie: K
   operation: exists
   sendto: http://foo.com/?.done=$cr_req_url
-</pre><p>and a request that matches, e.g.</p>
-<pre>
-http://bar.com/hello?fruit=bananas
-</pre><p>will become</p>
-<pre>
-http://foo.com/?.done=http://bar.com/hello?fruit=bananas
 </pre></div>
-<div class="section" id="id19">
-<h3>$cr_urlencode()<a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+</div>
+<p>and a request that matches, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://bar.com/hello?fruit=bananas
+</pre></div>
+</div>
+<p>will become</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://foo.com/?.done=http://bar.com/hello?fruit=bananas
+</pre></div>
+</div>
+</div>
+<div class="section" id="cr-urlencode">
+<span id="cr-urlencode-v-15"></span><h3>$cr_urlencode()<a class="headerlink" href="#cr-urlencode" title="Permalink to this headline">¶</a></h3>
 <p>Replaced with a urlencoded version of its argument.  The url argument is aggressively encoded such that all non-alphanumeric characters are converted to % hex notation.  The simple algorithm could probably be refined in the future to be less aggressive (encode fewer characters.)</p>
 <p>Therefore, a rule like:</p>
-<pre>
-op:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>op:
   cookie: B
   operation: exists
   sendto: http://foo.com/?.done=$cr_urlencode($cr_req_url)
-</pre><p>and a request that matches, e.g.</p>
-<pre>
-http://bar.com/hello?fruit=bananas
-</pre><p>will become</p>
-<pre>
-http://foo.com/?.done=http%3A%2F%2Fbar%2Ecom@2Fhello%3Ffruit%3Dbananas
 </pre></div>
-<div class="section" id="id20">
-<h3>$path<a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+</div>
+<p>and a request that matches, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://bar.com/hello?fruit=bananas
+</pre></div>
+</div>
+<p>will become</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>http://foo.com/?.done=http%3A%2F%2Fbar%2Ecom@2Fhello%3Ffruit%3Dbananas
+</pre></div>
+</div>
+</div>
+<div class="section" id="path">
+<span id="id13"></span><h3>$path<a class="headerlink" href="#path" title="Permalink to this headline">¶</a></h3>
 <p>$path can be used to replace in either the sendto <strong>or</strong> else URLs the original request path. Therefore a rule like:</p>
-<pre>
-op:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>op:
   cookie: K
   operation: exists
   sendto: http://foo.com/$path/x/y/z
-</pre><p>and a request like <a class="reference external" href="http://foo.com/photos/what/ever/">http://finance.yahoo.com/photos/what/ever/</a> that matches the rule</p>
-<pre>
-map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin=cookie_remap.so @pparam=foo.txt
-</pre><p>will become <a class="reference external" href="http://foo.com/photos/what/ever/x/y/z">http://foo.com/photos/what/ever/x/y/z</a></p>
+</pre></div>
 </div>
-<div class="section" id="id21">
-<h3>$unmatched_path<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<p>and a request like <a class="reference external" href="http://foo.com/photos/what/ever/">http://finance.yahoo.com/photos/what/ever/</a> that matches the rule</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">finance</span><span class="o">.</span><span class="n">yahoo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">photos</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">newfinance</span><span class="o">.</span><span class="n">yahoo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">1</span><span class="n">k</span><span class="o">.</span><span class="n">html</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cookie_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">foo</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>will become <a class="reference external" href="http://foo.com/photos/what/ever/x/y/z">http://foo.com/photos/what/ever/x/y/z</a></p>
+</div>
+<div class="section" id="unmatched-path">
+<span id="id14"></span><h3>$unmatched_path<a class="headerlink" href="#unmatched-path" title="Permalink to this headline">¶</a></h3>
 <p>$unmatched_path can be used to gather the URL arguments <strong>beyond</strong> what was matched by the remap rule. Therefore a rule like:</p>
-<pre>
-op:
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>op:
   cookie: K
   operation: exists
   sendto: http://foo.com/$unmatched_path/x/y/z
-</pre><p>and a request like <a class="reference external" href="http://foo.com/photos/what/ever/">http://finance.yahoo.com/photos/what/ever/</a> that matches the rule</p>
-<pre>
-map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin=cookie_remap.so @pparam=foo.txt
-</pre><p>will become <a class="reference external" href="http://foo.com/what/ever/matches/x/y/z">http://foo.com/what/ever/matches/x/y/z</a></p>
+</pre></div>
+</div>
+<p>and a request like <a class="reference external" href="http://foo.com/photos/what/ever/">http://finance.yahoo.com/photos/what/ever/</a> that matches the rule</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">finance</span><span class="o">.</span><span class="n">yahoo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">photos</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">newfinance</span><span class="o">.</span><span class="n">yahoo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">1</span><span class="n">k</span><span class="o">.</span><span class="n">html</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cookie_remap</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">foo</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>will become <a class="reference external" href="http://foo.com/what/ever/matches/x/y/z">http://foo.com/what/ever/matches/x/y/z</a></p>
 </div>
 <div class="section" id="alternatives-using-pre-remapped-url">
 <h3>Alternatives using pre-remapped URL<a class="headerlink" href="#alternatives-using-pre-remapped-url" title="Permalink to this headline">¶</a></h3>
@@ -448,14 +434,12 @@ map http://finance.yahoo.com/photos/ http://newfinance.yahoo.com/1k.html @plugin
 URL, instead use $cr_req_purl, $ppath and $unmatched_ppath, respectively.</p>
 </div>
 </div>
-<div class="section" id="id23">
-<h2>An example configuration file<a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+<div class="section" id="an-example-configuration-file">
+<span id="id16"></span><h2>An example configuration file<a class="headerlink" href="#an-example-configuration-file" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>first match “wins” (top down)</p></li>
 </ul>
-<pre>
-#comments
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>#comments
 #are allowed
 op:
   cookie: K
@@ -485,39 +469,41 @@ op:
   sendto: http://cnn.com/$1
   else: http://yahoo.com
 </pre></div>
-<div class="section" id="id24">
-<h2>Debugging things<a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
-<hr class="docutils" />
+</div>
+</div>
+<div class="section" id="debugging-things">
+<span id="id17"></span><h2>Debugging things<a class="headerlink" href="#debugging-things" title="Permalink to this headline">¶</a></h2>
 <p>The easiest way to debug problems with this plugin is to run in the following manner:</p>
-<pre>
-bin/traffic_server -T cookie_remap
-</pre><p>which will produce output on startup, and for each request. Be aware that this mode of running trafficserver is <strong>extremely</strong> inefficient and should only be used for debugging.</p>
-<div class="section" id="id25">
-<h3>Initial output<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
-<hr class="docutils" />
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">bin</span><span class="o">/</span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">T</span> <span class="n">cookie_remap</span>
+</pre></div>
+</div>
+<p>which will produce output on startup, and for each request. Be aware that this mode of running trafficserver is <strong>extremely</strong> inefficient and should only be used for debugging.</p>
+<div class="section" id="initial-output">
+<span id="id18"></span><h3>Initial output<a class="headerlink" href="#initial-output" title="Permalink to this headline">¶</a></h3>
 <p>Initially, you will notice output describing each operation and how trafficserver interpreted the information from your configuration file:</p>
-<pre>
-[Jul  8 13:08:34.183] Server {3187168} DIAG: (cookie_remap) loading cookie remap configuration file from /homes/ebalsa/dev/yts_mods/cookie_remap/example_config.txt
-[Jul  8 13:08:34.199] Server {3187168} DIAG: (cookie_remap) ++++operation++++
-[Jul  8 13:08:34.199] Server {3187168} DIAG: (cookie_remap) sending to: http://finance.yahoo.com/2k.html
-[Jul  8 13:08:34.199] Server {3187168} DIAG: (cookie_remap) if these operations match:
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)     +++subop+++
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)         cookie: B
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)         operation: bucket
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)         bucket: 1/100
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)         taking: 1
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)         out of: 100
-[Jul  8 13:08:34.200] Server {3187168} DIAG: (cookie_remap)     +++subop+++
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap)         cookie: Y.l
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap)         operation: exists
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap) ++++operation++++
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap) sending to: http://X.existed.com
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap) if these operations match:
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap)     +++subop+++
-[Jul  8 13:08:34.201] Server {3187168} DIAG: (cookie_remap)         cookie: PH.l
-[Jul  8 13:08:34.202] Server {3187168} DIAG: (cookie_remap)         operation: exists
-[Jul  8 13:08:34.202] Server {3187168} DIAG: (cookie_remap) # of ops: 2
-</pre><p>each operation is enumerated and is more-or-less human readable from the top-down.  From now on, each request has information spit out to the console with debugging information on how the cookie_remap is treating this request.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.183</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="n">loading</span> <span class="n">cookie</span> <span class="n">remap</span> <span class="n">configuration</span> <span class="n">file</span> <span class="kn">from</span> <span class="o">/</span><span class="n">homes</span><span class="o">/</span><span class="n">ebalsa</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">yts_mods</span><span class="o">/</span><span class="n">cookie_remap</span><span class="o">/</span><span class="n">example_config</span><span class="o">.</span><span class="n">txt</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.199</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="o">++++</span><span class="n">operation</span><span class="o">++++</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.199</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="n">sending</span> <span class="n">to</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">finance</span><span class="o">.</span><span class="n">yahoo</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="mi">2</span><span class="n">k</span><span class="o">.</span><span class="n">html</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.199</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="k">if</span> <span class="n">these</span> <span class="n">operations</span> <span class="n">match</span><span class="p">:</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>     <span class="o">+++</span><span class="n">subop</span><span class="o">+++</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">cookie</span><span class="p">:</span> <span class="n">B</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">operation</span><span class="p">:</span> <span class="n">bucket</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">bucket</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="mi">100</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">taking</span><span class="p">:</span> <span class="mi">1</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">out</span> <span class="n">of</span><span class="p">:</span> <span class="mi">100</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.200</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>     <span class="o">+++</span><span class="n">subop</span><span class="o">+++</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">cookie</span><span class="p">:</span> <span class="n">Y</span><span class="o">.</span><span class="n">l</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">operation</span><span class="p">:</span> <span class="n">exists</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="o">++++</span><span class="n">operation</span><span class="o">++++</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="n">sending</span> <span class="n">to</span><span class="p">:</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">X</span><span class="o">.</span><span class="n">existed</span><span class="o">.</span><span class="n">com</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="k">if</span> <span class="n">these</span> <span class="n">operations</span> <span class="n">match</span><span class="p">:</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>     <span class="o">+++</span><span class="n">subop</span><span class="o">+++</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.201</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">cookie</span><span class="p">:</span> <span class="n">PH</span><span class="o">.</span><span class="n">l</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.202</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span>         <span class="n">operation</span><span class="p">:</span> <span class="n">exists</span>
+<span class="p">[</span><span class="n">Jul</span>  <span class="mi">8</span> <span class="mi">13</span><span class="p">:</span><span class="mi">08</span><span class="p">:</span><span class="mf">34.202</span><span class="p">]</span> <span class="n">Server</span> <span class="p">{</span><span class="mi">3187168</span><span class="p">}</span> <span class="n">DIAG</span><span class="p">:</span> <span class="p">(</span><span class="n">cookie_remap</span><span class="p">)</span> <span class="c1"># of ops: 2</span>
+</pre></div>
+</div>
+<p>each operation is enumerated and is more-or-less human readable from the top-down.  From now on, each request has information spit out to the console with debugging information on how the cookie_remap is treating this request.</p>
 </div>
 </div>
 </div>
@@ -527,29 +513,29 @@ bin/traffic_server -T cookie_remap
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="esi.en.html" class="btn btn-neutral float-right" title="ESI Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="conf_remap.en.html" class="btn btn-neutral float-left" title="Configuration Remap Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="esi.en.html" class="btn btn-neutral float-right" title="ESI Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="conf_remap.en.html" class="btn btn-neutral float-left" title="Configuration Remap Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -557,6 +543,7 @@ bin/traffic_server -T cookie_remap
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

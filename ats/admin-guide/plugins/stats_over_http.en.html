@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Stats Over HTTP Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="TCPInfo Plugin" href="tcpinfo.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -142,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -152,7 +149,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -187,13 +183,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +198,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/stats_over_http.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -241,7 +235,7 @@ default URL:</p>
 <h2>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
 <dl class="std option">
 <dt id="cmdoption-integer-counters">
-<code class="sig-name descname"><span class="pre">--integer-counters</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-integer-counters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--integer-counters</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-integer-counters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>This option causes the plugin to emit floating point and integral
@@ -250,7 +244,7 @@ cause interoperability problems since integer metrics have a 64-bit
 unsigned range.</p>
 <dl class="std option">
 <dt id="cmdoption-wrap-counters">
-<code class="sig-name descname"><span class="pre">--wrap-counters</span></code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-wrap-counters" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">--wrap-counters</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-wrap-counters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>This option wraps 64-bit unsigned values to the 64-bit signed range.
@@ -278,19 +272,19 @@ to be used a path value (as if you were not using a config file)</p>
 <p>Other options you can specify:</p>
 <dl class="std option">
 <dt id="cmdoption-arg-path">
-<code class="sig-name descname"><span class="pre">path</span></code><code class="sig-prename descclassname"><span class="pre">=</span></code><a class="headerlink" href="#cmdoption-arg-path" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">path</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>This sets the path value for stats</p>
 <dl class="std option">
 <dt id="cmdoption-arg-allow_ip">
-<span id="cmdoption-arg-allow-ip"></span><code class="sig-name descname"><span class="pre">allow_ip</span></code><code class="sig-prename descclassname"><span class="pre">=</span></code><a class="headerlink" href="#cmdoption-arg-allow_ip" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-arg-allow-ip"></span><code class="sig-name descname">allow_ip</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-allow_ip" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>A comma separated list of IPv4 addresses allowed to access the endpoint</p>
 <dl class="std option">
 <dt id="cmdoption-arg-allow_ip6">
-<span id="cmdoption-arg-allow-ip6"></span><code class="sig-name descname"><span class="pre">allow_ip6</span></code><code class="sig-prename descclassname"><span class="pre">=</span></code><a class="headerlink" href="#cmdoption-arg-allow_ip6" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-arg-allow-ip6"></span><code class="sig-name descname">allow_ip6</code><code class="sig-prename descclassname">=</code><a class="headerlink" href="#cmdoption-arg-allow_ip6" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>A comma separated list of IPv6 addresses allowed to access the endpoint</p>
@@ -301,7 +295,7 @@ to be used a path value (as if you were not using a config file)</p>
 if you wish to have it in CSV format you can do so by passing an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> header:</p>
 <dl class="std option">
 <dt id="cmdoption-arg-Accept">
-<span id="cmdoption-arg-accept"></span><code class="sig-name descname"><span class="pre">Accept:</span></code><code class="sig-prename descclassname"> <span class="pre">text/csv</span></code><a class="headerlink" href="#cmdoption-arg-Accept" title="Permalink to this definition">¶</a></dt>
+<span id="cmdoption-arg-accept"></span><code class="sig-name descname">Accept:</code><code class="sig-prename descclassname"> text/csv</code><a class="headerlink" href="#cmdoption-arg-Accept" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <p>In either case the <code class="docutils literal notranslate"><span class="pre">Content-Type</span></code> header returned by stats_over_http.so will reflect
@@ -314,29 +308,29 @@ the content that has been returned, either <code class="docutils literal notrans
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="tcpinfo.en.html" class="btn btn-neutral float-right" title="TCPInfo Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="remap_purge.en.html" class="btn btn-neutral float-left" title="Remap Purge Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="tcpinfo.en.html" class="btn btn-neutral float-right" title="TCPInfo Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="remap_purge.en.html" class="btn btn-neutral float-left" title="Remap Purge Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -344,6 +338,7 @@ the content that has been returned, either <code class="docutils literal notrans
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

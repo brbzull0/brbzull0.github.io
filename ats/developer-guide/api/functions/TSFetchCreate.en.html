@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>TSFetchCreate &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="TSHostLookup" href="TSHostLookup.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -130,7 +126,8 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContSchedule.en.html">TSContSchedule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEvery.en.html">TSContScheduleEvery</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
@@ -365,6 +362,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
@@ -373,7 +371,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -408,13 +405,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -427,7 +422,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../../_sources/developer-guide/api/functions/TSFetchCreate.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -451,67 +446,67 @@
 </div>
 <dl class="c function">
 <dt id="c.TSFetchPages">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchPages</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchUrlParams_t" title="TSFetchUrlParams_t"><span class="pre">TSFetchUrlParams_t</span></a><span class="pre">*</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchPages" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchPages</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchUrlParams_t" title="TSFetchUrlParams_t">TSFetchUrlParams_t</a>*<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchPages" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchUrl">
-<a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a> <code class="sig-name descname"><span class="pre">TSFetchUrl</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <span class="pre">int</span>, <span class="pre">sockaddr</span> <em class="property"><span class="pre">const</span></em><span class="pre">*</span>, <a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont"><span class="pre">TSCont</span></a>, <a class="reference internal" href="../types/TSFetchWakeUpOptions.en.html#c.TSFetchWakeUpOptions" title="TSFetchWakeUpOptions"><span class="pre">TSFetchWakeUpOptions</span></a>, <a class="reference internal" href="TSTypes.en.html#c.TSFetchEvent" title="TSFetchEvent"><span class="pre">TSFetchEvent</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUrl" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a> <code class="sig-name descname">TSFetchUrl</code><span class="sig-paren">(</span><em class="property">const</em> char*, int, sockaddr <em class="property">const</em>*, <a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a>, <a class="reference internal" href="../types/TSFetchWakeUpOptions.en.html#c.TSFetchWakeUpOptions" title="TSFetchWakeUpOptions">TSFetchWakeUpOptions</a>, <a class="reference internal" href="TSTypes.en.html#c.TSFetchEvent" title="TSFetchEvent">TSFetchEvent</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUrl" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchFlagSet">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchFlagSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a>, <span class="pre">int</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchFlagSet" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchFlagSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a>, int<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchFlagSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchCreate">
-<a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a> <code class="sig-name descname"><span class="pre">TSFetchCreate</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont"><span class="pre">TSCont</span></a>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <em class="property"><span class="pre">struct</span></em> <span class="pre">sockaddr</span> <em class="property"><span class="pre">const</span></em><span class="pre">*</span>, <span class="pre">int</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchCreate" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a> <code class="sig-name descname">TSFetchCreate</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a>, <em class="property">const</em> char*, <em class="property">const</em> char*, <em class="property">const</em> char*, <em class="property">struct</em> sockaddr <em class="property">const</em>*, int<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchCreate" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchHeaderAdd">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchHeaderAdd</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <span class="pre">int</span>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span><span class="pre">*</span>, <span class="pre">int</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchHeaderAdd" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchHeaderAdd</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a>, <em class="property">const</em> char*, int, <em class="property">const</em> char*, int<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchHeaderAdd" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchWriteData">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchWriteData</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a>, <em class="property"><span class="pre">const</span></em> <span class="pre">void</span><span class="pre">*</span>, <span class="pre">size_t</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchWriteData" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchWriteData</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a>, <em class="property">const</em> void*, size_t<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchWriteData" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchReadData">
-<span class="pre">ssize_t</span> <code class="sig-name descname"><span class="pre">TSFetchReadData</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a>, <span class="pre">void</span><span class="pre">*</span>, <span class="pre">size_t</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchReadData" title="Permalink to this definition">¶</a><br /></dt>
+ssize_t <code class="sig-name descname">TSFetchReadData</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a>, void*, size_t<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchReadData" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchLaunch">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchLaunch</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchLaunch" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchLaunch</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchLaunch" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchDestroy">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchDestroy</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchDestroy" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchDestroy</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchDestroy" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchUserDataSet">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFetchUserDataSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a>, <span class="pre">void</span><span class="pre">*</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUserDataSet" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFetchUserDataSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a>, void*<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUserDataSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchUserDataGet">
-<span class="pre">void</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">TSFetchUserDataGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUserDataGet" title="Permalink to this definition">¶</a><br /></dt>
+void *<code class="sig-name descname">TSFetchUserDataGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchUserDataGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchRespHdrMBufGet">
-<a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer"><span class="pre">TSMBuffer</span></a> <code class="sig-name descname"><span class="pre">TSFetchRespHdrMBufGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchRespHdrMBufGet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a> <code class="sig-name descname">TSFetchRespHdrMBufGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchRespHdrMBufGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFetchRespHdrMLocGet">
-<a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc"><span class="pre">TSMLoc</span></a> <code class="sig-name descname"><span class="pre">TSFetchRespHdrMLocGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM"><span class="pre">TSFetchSM</span></a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchRespHdrMLocGet" title="Permalink to this definition">¶</a><br /></dt>
+<a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a> <code class="sig-name descname">TSFetchRespHdrMLocGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSFetchSM" title="TSFetchSM">TSFetchSM</a><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFetchRespHdrMLocGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -530,29 +525,29 @@ in the background asynchronously, ESI etc.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="TSHostLookup.en.html" class="btn btn-neutral float-right" title="TSHostLookup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="TSEventThreadSelf.en.html" class="btn btn-neutral float-left" title="TSEventThreadSelf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="TSHostLookup.en.html" class="btn btn-neutral float-right" title="TSHostLookup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSEventThreadSelf.en.html" class="btn btn-neutral float-left" title="TSEventThreadSelf" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -560,6 +555,7 @@ in the background asynchronously, ESI etc.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

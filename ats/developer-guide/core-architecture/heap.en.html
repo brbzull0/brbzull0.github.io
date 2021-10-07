@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Header Heap &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="RPC" href="rpc.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -130,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -138,7 +135,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -173,13 +169,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -190,7 +184,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/core-architecture/heap.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -211,43 +205,43 @@
 <h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp class">
 <dt id="_CPPv414HdrHeapObjImpl">
-<span id="_CPPv314HdrHeapObjImpl"></span><span id="_CPPv214HdrHeapObjImpl"></span><span id="HdrHeapObjImpl"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">HdrHeapObjImpl</span></code><a class="headerlink" href="#_CPPv414HdrHeapObjImpl" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314HdrHeapObjImpl"></span><span id="_CPPv214HdrHeapObjImpl"></span><span id="HdrHeapObjImpl"></span><em class="property">class </em><code class="sig-name descname">HdrHeapObjImpl</code><a class="headerlink" href="#_CPPv414HdrHeapObjImpl" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This is the abstract base class for objects allocated in a <a class="reference internal" href="#_CPPv47HdrHeap" title="HdrHeap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HdrHeap</span></code></a>. This allows updating
 objects in a heap in a generic way, without having to locate all of the pointers to the objects.</p>
 <p>The type of an instance stored in a heap must be one of the following values.</p>
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE">
-<span id="_CPPv3N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE"></span><span id="_CPPv2N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_EMPTY</span></code> <span class="pre">=</span> <span class="pre">0</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE"></span><span id="_CPPv2N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_EMPTY</code> = 0<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl18HDR_HEAP_OBJ_EMPTYE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Used to mark invalid objects, ones not yet constructed or ones that have been destroyed.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE">
-<span id="_CPPv3N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE"></span><span id="_CPPv2N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_RAW</span></code> <span class="pre">=</span> <span class="pre">1</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE"></span><span id="_CPPv2N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_RAW</code> = 1<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_RAWE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Some sort of raw object, I have no idea.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE">
-<span id="_CPPv3N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE"></span><span id="_CPPv2N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_URL</span></code> <span class="pre">=</span> <span class="pre">2</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE"></span><span id="_CPPv2N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_URL</code> = 2<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl16HDR_HEAP_OBJ_URLE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A URL object.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE">
-<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_HTTP_HEADER</span></code> <span class="pre">=</span> <span class="pre">3</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_HTTP_HEADER</code> = 3<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_HTTP_HEADERE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The header for an HTTP request or response.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE">
-<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_MIME_HEADER</span></code> <span class="pre">=</span> <span class="pre">4</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_MIME_HEADER</code> = 4<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_MIME_HEADERE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A MIME header, containing MIME style fields with names and values.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE">
-<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">HDR_HEAP_OBJ_FIELD_BLOCK</span></code> <span class="pre">=</span> <span class="pre">5</span><a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE"></span><span id="_CPPv2N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE"></span><em class="property">enumerator </em><code class="sig-name descname">HDR_HEAP_OBJ_FIELD_BLOCK</code> = 5<a class="headerlink" href="#_CPPv4N14HdrHeapObjImpl24HDR_HEAP_OBJ_FIELD_BLOCKE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Who the heck knows?</p>
 </dd></dl>
 
@@ -255,14 +249,14 @@ objects in a heap in a generic way, without having to locate all of the pointers
 
 <dl class="cpp class">
 <dt id="_CPPv410HdrStrHeap">
-<span id="_CPPv310HdrStrHeap"></span><span id="_CPPv210HdrStrHeap"></span><span id="HdrStrHeap"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">HdrStrHeap</span></code><a class="headerlink" href="#_CPPv410HdrStrHeap" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv310HdrStrHeap"></span><span id="_CPPv210HdrStrHeap"></span><span id="HdrStrHeap"></span><em class="property">class </em><code class="sig-name descname">HdrStrHeap</code><a class="headerlink" href="#_CPPv410HdrStrHeap" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This is a <a class="reference internal" href="../../appendices/glossary.en.html#term-variable-sized-class"><span class="xref std std-term">variable sized class</span></a>, therefore new instance must be created by <a class="reference internal" href="#_CPPv414new_HdrStrHeapi" title="new_HdrStrHeap"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">new_HdrStrHeap()</span></code></a>
 and deallocated by the <code class="code docutils literal notranslate"><span class="pre">destroy</span></code> method.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv414new_HdrStrHeapi">
-<span id="_CPPv314new_HdrStrHeapi"></span><span id="_CPPv214new_HdrStrHeapi"></span><span id="new_HdrStrHeap__i"></span><a class="reference internal" href="#_CPPv410HdrStrHeap" title="HdrStrHeap"><span class="pre">HdrStrHeap</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">new_HdrStrHeap</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414new_HdrStrHeapi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314new_HdrStrHeapi"></span><span id="_CPPv214new_HdrStrHeapi"></span><span id="new_HdrStrHeap__i"></span><a class="reference internal" href="#_CPPv410HdrStrHeap" title="HdrStrHeap">HdrStrHeap</a> *<code class="sig-name descname">new_HdrStrHeap</code><span class="sig-paren">(</span>int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414new_HdrStrHeapi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create and return a new instance of <a class="reference internal" href="#_CPPv410HdrStrHeap" title="HdrStrHeap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HdrStrHeap</span></code></a>. If <em>n</em> is less than <code class="docutils literal notranslate"><span class="pre">HDR_STR_HEAP_DEFAULT_SIZE</span></code>
 it is increased to that value.</p>
 <p>If the allocated size is <code class="docutils literal notranslate"><span class="pre">HDR_STR_HEAP_DEFAULT_SIZE</span></code> (or smaller and upsized to that value) then
@@ -272,7 +266,7 @@ is allocated from global memory via <code class="code docutils literal notransla
 
 <dl class="cpp class">
 <dt id="_CPPv47HdrHeap">
-<span id="_CPPv37HdrHeap"></span><span id="_CPPv27HdrHeap"></span><span id="HdrHeap"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">HdrHeap</span></code><a class="headerlink" href="#_CPPv47HdrHeap" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37HdrHeap"></span><span id="_CPPv27HdrHeap"></span><span id="HdrHeap"></span><em class="property">class </em><code class="sig-name descname">HdrHeap</code><a class="headerlink" href="#_CPPv47HdrHeap" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This is a <a class="reference internal" href="../../appendices/glossary.en.html#term-variable-sized-class"><span class="xref std std-term">variable sized class</span></a> and therefore new instances must be created by <a class="reference internal" href="#_CPPv411new_HdrHeapi" title="new_HdrHeap"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">new_HdrHeap()</span></code></a>
 and deallocated by the <code class="code docutils literal notranslate"><span class="pre">destroy</span></code> method.</p>
 <p><a class="reference internal" href="#_CPPv47HdrHeap" title="HdrHeap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HdrHeap</span></code></a> manages memory for heap objects directly and memory for strings via ancillary
@@ -281,19 +275,19 @@ writeable heap, and up to <code class="code docutils literal notranslate"><span 
 <p>All objects in the internal heap must be subclasses of <a class="reference internal" href="#_CPPv414HdrHeapObjImpl" title="HdrHeapObjImpl"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HdrHeapObjImpl</span></code></a>.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap29required_space_for_evacuationEv">
-<span id="_CPPv3N7HdrHeap29required_space_for_evacuationEv"></span><span id="_CPPv2N7HdrHeap29required_space_for_evacuationEv"></span><span id="HdrHeap::required_space_for_evacuation"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">required_space_for_evacuation</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap29required_space_for_evacuationEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap29required_space_for_evacuationEv"></span><span id="_CPPv2N7HdrHeap29required_space_for_evacuationEv"></span><span id="HdrHeap::required_space_for_evacuation"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">required_space_for_evacuation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap29required_space_for_evacuationEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Calculate and return the total live string space for <em>this</em>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap">
-<span id="_CPPv3N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap"></span><span id="_CPPv2N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap"></span><span id="HdrHeap::evacuate_from_str_heaps__HdrStrHeapP"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">evacuate_from_str_heaps</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410HdrStrHeap" title="HdrStrHeap"><span class="pre">HdrStrHeap</span></a> <span class="pre">*</span><em><span class="pre">new_heap</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap"></span><span id="_CPPv2N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap"></span><span id="HdrHeap::evacuate_from_str_heaps__HdrStrHeapP"></span>void <code class="sig-name descname">evacuate_from_str_heaps</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv410HdrStrHeap" title="HdrStrHeap">HdrStrHeap</a> *<em>new_heap</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap23evacuate_from_str_heapsEP10HdrStrHeap" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Copy all live strings from the heap objects in <em>this</em> to <em>new_heap</em>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap18coalesce_str_heapsEi">
-<span id="_CPPv3N7HdrHeap18coalesce_str_heapsEi"></span><span id="_CPPv2N7HdrHeap18coalesce_str_heapsEi"></span><span id="HdrHeap::coalesce_str_heaps__i"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">coalesce_str_heaps</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">incoming_size</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap18coalesce_str_heapsEi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap18coalesce_str_heapsEi"></span><span id="_CPPv2N7HdrHeap18coalesce_str_heapsEi"></span><span id="HdrHeap::coalesce_str_heaps__i"></span>void <code class="sig-name descname">coalesce_str_heaps</code><span class="sig-paren">(</span>int <em>incoming_size</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap18coalesce_str_heapsEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This garbage collects the string heaps in a half space style, by creating a new string space
 (string heap), copying all of the strings there, and then discarding the existing string heaps.</p>
 <p>The total amount of live string space is calculated by
@@ -308,14 +302,14 @@ that writeable string heap.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap12allocate_strEi">
-<span id="_CPPv3N7HdrHeap12allocate_strEi"></span><span id="_CPPv2N7HdrHeap12allocate_strEi"></span><span id="HdrHeap::allocate_str__i"></span><span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">allocate_str</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">bytes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap12allocate_strEi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap12allocate_strEi"></span><span id="_CPPv2N7HdrHeap12allocate_strEi"></span><span id="HdrHeap::allocate_str__i"></span>char *<code class="sig-name descname">allocate_str</code><span class="sig-paren">(</span>int <em>bytes</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap12allocate_strEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allocate <em>nbytes</em> of space for a string in the writeable string heap. A pointer to the
 first byte is returned, or <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> if the space could not be allocated.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap12allocate_objEii">
-<span id="_CPPv3N7HdrHeap12allocate_objEii"></span><span id="_CPPv2N7HdrHeap12allocate_objEii"></span><span id="HdrHeap::allocate_obj__i.i"></span><a class="reference internal" href="#_CPPv414HdrHeapObjImpl" title="HdrHeapObjImpl"><span class="pre">HdrHeapObjImpl</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">allocate_obj</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">nbytes</span></em>, <span class="pre">int</span> <em><span class="pre">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap12allocate_objEii" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap12allocate_objEii"></span><span id="_CPPv2N7HdrHeap12allocate_objEii"></span><span id="HdrHeap::allocate_obj__i.i"></span><a class="reference internal" href="#_CPPv414HdrHeapObjImpl" title="HdrHeapObjImpl">HdrHeapObjImpl</a> *<code class="sig-name descname">allocate_obj</code><span class="sig-paren">(</span>int <em>nbytes</em>, int <em>type</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap12allocate_objEii" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Allocate a <em>type</em> object that is <em>nbytes</em> in size in the heap and return a pointer
 to it, or <code class="docutils literal notranslate"><span class="pre">nullptr</span></code> if the object could not be allocated.</p>
 <p><em>nbytes</em> must be at most <code class="docutils literal notranslate"><span class="pre">HDR_MAX_ALLOC_SIZE</span></code>.</p>
@@ -326,13 +320,13 @@ responsibility of the caller.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap14marshal_lengthEv">
-<span id="_CPPv3N7HdrHeap14marshal_lengthEv"></span><span id="_CPPv2N7HdrHeap14marshal_lengthEv"></span><span id="HdrHeap::marshal_length"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">marshal_length</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap14marshal_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap14marshal_lengthEv"></span><span id="_CPPv2N7HdrHeap14marshal_lengthEv"></span><span id="HdrHeap::marshal_length"></span>int <code class="sig-name descname">marshal_length</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap14marshal_lengthEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Compute and return the size of the buffer needed to serialize <em>this</em>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N7HdrHeap7marshalEPci">
-<span id="_CPPv3N7HdrHeap7marshalEPci"></span><span id="_CPPv2N7HdrHeap7marshalEPci"></span><span id="HdrHeap::marshal__cP.i"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">marshal</span></code><span class="sig-paren">(</span><span class="pre">char</span> <span class="pre">*</span><em><span class="pre">buffer</span></em>, <span class="pre">int</span> <em><span class="pre">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap7marshalEPci" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N7HdrHeap7marshalEPci"></span><span id="_CPPv2N7HdrHeap7marshalEPci"></span><span id="HdrHeap::marshal__cP.i"></span>int <code class="sig-name descname">marshal</code><span class="sig-paren">(</span>char *<em>buffer</em>, int <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7HdrHeap7marshalEPci" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Serialize <em>this</em> to <em>buffer</em> of size <em>length</em>. It is required that
 <em>length</em> be at least the value returned by <a class="reference internal" href="#_CPPv4N7HdrHeap14marshal_lengthEv" title="HdrHeap::marshal_length"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">HdrHeap::marshal_length()</span></code></a>.</p>
 </dd></dl>
@@ -341,7 +335,7 @@ responsibility of the caller.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv411new_HdrHeapi">
-<span id="_CPPv311new_HdrHeapi"></span><span id="_CPPv211new_HdrHeapi"></span><span id="new_HdrHeap__i"></span><a class="reference internal" href="#_CPPv47HdrHeap" title="HdrHeap"><span class="pre">HdrHeap</span></a> <span class="pre">*</span><code class="sig-name descname"><span class="pre">new_HdrHeap</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411new_HdrHeapi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv311new_HdrHeapi"></span><span id="_CPPv211new_HdrHeapi"></span><span id="new_HdrHeap__i"></span><a class="reference internal" href="#_CPPv47HdrHeap" title="HdrHeap">HdrHeap</a> *<code class="sig-name descname">new_HdrHeap</code><span class="sig-paren">(</span>int <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv411new_HdrHeapi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create and return a new instance of <a class="reference internal" href="#_CPPv47HdrHeap" title="HdrHeap"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HdrHeap</span></code></a>. If <em>n</em> is less than <code class="docutils literal notranslate"><span class="pre">HdrHeap::DEFAULT_SIZE</span></code>
 it is increased to that value.</p>
 <p>If the allocated size is <code class="docutils literal notranslate"><span class="pre">HdrHeap::DEFAULT_SIZE</span></code> (or smaller and upsized to that value) then
@@ -350,7 +344,7 @@ is allocated from global memory via <code class="code docutils literal notransla
 </dd></dl>
 
 <div class="topic">
-<p class="topic-title">Header Heap Class Structure</p>
+<p class="topic-title first">Header Heap Class Structure</p>
 <div class="figure align-default">
 <img alt="../../_images/hdr-heap-class.svg" src="../../_images/hdr-heap-class.svg" /></div>
 </div>
@@ -391,7 +385,7 @@ coalesced with an additional size request of the requested string size. This wil
 writeable string heap and not read only heaps, the former containing all of the existing strings plus
 sufficient space to allocate the new string.</p>
 <div class="topic">
-<p class="topic-title">Decision Diagram</p>
+<p class="topic-title first">Decision Diagram</p>
 <div class="figure align-default">
 <img alt="../../_images/hdr-heap-str-alloc.svg" src="../../_images/hdr-heap-str-alloc.svg" /></div>
 </div>
@@ -464,29 +458,29 @@ statements were used.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="rpc.en.html" class="btn btn-neutral float-right" title="RPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.en.html" class="btn btn-neutral float-left" title="Core Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="rpc.en.html" class="btn btn-neutral float-right" title="RPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Core Architecture" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -494,6 +488,7 @@ statements were used.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

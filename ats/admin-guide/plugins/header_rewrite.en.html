@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Header Rewrite Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Health Checks Plugin" href="healthchecks.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -142,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -152,7 +149,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -187,13 +183,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +198,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/header_rewrite.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -337,6 +331,44 @@ condition is omitted from all of the examples.</p>
 <p>Returns true if Traffic Server was able to successfully update the access time on the
 file at <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code>. This condition will return false if the file does not exist
 or Traffic Server cannot access it for any other reason.</p>
+</div>
+<div class="section" id="cache">
+<h4>CACHE<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{CACHE} &lt;operand&gt;
+</pre></div>
+</div>
+<p>This condition provides the server’s cache lookup results to inform headers
+where the requested data was generated from. The cache values are:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 84%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>none</p></td>
+<td><p>No cache lookup was attempted.</p></td>
+</tr>
+<tr class="row-odd"><td><p>miss</p></td>
+<td><p>The object was not found in the cache.</p></td>
+</tr>
+<tr class="row-even"><td><p>hit-stale</p></td>
+<td><p>The object was found in the cache, but it was stale.</p></td>
+</tr>
+<tr class="row-odd"><td><p>hit-fresh</p></td>
+<td><p>The object was fresh in the cache.</p></td>
+</tr>
+<tr class="row-even"><td><p>skipped</p></td>
+<td><p>The cache lookup was skipped.</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
 </div>
 <div class="section" id="client-header">
 <h4>CLIENT-HEADER<a class="headerlink" href="#client-header" title="Permalink to this headline">¶</a></h4>
@@ -1374,6 +1406,32 @@ rm-destination QUERY
 </pre></div>
 </div>
 </div>
+<div class="section" id="mimic-x-debug-plugin-s-x-cache-header">
+<h3>Mimic X-Debug Plugin’s X-Cache Header<a class="headerlink" href="#mimic-x-debug-plugin-s-x-cache-header" title="Permalink to this headline">¶</a></h3>
+<p>This rule can mimic X-Debug plugin’s <code class="docutils literal notranslate"><span class="pre">X-Cache</span></code> header by accumulating
+the <code class="docutils literal notranslate"><span class="pre">CACHE</span></code> condition results to a header.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK} [AND]
+cond %{HEADER:All-Cache} =&quot;&quot; [NOT]
+set-header All-Cache &quot;%{HEADER:All-Cache}, %{CACHE}&quot;
+
+cond %{SEND_RESPONSE_HDR_HOOK} [AND]
+cond %{HEADER:All-Cache} =&quot;&quot;
+set-header All-Cache %{CACHE}
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-identifier-from-server-with-data">
+<h3>Add Identifier from Server with Data<a class="headerlink" href="#add-identifier-from-server-with-data" title="Permalink to this headline">¶</a></h3>
+<p>This rule adds an unique identifier from the server if the data is fresh from
+the cache or if the identifier has not been generated yet. This will inform
+the client where the requested data was served from.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cond %{SEND_RESPONSE_HDR_HOOK} [AND]
+cond %{HEADER:ATS-SRVR-UUID} =&quot;&quot; [OR]
+cond %{CACHE} =&quot;hit-fresh&quot;
+set-header ATS-SRVR-UUID %{ID:UNIQUE}
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 
@@ -1382,29 +1440,29 @@ rm-destination QUERY
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="healthchecks.en.html" class="btn btn-neutral float-right" title="Health Checks Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="generator.en.html" class="btn btn-neutral float-left" title="Generator Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="healthchecks.en.html" class="btn btn-neutral float-right" title="Health Checks Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generator.en.html" class="btn btn-neutral float-left" title="Generator Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -1412,6 +1470,7 @@ rm-destination QUERY
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

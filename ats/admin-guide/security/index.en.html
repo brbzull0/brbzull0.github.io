@@ -2,47 +2,44 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Security &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Cache Storage" href="../storage/index.en.html" />
+    <link rel="next" title="Mututal TLS" href="mtls.en.html" />
     <link rel="prev" title="Interacting with Traffic Server" href="../interaction/index.en.html" /> 
 </head>
 
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -105,12 +101,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Security</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mtls.en.html">Mututal TLS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#controlling-access">Controlling Access</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#ssl-termination">SSL Termination</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-ssl-termination">Basic SSL Termination</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#client-and-traffic-server-connections">Client and Traffic Server Connections</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#traffic-server-and-origin-server-connections">Traffic Server and Origin Server Connections</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#mtls-en"><span class="xref std std-doc">mtls.en</span></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rotating-tls-session-ticket-keys">Rotating TLS Session Ticket Keys</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ocsp-stapling">OCSP Stapling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#split-dns">Split DNS</a></li>
@@ -124,6 +122,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -134,7 +133,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -169,13 +167,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -184,7 +180,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/security/index.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -209,12 +205,12 @@ the proxy cache.</p>
 <ol class="arabic simple">
 <li><p>Add a line to <a class="reference internal" href="../files/ip_allow.yaml.en.html#std-configfile-ip_allow.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">ip_allow.yaml</span></code></a> for each IP address or
 range of IP addresses allowed to access Traffic Server.</p></li>
-<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration
 changes.</p></li>
 </ol>
 </div>
-<div class="section" id="ssl-termination">
-<span id="admin-ssl-termination"></span><h2>SSL Termination<a class="headerlink" href="#ssl-termination" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="basic-ssl-termination">
+<span id="admin-ssl-termination"></span><h2>Basic SSL Termination<a class="headerlink" href="#basic-ssl-termination" title="Permalink to this headline">¶</a></h2>
 <p>The Traffic Server <em>SSL termination</em> option enables you to secure
 connections in reverse proxy mode between a client and a Traffic Server
 and/or Traffic Server and an origin server.</p>
@@ -271,7 +267,7 @@ in <a class="reference internal" href="../files/records.config.en.html#std-confi
 <li><p>Add an entry to <a class="reference internal" href="../files/ssl_multicert.config.en.html#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> for each certificate and key
 which your Traffic Server system will be using to terminate SSL connections
 with clients.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_ip</span><span class="o">=</span><span class="mf">1.2.3.4</span> <span class="n">ssl_cert_name</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">pem</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dest_ip</span><span class="o">=</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span> <span class="n">ssl_cert_name</span><span class="o">=</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">.</span><span class="n">pem</span>
 <span class="n">dest_ip</span><span class="o">=*</span> <span class="n">ssl_cert_name</span><span class="o">=</span><span class="n">default</span><span class="o">.</span><span class="n">pem</span>
 </pre></div>
 </div>
@@ -399,6 +395,11 @@ Server configuration in <a class="reference internal" href="../files/records.con
 </ol>
 </div>
 </div>
+<div class="section" id="mtls-en">
+<h2><a class="reference internal" href="mtls.en.html"><span class="doc">Mututal TLS</span></a><a class="headerlink" href="#mtls-en" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server allow for the fine-grained specification for TLS client certificates for both
+client to Traffic Server connections and Traffic Server to origin server connections.</p>
+</div>
 <div class="section" id="rotating-tls-session-ticket-keys">
 <span id="admin-rotating-tls-session-ticket-keys"></span><h2>Rotating TLS Session Ticket Keys<a class="headerlink" href="#rotating-tls-session-ticket-keys" title="Permalink to this headline">¶</a></h2>
 <p>TLS sessions can be resumed through session tickets which are encrypted with
@@ -409,7 +410,7 @@ a ticket key file as a reverse queue in 48-byte chunks.</p>
 <li><p>Generate a new ticket key and push it to the beginning of the ticket key file.</p></li>
 <li><p><em>Optional</em>: Delete the last ticket key from the ticket key file.</p></li>
 <li><p>Touch <a class="reference internal" href="../files/ssl_multicert.config.en.html#std-configfile-ssl_multicert.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">ssl_multicert.config</span></code></a> to indicate that the SSL configuration is stale.</p></li>
-<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the new ticket key.</p></li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the new ticket key.</p></li>
 </ol>
 </div>
 <div class="section" id="ocsp-stapling">
@@ -485,7 +486,7 @@ in <a class="reference internal" href="../files/records.config.en.html#std-confi
 </pre></div>
 </div>
 </li>
-<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
+<li><p>Run the command <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the configuration changes.</p></li>
 </ol>
 </div>
 </div>
@@ -495,29 +496,29 @@ in <a class="reference internal" href="../files/records.config.en.html#std-confi
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../storage/index.en.html" class="btn btn-neutral float-right" title="Cache Storage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../interaction/index.en.html" class="btn btn-neutral float-left" title="Interacting with Traffic Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="mtls.en.html" class="btn btn-neutral float-right" title="Mututal TLS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../interaction/index.en.html" class="btn btn-neutral float-left" title="Interacting with Traffic Server" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -525,6 +526,7 @@ in <a class="reference internal" href="../files/records.config.en.html#std-confi
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

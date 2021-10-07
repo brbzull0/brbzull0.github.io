@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Core Cache &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Data Structures" href="data-structures.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -140,6 +136,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -148,7 +145,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -183,13 +179,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -200,7 +194,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/cache-architecture/core-cache-functions.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -220,7 +214,7 @@
 <h2>Core Cache Constants<a class="headerlink" href="#core-cache-constants" title="Permalink to this headline">¶</a></h2>
 <dl class="c macro">
 <dt id="c.EVACUATION_SIZE">
-<code class="sig-name descname"><span class="pre">EVACUATION_SIZE</span></code><a class="headerlink" href="#c.EVACUATION_SIZE" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">EVACUATION_SIZE</code><a class="headerlink" href="#c.EVACUATION_SIZE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The size of the contiguous area to check for evacuation.</p>
 </dd></dl>
 
@@ -229,29 +223,29 @@
 <h2>Core Cache Types<a class="headerlink" href="#core-cache-types" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp type">
 <dt id="_CPPv413span_diskid_t">
-<span id="_CPPv313span_diskid_t"></span><span id="_CPPv213span_diskid_t"></span><span id="span_diskid_t"></span><em class="property"><span class="pre">type</span> </em><code class="sig-name descname"><span class="pre">span_diskid_t</span></code><a class="headerlink" href="#_CPPv413span_diskid_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv313span_diskid_t"></span><span id="_CPPv213span_diskid_t"></span><span id="span_diskid_t"></span><em class="property">type </em><code class="sig-name descname">span_diskid_t</code><a class="headerlink" href="#_CPPv413span_diskid_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Stores a 16 byte ID.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv48CacheKey">
-<span id="_CPPv38CacheKey"></span><span id="_CPPv28CacheKey"></span><span id="CacheKey"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">CacheKey</span></code><a class="headerlink" href="#_CPPv48CacheKey" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv38CacheKey"></span><span id="_CPPv28CacheKey"></span><span id="CacheKey"></span><em class="property">class </em><code class="sig-name descname">CacheKey</code><a class="headerlink" href="#_CPPv48CacheKey" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The hash value for a cache object. Currently a 128 bit MD5 hash.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv415EvacuationBlock">
-<span id="_CPPv315EvacuationBlock"></span><span id="_CPPv215EvacuationBlock"></span><span id="EvacuationBlock"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">EvacuationBlock</span></code><a class="headerlink" href="#_CPPv415EvacuationBlock" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv315EvacuationBlock"></span><span id="_CPPv215EvacuationBlock"></span><span id="EvacuationBlock"></span><em class="property">class </em><code class="sig-name descname">EvacuationBlock</code><a class="headerlink" href="#_CPPv415EvacuationBlock" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A range of content to be evacuated.</p>
 </dd></dl>
 
 <dl class="cpp class">
 <dt id="_CPPv414CacheProcessor">
-<span id="_CPPv314CacheProcessor"></span><span id="_CPPv214CacheProcessor"></span><span id="CacheProcessor"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">CacheProcessor</span></code><a class="headerlink" href="#_CPPv414CacheProcessor" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314CacheProcessor"></span><span id="_CPPv214CacheProcessor"></span><span id="CacheProcessor"></span><em class="property">class </em><code class="sig-name descname">CacheProcessor</code><a class="headerlink" href="#_CPPv414CacheProcessor" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The singleton cache management object. This handles threads and global initialization for the cache.</p>
 <dl class="cpp member">
 <dt id="_CPPv4N14CacheProcessor5startE">
-<span id="_CPPv3N14CacheProcessor5startE"></span><span id="_CPPv2N14CacheProcessor5startE"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">start</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">n_threads</span></em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">stacksize</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CacheProcessor5startE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N14CacheProcessor5startE"></span><span id="_CPPv2N14CacheProcessor5startE"></span>int <code class="sig-name descname">start</code><span class="sig-paren">(</span>int <em>n_threads</em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>stacksize</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N14CacheProcessor5startE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Starts the cache processing threads, <em>n_threads</em> are created each with a stack of size <em>stacksize</em>.</p>
 </dd></dl>
 
@@ -259,23 +253,23 @@
 
 <dl class="cpp class">
 <dt id="_CPPv44Span">
-<span id="_CPPv34Span"></span><span id="_CPPv24Span"></span><span id="Span"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Span</span></code><a class="headerlink" href="#_CPPv44Span" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv34Span"></span><span id="_CPPv24Span"></span><span id="Span"></span><em class="property">class </em><code class="sig-name descname">Span</code><a class="headerlink" href="#_CPPv44Span" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference internal" href="#_CPPv44Span" title="Span"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Span</span></code></a> models a <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-span"><span class="xref std std-term">cache span</span></a>. This is a contiguous span of storage.</p>
 <dl class="cpp member">
 <dt id="_CPPv4N4Span6blocksE">
-<span id="_CPPv3N4Span6blocksE"></span><span id="_CPPv2N4Span6blocksE"></span><span id="Span::blocks__int64_t"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47int64_t" title="int64_t"><span class="pre">int64_t</span></a> <code class="sig-name descname"><span class="pre">blocks</span></code><a class="headerlink" href="#_CPPv4N4Span6blocksE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N4Span6blocksE"></span><span id="_CPPv2N4Span6blocksE"></span><span id="Span::blocks__int64_t"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47int64_t" title="int64_t">int64_t</a> <code class="sig-name descname">blocks</code><a class="headerlink" href="#_CPPv4N4Span6blocksE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Number of storage blocks in the span. See <a class="reference internal" href="data-structures.en.html#_CPPv416STORE_BLOCK_SIZE" title="STORE_BLOCK_SIZE"><code class="xref cpp cpp-var docutils literal notranslate"><span class="pre">STORE_BLOCK_SIZE</span></code></a>.</p>
 </dd></dl>
 
 <dl class="cpp member">
 <dt id="_CPPv4N4Span6offsetE">
-<span id="_CPPv3N4Span6offsetE"></span><span id="_CPPv2N4Span6offsetE"></span><span id="Span::offset__int64_t"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47int64_t" title="int64_t"><span class="pre">int64_t</span></a> <code class="sig-name descname"><span class="pre">offset</span></code><a class="headerlink" href="#_CPPv4N4Span6offsetE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N4Span6offsetE"></span><span id="_CPPv2N4Span6offsetE"></span><span id="Span::offset__int64_t"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47int64_t" title="int64_t">int64_t</a> <code class="sig-name descname">offset</code><a class="headerlink" href="#_CPPv4N4Span6offsetE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Offset (in bytes)_ to the start of the span. This is used only if the base storage is a file.</p>
 </dd></dl>
 
 <dl class="cpp member">
 <dt id="_CPPv4N4Span7disk_idE">
-<span id="_CPPv3N4Span7disk_idE"></span><span id="_CPPv2N4Span7disk_idE"></span><span id="Span::disk_id__span_diskid_t"></span><a class="reference internal" href="#_CPPv413span_diskid_t" title="span_diskid_t"><span class="pre">span_diskid_t</span></a> <code class="sig-name descname"><span class="pre">disk_id</span></code><a class="headerlink" href="#_CPPv4N4Span7disk_idE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N4Span7disk_idE"></span><span id="_CPPv2N4Span7disk_idE"></span><span id="Span::disk_id__span_diskid_t"></span><a class="reference internal" href="#_CPPv413span_diskid_t" title="span_diskid_t">span_diskid_t</a> <code class="sig-name descname">disk_id</code><a class="headerlink" href="#_CPPv4N4Span7disk_idE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>No idea what this is.</p>
 </dd></dl>
 
@@ -283,29 +277,29 @@
 
 <dl class="cpp class">
 <dt id="_CPPv45Store">
-<span id="_CPPv35Store"></span><span id="_CPPv25Store"></span><span id="Store"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Store</span></code><a class="headerlink" href="#_CPPv45Store" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35Store"></span><span id="_CPPv25Store"></span><span id="Store"></span><em class="property">class </em><code class="sig-name descname">Store</code><a class="headerlink" href="#_CPPv45Store" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A singleton containing all of the cache storage description.</p>
 <dl class="cpp member">
 <dt id="_CPPv4N5Store17n_disks_in_configE">
-<span id="_CPPv3N5Store17n_disks_in_configE"></span><span id="_CPPv2N5Store17n_disks_in_configE"></span><span id="Store::n_disks_in_config__unsigned"></span><span class="pre">unsigned</span> <code class="sig-name descname"><span class="pre">n_disks_in_config</span></code><a class="headerlink" href="#_CPPv4N5Store17n_disks_in_configE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Store17n_disks_in_configE"></span><span id="_CPPv2N5Store17n_disks_in_configE"></span><span id="Store::n_disks_in_config__unsigned"></span>unsigned <code class="sig-name descname">n_disks_in_config</code><a class="headerlink" href="#_CPPv4N5Store17n_disks_in_configE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The number of distinct devices in the configuration.</p>
 </dd></dl>
 
 <dl class="cpp member">
 <dt id="_CPPv4N5Store7n_disksE">
-<span id="_CPPv3N5Store7n_disksE"></span><span id="_CPPv2N5Store7n_disksE"></span><span id="Store::n_disks__unsigned"></span><span class="pre">unsigned</span> <code class="sig-name descname"><span class="pre">n_disks</span></code><a class="headerlink" href="#_CPPv4N5Store7n_disksE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Store7n_disksE"></span><span id="_CPPv2N5Store7n_disksE"></span><span id="Store::n_disks__unsigned"></span>unsigned <code class="sig-name descname">n_disks</code><a class="headerlink" href="#_CPPv4N5Store7n_disksE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The number of valid and distinct devices in the configuration.</p>
 </dd></dl>
 
 <dl class="cpp member">
 <dt id="_CPPv4N5Store4diskE">
-<span id="_CPPv3N5Store4diskE"></span><span id="_CPPv2N5Store4diskE"></span><span id="Store::disk__SpanPP"></span><a class="reference internal" href="#_CPPv44Span" title="Span"><span class="pre">Span</span></a> <span class="pre">*</span><span class="pre">*</span><code class="sig-name descname"><span class="pre">disk</span></code><a class="headerlink" href="#_CPPv4N5Store4diskE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Store4diskE"></span><span id="_CPPv2N5Store4diskE"></span><span id="Store::disk__SpanPP"></span><a class="reference internal" href="#_CPPv44Span" title="Span">Span</a> **<code class="sig-name descname">disk</code><a class="headerlink" href="#_CPPv4N5Store4diskE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>List of spans.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N5Store11read_configEv">
-<span id="_CPPv3N5Store11read_configEv"></span><span id="_CPPv2N5Store11read_configEv"></span><span id="Store::read_config"></span><span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">read_config</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Store11read_configEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Store11read_configEv"></span><span id="_CPPv2N5Store11read_configEv"></span><span id="Store::read_config"></span>char *<code class="sig-name descname">read_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Store11read_configEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Read <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> and initialize the base state of the instance. The return value is <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> on success and a nul-terminated error string on error.</p>
 </dd></dl>
 
@@ -313,7 +307,7 @@
 
 <dl class="cpp class">
 <dt id="_CPPv49CacheDisk">
-<span id="_CPPv39CacheDisk"></span><span id="_CPPv29CacheDisk"></span><span id="CacheDisk"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">CacheDisk</span></code><a class="headerlink" href="#_CPPv49CacheDisk" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv39CacheDisk"></span><span id="_CPPv29CacheDisk"></span><span id="CacheDisk"></span><em class="property">class </em><code class="sig-name descname">CacheDisk</code><a class="headerlink" href="#_CPPv49CacheDisk" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A representation of the physical device used for a <a class="reference internal" href="#_CPPv44Span" title="Span"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Span</span></code></a>.</p>
 </dd></dl>
 
@@ -322,25 +316,25 @@
 <h2>Core Cache Functions<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp function">
 <dt id="_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir">
-<span id="_CPPv39dir_probePK8CacheKeyP3VolP3DirPP3Dir"></span><span id="_CPPv29dir_probePK8CacheKeyP3VolP3DirPP3Dir"></span><span id="dir_probe__CacheKeyCP.VolP.DirP.DirPP"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">dir_probe</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <a class="reference internal" href="#_CPPv48CacheKey" title="CacheKey"><span class="pre">CacheKey</span></a> <span class="pre">*</span><em><span class="pre">key</span></em>, <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol"><span class="pre">Vol</span></a> <span class="pre">*</span><em><span class="pre">d</span></em>, <a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir"><span class="pre">Dir</span></a> <span class="pre">*</span><em><span class="pre">result</span></em>, <a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir"><span class="pre">Dir</span></a> <span class="pre">*</span><span class="pre">*</span><em><span class="pre">last_collision</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv39dir_probePK8CacheKeyP3VolP3DirPP3Dir"></span><span id="_CPPv29dir_probePK8CacheKeyP3VolP3DirPP3Dir"></span><span id="dir_probe__CacheKeyCP.VolP.DirP.DirPP"></span>int <code class="sig-name descname">dir_probe</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#_CPPv48CacheKey" title="CacheKey">CacheKey</a> *<em>key</em>, <a class="reference internal" href="data-structures.en.html#_CPPv43Vol" title="Vol">Vol</a> *<em>d</em>, <a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir">Dir</a> *<em>result</em>, <a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir">Dir</a> **<em>last_collision</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv49dir_probePK8CacheKeyP3VolP3DirPP3Dir" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Probe the stripe directory for a candidate directory entry.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv420build_vol_hash_tableP15CacheHostRecord">
-<span id="_CPPv320build_vol_hash_tableP15CacheHostRecord"></span><span id="_CPPv220build_vol_hash_tableP15CacheHostRecord"></span><span id="build_vol_hash_table__CacheHostRecordP"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">build_vol_hash_table</span></code><span class="sig-paren">(</span><a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord"><span class="pre">CacheHostRecord</span></a> <span class="pre">*</span><em><span class="pre">r</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420build_vol_hash_tableP15CacheHostRecord" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv320build_vol_hash_tableP15CacheHostRecord"></span><span id="_CPPv220build_vol_hash_tableP15CacheHostRecord"></span><span id="build_vol_hash_table__CacheHostRecordP"></span>void <code class="sig-name descname">build_vol_hash_table</code><span class="sig-paren">(</span><a class="reference internal" href="data-structures.en.html#_CPPv415CacheHostRecord" title="CacheHostRecord">CacheHostRecord</a> *<em>r</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv420build_vol_hash_tableP15CacheHostRecord" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Based on the configuration record <em>r</em>, construct the global stripe assignment table.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv418cplist_reconfigurev">
-<span id="_CPPv318cplist_reconfigurev"></span><span id="_CPPv218cplist_reconfigurev"></span><span id="cplist_reconfigure"></span><span class="pre">int</span> <code class="sig-name descname"><span class="pre">cplist_reconfigure</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418cplist_reconfigurev" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv318cplist_reconfigurev"></span><span id="_CPPv218cplist_reconfigurev"></span><span id="cplist_reconfigure"></span>int <code class="sig-name descname">cplist_reconfigure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv418cplist_reconfigurev" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Rebuild the assignment of stripes to volumes.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv414ink_cache_init13ModuleVersion">
-<span id="_CPPv314ink_cache_init13ModuleVersion"></span><span id="_CPPv214ink_cache_init13ModuleVersion"></span><span id="ink_cache_init__ModuleVersion"></span><span class="pre">void</span> <code class="sig-name descname"><span class="pre">ink_cache_init</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/functions/TSTypes.en.html#_CPPv413ModuleVersion" title="ModuleVersion"><span class="pre">ModuleVersion</span></a> <em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ink_cache_init13ModuleVersion" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv314ink_cache_init13ModuleVersion"></span><span id="_CPPv214ink_cache_init13ModuleVersion"></span><span id="ink_cache_init__ModuleVersion"></span>void <code class="sig-name descname">ink_cache_init</code><span class="sig-paren">(</span><a class="reference internal" href="../api/functions/TSTypes.en.html#_CPPv413ModuleVersion" title="ModuleVersion">ModuleVersion</a> <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414ink_cache_init13ModuleVersion" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Top level cache initialization logic.</p>
 </dd></dl>
 
@@ -352,29 +346,29 @@
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="data-structures.en.html" class="btn btn-neutral float-right" title="Data Structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="cache-initialization.en.html" class="btn btn-neutral float-left" title="Cache Initialization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="data-structures.en.html" class="btn btn-neutral float-right" title="Data Structures" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cache-initialization.en.html" class="btn btn-neutral float-left" title="Cache Initialization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -382,6 +376,7 @@
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

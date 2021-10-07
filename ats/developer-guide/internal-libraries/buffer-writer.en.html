@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>BufferWriter &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="IntrusiveDList" href="intrusive-list.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -153,6 +149,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
@@ -161,7 +158,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -196,13 +192,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -213,7 +207,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/internal-libraries/buffer-writer.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -231,8 +225,8 @@
 <span id="id1"></span><h1>BufferWriter<a class="headerlink" href="#bufferwriter" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriterForward.h&gt;</span><span class="c1"> // Custom formatter support only.</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriter.h&gt;</span><span class="c1"> // General usage.</span><span class="cp"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriterForward.h&gt; // Custom formatter support only.</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ts/BufferWriter.h&gt; // General usage.</span><span class="cp"></span>
 </pre></div>
 </div>
 </div>
@@ -272,7 +266,7 @@ clipped to prevent overruns.</p>
 </div>
 <p>This is changed to</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="nf">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
 <span class="c1">//...</span>
 <span class="n">bw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">thing1</span><span class="p">,</span> <span class="n">thing1_len</span><span class="p">);</span>
 <span class="n">bw</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">thing2</span><span class="p">,</span> <span class="n">thing2_len</span><span class="p">);</span>
@@ -314,7 +308,7 @@ external to the function or already exists.</p>
 buffer. This is useful when the buffer is local to a function and the results will be transferred
 from the buffer to other storage after the output is assembled. Rather than having code like:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">char</span> <span class="n">buff</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
-<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="nf">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
+<span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">bw</span><span class="p">(</span><span class="n">buff</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buff</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>it can be written more compactly as:</p>
@@ -335,7 +329,7 @@ This is an overloaded method for a character (<code class="code docutils literal
 and a string view (<code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>). Because there is a constructor for <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>
 that takes a <code class="code docutils literal notranslate"><span class="pre">const</span> <span class="pre">char*</span></code> as a C string, passing a literal string works as expected.</p>
 <p>There are also stream operators in the style of C++ stream I/O. The basic template is</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span> <span class="k">typename</span> <span class="nc">T</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">T</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">);</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">template</span> <span class="o">&lt;</span> <span class="k">typename</span> <span class="n">T</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="k">operator</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">T</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">t</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The stream operators are provided as a convenience, the primary mechanism for formatted output is
@@ -371,7 +365,7 @@ delimiter.</p>
 is useful to do speculative output, or do bounded output in a manner similar to using
 <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and <a class="reference internal" href="#_CPPv4N12BufferWriter6extendE6size_t" title="BufferWriter::extend"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::extend()</span></code></a>. A new <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> instance
 can be constructed with</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="nf">subw</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">auxBuffer</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">remaining</span><span class="p">());</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">FixedBufferWriter</span> <span class="n">subw</span><span class="p">(</span><span class="n">w</span><span class="p">.</span><span class="n">auxBuffer</span><span class="p">(),</span> <span class="n">w</span><span class="p">.</span><span class="n">remaining</span><span class="p">());</span>
 </pre></div>
 </div>
 <p>or as a convenience</p>
@@ -752,7 +746,7 @@ minimum width in order to disable any additional alignment operation.</p>
 pointers looks like:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Pointers that are not specialized.</span>
 <span class="kr">inline</span> <span class="n">BufferWriter</span> <span class="o">&amp;</span>
-<span class="nf">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">ptr</span><span class="p">)</span>
+<span class="n">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span> <span class="n">ptr</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="n">BWFSpec</span> <span class="n">ptr_spec</span><span class="p">{</span><span class="n">spec</span><span class="p">};</span>
    <span class="n">ptr_spec</span><span class="p">.</span><span class="n">_radix_lead_p</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
@@ -784,7 +778,7 @@ undocumented (and even uncommented) and is therefore used infrequently, as that 
 blind cut and paste, or tracing through header files to understand the code. This can be greatly
 simplified by adding formatters to <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/proxy/http/HttpDebugNames.h">proxy/http/HttpDebugNames.h</a></p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kr">inline</span> <span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span>
-<span class="nf">bwformat</span><span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">ts</span><span class="o">::</span><span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="n">HttpTransact</span><span class="o">::</span><span class="n">ServerState_t</span> <span class="n">state</span><span class="p">)</span>
+<span class="n">bwformat</span><span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">BufferWriter</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">,</span> <span class="n">ts</span><span class="o">::</span><span class="n">BWFSpec</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">spec</span><span class="p">,</span> <span class="n">HttpTransact</span><span class="o">::</span><span class="n">ServerState_t</span> <span class="n">state</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="k">if</span> <span class="p">(</span><span class="n">spec</span><span class="p">.</span><span class="n">has_numeric_type</span><span class="p">())</span> <span class="p">{</span>
       <span class="c1">// allow the user to force numeric output with &#39;{:d}&#39; or other numeric type.</span>
@@ -908,7 +902,7 @@ is provided. Using it is simple:</p>
 </div></blockquote>
 <p>For <code class="code docutils literal notranslate"><span class="pre">errno</span></code> this is handy in another way as <code class="code docutils literal notranslate"><span class="pre">ts::bwf::Errno</span></code> will preserve the value of
 <code class="code docutils literal notranslate"><span class="pre">errno</span></code> across other calls that might change it. E.g.:</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">bwf</span><span class="o">::</span><span class="n">Errno</span> <span class="nf">last_err</span><span class="p">(</span><span class="n">errno</span><span class="p">);</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">::</span><span class="n">bwf</span><span class="o">::</span><span class="n">Errno</span> <span class="n">last_err</span><span class="p">(</span><span class="n">errno</span><span class="p">);</span>
 <span class="c1">// some other code generating diagnostics that might tweak errno.</span>
 <span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;File not open - {}&quot;</span><span class="p">,</span> <span class="n">last_err</span><span class="p">);</span>
 </pre></div>
@@ -920,14 +914,14 @@ is printed in multiple places and each time this code is repeated</p>
 </pre></div>
 </div>
 <p>This could be wrapped in a class, <code class="code docutils literal notranslate"><span class="pre">HostDBType</span></code> such as</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nc">HostDBType</span> <span class="p">{</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">HostDBType</span> <span class="p">{</span>
    <span class="n">HostDBInfo</span><span class="o">*</span> <span class="n">_r</span> <span class="p">{</span> <span class="k">nullptr</span> <span class="p">};</span>
    <span class="n">HostDBType</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="o">:</span> <span class="n">_r</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="p">{}</span>
 <span class="p">};</span>
 </pre></div>
 </div>
 <p>Then define a formatter for the wrapper</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="nf">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">HostDBType</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">wrap</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">bwformat</span><span class="p">(</span><span class="n">BufferWriter</span><span class="o">&amp;</span> <span class="n">w</span><span class="p">,</span> <span class="n">BWFSpec</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">spec</span><span class="p">,</span> <span class="n">HostDBType</span> <span class="k">const</span><span class="o">&amp;</span> <span class="n">wrap</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">return</span> <span class="n">w</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;{}{} {}&quot;</span><span class="p">,</span> <span class="n">wrap</span><span class="p">.</span><span class="n">_r</span><span class="o">-&gt;</span><span class="n">round_robin</span> <span class="o">?</span> <span class="s">&quot;Round-Robin&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
      <span class="n">r</span><span class="o">-&gt;</span><span class="n">reverse_dns</span> <span class="o">?</span> <span class="s">&quot;Reverse DNS&quot;</span> <span class="o">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
      <span class="n">r</span><span class="o">-&gt;</span><span class="n">is_srv</span> <span class="o">?</span> <span class="s">&quot;SRV&quot;</span> <span class="o">:</span> <span class="s">&quot;DNS&quot;</span><span class="p">);</span>
@@ -943,13 +937,13 @@ change in a single code location.</p>
 <p>These are the existing format classes in header file <code class="docutils literal notranslate"><span class="pre">bfw_std_format.h</span></code>. All are in the <code class="code docutils literal notranslate"><span class="pre">ts::bwf</span></code> namespace.</p>
 <dl class="cpp class">
 <dt id="_CPPv45Errno">
-<span id="_CPPv35Errno"></span><span id="_CPPv25Errno"></span><span id="Errno"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Errno</span></code><a class="headerlink" href="#_CPPv45Errno" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv35Errno"></span><span id="_CPPv25Errno"></span><span id="Errno"></span><em class="property">class </em><code class="sig-name descname">Errno</code><a class="headerlink" href="#_CPPv45Errno" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Formatting for <code class="code docutils literal notranslate"><span class="pre">errno</span></code>. Generically the formatted output is the short name, the description,
 and the numeric value. A format type of <code class="docutils literal notranslate"><span class="pre">d</span></code> will generate just the numeric value, while a format
 type of <code class="docutils literal notranslate"><span class="pre">s</span></code> will generate just the short name and description.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N5Errno5ErrnoEi">
-<span id="_CPPv3N5Errno5ErrnoEi"></span><span id="_CPPv2N5Errno5ErrnoEi"></span><span id="Errno::Errno__i"></span><code class="sig-name descname"><span class="pre">Errno</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">errno</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Errno5ErrnoEi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N5Errno5ErrnoEi"></span><span id="_CPPv2N5Errno5ErrnoEi"></span><span id="Errno::Errno__i"></span><code class="sig-name descname">Errno</code><span class="sig-paren">(</span>int <em>errno</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5Errno5ErrnoEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Initialize the instance with the error value <em>errno</em>.</p>
 </dd></dl>
 
@@ -957,7 +951,7 @@ type of <code class="docutils literal notranslate"><span class="pre">s</span></c
 
 <dl class="cpp function">
 <dt id="_CPPv4IDpE7FirstOfDpRR4Args">
-<span id="_CPPv3IDpE7FirstOfDpRR4Args"></span><span id="_CPPv2IDpE7FirstOfDpRR4Args"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <span class="pre">...</span><code class="sig-name descname"><span class="pre">Args</span></code><span class="pre">&gt;</span><br /><code class="sig-name descname"><span class="pre">FirstOf</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="FirstOf::Args"><span class="pre">Args</span></a><span class="pre">&amp;</span><span class="pre">&amp;</span><span class="pre">...</span> <em><span class="pre">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IDpE7FirstOfDpRR4Args"></span><span id="_CPPv2IDpE7FirstOfDpRR4Args"></span>template&lt;typename ...<code class="sig-name descname">Args</code>&gt;<br /><code class="sig-name descname">FirstOf</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="FirstOf::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7FirstOfDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Print the first non-empty string in an argument list. All arguments must be convertible to
 <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code>.</p>
 <p>By far the most common case is the two argument case used to print a special string if the base
@@ -985,11 +979,11 @@ easier to understand.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv44Date">
-<span id="_CPPv34Date"></span><span id="_CPPv24Date"></span><span id="Date"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">Date</span></code><a class="headerlink" href="#_CPPv44Date" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv34Date"></span><span id="_CPPv24Date"></span><span id="Date"></span><em class="property">class </em><code class="sig-name descname">Date</code><a class="headerlink" href="#_CPPv44Date" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Date formatting in the <code class="code docutils literal notranslate"><span class="pre">strftime</span></code> style.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N4Date4DateE6time_tNSt11string_viewE">
-<span id="_CPPv3N4Date4DateE6time_tNSt11string_viewE"></span><span id="_CPPv2N4Date4DateE6time_tNSt11string_viewE"></span><span id="Date::Date__time_t.std::string_view"></span><code class="sig-name descname"><span class="pre">Date</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46time_t" title="time_t"><span class="pre">time_t</span></a> <em><span class="pre">epoch</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">fmt</span></em> <span class="pre">=</span> <span class="pre">&quot;%Y</span> <span class="pre">%b</span> <span class="pre">%d</span> <span class="pre">%H:%M:%S&quot;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateE6time_tNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N4Date4DateE6time_tNSt11string_viewE"></span><span id="_CPPv2N4Date4DateE6time_tNSt11string_viewE"></span><span id="Date::Date__time_t.std::string_view"></span><code class="sig-name descname">Date</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46time_t" title="time_t">time_t</a> <em>epoch</em>, std::string_view <em>fmt</em> = &quot;%Y %b %d %H:%M:%S&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateE6time_tNSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><em>epoch</em> is the time to print. <em>fmt</em> is the format for printing which is identical to
 that of <a class="reference external" href="https://linux.die.net/man/3/strftime">strftime</a>. The default format looks like
 “2018 Jun 08 13:55:37”.</p>
@@ -997,7 +991,7 @@ that of <a class="reference external" href="https://linux.die.net/man/3/strftime
 
 <dl class="cpp function">
 <dt id="_CPPv4N4Date4DateENSt11string_viewE">
-<span id="_CPPv3N4Date4DateENSt11string_viewE"></span><span id="_CPPv2N4Date4DateENSt11string_viewE"></span><span id="Date::Date__std::string_view"></span><code class="sig-name descname"><span class="pre">Date</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">fmt</span></em> <span class="pre">=</span> <span class="pre">&quot;%Y</span> <span class="pre">%b</span> <span class="pre">%d</span> <span class="pre">%H:%M:%S&quot;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N4Date4DateENSt11string_viewE"></span><span id="_CPPv2N4Date4DateENSt11string_viewE"></span><span id="Date::Date__std::string_view"></span><code class="sig-name descname">Date</code><span class="sig-paren">(</span>std::string_view <em>fmt</em> = &quot;%Y %b %d %H:%M:%S&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N4Date4DateENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>As previous except the epoch is the current epoch at the time the constructor is invoked.
 Therefore if the current time is to be printed the default constructor can be used.</p>
 </dd></dl>
@@ -1013,7 +1007,7 @@ can take an extension of “local” which formats the time as local time. Other
 
 <dl class="cpp class">
 <dt id="_CPPv413OptionalAffix">
-<span id="_CPPv313OptionalAffix"></span><span id="_CPPv213OptionalAffix"></span><span id="OptionalAffix"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">OptionalAffix</span></code><a class="headerlink" href="#_CPPv413OptionalAffix" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv313OptionalAffix"></span><span id="_CPPv213OptionalAffix"></span><span id="OptionalAffix"></span><em class="property">class </em><code class="sig-name descname">OptionalAffix</code><a class="headerlink" href="#_CPPv413OptionalAffix" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Affix support for printing optional strings. This enables printing a string such the affixes are
 printed only if the string is not empty. An empty string (or <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code>) yields no output. A
 common situation in which is this is useful is code like</p>
@@ -1032,7 +1026,7 @@ common situation in which is this is useful is code like</p>
 </div></blockquote>
 <dl class="cpp function">
 <dt id="_CPPv4N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE">
-<span id="_CPPv3N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__cCP.std::string_view.std::string_view"></span><code class="sig-name descname"><span class="pre">OptionalAffix</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">text</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">suffix</span></em> <span class="pre">=</span> <span class="pre">&quot;</span> <span class="pre">&quot;</span>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">prefix</span></em> <span class="pre">=</span> <span class="pre">&quot;&quot;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__cCP.std::string_view.std::string_view"></span><code class="sig-name descname">OptionalAffix</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>text</em>, std::string_view <em>suffix</em> = &quot; &quot;, std::string_view <em>prefix</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixEPKcNSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a format wrapper with <em>suffix</em> and <em>prefix</em>. If <em>text</em> is
 <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> or is empty generate no output. Otherwise print the <em>prefix</em>,
 <em>text</em>, <em>suffix</em>.</p>
@@ -1040,7 +1034,7 @@ common situation in which is this is useful is code like</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE">
-<span id="_CPPv3N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__std::string_view.std::string_view.std::string_view"></span><code class="sig-name descname"><span class="pre">OptionalAffix</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">text</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">suffix</span></em> <span class="pre">=</span> <span class="pre">&quot;</span> <span class="pre">&quot;</span>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">prefix</span></em> <span class="pre">=</span> <span class="pre">&quot;&quot;</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="_CPPv2N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE"></span><span id="OptionalAffix::OptionalAffix__std::string_view.std::string_view.std::string_view"></span><code class="sig-name descname">OptionalAffix</code><span class="sig-paren">(</span>std::string_view <em>text</em>, std::string_view <em>suffix</em> = &quot; &quot;, std::string_view <em>prefix</em> = &quot;&quot;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13OptionalAffix13OptionalAffixENSt11string_viewENSt11string_viewENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a format wrapper with <em>suffix</em> and <em>prefix</em>. If <em>text</em> is
 <code class="code docutils literal notranslate"><span class="pre">nullptr</span></code> or is empty generate no output. Otherwise print the <em>prefix</em>,
 <em>text</em>, <em>suffix</em>. Note that passing <code class="code docutils literal notranslate"><span class="pre">std::string</span></code> as the first argument will
@@ -1123,34 +1117,34 @@ buffer for conversion before printing). As noted previously this is particularly
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp class">
 <dt id="_CPPv412BufferWriter">
-<span id="_CPPv312BufferWriter"></span><span id="_CPPv212BufferWriter"></span><span id="BufferWriter"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">BufferWriter</span></code><a class="headerlink" href="#_CPPv412BufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv312BufferWriter"></span><span id="_CPPv212BufferWriter"></span><span id="BufferWriter"></span><em class="property">class </em><code class="sig-name descname">BufferWriter</code><a class="headerlink" href="#_CPPv412BufferWriter" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> is the abstract base class which defines the basic client interface. This
 is intended to be the reference type used when passing concrete instances rather than having to
 support the distinct types.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter5writeEPv6size_t">
-<span id="_CPPv3N12BufferWriter5writeEPv6size_t"></span><span id="_CPPv2N12BufferWriter5writeEPv6size_t"></span><span id="BufferWriter::write__voidP.s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">write</span></code><span class="sig-paren">(</span><span class="pre">void</span> <span class="pre">*</span><em><span class="pre">data</span></em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter5writeEPv6size_t"></span><span id="_CPPv2N12BufferWriter5writeEPv6size_t"></span><span id="BufferWriter::write__voidP.s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">write</code><span class="sig-paren">(</span>void *<em>data</em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Write to the buffer starting at <em>data</em> for at most <em>length</em> bytes. If there is not
 enough room to fit all the data, none is written.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter5writeENSt11string_viewE">
-<span id="_CPPv3N12BufferWriter5writeENSt11string_viewE"></span><span id="_CPPv2N12BufferWriter5writeENSt11string_viewE"></span><span id="BufferWriter::write__std::string_view"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">write</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter5writeENSt11string_viewE"></span><span id="_CPPv2N12BufferWriter5writeENSt11string_viewE"></span><span id="BufferWriter::write__std::string_view"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">write</code><span class="sig-paren">(</span>std::string_view <em>str</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeENSt11string_viewE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Write the string <em>str</em> to the buffer. If there is not enough room to write the string no
 data is written.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter5writeEc">
-<span id="_CPPv3N12BufferWriter5writeEc"></span><span id="_CPPv2N12BufferWriter5writeEc"></span><span id="BufferWriter::write__c"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">write</span></code><span class="sig-paren">(</span><span class="pre">char</span> <em><span class="pre">c</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEc" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter5writeEc"></span><span id="_CPPv2N12BufferWriter5writeEc"></span><span id="BufferWriter::write__c"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">write</code><span class="sig-paren">(</span>char <em>c</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5writeEc" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Write the character <em>c</em> to the buffer. If there is no space in the buffer the character
 is not written.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter4fillE6size_t">
-<span id="_CPPv3N12BufferWriter4fillE6size_t"></span><span id="_CPPv2N12BufferWriter4fillE6size_t"></span><span id="BufferWriter::fill__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">fill</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4fillE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter4fillE6size_t"></span><span id="_CPPv2N12BufferWriter4fillE6size_t"></span><span id="BufferWriter::fill__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">fill</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4fillE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Increase the output size by <em>n</em> without changing the buffer contents. This is used in
 conjunction with <a class="reference internal" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="BufferWriter::auxBuffer"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::auxBuffer()</span></code></a> after writing output to the buffer returned by
 that method. If this method is not called then such output will not be counted by
@@ -1159,49 +1153,49 @@ that method. If this method is not called then such output will not be counted b
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter4dataEv">
-<span id="_CPPv3NK12BufferWriter4dataEv"></span><span id="_CPPv2NK12BufferWriter4dataEv"></span><span id="BufferWriter::dataC"></span><span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">data</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter4dataEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter4dataEv"></span><span id="_CPPv2NK12BufferWriter4dataEv"></span><span id="BufferWriter::dataC"></span>char *<code class="sig-name descname">data</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4dataEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return a pointer to start of the buffer.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter4sizeEv">
-<span id="_CPPv3NK12BufferWriter4sizeEv"></span><span id="_CPPv2NK12BufferWriter4sizeEv"></span><span id="BufferWriter::sizeC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">size</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter4sizeEv"></span><span id="_CPPv2NK12BufferWriter4sizeEv"></span><span id="BufferWriter::sizeC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4sizeEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return the number of valid (written) bytes in the buffer.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter4viewEv">
-<span id="_CPPv3NK12BufferWriter4viewEv"></span><span id="_CPPv2NK12BufferWriter4viewEv"></span><span id="BufferWriter::viewC"></span><span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <code class="sig-name descname"><span class="pre">view</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter4viewEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter4viewEv"></span><span id="_CPPv2NK12BufferWriter4viewEv"></span><span id="BufferWriter::viewC"></span>std::string_view <code class="sig-name descname">view</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter4viewEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return a <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> that covers the valid data in the buffer.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter9remainingEv">
-<span id="_CPPv3NK12BufferWriter9remainingEv"></span><span id="_CPPv2NK12BufferWriter9remainingEv"></span><span id="BufferWriter::remainingC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">remaining</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter9remainingEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter9remainingEv"></span><span id="_CPPv2NK12BufferWriter9remainingEv"></span><span id="BufferWriter::remainingC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">remaining</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter9remainingEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return the number of available remaining bytes that could be written to the buffer.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter8capacityEv">
-<span id="_CPPv3NK12BufferWriter8capacityEv"></span><span id="_CPPv2NK12BufferWriter8capacityEv"></span><span id="BufferWriter::capacityC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">capacity</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter8capacityEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter8capacityEv"></span><span id="_CPPv2NK12BufferWriter8capacityEv"></span><span id="BufferWriter::capacityC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">capacity</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter8capacityEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return the number of bytes in the buffer.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter9auxBufferEv">
-<span id="_CPPv3NK12BufferWriter9auxBufferEv"></span><span id="_CPPv2NK12BufferWriter9auxBufferEv"></span><span id="BufferWriter::auxBufferC"></span><span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">auxBuffer</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter9auxBufferEv"></span><span id="_CPPv2NK12BufferWriter9auxBufferEv"></span><span id="BufferWriter::auxBufferC"></span>char *<code class="sig-name descname">auxBuffer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter9auxBufferEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return a pointer to the first byte in the buffer not yet consumed.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter4clipE6size_t">
-<span id="_CPPv3N12BufferWriter4clipE6size_t"></span><span id="_CPPv2N12BufferWriter4clipE6size_t"></span><span id="BufferWriter::clip__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">clip</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4clipE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter4clipE6size_t"></span><span id="_CPPv2N12BufferWriter4clipE6size_t"></span><span id="BufferWriter::clip__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">clip</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter4clipE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Reduce the available space by <em>n</em> bytes.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter6extendE6size_t">
-<span id="_CPPv3N12BufferWriter6extendE6size_t"></span><span id="_CPPv2N12BufferWriter6extendE6size_t"></span><span id="BufferWriter::extend__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">extend</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter6extendE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter6extendE6size_t"></span><span id="_CPPv2N12BufferWriter6extendE6size_t"></span><span id="BufferWriter::extend__s"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">extend</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter6extendE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Increase the available space by <em>n</em> bytes. Extreme care must be used with this method as
 <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> will trust the argument, having no way to verify it. In general this
 should only be used after calling <a class="reference internal" href="#_CPPv4N12BufferWriter4clipE6size_t" title="BufferWriter::clip"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">BufferWriter::clip()</span></code></a> and passing the same value.
@@ -1212,13 +1206,13 @@ even if part of the string is not.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter5errorEv">
-<span id="_CPPv3NK12BufferWriter5errorEv"></span><span id="_CPPv2NK12BufferWriter5errorEv"></span><span id="BufferWriter::errorC"></span><span class="pre">bool</span> <code class="sig-name descname"><span class="pre">error</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter5errorEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter5errorEv"></span><span id="_CPPv2NK12BufferWriter5errorEv"></span><span id="BufferWriter::errorC"></span>bool <code class="sig-name descname">error</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter5errorEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return <code class="code docutils literal notranslate"><span class="pre">true</span></code> if the buffer has overflowed from writing, <code class="code docutils literal notranslate"><span class="pre">false</span></code> if not.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriter6extentEv">
-<span id="_CPPv3NK12BufferWriter6extentEv"></span><span id="_CPPv2NK12BufferWriter6extentEv"></span><span id="BufferWriter::extentC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">extent</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriter6extentEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriter6extentEv"></span><span id="_CPPv2NK12BufferWriter6extentEv"></span><span id="BufferWriter::extentC"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">extent</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriter6extentEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Return the total number of bytes in all attempted writes to this buffer. This value allows a
 successful retry in case of overflow, presuming the output data doesn’t change. This works
 well with the standard “try before you buy” approach of attempting to write output, counting
@@ -1227,25 +1221,25 @@ the characters needed, then allocating a sufficiently sized buffer and actually 
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriter5printE8TextViewz">
-<span id="_CPPv3N12BufferWriter5printE8TextViewz"></span><span id="_CPPv2N12BufferWriter5printE8TextViewz"></span><span id="BufferWriter::print__TextView.z"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">print</span></code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView"><span class="pre">TextView</span></a> <em><span class="pre">fmt</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriter5printE8TextViewz"></span><span id="_CPPv2N12BufferWriter5printE8TextViewz"></span><span id="BufferWriter::print__TextView.z"></span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">print</code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView">TextView</a> <em>fmt</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriter5printE8TextViewz" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Print the arguments according to the format. See <a class="reference internal" href="#bw-formatting">bw-formatting</a>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE">
-<span id="_CPPv3IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <span class="pre">...</span><code class="sig-name descname"><span class="pre">Args</span></code><span class="pre">&gt;</span><br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">printv</span></code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView"><span class="pre">TextView</span></a> <em><span class="pre">fmt</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">tuple</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="BufferWriter::printv::Args"><span class="pre">Args</span></a><span class="pre">...</span><span class="pre">&gt;</span> <span class="pre">&amp;</span><span class="pre">&amp;</span><em><span class="pre">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpEN12BufferWriter6printvE8TextViewRRNSt5tupleIDp4ArgsEE"></span>template&lt;typename ...<code class="sig-name descname">Args</code>&gt;<br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">printv</code><span class="sig-paren">(</span><a class="reference internal" href="TextView.en.html#_CPPv48TextView" title="TextView">TextView</a> <em>fmt</em>, std::tuple&lt;<a class="reference internal" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="BufferWriter::printv::Args">Args</a>...&gt; &amp;&amp;<em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN12BufferWriter6printvER12BufferWriter8TextViewRRNSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Print the arguments in the tuple <em>args</em> according to the format. See <a class="reference internal" href="#bw-formatting">bw-formatting</a>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4NK12BufferWriterrsERNSt7ostreamE">
-<span id="_CPPv3NK12BufferWriterrsERNSt7ostreamE"></span><span id="_CPPv2NK12BufferWriterrsERNSt7ostreamE"></span><span id="BufferWriter::rshift-operator__osRC"></span><span class="pre">std</span><span class="pre">::</span><span class="pre">ostream</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">operator&gt;&gt;</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">ostream</span> <span class="pre">&amp;</span><em><span class="pre">stream</span></em><span class="sig-paren">)</span> <em class="property"><span class="pre">const</span></em><a class="headerlink" href="#_CPPv4NK12BufferWriterrsERNSt7ostreamE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3NK12BufferWriterrsERNSt7ostreamE"></span><span id="_CPPv2NK12BufferWriterrsERNSt7ostreamE"></span><span id="BufferWriter::rshift-operator__osRC"></span>std::ostream &amp;<code class="sig-name descname">operator&gt;&gt;</code><span class="sig-paren">(</span>std::ostream &amp;<em>stream</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK12BufferWriterrsERNSt7ostreamE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Write the contents of the buffer to <em>stream</em> and return <em>stream</em>.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N12BufferWriterrsEi">
-<span id="_CPPv3N12BufferWriterrsEi"></span><span id="_CPPv2N12BufferWriterrsEi"></span><span id="BufferWriter::rshift-operator__i"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47ssize_t" title="ssize_t"><span class="pre">ssize_t</span></a> <code class="sig-name descname"><span class="pre">operator&gt;&gt;</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">fd</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriterrsEi" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12BufferWriterrsEi"></span><span id="_CPPv2N12BufferWriterrsEi"></span><span id="BufferWriter::rshift-operator__i"></span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv47ssize_t" title="ssize_t">ssize_t</a> <code class="sig-name descname">operator&gt;&gt;</code><span class="sig-paren">(</span>int <em>fd</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N12BufferWriterrsEi" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Write the contents of the buffer to file descriptor <em>fd</em> and return the number of bytes
 write (the results of the call to file <code class="code docutils literal notranslate"><span class="pre">write()</span></code>).</p>
 </dd></dl>
@@ -1254,30 +1248,30 @@ write (the results of the call to file <code class="code docutils literal notran
 
 <dl class="cpp class">
 <dt id="_CPPv417FixedBufferWriter">
-<span id="_CPPv317FixedBufferWriter"></span><span id="_CPPv217FixedBufferWriter"></span><span id="FixedBufferWriter"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">FixedBufferWriter</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a><a class="headerlink" href="#_CPPv417FixedBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv317FixedBufferWriter"></span><span id="_CPPv217FixedBufferWriter"></span><span id="FixedBufferWriter"></span><em class="property">class </em><code class="sig-name descname">FixedBufferWriter</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a><a class="headerlink" href="#_CPPv417FixedBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This is a class that implements <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a> on a fixed buffer, passed in to the constructor.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N17FixedBufferWriter17FixedBufferWriterEPv6size_t">
-<span id="_CPPv3N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="_CPPv2N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="FixedBufferWriter::FixedBufferWriter__voidP.s"></span><code class="sig-name descname"><span class="pre">FixedBufferWriter</span></code><span class="sig-paren">(</span><span class="pre">void</span> <span class="pre">*</span><em><span class="pre">buffer</span></em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter17FixedBufferWriterEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="_CPPv2N17FixedBufferWriter17FixedBufferWriterEPv6size_t"></span><span id="FixedBufferWriter::FixedBufferWriter__voidP.s"></span><code class="sig-name descname">FixedBufferWriter</code><span class="sig-paren">(</span>void *<em>buffer</em>, <a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter17FixedBufferWriterEPv6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct an instance that will write to <em>buffer</em> at most <em>length</em> bytes. If more
 data is written, all data past the maximum size is discarded.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N17FixedBufferWriter6reduceE6size_t">
-<span id="_CPPv3N17FixedBufferWriter6reduceE6size_t"></span><span id="_CPPv2N17FixedBufferWriter6reduceE6size_t"></span><span id="FixedBufferWriter::reduce__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><span class="pre">FixedBufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">reduce</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">n</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter6reduceE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N17FixedBufferWriter6reduceE6size_t"></span><span id="_CPPv2N17FixedBufferWriter6reduceE6size_t"></span><span id="FixedBufferWriter::reduce__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> &amp;<code class="sig-name descname">reduce</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>n</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter6reduceE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Roll back the output to have <em>n</em> valid (used) bytes.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N17FixedBufferWriter5resetEv">
-<span id="_CPPv3N17FixedBufferWriter5resetEv"></span><span id="_CPPv2N17FixedBufferWriter5resetEv"></span><span id="FixedBufferWriter::reset"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><span class="pre">FixedBufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">reset</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter5resetEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N17FixedBufferWriter5resetEv"></span><span id="_CPPv2N17FixedBufferWriter5resetEv"></span><span id="FixedBufferWriter::reset"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> &amp;<code class="sig-name descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter5resetEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Equivalent to <code class="code docutils literal notranslate"><span class="pre">reduce(0)</span></code>, provide for convenience.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4N17FixedBufferWriter9auxWriterE6size_t">
-<span id="_CPPv3N17FixedBufferWriter9auxWriterE6size_t"></span><span id="_CPPv2N17FixedBufferWriter9auxWriterE6size_t"></span><span id="FixedBufferWriter::auxWriter__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><span class="pre">FixedBufferWriter</span></a> <code class="sig-name descname"><span class="pre">auxWriter</span></code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <em><span class="pre">reserve</span></em> <span class="pre">=</span> <span class="pre">0</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter9auxWriterE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N17FixedBufferWriter9auxWriterE6size_t"></span><span id="_CPPv2N17FixedBufferWriter9auxWriterE6size_t"></span><span id="FixedBufferWriter::auxWriter__s"></span><a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter">FixedBufferWriter</a> <code class="sig-name descname">auxWriter</code><span class="sig-paren">(</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <em>reserve</em> = 0<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17FixedBufferWriter9auxWriterE6size_t" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Create a new instance of <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a> for the remaining output buffer. If
 <em>reserve</em> is non-zero then if possible the capacity of the returned instance is reduced
 by <em>reserve</em> bytes, in effect reserving that amount of space at the end. Note the space will
@@ -1288,14 +1282,14 @@ not be reserved if <em>reserve</em> is larger than the remaining output space.</
 
 <dl class="cpp class">
 <dt id="_CPPv4I_6size_tE17LocalBufferWriter">
-<span id="_CPPv3I_6size_tE17LocalBufferWriter"></span><span id="_CPPv2I_6size_tE17LocalBufferWriter"></span><span class="pre">template&lt;</span><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t"><span class="pre">size_t</span></a> <code class="sig-name descname"><span class="pre">N</span></code><span class="pre">&gt;</span><br /><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">LocalBufferWriter</span></code> <span class="pre">:</span> <em class="property"><span class="pre">public</span></em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a><a class="headerlink" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I_6size_tE17LocalBufferWriter"></span><span id="_CPPv2I_6size_tE17LocalBufferWriter"></span>template&lt;<a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">N</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">LocalBufferWriter</code> : <em class="property">public</em> <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a><a class="headerlink" href="#_CPPv4I_6size_tE17LocalBufferWriter" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This is a convenience class which is a subclass of <a class="reference internal" href="#_CPPv417FixedBufferWriter" title="FixedBufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FixedBufferWriter</span></code></a>. It which creates a
 buffer as a member rather than having an external buffer that is passed to the instance. The
 buffer is <em>N</em> bytes long. This differs from its super class only in the constructor, which
 is only a default constructor.</p>
 <dl class="cpp function">
 <dt id="_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv">
-<span id="_CPPv3N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="_CPPv2N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter"></span><code class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter"><span class="pre">LocalBufferWriter</span></a><code class="sig-prename descclassname"><span class="pre">::</span></code></code><code class="sig-name descname"><span class="pre">LocalBufferWriter</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="_CPPv2N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv"></span><span id="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter"></span><code class="sig-prename descclassname"><a class="reference internal" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="LocalBufferWriter::LocalBufferWriter::LocalBufferWriter">LocalBufferWriter</a><code class="sig-prename descclassname">::</code></code><code class="sig-name descname">LocalBufferWriter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N17LocalBufferWriter17LocalBufferWriter17LocalBufferWriterEv" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Construct an instance with a capacity of <em>N</em>.</p>
 </dd></dl>
 
@@ -1303,7 +1297,7 @@ is only a default constructor.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv47BWFSpec">
-<span id="_CPPv37BWFSpec"></span><span id="_CPPv27BWFSpec"></span><span id="BWFSpec"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">BWFSpec</span></code><a class="headerlink" href="#_CPPv47BWFSpec" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv37BWFSpec"></span><span id="_CPPv27BWFSpec"></span><span id="BWFSpec"></span><em class="property">class </em><code class="sig-name descname">BWFSpec</code><a class="headerlink" href="#_CPPv47BWFSpec" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>This holds a format specifier. It has the parsing logic for a specifier and if the constructor is
 passed a <code class="code docutils literal notranslate"><span class="pre">std::string_view</span></code> of a specifier, that will parse it and loaded into the class
 members. This is useful to specialized implementations of <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">bwformat()</span></code></a>.</p>
@@ -1311,14 +1305,14 @@ members. This is useful to specialized implementations of <a class="reference in
 
 <dl class="cpp function">
 <dt id="_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V">
-<span id="_CPPv3I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span><span id="_CPPv2I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <code class="sig-name descname"><span class="pre">V</span></code><span class="pre">&gt;</span><br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">bwformat</span></code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><span class="pre">BufferWriter</span></a> <span class="pre">&amp;</span><em><span class="pre">w</span></em>, <a class="reference internal" href="#_CPPv47BWFSpec" title="BWFSpec"><span class="pre">BWFSpec</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">spec</span></em>, <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat::V"><span class="pre">V</span></a> <em class="property"><span class="pre">const</span></em> <span class="pre">&amp;</span><em><span class="pre">v</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span><span id="_CPPv2I0E8bwformatR12BufferWriterRK7BWFSpecRK1V"></span>template&lt;typename <code class="sig-name descname">V</code>&gt;<br /><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<code class="sig-name descname">bwformat</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter">BufferWriter</a> &amp;<em>w</em>, <a class="reference internal" href="#_CPPv47BWFSpec" title="BWFSpec">BWFSpec</a> <em class="property">const</em> &amp;<em>spec</em>, <a class="reference internal" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="bwformat::V">V</a> <em class="property">const</em> &amp;<em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8bwformatR12BufferWriterR12BufferWriterRK7BWFSpecRK1V" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A family of overloads that perform formatted output on a <a class="reference internal" href="#_CPPv412BufferWriter" title="BufferWriter"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">BufferWriter</span></code></a>. The set of types
 supported can be extended by defining an overload of this function for the types.</p>
 </dd></dl>
 
 <dl class="cpp function">
 <dt id="_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args">
-<span id="_CPPv3IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span><span id="_CPPv2IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <span class="pre">...</span><code class="sig-name descname"><span class="pre">Args</span></code><span class="pre">&gt;</span><br /><span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">bwprint</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><em><span class="pre">s</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">format</span></em>, <a class="reference internal" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="bwprint::Args"><span class="pre">Args</span></a><span class="pre">&amp;</span><span class="pre">&amp;</span><span class="pre">...</span> <em><span class="pre">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span><span id="_CPPv2IDpE7bwprintRNSt6stringENSt11string_viewEDpRR4Args"></span>template&lt;typename ...<code class="sig-name descname">Args</code>&gt;<br />std::string &amp;<code class="sig-name descname">bwprint</code><span class="sig-paren">(</span>std::string &amp;<em>s</em>, std::string_view <em>format</em>, <a class="reference internal" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="bwprint::Args">Args</a>&amp;&amp;... <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE7bwprintRNSt6stringERNSt6stringENSt11string_viewEDpRR4Args" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Generate formatted output in <em>s</em> based on the <em>format</em> and arguments <em>args</em>. The
 string <em>s</em> is adjusted in size to be the exact length as required by the output. If the
 string already had enough capacity it is not re-allocated, otherwise the resizing will cause
@@ -1327,7 +1321,7 @@ a re-allocation.</p>
 
 <dl class="cpp function">
 <dt id="_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE">
-<span id="_CPPv3IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span><span class="pre">template&lt;</span><span class="pre">typename</span> <span class="pre">...</span><code class="sig-name descname"><span class="pre">Args</span></code><span class="pre">&gt;</span><br /><span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><code class="sig-name descname"><span class="pre">bwprintv</span></code><span class="sig-paren">(</span><span class="pre">std</span><span class="pre">::</span><span class="pre">string</span> <span class="pre">&amp;</span><em><span class="pre">s</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">string_view</span> <em><span class="pre">format</span></em>, <span class="pre">std</span><span class="pre">::</span><span class="pre">tuple</span><span class="pre">&lt;</span><a class="reference internal" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="bwprintv::Args"><span class="pre">Args</span></a><span class="pre">...</span><span class="pre">&gt;</span> <em><span class="pre">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span><span id="_CPPv2IDpE8bwprintvRNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE"></span>template&lt;typename ...<code class="sig-name descname">Args</code>&gt;<br />std::string &amp;<code class="sig-name descname">bwprintv</code><span class="sig-paren">(</span>std::string &amp;<em>s</em>, std::string_view <em>format</em>, std::tuple&lt;<a class="reference internal" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="bwprintv::Args">Args</a>...&gt; <em>args</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpE8bwprintvRNSt6stringERNSt6stringENSt11string_viewENSt5tupleIDp4ArgsEE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Generate formatted output in <em>s</em> based on the <em>format</em> and <em>args</em>, which must be a
 tuple of the arguments to use for the format. The string <em>s</em> is adjusted in size to be the
 exact length as required by the output. If the string already had enough capacity it is not
@@ -1344,29 +1338,29 @@ the formatting independently.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="intrusive-list.en.html" class="btn btn-neutral float-right" title="IntrusiveDList" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="scalar.en.html" class="btn btn-neutral float-left" title="TS.Scalar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="intrusive-list.en.html" class="btn btn-neutral float-right" title="IntrusiveDList" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="scalar.en.html" class="btn btn-neutral float-left" title="TS.Scalar" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2021, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -1374,6 +1368,7 @@ the formatting independently.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
