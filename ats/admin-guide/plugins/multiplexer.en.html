@@ -237,12 +237,19 @@ new requests as well as POST bodies.  Optionally POST and PUT requests can be sk
 <li><p>Changes the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header of the copy according to <code class="docutils literal notranslate"><span class="pre">pparam</span></code> from the remap rule.</p></li>
 <li><p>Changes <code class="docutils literal notranslate"><span class="pre">X-Multiplexer</span></code> header value to <code class="docutils literal notranslate"><span class="pre">copy</span></code> instead of <code class="docutils literal notranslate"><span class="pre">original</span></code>.</p></li>
 <li><p>Asynchronously sends the copied request with <a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnect.en.html#c.TSHttpConnect" title="TSHttpConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnect()</span></code></a>.</p></li>
+<li><p>The copied request with the specified host is then itself processed via <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>.</p></li>
 </ol>
 </li>
 </ol>
 <p>Multiplexer dispatches the requests in the background without blocking the original request. Multiplexed
-responses are drained and discarded. Note that these multiplexed requests are made using
-<a class="reference internal" href="../../developer-guide/api/functions/TSHttpConnect.en.html#c.TSHttpConnect" title="TSHttpConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpConnect()</span></code></a> and are thus HTTP (not HTTPS) connections.</p>
+responses are drained and discarded. Note that you will need <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> entries for the
+multiplexed hosts. If no such rules exist, the plugin will internally receive the typical 404
+response for the multiplexed request since a matching remap entry for the multiplexed host will not
+be found, with the result that no request will be sent to that host. When creating the
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> entries for the multiplexed hosts, be aware that the multiplexed requests will
+be originated with the HTTP scheme (not HTTPS), and therefore the corresponding “from” URL of the
+remap rule should be constructed with the <code class="docutils literal notranslate"><span class="pre">http://</span></code> scheme prefix. See the sample
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> rules below for example Multiplexer entries.</p>
 <p>A default <code class="docutils literal notranslate"><span class="pre">1</span></code> second timeout is configured when communicating with each of the hosts receiving the
 multiplexed requests. This timeout can be overwritten via the <code class="docutils literal notranslate"><span class="pre">multiplexer__timeout</span></code> environment
 variable representing how many nanoseconds to wait.</p>
@@ -260,18 +267,24 @@ printed into the logs.</p>
 </ul>
 <p>Here are some example <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> configuration lines:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/a http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com</span>
+<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//host1.example.com http://host1.example.com</span>
+
 <span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/b http://www.example.com/ @plugin=multiplexer.so @pparam=host2.example.com</span>
-<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/c http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com</span>
+<span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//host2.example.com https://host2.example.com</span>
+
+<span class="n">map</span> <span class="nl">https</span><span class="p">:</span><span class="c1">//www.example.com/c https://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com</span>
 <span class="n">map</span> <span class="nl">http</span><span class="p">:</span><span class="c1">//www.example.com/d http://www.example.com/ @plugin=multiplexer.so @pparam=host1.example.com @pparam=host2.example.com @pparam=proxy.config.multiplexer.skip_post_put=1</span>
 </pre></div>
 </div>
 <ol class="arabic simple">
 <li><p>The first entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/a</span></code>
-to <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code>.</p></li>
+to <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code>. The <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> remap rule specifies that the multiplexed
+requests to <code class="docutils literal notranslate"><span class="pre">host1</span></code> will be sent over HTTP.</p></li>
 <li><p>The second entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/b</span></code>
-to <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>.</p></li>
-<li><p>The third entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/c</span></code>
-to both <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> and <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>.</p></li>
+to <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>. The <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code> remap rule specifies that the multiplexed
+requests to <code class="docutils literal notranslate"><span class="pre">host2</span></code> will be sent over HTTPS.</p></li>
+<li><p>The third entry will multiplex HTTPS requests sent to <code class="docutils literal notranslate"><span class="pre">https://www.example.com</span></code> with a path of
+<code class="docutils literal notranslate"><span class="pre">/c</span></code> to both <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> and <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>.</p></li>
 <li><p>The fourth entry will multiplex requests sent to <code class="docutils literal notranslate"><span class="pre">http://www.example.com</span></code> with a path of <code class="docutils literal notranslate"><span class="pre">/d</span></code>
 to both <code class="docutils literal notranslate"><span class="pre">host1.example.com</span></code> and <code class="docutils literal notranslate"><span class="pre">host2.example.com</span></code>, but POST and PUT requests will
 not be multiplexed.</p></li>

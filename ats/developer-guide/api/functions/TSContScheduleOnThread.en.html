@@ -126,8 +126,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContSchedule.en.html">TSContSchedule</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEvery.en.html">TSContScheduleEvery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">TSContScheduleOnThread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
@@ -182,6 +181,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientRespGet.en.html">TSHttpTxnClientRespGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamIdGet.en.html">TSHttpTxnClientStreamIdGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamPriorityGet.en.html">TSHttpTxnClientStreamPriorityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCntl.en.html">TSHttpTxnCntl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnErrorBodySet.en.html">TSHttpTxnErrorBodySet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIncomingAddrGet.en.html">TSHttpTxnIncomingAddrGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnInfoIntGet.en.html">TSHttpTxnInfoIntGet</a></li>
@@ -328,6 +328,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html#tsvconnreenableex">TSVConnReenableEx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnShutdown.en.html">TSVConnShutdown</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnSslConnectionGet.en.html">TSVConnSslConnectionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslSniGet.en.html">TSVConnSslSniGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnSslVerifyCTXGet.en.html">TSVConnSslVerifyCTXGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnTunnel.en.html">TSVConnTunnel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnWrite.en.html">TSVConnWrite</a></li>
@@ -451,15 +452,24 @@
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>Mostly the same as <a class="reference internal" href="TSContSchedule.en.html#c.TSContSchedule" title="TSContSchedule"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContSchedule()</span></code></a>. Schedules <em>contp</em> on <em>ethread</em>.</p>
+<p>Schedules <em>contp</em> to run <em>timeout</em> milliseconds in the future, on the thread specified by
+<em>ethread</em>. The <em>timeout</em> is an approximation, meaning it will be at least <em>timeout</em>
+milliseconds but possibly more. Resolutions finer than roughly 5 milliseconds will not be effective.
+Note that <em>contp</em> is required to have a mutex, which is provided to <a class="reference internal" href="TSContCreate.en.html#c.TSContCreate" title="TSContCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContCreate()</span></code></a>.</p>
+<p>The return value can be used to cancel the scheduled event via <a class="reference internal" href="TSActionCancel.en.html#c.TSActionCancel" title="TSActionCancel"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionCancel()</span></code></a>. This is
+effective until the continuation <em>contp</em> is being dispatched. However, if it is scheduled on
+another thread this can be problematic to be correctly timed. The return value can be checked with
+<a class="reference internal" href="TSActionDone.en.html#c.TSActionDone" title="TSActionDone"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSActionDone()</span></code></a> to see if the continuation ran before the return, which is possible if
+<em>timeout</em> is <cite>0</cite>.</p>
+<p>If <em>contp</em> has no thread affinity set, the thread it is now scheduled on will be set
+as its thread affinity thread.</p>
 <p>Note that the TSContSchedule() family of API shall only be called from an ATS EThread.
 Calling it from raw non-EThreads can result in unpredictable behavior.</p>
 </div>
 <div class="section" id="see-also">
 <h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="TSContSchedule.en.html"><span class="doc">TSContSchedule</span></a>
-<a class="reference internal" href="TSContScheduleEvery.en.html"><span class="doc">TSContScheduleEvery</span></a>
-<a class="reference internal" href="TSContScheduleOnPool.en.html"><span class="doc">TSContScheduleOnPool</span></a></p>
+<p><a class="reference internal" href="TSContScheduleOnPool.en.html"><span class="doc">TSContScheduleOnPool</span></a>
+<a class="reference internal" href="TSContScheduleEveryOnPool.en.html"><span class="doc">TSContScheduleEveryOnPool</span></a></p>
 </div>
 </div>
 

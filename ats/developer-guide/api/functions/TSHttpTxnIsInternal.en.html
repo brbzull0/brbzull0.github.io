@@ -126,8 +126,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContSchedule.en.html">TSContSchedule</a></li>
-<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEvery.en.html">TSContScheduleEvery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
@@ -182,6 +181,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientRespGet.en.html">TSHttpTxnClientRespGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamIdGet.en.html">TSHttpTxnClientStreamIdGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamPriorityGet.en.html">TSHttpTxnClientStreamPriorityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCntl.en.html">TSHttpTxnCntl</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnErrorBodySet.en.html">TSHttpTxnErrorBodySet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIncomingAddrGet.en.html">TSHttpTxnIncomingAddrGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHttpTxnInfoIntGet.en.html">TSHttpTxnInfoIntGet</a></li>
@@ -328,6 +328,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html#tsvconnreenableex">TSVConnReenableEx</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnShutdown.en.html">TSVConnShutdown</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnSslConnectionGet.en.html">TSVConnSslConnectionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslSniGet.en.html">TSVConnSslSniGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnSslVerifyCTXGet.en.html">TSVConnSslVerifyCTXGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnTunnel.en.html">TSVConnTunnel</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSVConnWrite.en.html">TSVConnWrite</a></li>
@@ -471,10 +472,10 @@ request was internal (<code class="docutils literal notranslate"><span class="pr
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The ESI plugin uses <a class="reference internal" href="#c.TSHttpTxnIsInternal" title="TSHttpTxnIsInternal"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnIsInternal()</span></code></a> to ignore requests that is
 had generated while fetching portions of an ESI document:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>    <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_len</span><span class="p">,</span> <span class="n">TS_HTTP_VALUE_PRIVATE</span><span class="p">,</span> <span class="n">TS_HTTP_LEN_PRIVATE</span><span class="p">))</span> <span class="p">{</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>  <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name_len</span><span class="p">,</span> <span class="n">TS_MIME_FIELD_CACHE_CONTROL</span><span class="p">,</span> <span class="n">TS_MIME_LEN_CACHE_CONTROL</span><span class="p">))</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">Utils</span><span class="o">::</span><span class="n">areEqual</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">value_len</span><span class="p">,</span> <span class="n">TS_HTTP_VALUE_PRIVATE</span><span class="p">,</span> <span class="n">TS_HTTP_LEN_PRIVATE</span><span class="p">))</span> <span class="p">{</span>
       <span class="n">cacheable</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>

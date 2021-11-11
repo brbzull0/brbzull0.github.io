@@ -41,4 +41,5 @@ git add *
 echo back to main folder
 
 cd ..
+git add *
 git commit --message "Update" && git push --force

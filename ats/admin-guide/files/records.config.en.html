@@ -2860,27 +2860,6 @@ number of parents tried is
 transaction, if multiple parents are used.</p>
 </div>
 <dl class="cv">
-<dt class="ts-cv-title" id="proxy-config-http-parent-proxy-connect-attempts-timeout">
-<span id="proxy.config.http.parent_proxy.connect_attempts_timeout"></span><code class="sig-name descname">proxy.config.http.parent_proxy.connect_attempts_timeout</code><a class="headerlink" href="#proxy-config-http-parent-proxy-connect-attempts-timeout" title="Permalink to this definition">¶</a></dt>
-</dl>
-
-<dl class="field-list">
-<dt class="field-odd">Scope</dt>
-<dd class="field-odd">CONFIG</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even">INT</dd>
-<dt class="field-odd">Default</dt>
-<dd class="field-odd">30</dd>
-<dt class="field-even">Reloadable</dt>
-<dd class="field-even">Yes</dd>
-<dt class="field-odd">Overridable</dt>
-<dd class="field-odd">Yes</dd>
-</dl>
-<div class="compound">
-<p class="compound-first">The timeout value (in seconds) for parent cache connection attempts.</p>
-<p class="compound-last">See <a class="reference internal" href="../performance/index.en.html#admin-performance-timeouts"><span class="std std-ref">Timeout Settings</span></a> for more discussion on Traffic Server timeouts.</p>
-</div>
-<dl class="cv">
 <dt class="ts-cv-title" id="proxy-config-http-parent-proxy-mark-down-hostdb">
 <span id="proxy.config.http.parent_proxy.mark_down_hostdb"></span><code class="sig-name descname">proxy.config.http.parent_proxy.mark_down_hostdb</code><a class="headerlink" href="#proxy-config-http-parent-proxy-mark-down-hostdb" title="Permalink to this definition">¶</a></dt>
 </dl>
@@ -3541,13 +3520,9 @@ in turn can starve incoming requests from available connections.</p>
 <div class="compound">
 <p class="compound-first">Set a limit for the number of concurrent connections to an upstream server group. A value of
 <code class="docutils literal notranslate"><span class="pre">0</span></code> disables checking. If a transaction attempts to connect to a group which already has the
-maximum number of concurrent connections the transaction either rechecks after a delay or a 503
+maximum number of concurrent connections a 503
 (<code class="docutils literal notranslate"><span class="pre">HTTP_STATUS_SERVICE_UNAVAILABLE</span></code>) error response is sent to the user agent. To configure</p>
 <dl class="compound-last simple">
-<dt>Number of transactions that can be delayed concurrently</dt><dd><p>See <a class="reference internal" href="#proxy-config-http-per-server-connection-queue-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.queue_size</span></code></a>.</p>
-</dd>
-<dt>How long to delay before rechecking</dt><dd><p>See <a class="reference internal" href="#proxy-config-http-per-server-connection-queue-delay" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.queue_delay</span></code></a>.</p>
-</dd>
 <dt>Upstream server group definition</dt><dd><p>See <a class="reference internal" href="#proxy-config-http-per-server-connection-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.match</span></code></a>.</p>
 </dd>
 <dt>Frequency of alerts</dt><dd><p>See <a class="reference internal" href="#proxy-config-http-per-server-connection-alert-delay" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.per_server.connection.alert_delay</span></code></a>.</p>
@@ -3590,52 +3565,6 @@ address.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This setting is independent of the <a class="reference internal" href="#proxy-config-http-server-session-sharing-match" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">setting</span> <span class="pre">for</span> <span class="pre">upstream</span> <span class="pre">session</span> <span class="pre">sharing</span> <span class="pre">matching</span></code></a>.</p>
-</div>
-<dl class="cv">
-<dt class="ts-cv-title" id="proxy-config-http-per-server-connection-queue-size">
-<span id="proxy.config.http.per_server.connection.queue_size"></span><code class="sig-name descname">proxy.config.http.per_server.connection.queue_size</code><a class="headerlink" href="#proxy-config-http-per-server-connection-queue-size" title="Permalink to this definition">¶</a></dt>
-</dl>
-
-<dl class="field-list">
-<dt class="field-odd">Scope</dt>
-<dd class="field-odd">CONFIG</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even">INT</dd>
-<dt class="field-odd">Default</dt>
-<dd class="field-odd">0</dd>
-<dt class="field-even">Reloadable</dt>
-<dd class="field-even">Yes</dd>
-</dl>
-<div class="compound">
-<p class="compound-first">Controls the number of transactions that can be waiting on an upstream server group.</p>
-<dl class="compound-last simple">
-<dt><code class="docutils literal notranslate"><span class="pre">-1</span></code></dt><dd><p>Unlimited.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">0</span></code></dt><dd><p>Never wait. If the connection maximum has been reached immediately respond with an error.</p>
-</dd>
-<dt>A positive number</dt><dd><p>If there are less than this many waiting transactions, delay this transaction and try again. Otherwise respond immediately with an error.</p>
-</dd>
-</dl>
-</div>
-<dl class="cv">
-<dt class="ts-cv-title" id="proxy-config-http-per-server-connection-queue-delay">
-<span id="proxy.config.http.per_server.connection.queue_delay"></span><code class="sig-name descname">proxy.config.http.per_server.connection.queue_delay</code><a class="headerlink" href="#proxy-config-http-per-server-connection-queue-delay" title="Permalink to this definition">¶</a></dt>
-</dl>
-
-<dl class="field-list">
-<dt class="field-odd">Scope</dt>
-<dd class="field-odd">CONFIG</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even">INT</dd>
-<dt class="field-odd">Default</dt>
-<dd class="field-odd">100</dd>
-<dt class="field-even">Units</dt>
-<dd class="field-even">milliseconds</dd>
-<dt class="field-odd">Reloadable</dt>
-<dd class="field-odd">Yes</dd>
-</dl>
-<div class="compound">
-<p>If a transaction is delayed due to too many connections in an upstream server group, delay this amount of time before checking again.</p>
 </div>
 <dl class="cv">
 <dt class="ts-cv-title" id="proxy-config-http-per-server-connection-alert-delay">
@@ -3723,28 +3652,6 @@ has round-robin DNS entries.</p>
 <div class="compound">
 <p class="compound-first">The timeout value (in seconds) for time to set up a connection to the origin. After the connection is established the value of
 <code class="docutils literal notranslate"><span class="pre">proxy.config.http.transaction_no_activity_timeout_out</span></code> is used to established timeouts on the data over the connection.</p>
-<p class="compound-last">See <a class="reference internal" href="../performance/index.en.html#admin-performance-timeouts"><span class="std std-ref">Timeout Settings</span></a> for more discussion on Traffic Server timeouts.</p>
-</div>
-<dl class="cv">
-<dt class="ts-cv-title" id="proxy-config-http-post-connect-attempts-timeout">
-<span id="proxy.config.http.post_connect_attempts_timeout"></span><code class="sig-name descname">proxy.config.http.post_connect_attempts_timeout</code><a class="headerlink" href="#proxy-config-http-post-connect-attempts-timeout" title="Permalink to this definition">¶</a></dt>
-</dl>
-
-<dl class="field-list">
-<dt class="field-odd">Scope</dt>
-<dd class="field-odd">CONFIG</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even">INT</dd>
-<dt class="field-odd">Default</dt>
-<dd class="field-odd">1800</dd>
-<dt class="field-even">Reloadable</dt>
-<dd class="field-even">Yes</dd>
-<dt class="field-odd">Overridable</dt>
-<dd class="field-odd">Yes</dd>
-</dl>
-<div class="compound">
-<p class="compound-first">The timeout value (in seconds) for an origin server connection when the client request is a <code class="docutils literal notranslate"><span class="pre">POST</span></code> or <code class="docutils literal notranslate"><span class="pre">PUT</span></code>
-request.</p>
 <p class="compound-last">See <a class="reference internal" href="../performance/index.en.html#admin-performance-timeouts"><span class="std std-ref">Timeout Settings</span></a> for more discussion on Traffic Server timeouts.</p>
 </div>
 <dl class="cv">
@@ -8965,6 +8872,30 @@ capabilities enabled.</p>
 handshake.</p>
 <p class="compound-last">See <a class="reference internal" href="../performance/index.en.html#admin-performance-timeouts"><span class="std std-ref">Timeout Settings</span></a> for more discussion on Traffic Server timeouts.</p>
 </div>
+<dl class="cv">
+<dt class="ts-cv-title" id="proxy-config-ssl-keylog-file">
+<span id="proxy.config.ssl.keylog_file"></span><code class="sig-name descname">proxy.config.ssl.keylog_file</code><a class="headerlink" href="#proxy-config-ssl-keylog-file" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Scope</dt>
+<dd class="field-odd">CONFIG</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">STRING</dd>
+<dt class="field-odd">Default</dt>
+<dd class="field-odd">NULL</dd>
+<dt class="field-even">Reloadable</dt>
+<dd class="field-even">Yes</dd>
+</dl>
+<div class="compound">
+<p class="compound-first">If configured, TLS session keys for TLS connections will be logged to the
+specified file. This file is formatted in such a way that it can be
+conveniently imported into tools such as Wireshark to decrypt packet
+captures.  This should only be used for debugging purposes since the data in
+the keylog file can be used to decrypt the otherwise encrypted traffic. A
+NULL value for this disables the feature.</p>
+<p class="compound-last">This feature is disabled by default.</p>
+</div>
 <div class="section" id="client-related-configuration">
 <h3>Client-Related Configuration<a class="headerlink" href="#client-related-configuration" title="Permalink to this headline">¶</a></h3>
 <dl class="cv">
@@ -8978,7 +8909,7 @@ handshake.</p>
 <dt class="field-even">Type</dt>
 <dd class="field-even">STRING</dd>
 <dt class="field-odd">Default</dt>
-<dd class="field-odd">PERMISSIVE</dd>
+<dd class="field-odd">ENFORCED</dd>
 <dt class="field-even">Reloadable</dt>
 <dd class="field-even">Yes</dd>
 <dt class="field-odd">Overridable</dt>
@@ -10243,25 +10174,6 @@ If specified, TLS session data will be stored to the file, and will be used
 for resuming a session.</p>
 </div>
 <dl class="cv">
-<dt class="ts-cv-title" id="proxy-config-quic-client-keylog-file">
-<span id="proxy.config.quic.client.keylog_file"></span><code class="sig-name descname">proxy.config.quic.client.keylog_file</code><a class="headerlink" href="#proxy-config-quic-client-keylog-file" title="Permalink to this definition">¶</a></dt>
-</dl>
-
-<dl class="field-list">
-<dt class="field-odd">Scope</dt>
-<dd class="field-odd">CONFIG</dd>
-<dt class="field-even">Type</dt>
-<dd class="field-even">STRING</dd>
-<dt class="field-odd">Default</dt>
-<dd class="field-odd">“”</dd>
-<dt class="field-even">Reloadable</dt>
-<dd class="field-even">Yes</dd>
-</dl>
-<div class="compound">
-<p>Only available for <strong class="program">traffic_quic</strong>.
-If specified, key information will be stored to the file.</p>
-</div>
-<dl class="cv">
 <dt class="ts-cv-title" id="proxy-config-quic-no-activity-timeout-in">
 <span id="proxy.config.quic.no_activity_timeout_in"></span><code class="sig-name descname">proxy.config.quic.no_activity_timeout_in</code><a class="headerlink" href="#proxy-config-quic-no-activity-timeout-in" title="Permalink to this definition">¶</a></dt>
 </dl>
@@ -11254,6 +11166,7 @@ specified in a space separated list in /proc/sys/net/ipv4/tcp_allowed_congestion
 <span class="n">TCP_FASTOPEN</span> <span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">PACKET_MARK</span> <span class="p">(</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">PACKET_TOS</span> <span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">TCP_NOTSENT_LOWAT</span> <span class="p">(</span><span class="mi">64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -11328,6 +11241,7 @@ the origin server.</p>
 <span class="n">TCP_FASTOPEN</span> <span class="p">(</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">PACKET_MARK</span> <span class="p">(</span><span class="mi">16</span><span class="p">)</span>
 <span class="n">PACKET_TOS</span> <span class="p">(</span><span class="mi">32</span><span class="p">)</span>
+<span class="n">TCP_NOTSENT_LOWAT</span> <span class="p">(</span><span class="mi">64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -11449,6 +11363,24 @@ the <code class="docutils literal notranslate"><span class="pre">net.ipv4.tcp_fa
 <p class="admonition-title">See also</p>
 <p><a class="reference external" href="https://cwiki.apache.org/confluence/display/TS/Traffic+Shaping">Traffic Shaping</a></p>
 </div>
+</div>
+<dl class="cv">
+<dt class="ts-cv-title" id="proxy-config-net-sock-notsent-lowat">
+<span id="proxy.config.net.sock_notsent_lowat"></span><code class="sig-name descname">proxy.config.net.sock_notsent_lowat</code><a class="headerlink" href="#proxy-config-net-sock-notsent-lowat" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Scope</dt>
+<dd class="field-odd">CONFIG</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">INT</dd>
+<dt class="field-odd">Default</dt>
+<dd class="field-odd">16384</dd>
+<dt class="field-even">Overridable</dt>
+<dd class="field-even">Yes</dd>
+</dl>
+<div class="compound">
+<p>Set socket option TCP_NOTSENT_LOWAT to specified value for a connection</p>
 </div>
 <dl class="cv">
 <dt class="ts-cv-title" id="proxy-config-net-poll-timeout">

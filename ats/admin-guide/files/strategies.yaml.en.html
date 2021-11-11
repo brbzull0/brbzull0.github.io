@@ -332,10 +332,9 @@ When using <strong>references</strong>, the complete <strong>YAML</strong> docum
 <p>The <strong>strategies</strong> namespace defines a <strong>YAML</strong> list of strategies that may be applied to a <strong>remap</strong>
 entry using the <strong>&#64;strategy</strong> tag in remap.config.</p>
 <p>Each <strong>strategy</strong> in the list may using the following parameters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="o">**</span><span class="n">strategy</span><span class="o">**</span><span class="p">:</span> <span class="n">The</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">the</span> <span class="n">name</span> <span class="n">of</span> <span class="n">the</span> <span class="n">strategy</span><span class="o">.</span>
-<span class="o">-</span> <span class="o">**</span><span class="n">policy</span><span class="o">**</span><span class="p">:</span> <span class="n">The</span> <span class="n">algorithm</span> <span class="n">the</span> <span class="o">**</span><span class="n">strategy</span><span class="o">**</span> <span class="n">uses</span> <span class="n">to</span> <span class="n">select</span> <span class="n">hosts</span><span class="o">.</span> <span class="n">Currently</span> <span class="n">one</span> <span class="n">of</span> <span class="n">the</span> <span class="n">following</span><span class="p">:</span>
-</pre></div>
-</div>
+<ul>
+<li><p><strong>strategy</strong>: The value is the name of the strategy.</p></li>
+<li><p><strong>policy</strong>: The algorithm the <strong>strategy</strong> uses to select hosts. Currently one of the following:</p>
 <blockquote>
 <div><ol class="arabic simple">
 <li><p><strong>rr_ip</strong>: round robin selection using the modulus of the client IP</p></li>
@@ -345,7 +344,7 @@ entry using the <strong>&#64;strategy</strong> tag in remap.config.</p>
 <li><p><strong>consistent_hash</strong>: hosts are selected using a <strong>hash_key</strong>.</p></li>
 </ol>
 </div></blockquote>
-<ul>
+</li>
 <li><p><strong>hash_key</strong>: The hashing key used by the <strong>consistent_hash</strong> policy. If not specified, defaults to <strong>path</strong> which is the
 same policy used in the <strong>parent.config</strong> implementation. Use one of:</p>
 <blockquote>
@@ -359,14 +358,14 @@ same policy used in the <strong>parent.config</strong> implementation. Use one o
 </ol>
 </div></blockquote>
 </li>
-<li><p><strong>go_direct</strong> - A boolean value indicating whether a transaction may bypass proxies and go direct to the origin. Defaults to <strong>true</strong></p></li>
+<li><p><strong>go_direct</strong>: A boolean value indicating whether a transaction may bypass proxies and go direct to the origin. Defaults to <strong>true</strong></p></li>
 <li><p><strong>parent_is_proxy</strong>: A boolean value which indicates if the groups of hosts are proxy caches or origins.  <strong>true</strong> (default) means all the hosts used in the remap are Traffic Server caches.  <strong>false</strong> means the hosts are origins that the next hop strategies may use for load balancing and/or failover.</p></li>
-<li><p><strong>cache_peer_result</strong> - A boolean value that is only used when the <strong>policy</strong> is ‘consistent_hash’ and a <strong>peering_ring</strong> mode is used for the strategy. When set to true, the default, all responses from upstream and peer endpoints are allowed to be cached.  Setting this to false will disable caching responses received from a peer host. Only responses from upstream origins or parents will be cached for this strategy.</p></li>
-<li><p><strong>scheme</strong> Indicates which scheme the strategy supports, <em>http</em> or <em>https</em>
-- <strong>failover</strong>: A map of <strong>failover</strong> information.
-- <strong>max_simple_retries</strong>: Part of the <strong>failover</strong> map and is an integer value of the maximum number of retries for a <strong>simple retry</strong> on the list of indicated response codes.  <strong>simple retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the response codes configured for this strategy in the <strong>failover</strong> map.  If no failover response codes are configured, no <strong>simple retry</strong> is attempted.
-- <strong>max_unavailable_retries Part of the **failover</strong> map and is an integer value of the maximum number of retries for a <strong>unavailable retry</strong> on the list of indicated markdown response codes.  <strong>unavailable retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the markdown response codes configured for this strategy in the <strong>failover</strong> map.  If no failover markdown response codes are configured, no <strong>unavailable retry</strong> is attempted.  <strong>unavailable retry</strong> differs from <strong>simple retry</strong> in that if a failover for retry is done, the previously retried server is marked down for rety.</p>
+<li><p><strong>cache_peer_result</strong>: A boolean value that is only used when the <strong>policy</strong> is ‘consistent_hash’ and a <strong>peering_ring</strong> mode is used for the strategy. When set to true, the default, all responses from upstream and peer endpoints are allowed to be cached.  Setting this to false will disable caching responses received from a peer host. Only responses from upstream origins or parents will be cached for this strategy.</p></li>
+<li><p><strong>scheme</strong>: Indicates which scheme the strategy supports, <em>http</em> or <em>https</em></p></li>
+<li><p><strong>failover</strong>: A map of <strong>failover</strong> information.</p>
 <ul class="simple">
+<li><p><strong>max_simple_retries</strong>: Part of the <strong>failover</strong> map and is an integer value of the maximum number of retries for a <strong>simple retry</strong> on the list of indicated response codes.  <strong>simple retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the response codes configured for this strategy in the <strong>failover</strong> map.  If no failover response codes are configured, no <strong>simple retry</strong> is attempted.</p></li>
+<li><p><strong>max_unavailable_retries</strong>: Part of the <strong>failover</strong> map and is an integer value of the maximum number of retries for a <strong>unavailable retry</strong> on the list of indicated markdown response codes.  <strong>unavailable retry</strong> is used to retry an upstream request using another upstream server if the response received on from the original upstream request matches any of the markdown response codes configured for this strategy in the <strong>failover</strong> map.  If no failover markdown response codes are configured, no <strong>unavailable retry</strong> is attempted.  <strong>unavailable retry</strong> differs from <strong>simple retry</strong> in that if a failover for retry is done, the previously retried server is marked down for rety.</p></li>
 <li><p><strong>ring_mode</strong>: Part of the <strong>failover</strong> map. The host ring selection mode.  Use either <strong>exhaust_ring</strong>,  <strong>alternate_ring</strong> or <strong>peering_ring</strong></p></li>
 </ul>
 <blockquote>
@@ -404,7 +403,7 @@ with a DNS lookup.)</p></li>
     <span class="n">groups</span><span class="p">:</span>
       <span class="o">-</span> <span class="o">*</span><span class="n">g1</span>
       <span class="o">-</span> <span class="o">*</span><span class="n">g2</span>
-    <span class="n">scheme</span> <span class="n">http</span>
+    <span class="n">scheme</span><span class="p">:</span> <span class="n">http</span>
     <span class="n">failover</span><span class="p">:</span>
       <span class="n">ring_mode</span><span class="p">:</span> <span class="n">exhaust_ring</span>
       <span class="n">response_codes</span><span class="p">:</span>
@@ -420,7 +419,7 @@ with a DNS lookup.)</p></li>
     <span class="n">groups</span><span class="p">:</span>
       <span class="o">-</span> <span class="o">*</span><span class="n">g1</span>
       <span class="o">-</span> <span class="o">*</span><span class="n">g2</span>
-    <span class="n">scheme</span> <span class="n">http</span>
+    <span class="n">scheme</span><span class="p">:</span> <span class="n">http</span>
     <span class="n">failover</span><span class="p">:</span>
       <span class="n">ring_mode</span><span class="p">:</span> <span class="n">exhaust_ring</span>
       <span class="n">response_codes</span><span class="p">:</span>
