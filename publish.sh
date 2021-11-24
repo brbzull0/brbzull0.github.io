@@ -1,10 +1,10 @@
 #!/usr/bin/bash
 TS_SRCDIR=/home/dmeden/work/git/trafficserver/doc
 TS2_SRCDIR=/home/dmeden/work/git/trafficserver.papi/doc
-TXNB_SRCDIR=/home/dmeden/work/git/txn_box/doc
+#TXNB_SRCDIR=/home/dmeden/work/git/txn_box/doc
 TS_PUBDIR=${PUBDIR:-"ats"}
 TS2_PUBDIR=${PUBDIR:-"ats_plugin_api"}
-TXNB_PUBDIR=${PUBDIR:-"txn_box"}
+#TXNB_PUBDIR=${PUBDIR:-"txn_box"}
 
 if [ -z "${TS_SRCDIR}" ] ; then SRCDIR="$PWD"; fi
 
@@ -26,22 +26,22 @@ cp -r ${TS_SRCDIR}/docbuild/html/* .
 cp -r ${TS_SRCDIR}/docbuild/html/.buildinfo .
 
 # TXN BOX
-echo back to main folder
-cd ..
+#echo back to main folder
+#cd ..
 
-if cd ${TXNB_PUBDIR} ; then
-  echo Copying from ${TXN_SRCDIR}/docbuild/html
-else
-  echo Publish respository \'${TXNB_PUBDIR}\' not found.
-  exit 1
-fi
+#if cd ${TXNB_PUBDIR} ; then
+#  echo Copying from ${TXN_SRCDIR}/docbuild/html
+#else
+#  echo Publish respository \'${TXNB_PUBDIR}\' not found.
+#  exit 1
+#fi
 
 
 
-rm -rf *
-cp -r ${TXNB_SRCDIR}/docbuild/html/* .
+#rm -rf *
+#cp -r ${TXNB_SRCDIR}/docbuild/html/* .
 #cp -r ${TS_SRCDIR}/docbuild/html/.nojekyll ats/
-cp -r ${TXNB_SRCDIR}/docbuild/html/.buildinfo .
+#cp -r ${TXNB_SRCDIR}/docbuild/html/.buildinfo .
 
 # ATS2
 echo back to main folder
