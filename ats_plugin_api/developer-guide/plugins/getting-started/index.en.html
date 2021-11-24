@@ -1,0 +1,500 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting Started &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="A Simple Plugin" href="a-simple-plugin.en.html" />
+    <link rel="prev" title="Plugin Development Introduction" href="../introduction.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="a-simple-plugin.en.html">A Simple Plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plugin-registration-and-version-checking.en.html">Plugin Registration and Version Checking</a></li>
+<li class="toctree-l4"><a class="reference internal" href="naming-conventions.en.html">Naming Conventions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#understanding-traffic-server-plugins">Understanding Traffic Server Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>Getting Started</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/plugins/getting-started/index.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-started">
+<span id="developer-plugins-getting-started"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="a-simple-plugin.en.html">A Simple Plugin</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="a-simple-plugin.en.html#compile-your-plugin">Compile Your Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a-simple-plugin.en.html#update-the-plugin-configuration-file">Update the plugin configuration file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a-simple-plugin.en.html#specify-the-plugin-s-location">Specify the Plugin’s Location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="a-simple-plugin.en.html#restart-traffic-server">Restart Traffic Server</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plugin-registration-and-version-checking.en.html">Plugin Registration and Version Checking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="naming-conventions.en.html">Naming Conventions</a></li>
+</ul>
+</div>
+<p>The Traffic Server API enables you to create plugins, using the C
+programming language, that customize the behavior of your Traffic Server
+installation. This chapter contains the following sections:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#understanding-traffic-server-plugins">Understanding Traffic Server Plugins</a> – a brief introduction to plugins.</p></li>
+<li><p><a class="reference internal" href="a-simple-plugin.en.html#developer-plugins-getting-started-simple-plugin"><span class="std std-ref">A Simple Plugin</span></a> – walks through
+compiling and loading an example <code class="docutils literal notranslate"><span class="pre">hello</span> <span class="pre">world</span></code> plugin.</p></li>
+<li><p><a class="reference internal" href="plugin-registration-and-version-checking.en.html#developer-plugins-getting-started-registration"><span class="std std-ref">Plugin Registration and Version Checking</span></a> – shows
+you how to register your plugin and make sure it’s compatible with the
+version of Traffic Server you’re using.</p></li>
+<li><p><a class="reference internal" href="naming-conventions.en.html#developer-plugins-getting-started-naming"><span class="std std-ref">Naming Conventions</span></a> – outlines Traffic
+Server API naming conventions. For guidelines on creating plugin
+source code, see <a class="reference internal" href="../introduction.en.html#developer-plugins-introduction"><span class="std std-ref">Plugin Development Introduction</span></a>.</p></li>
+</ul>
+<div class="section" id="understanding-traffic-server-plugins">
+<h2>Understanding Traffic Server Plugins<a class="headerlink" href="#understanding-traffic-server-plugins" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server enables sophisticated caching and processing of
+web-related traffic, such as DNS and HTTP requests and responses.</p>
+<p>Traffic Server itself consists of an event-driven loop that can be
+simplified as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+   <span class="n">event</span> <span class="o">=</span> <span class="n">get_next_event</span><span class="p">();</span>
+   <span class="n">handle_event</span> <span class="p">(</span><span class="n">event</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="the-role-of-plugins">
+<h3>The Role of Plugins<a class="headerlink" href="#the-role-of-plugins" title="Permalink to this headline">¶</a></h3>
+<p>You compile your plugin source code to create a shared library that
+Traffic Server loads when it is started. Your plugin contains callback
+functions that are registered for specific Traffic Server events. When
+Traffic Server needs to process an event, it invokes any and all
+call-back functions you’ve registered for that event type.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Since plugins add object code to Traffic Server, programming errors in a
+plugin can have serious implications. Bugs in your plugin, such as an
+out-of-range pointer, can cause Traffic Server processes to crash and
+may ultimately result in unpredictable behavior.</p>
+</div>
+<p><strong>Plugin Process</strong></p>
+<div class="figure align-center" id="id1">
+<span id="pluginprocess"></span><img alt="Plugin Process" src="../../../_images/plugin_process.jpg" />
+<p class="caption"><span class="caption-text">Plugin Process</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="possible-uses-for-plugins">
+<h3>Possible Uses for Plugins<a class="headerlink" href="#possible-uses-for-plugins" title="Permalink to this headline">¶</a></h3>
+<p>Possible uses for plugins include the following:</p>
+<ul class="simple">
+<li><p>HTTP processing: plugins can filter, deny access, authorize users,
+transform content</p></li>
+<li><p>Protocol support: plugins can enable Traffic Server to proxy-cache
+new protocol content</p></li>
+</ul>
+<p>Some examples of plugins include:</p>
+<ul class="simple">
+<li><p><strong>Denylisting plugin</strong>: denies attempts to access web sites that are
+off-limits.</p></li>
+<li><p><strong>Append transform plugin</strong>: adds text to HTTP response content.</p></li>
+<li><p><strong>Image conversion plugin</strong>: transforms JPEG images to GIF images.</p></li>
+<li><p><strong>Compression plugin</strong>: sends response content to a compression
+server that compresses the data (alternatively, a compression library
+local to the Traffic Server host machine could do the compression).</p></li>
+<li><p><strong>Authorization plugin</strong>: checks a user’s permissions to access
+particular web sites. The plugin could consult a local authorization
+program or send queries to an authorization server.</p></li>
+<li><p><strong>A plugin that gathers client information</strong> from request headers and
+enters this information in a database.</p></li>
+<li><p><strong>Protocol plugin</strong>: listens for specific protocol requests on a
+designated port and then uses Traffic Server’s proxy server &amp; cache
+to serve client requests.</p></li>
+</ul>
+<p>The figure below, <a class="reference internal" href="#possibletsplugins"><span class="std std-ref">Possible Traffic Server Plugins</span></a>, illustrates several types of plugins.</p>
+<p><strong>Possible Traffic Server Plugins</strong></p>
+<div class="figure align-center" id="id2">
+<span id="possibletsplugins"></span><img alt="Possible Traffic Server Plugins" src="../../../_images/Uses.jpg" />
+<p class="caption"><span class="caption-text">Possible Traffic Server Plugins</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+<p>You can find basic examples for many plugins in the SDK sample code:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">append_transform.c</span></code> adds text from a specified file to HTTP/text
+responses. This plugin is explained in
+<a class="reference internal" href="../http-transformations/append-transform-plugin.en.html#developer-plugins-http-transformations-append"><span class="std std-ref">Append Transform Plugin</span></a></p></li>
+<li><p>The compression plugin in the figure communicates with the server
+that actually does the compression. The <code class="docutils literal notranslate"><span class="pre">server-transform.c</span></code> plugin
+shows how to open a connection to a transformation server, have the
+server do the transformation, and send transformed data back to the
+client. Although the transformation is null in
+<code class="docutils literal notranslate"><span class="pre">server-transform.c</span></code>, a compression or image translation plugin
+could be implemented in a similar way.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">basic_auth.c</span></code> performs basic HTTP proxy authorization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">denylist_1.c</span></code> reads a list of servers from a configuration file
+and denies client access to these servers. This plugin is explained
+in <a class="reference internal" href="../example-plugins/denylist/index.en.html#developer-plugins-examples-denylist"><span class="std std-ref">Denylist Plugin</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="plugin-loading">
+<h3>Plugin Loading<a class="headerlink" href="#plugin-loading" title="Permalink to this headline">¶</a></h3>
+<p>When Traffic Server is first started, it consults the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>
+file to determine the names of all shared plugin libraries that need to
+be loaded. The <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file also defines arguments that are to
+be passed to each plugin’s initialization function, <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code>.
+The <a class="reference internal" href="../../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> file defines the path to each plugin shared
+library, as described in <a class="reference internal" href="a-simple-plugin.en.html#specify-the-plugins-location"><span class="std std-ref">Specify the Plugin’s Location</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The path for each of these files is <em>&lt;root_dir&gt;</em><code class="docutils literal notranslate"><span class="pre">/config/</span></code>, where <em>&lt;root_dir&gt;</em> is where you installed Traffic Server.</p>
+</div>
+</div>
+<div class="section" id="plugin-configuration">
+<h3>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The sample <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file below contains a comment line, a blank
+line, and two plugin configurations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># This is a comment line.
+
+my-plugin.so junk.example.com trash.example.org garbage.example.edu
+some-plugin.so arg1 arg2 $proxy.config.http.cache.on
+</pre></div>
+</div>
+<p>Each plugin configuration in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file resembles a UNIX
+or DOS shell command; each line in <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> cannot exceed 1023
+characters.</p>
+<p>The first plugin configuration is for a plugin named <code class="docutils literal notranslate"><span class="pre">my-plugin.so</span></code>.
+It contains three arguments that are to be passed to that plugin’s
+initialization routine. The second configuration is for a plugin named
+<code class="docutils literal notranslate"><span class="pre">some-plugin.so</span></code>; it contains three arguments. The last argument,
+<em>``$proxy.config.http.cache.on``</em>, is actually a configuration variable.
+Traffic Server will look up the specified configuration variable and
+substitute its value.</p>
+<p>Plugins with global variables should not appear more than once in
+<code class="docutils literal notranslate"><span class="pre">plugin.config</span></code>. For example, if you enter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_header</span><span class="o">.</span><span class="n">so</span> <span class="n">header1</span>
+<span class="n">add_header</span><span class="o">.</span><span class="n">so</span> <span class="n">header2</span>
+</pre></div>
+</div>
+<p>then the second global variable, <code class="docutils literal notranslate"><span class="pre">header2</span></code>, will be used for both
+instances. A simple workaround is to give different names to different
+instances of the same plugin. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="n">add_header</span><span class="o">.</span><span class="n">so</span> <span class="n">add_header1</span><span class="o">.</span><span class="n">so</span>
+<span class="n">cp</span> <span class="n">add_header</span><span class="o">.</span><span class="n">so</span> <span class="n">add_header2</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>These entries will produce the desired result below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add_header1</span><span class="o">.</span><span class="n">so</span> <span class="n">header1</span>
+<span class="n">add_header2</span><span class="o">.</span><span class="n">so</span> <span class="n">header2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-file-rules">
+<h3>Configuration File Rules<a class="headerlink" href="#configuration-file-rules" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Comment lines begin with <strong>#</strong> and continue to the end of the line.</p></li>
+<li><p>Blank lines are ignored.</p></li>
+<li><p>Plugins are loaded and initialized by Traffic Server in the order
+they appear in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file.</p></li>
+</ul>
+</div>
+<div class="section" id="plugin-initialization">
+<h3>Plugin Initialization<a class="headerlink" href="#plugin-initialization" title="Permalink to this headline">¶</a></h3>
+<p>Each plugin must define an initialization function named
+<code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> that Traffic Server invokes when the plugin is loaded.
+The <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> function is commonly used to read configuration
+information and register hooks for event notification.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code> function has two arguments:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">argc</span></code> argument represents the number of arguments defined in
+the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that particular plugin</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">argv</span></code> argument is an array of pointers to the actual arguments
+defined in the <code class="docutils literal notranslate"><span class="pre">plugin.config</span></code> file for that plugin</p></li>
+</ul>
+<p>See <a class="reference internal" href="../../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a> for details about <code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="a-simple-plugin.en.html" class="btn btn-neutral float-right" title="A Simple Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../introduction.en.html" class="btn btn-neutral float-left" title="Plugin Development Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

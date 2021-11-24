@@ -1,0 +1,400 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hooks and Transactions &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Adding Hooks" href="adding-hooks.en.html" />
+    <link rel="prev" title="Hosts Lookup API" href="../actions/hosts-lookup-api.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../actions/index.en.html">Actions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Hooks and Transactions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="adding-hooks.en.html">Adding Hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http-sessions.en.html">HTTP Sessions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http-transactions.en.html">HTTP Transactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="intercepting-http-transactions.en.html">Intercepting HTTP Transactions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="initiate-http-connection.en.html">Initiate HTTP Connection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http-alternate-selection.en.html">HTTP Alternate Selection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl-hooks.en.html">TLS User Agent Hooks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl-session-api.en.html">TLS Session Plugin API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl-session-api.en.html#utility-functions">Utility Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl-session-api.en.html#example-use-case">Example Use Case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hooks">Hooks</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>Hooks and Transactions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/plugins/hooks-and-transactions/index.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hooks-and-transactions">
+<span id="developer-plugins-hooks-and-transactions"></span><h1>Hooks and Transactions<a class="headerlink" href="#hooks-and-transactions" title="Permalink to this headline">¶</a></h1>
+<p>Hooks are points in Traffic Server transaction processing where plugins
+can step in and do some work. Registering a plugin function for callback
+amounts to “adding” the function to a hook. You can register your plugin
+to be called back for every single transaction or only for specific
+transactions.</p>
+<p>This chapter contains the following sections:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="adding-hooks.en.html">Adding Hooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="http-sessions.en.html">HTTP Sessions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="http-transactions.en.html">HTTP Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="intercepting-http-transactions.en.html">Intercepting HTTP Transactions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="initiate-http-connection.en.html">Initiate HTTP Connection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="http-alternate-selection.en.html">HTTP Alternate Selection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssl-hooks.en.html">TLS User Agent Hooks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#tls-hooks">TLS Hooks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-vconn-start-hook">TS_VCONN_START_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-vconn-close-hook">TS_VCONN_CLOSE_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-ssl-client-hello-hook">TS_SSL_CLIENT_HELLO_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-ssl-servername-hook">TS_SSL_SERVERNAME_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-ssl-cert-hook">TS_SSL_CERT_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-ssl-verify-client-hook">TS_SSL_VERIFY_CLIENT_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-ssl-verify-server-hook">TS_SSL_VERIFY_SERVER_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-vconn-outbound-start-hook">TS_VCONN_OUTBOUND_START_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#ts-vconn-outbound-close-hook">TS_VCONN_OUTBOUND_CLOSE_HOOK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#tls-inbound-hook-state-diagram">TLS Inbound Hook State Diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ssl-hooks.en.html#tls-outbound-hook-state-diagram">TLS Outbound Hook State Diagram</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ssl-session-api.en.html">TLS Session Plugin API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssl-session-api.en.html#utility-functions">Utility Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ssl-session-api.en.html#example-use-case">Example Use Case</a></li>
+</ul>
+</div>
+<div class="section" id="hooks">
+<span id="developer-plugins-hooks"></span><h2>Hooks<a class="headerlink" href="#hooks" title="Permalink to this headline">¶</a></h2>
+<p>To understand hooks and transactions, you should be familiar with the
+following terminology:</p>
+<div class="section" id="http-transaction">
+<h3>HTTP Transaction<a class="headerlink" href="#http-transaction" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>transaction</strong> consists of a single HTTP request from a client and
+the response Traffic Server sends to that client. Thus, a transaction
+begins when Traffic Server receives a request and ends when Traffic
+Server sends the response.</p>
+<p>Traffic Server uses <strong>HTTP state machines</strong> to process transactions. The
+state machines follow a complex set of states involved in sophisticated
+caching and document retrieval (taking into account, for example,
+alternate selection, freshness criteria, and hierarchical caching). The
+Traffic Server API provides hooks to a subset of these states, as
+illustrated in the <a class="reference internal" href="#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a> below.</p>
+</div>
+<div class="section" id="transform-hooks">
+<h3>Transform Hooks<a class="headerlink" href="#transform-hooks" title="Permalink to this headline">¶</a></h3>
+<p>The two <strong>transform hooks</strong>, <code class="docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code> and
+<code class="docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code>, are called in the course of an HTTP
+transform. To see where in the HTTP transaction they are called, look
+for the “set up transform” ovals in the <a class="reference internal" href="#http-txn-state-diagram"><span class="std std-ref">HTTP Transaction State Diagram</span></a> below.</p>
+</div>
+<div class="section" id="http-session">
+<h3>HTTP Session<a class="headerlink" href="#http-session" title="Permalink to this headline">¶</a></h3>
+<p>A <strong>session</strong> consists of a single client connection to Traffic Server;
+it may consist of a single transaction or several transactions in
+succession. The session starts when the client connection opens and ends
+when the connection closes.</p>
+</div>
+<div class="section" id="http-transaction-state-diagram">
+<span id="http-txn-state-diagram"></span><h3>HTTP Transaction State Diagram<a class="headerlink" href="#http-transaction-state-diagram" title="Permalink to this headline">¶</a></h3>
+<div class="graphviz"><img src="../../../_images/graphviz-c2983f5161c10069bc6b94f354d4c5d81be4892a.png" alt="HTTP Transaction State Diagram" class="graphviz" /></div>
+</div>
+<div class="section" id="http-transaction-timers">
+<h3>HTTP Transaction Timers<a class="headerlink" href="#http-transaction-timers" title="Permalink to this headline">¶</a></h3>
+<p>For an overview of HTTP transaction timers, refer to the transaction timer diagram
+below.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="trafficserver-timers.en.html">Transaction Timers: Trafficserver Timers at different states</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="adding-hooks.en.html" class="btn btn-neutral float-right" title="Adding Hooks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../actions/hosts-lookup-api.en.html" class="btn btn-neutral float-left" title="Hosts Lookup API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

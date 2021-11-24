@@ -1,0 +1,393 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Traffic Dump Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Webp Transform Plugin" href="webp_transform.en.html" />
+    <link rel="prev" title="System Stats Plugin" href="system_stats.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Traffic Dump Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/traffic_dump.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-dump-plugin">
+<span id="admin-plugins-traffic-dump"></span><h1>Traffic Dump Plugin<a class="headerlink" href="#traffic-dump-plugin" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> captures traffic for a set of sampled sessions and records this traffic to replay files according to the <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/tests/tools/traffic-replay/replay_schema.json">tests/tools/traffic-replay/replay_schema.json</a> schema. These replay files can be used to replay traffic for testing purposes. Further, since the traffic is written decrypted, they can be used to conveniently analyze HTTP traffic going through ATS.</p>
+</div>
+<div class="section" id="plugin-configuration">
+<h2>Plugin Configuration<a class="headerlink" href="#plugin-configuration" title="Permalink to this headline">¶</a></h2>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">traffic_dump.so</span></code></dt><dd><p><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> is a global plugin and is configured via <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
+<blockquote>
+<div><dl class="std option">
+<dt id="cmdoption-traffic_dump.so-logdir">
+<span id="cmdoption-traffic-dump-so-logdir"></span><code class="sig-name descname">--logdir</code><code class="sig-prename descclassname"> &lt;path_to_dump&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-logdir" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>(<cite>required</cite>) - Specifies the directory for writing all dump files. If the path is relative it is considered relative to the Traffic Server directory. The plugin will use the first three characters of the client’s IP to create subdirs in an attempt to spread dumps evenly and avoid too many files in a single directory.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sample">
+<span id="cmdoption-traffic-dump-so-sample"></span><code class="sig-name descname">--sample</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sample" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>(<cite>required</cite>) - Specifies the sampling ratio N. Traffic Dump will capture every one out of N sessions. This ratio can also be changed via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> without restarting ATS.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-limit">
+<span id="cmdoption-traffic-dump-so-limit"></span><code class="sig-name descname">--limit</code><code class="sig-prename descclassname"> &lt;N&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-limit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>(<cite>required</cite>) - Specifies the max disk usage to N bytes (approximate). Traffic Dump will stop capturing new sessions once disk usage exceeds this limit.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sensitive-fields">
+<span id="cmdoption-traffic-dump-so-sensitive-fields"></span><code class="sig-name descname">--sensitive-fields</code><code class="sig-prename descclassname"> &lt;field1,field2,...,fieldn&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sensitive-fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>(<cite>optional</cite>) - A comma separated list of HTTP case-insensitive field names whose values are considered sensitive information. Traffic Dump will not dump the incoming field values for any of these fields but will instead dump a generic value for them of the same length as the original. If this option is not used, a default list of “Cookie,Set-Cookie” is used. Providing this option overwrites that default list with whatever values the user provides. Pass a quoted empty string as the argument to specify that no fields are sensitive,</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_dump.so-sni-filter">
+<span id="cmdoption-traffic-dump-so-sni-filter"></span><code class="sig-name descname">--sni-filter</code><code class="sig-prename descclassname"> &lt;SNI_Name&gt;</code><a class="headerlink" href="#cmdoption-traffic_dump.so-sni-filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>(<cite>optional</cite>) - An SNI with which to filter sessions. Only HTTPS sessions with the provided SNI will be dumped. The sample option will apply a sampling rate to these filtered sessions. Thus, with a sample value of 2, 1/2 of all sessions with the specified SNI will be dumped.</p>
+</div></blockquote>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code> &lt;command&gt;</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Traffic</span> <span class="pre">Dump</span></code> can be dynamically configured via <code class="docutils literal notranslate"><span class="pre">traffic_ctl</span></code>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.sample</span> <span class="pre">N</span></code> - changes the sampling ratio N as mentioned above.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.reset</span></code> - resets the disk usage counter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">plugin</span> <span class="pre">msg</span> <span class="pre">traffic_dump.limit</span> <span class="pre">N</span></code> - changes the max disk usage to N bytes as mentioned above.</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</div>
+<div class="section" id="replay-format">
+<h2>Replay Format<a class="headerlink" href="#replay-format" title="Permalink to this headline">¶</a></h2>
+<p>This replay files contain the following information:</p>
+<ul class="simple">
+<li><p>Each sampled session and all the transactions for those sessions.</p></li>
+<li><p>Timestamps of each transaction.</p></li>
+<li><p>The four sets of HTTP message headers (user agent request, proxy request, origin server response, proxy response).</p></li>
+<li><p>The protocol stacks for the user agent and the origin server connections.</p></li>
+<li><p>The number of body bytes for each message.</p></li>
+</ul>
+<p>For details, see the schema: <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/tests/tools/lib/replay_schema.json">tests/tools/lib/replay_schema.json</a></p>
+</div>
+<div class="section" id="post-processing">
+<h2>Post Processing<a class="headerlink" href="#post-processing" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Dump comes with a post processing script located at <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/plugins/experimental/traffic_dump/post_process.py">plugins/experimental/traffic_dump/post_process.py</a>. This filters out incomplete sessions and transactions and merges a specifiable amount of sessions from a client into single replay files. It also optionally formats the single-line JSON files into a human readable format. It takes the following arguments:</p>
+<ul class="simple">
+<li><p>The first positional argument is the input directory containing the replay files captured by traffic_dump as described above.</p></li>
+<li><p>The second positional argument is the output directory containing the processed replay files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n</span></code> is an optional argument specifying how many sessions will be attempted to be merged into single replay files. The default is 10.</p></li>
+</ul>
+<p>There are other options. Use <code class="docutils literal notranslate"><span class="pre">--help</span></code> for a description of these.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="webp_transform.en.html" class="btn btn-neutral float-right" title="Webp Transform Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="system_stats.en.html" class="btn btn-neutral float-left" title="System Stats Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

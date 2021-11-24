@@ -1,0 +1,377 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Accessing Statistics &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Core Statistics" href="core-statistics.en.html" />
+    <link rel="prev" title="Statistics" href="index.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Monitoring</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../alarms.en.html">Traffic Manager Alarms</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">Statistics</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Accessing Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="core-statistics.en.html">Core Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="plugin-statistics.en.html">Plugin Specific Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-messages.en.html">Error Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../diagnostic-files.en.html">traffic.out</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../diagnostic-files.en.html#diags-log">diags.log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../diagnostic-files.en.html#error-log">error.log</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Monitoring</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Statistics</a> &raquo;</li>
+        
+      <li>Accessing Statistics</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/admin-guide/monitoring/statistics/accessing.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="accessing-statistics">
+<span id="admin-stats-accessing"></span><h1>Accessing Statistics<a class="headerlink" href="#accessing-statistics" title="Permalink to this headline">¶</a></h1>
+<p>There are currently two methods provided with Traffic Server to view statistics:
+<a class="reference internal" href="#admin-stats-traffic-line"><span class="std std-ref">Traffic Control</span></a> and <a class="reference internal" href="#admin-stats-stats-over-http"><span class="std std-ref">Stats Over HTTP</span></a>.</p>
+<div class="section" id="traffic-control">
+<span id="admin-stats-traffic-line"></span><h2>Traffic Control<a class="headerlink" href="#traffic-control" title="Permalink to this headline">¶</a></h2>
+<p>The command line utility <strong class="program">traffic_ctl</strong> offers a text based interface
+for viewing Traffic Server statistics. Invocation is simple and requires knowing the
+specific name of the statistic you wish you view:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_ctl</span> <span class="n">metric</span> <span class="n">get</span> <span class="o">&lt;</span><span class="n">statistic</span> <span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You may notice that this is the same utility, and argument, used for viewing
+configuration variables of a running Traffic Server instance. Unlike configuration
+variables, you cannot modify a statistic value with the <strong class="program">traffic_ctl</strong>
+program.</p>
+<p>This utility is enabled and built by default, and will be located in the
+<code class="docutils literal notranslate"><span class="pre">bin/</span></code> subdirectory of your Traffic Server installation. There are no required changes
+to your configuration to allow <strong class="program">traffic_ctl</strong> to function, however it
+may only be run by users with permissions to access the Traffic Server Unix socket. This
+will typically limit use to root as well as the system user you have configured
+Traffic Server to run under or any other system users which share the same group as you
+have configured Traffic Server to use.</p>
+</div>
+<div class="section" id="stats-over-http">
+<span id="admin-stats-stats-over-http"></span><h2>Stats Over HTTP<a class="headerlink" href="#stats-over-http" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server includes a stable plugin, <a class="reference internal" href="../../plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a>, which provides
+HTTP access to all Traffic Server statistics. The plugin returns a JSON object with all
+statistics and their current values. It is not possible to return a subset of
+the statistics. The plugin must be enabled before you may use it.</p>
+<div class="section" id="enabling-stats-over-http">
+<span id="admin-stats-stats-over-http-enabling"></span><h3>Enabling Stats Over HTTP<a class="headerlink" href="#enabling-stats-over-http" title="Permalink to this headline">¶</a></h3>
+<p>To enable the <a class="reference internal" href="../../plugins/stats_over_http.en.html#admin-plugins-stats-over-http"><span class="std std-ref">Stats Over HTTP Plugin</span></a> plugin, you must add the
+following to your <a class="reference internal" href="../../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>Once the plugin is enabled and Traffic Server has reloaded, you can test that it is
+working properly by issuing a simple HTTP request with <code class="docutils literal notranslate"><span class="pre">curl</span></code>. Assuming your
+Traffic Server installation is using the default interface and port bindings, running the
+following command on the same host as Traffic Server should now work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">curl</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">_stats</span>
+</pre></div>
+</div>
+<p>You should be presented with an HTTP response containing a single JSON object
+which lists all the available statistics and their current values. If you have
+configured Traffic Server to only listen on a specific interface, or to use a different
+port, you may need to adjust the URL in the command above.</p>
+<p>If you wish to have the stats made available at a non-default path, then that
+path should be given as the sole argument to the plugin, as so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats_over_http</span><span class="o">.</span><span class="n">so</span> <span class="mi">81</span><span class="n">c075bc0cca1435ea899ba4ad72766b</span>
+</pre></div>
+</div>
+<p>The above <a class="reference internal" href="../../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> entry will result in your Traffic Server statistics being
+located at <code class="docutils literal notranslate"><span class="pre">/81c075bc0cca1435ea899ba4ad72766b</span></code> on any host and port on which
+you have your Traffic Server instance listening.</p>
+</div>
+<div class="section" id="statistics-security-and-privacy">
+<span id="admin-stats-stats-over-http-security"></span><h3>Statistics Security and Privacy<a class="headerlink" href="#statistics-security-and-privacy" title="Permalink to this headline">¶</a></h3>
+<p>Simply changing the path at which your statistics are available should be
+considered very weak security. While cache objects themselves cannot be
+accessed through the plugin’s JSON output, and no modifications to the
+configuration or operation of Traffic Server may be made through the plugin, the
+statistics may reveal much more about your network’s traffic and architecture
+than you wish to be publicly available.</p>
+<p>A better method is to use an <a class="reference internal" href="../../files/remap.config.en.html#remap-config-named-filters"><span class="std std-ref">ACL Filter</span></a> in
+<a class="reference internal" href="../../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> to restrict access to clients. For instance, if your Traffic Server
+host resides on a private network in the 10.1.1.0/24 IPv4 address space
+listening on the address 10.1.1.10, separate from its public interface(s) used
+to serve client requests, you could add the following remap configuration:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.10</span><span class="o">/</span><span class="n">_stats</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.10</span><span class="o">/</span><span class="n">_stats</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="o">-</span><span class="mf">255.255</span><span class="o">.</span><span class="mf">255.255</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.10</span><span class="o">/</span><span class="n">_stats</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.10</span><span class="o">/</span><span class="n">_stats</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.0</span><span class="o">-</span><span class="mf">10.1</span><span class="o">.</span><span class="mf">1.255</span>
+</pre></div>
+</div>
+<p>The above configuration sets the default policy for the entirety of IPv4 address
+space to deny, but then exempts the 10.1.1.0/24 network by permitting their
+requests to be processed by Traffic Server. If your monitoring infrastructure makes use
+of locally-installed data collection agents, you may even wish to restrict
+access to the Stats Over HTTP plugin to all but localhost.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="core-statistics.en.html" class="btn btn-neutral float-right" title="Core Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

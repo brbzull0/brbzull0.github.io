@@ -1,0 +1,503 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bandwidth and Transfer &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="SOCKS" href="socks.en.html" />
+    <link rel="prev" title="HTTP Header" href="http-header.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../plugins/index.en.html">Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.en.html">Monitoring</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../alarms.en.html">Traffic Manager Alarms</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.en.html">Statistics</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../accessing.en.html">Accessing Statistics</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../core-statistics.en.html">Core Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../plugin-statistics.en.html">Plugin Specific Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../error-messages.en.html">Error Messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diagnostic-files.en.html">traffic.out</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diagnostic-files.en.html#diags-log">diags.log</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../diagnostic-files.en.html#error-log">error.log</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Monitoring</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Statistics</a> &raquo;</li>
+        
+          <li><a href="../core-statistics.en.html">Core Statistics</a> &raquo;</li>
+        
+      <li>Bandwidth and Transfer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../../_sources/admin-guide/monitoring/statistics/core/bandwidth.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bandwidth-and-transfer">
+<span id="admin-stats-core-bandwidth"></span><h1>Bandwidth and Transfer<a class="headerlink" href="#bandwidth-and-transfer" title="Permalink to this headline">¶</a></h1>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-request-document-total-size">
+<code class="sig-name descname">proxy.process.http.user_agent_request_document_total_size</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-request-document-total-size" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">counter</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-request-header-total-size">
+<code class="sig-name descname">proxy.process.http.user_agent_request_header_total_size</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-request-header-total-size" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">counter</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-response-document-total-size">
+<code class="sig-name descname">proxy.process.http.user_agent_response_document_total_size</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-response-document-total-size" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">counter</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-response-header-total-size">
+<code class="sig-name descname">proxy.process.http.user_agent_response_header_total_size</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-response-header-total-size" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">counter</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-100">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_100</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-100" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-100k">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_100K</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-100k" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-100m">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_100M</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-100m" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-10k">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_10K</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-10k" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-10m">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_10M</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-10m" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-1k">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_1K</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-1k" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+<dl class="stat">
+<dt class="ts-stat-title" id="stat-proxy-process-http-user-agent-speed-bytes-per-sec-1m">
+<code class="sig-name descname">proxy.process.http.user_agent_speed_bytes_per_sec_1M</code><a class="headerlink" href="#stat-proxy-process-http-user-agent-speed-bytes-per-sec-1m" title="Permalink to this definition">¶</a></dt>
+</dl>
+
+<dl class="field-list">
+<dt class="field-odd">Collection</dt>
+<dd class="field-odd">global</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even">derivative</dd>
+<dt class="field-odd">Units</dt>
+<dd class="field-odd">bytes</dd>
+<dt class="field-even">Datatype</dt>
+<dd class="field-even">integer</dd>
+<dt class="field-odd">Gathered</dt>
+<dd class="field-odd">No</dd>
+</dl>
+<div class="compound">
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="socks.en.html" class="btn btn-neutral float-right" title="SOCKS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="http-header.en.html" class="btn btn-neutral float-left" title="HTTP Header" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Range Requests Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Combo Handler Plugin" href="combo_handler.en.html" />
+    <link rel="prev" title="Cache Promote Plugin" href="cache_promote.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_promote.en.html">Cache Promotion Policies</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="esi.en.html">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compress.en.html">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcpinfo.en.html">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Cache Range Requests Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/cache_range_requests.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cache-range-requests-plugin">
+<span id="admin-plugins-cache-range-requests"></span><h1>Cache Range Requests Plugin<a class="headerlink" href="#cache-range-requests-plugin" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Most origin servers support HTTP/1.1 range requests (rfc 7233).
+ATS internally handles range request caching in one of 2 ways:</p>
+<ul class="simple">
+<li><p>Don’t cache range requests.</p></li>
+<li><p>Only server range requests from a wholly cached object.</p></li>
+</ul>
+<p>This plugin allows you to remap individual range requests so that they
+are stored as individual objects in the ATS cache when subsequent range
+requests are likely to use the same range.  This spreads range requests
+over multiple stripes thereby reducing I/O wait and system load averages.</p>
+<p><strong class="program">cache_range_requests</strong> reads the range request header byte range
+value and then creates a new <code class="docutils literal notranslate"><span class="pre">cache</span> <span class="pre">key</span> <span class="pre">URL</span></code> using the original request
+url with the range value appended to it.  The range header is removed
+where appropriate from the requests and the origin server response code
+is changed from a 206 to a 200 to insure that the object is written to
+cache using the new cache key url.  The response code sent to the client
+will be changed back to a 206 and all requests to the origin server will
+contain the range header so that the correct response is received.</p>
+<p>The <strong class="program">cache_range_requests</strong> plugin by itself has no logic to
+efficiently manage overlapping ranges.  It is best to use this plugin
+in conjunction with a smart client that only requests predetermined
+non overlapping cache ranges (request blocking) or as a helper for the
+<strong class="program">slice</strong> plugin.</p>
+<p>Only requests which contain the <code class="docutils literal notranslate"><span class="pre">Range:</span> <span class="pre">&lt;units&gt;=</span></code> GET header
+will be served by the <strong class="program">cache_range_requests</strong> plugin.</p>
+<p>If/when ATS implements partial object caching this plugin will
+become deprecated.</p>
+<p><em>NOTE</em> Given a multi range request the <strong class="program">cache_range_requests</strong>
+only processes the first range and ignores the rest.</p>
+</div>
+<div class="section" id="how-to-run-the-plugin">
+<h2>How to run the plugin<a class="headerlink" href="#how-to-run-the-plugin" title="Permalink to this headline">¶</a></h2>
+<p>The plugin can run as a global plugin (a single global instance configured
+using <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>) or as per-remap plugin (a separate instance
+configured per remap rule in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>).</p>
+<div class="section" id="global-instance">
+<h3>Global instance<a class="headerlink" href="#global-instance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cat plugin.config
+cache_range_request.so
+</pre></div>
+</div>
+</div>
+<div class="section" id="per-remap-instance">
+<h3>Per-remap instance<a class="headerlink" href="#per-remap-instance" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$cat remap.config
+map http://www.example.com http://www.origin.com \
+    @plugin=cache_range_requests.so
+</pre></div>
+</div>
+<p>If both global and per-remap instance are used the per-remap configuration
+would take precedence (per-remap configuration would be applied and the
+global configuration ignored).</p>
+</div>
+</div>
+<div class="section" id="plugin-options">
+<h2>Plugin options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="parent-selection-as-cache-key">
+<h3>Parent Selection as Cache Key<a class="headerlink" href="#parent-selection-as-cache-key" title="Permalink to this headline">¶</a></h3>
+<dl class="std option">
+<dt id="cmdoption-ps-cachekey">
+<code class="sig-name descname">--ps-cachekey</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-ps-cachekey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-p">
+<code class="sig-name descname">-p</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Without this option parent selection is based solely on the hash of a
+URL Path a URL is requested from the same upstream parent cache listed
+in parent.config</p>
+<p>With this option parent selection is based on the full <code class="docutils literal notranslate"><span class="pre">cache</span> <span class="pre">key</span> <span class="pre">URL</span></code>
+which includes information about the partial content range.  In this mode,
+all requests (include partial content) will use consistent hashing method
+for parent selection.</p>
+</div>
+<div class="section" id="x-crr-ims-header-support">
+<h3>X-Crr-Ims header support<a class="headerlink" href="#x-crr-ims-header-support" title="Permalink to this headline">¶</a></h3>
+<dl class="std option">
+<dt id="cmdoption-consider-ims">
+<code class="sig-name descname">--consider-ims</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-consider-ims" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-c">
+<code class="sig-name descname">-c</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-c" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>To support slice plugin self healing an option to force revalidation
+after cache lookup complete was added.  This option is triggered by a
+special header:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">-</span><span class="n">Crr</span><span class="o">-</span><span class="n">Ims</span><span class="p">:</span> <span class="n">Tue</span><span class="p">,</span> <span class="mi">19</span> <span class="n">Nov</span> <span class="mi">2019</span> <span class="mi">13</span><span class="p">:</span><span class="mi">26</span><span class="p">:</span><span class="mi">45</span> <span class="n">GMT</span>
+</pre></div>
+</div>
+<p>When this header is provided and a <cite>cache hit fresh</cite> is encountered the
+<code class="docutils literal notranslate"><span class="pre">Date</span></code> header of the object in cache is compared to this header date
+value.  If the cache date is <em>less</em> than this IMS date then the object
+is marked as STALE and an appropriate If-Modified-Since or If-Match
+request along with this X-Crr-Ims header is passed up to the parent.</p>
+<p>In order for this to properly work in a CDN each cache in the
+chain <em>SHOULD</em> also contain a remap rule with the
+<strong class="program">cache_range_requests</strong> plugin with this option set.</p>
+</div>
+<div class="section" id="don-t-modify-the-cache-key">
+<h3>Don’t modify the Cache Key<a class="headerlink" href="#don-t-modify-the-cache-key" title="Permalink to this headline">¶</a></h3>
+<dl class="std option">
+<dt id="cmdoption-no-modify-cachekey">
+<code class="sig-name descname">--no-modify-cachekey</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-no-modify-cachekey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-n">
+<code class="sig-name descname">-n</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>With each transaction TSCacheUrlSet may only be called once.  When
+using the <cite>cache_range_requests</cite> plugin in conjunction with the
+<cite>cachekey</cite> plugin the option <cite>–include-headers=Range</cite> should be
+added as a <cite>cachekey</cite> parameter with this option.  Configuring this
+incorrectly <em>WILL</em> result in cache poisoning.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span><span class="o">/</span> \
+    <span class="nd">@plugin</span><span class="o">=</span><span class="n">cachekey</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">include</span><span class="o">-</span><span class="n">headers</span><span class="o">=</span><span class="n">Range</span> \
+    <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">no</span><span class="o">-</span><span class="n">modify</span><span class="o">-</span><span class="n">cachekey</span>
+</pre></div>
+</div>
+<p><em>Without this `cache_range_requests` plugin option</em></p>
+<p><em>IF</em> the TSCacheUrlSet call in cache_range_requests fails, an error is
+generated in the logs and the cache_range_requests plugin will disable
+transaction caching in order to avoid cache poisoning.</p>
+</div>
+<div class="section" id="verify-cacheability">
+<h3>Verify Cacheability<a class="headerlink" href="#verify-cacheability" title="Permalink to this headline">¶</a></h3>
+<dl class="std option">
+<dt id="cmdoption-verify-cacheability">
+<code class="sig-name descname">--verify-cacheability</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-verify-cacheability" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-v">
+<code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-v" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This option causes the plugin to verify whether the requested object is
+cacheable.</p>
+<p>By default, an object’s cacheability is not verified after
+the plugin changes the response code of the upstream response from 206
+to 200 to force the object into cache. When this option is enabled,
+cacheability is considered, and if the object is not cacheable, the
+status code is reset back to 206, which leads to the object not being cached.</p>
+<p>This option is useful when used with other plugins, such as Cache Promote.</p>
+</div>
+</div>
+<div class="section" id="configuration-examples">
+<h2>Configuration examples<a class="headerlink" href="#configuration-examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="global-plugin">
+<h3>Global plugin<a class="headerlink" href="#global-plugin" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">ps</span><span class="o">-</span><span class="n">cachekey</span> <span class="o">--</span><span class="n">consider</span><span class="o">-</span><span class="n">ims</span> <span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="n">modify</span><span class="o">-</span><span class="n">cachekey</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">p</span> <span class="o">-</span><span class="n">c</span> <span class="o">-</span><span class="n">n</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="remap-plugin">
+<h3>Remap plugin<a class="headerlink" href="#remap-plugin" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">ps</span><span class="o">-</span><span class="n">cachekey</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">consider</span><span class="o">-</span><span class="n">ims</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">no</span><span class="o">-</span><span class="n">modify</span><span class="o">-</span><span class="n">cachekey</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">ats</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">parent</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">cache_range_requests</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=-</span><span class="n">p</span> <span class="nd">@pparam</span><span class="o">=-</span><span class="n">c</span> <span class="nd">@pparam</span><span class="o">=-</span><span class="n">n</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="combo_handler.en.html" class="btn btn-neutral float-right" title="Combo Handler Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cache_promote.en.html" class="btn btn-neutral float-left" title="Cache Promote Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

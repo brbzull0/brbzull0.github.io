@@ -1,0 +1,525 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Compress Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Generator Plugin" href="generator.en.html" />
+    <link rel="prev" title="Escalate Plugin" href="escalate.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_promote.en.html">Cache Promotion Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_range_requests.en.html">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="esi.en.html">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcpinfo.en.html">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Compress Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/compress.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compress-plugin">
+<span id="admin-plugins-compress"></span><h1>Compress Plugin<a class="headerlink" href="#compress-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin adds compression and decompression options to both origin and cache
+responses.</p>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>Not all clients can handle compressed content. Not all origin servers are
+configured to respond with compressed content when a client says it can accept
+it. And it’s not always necessary to make two separate requests to an origin,
+and track two separate cache objects, for the same content - once for a
+compressed version and another time for an uncompressed version.</p>
+<p>This plugin tidies up these problems by transparently compressing or deflating
+origin responses, as necessary, so that both variants of a response are stored
+as <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a> and the appropriate version is used for client responses,
+depending on the client’s indication (via an <code class="docutils literal notranslate"><span class="pre">Accept</span></code> request header) of what
+it can support.</p>
+<p>Additionally, this plugin adds configurability for what types of origin
+responses will receive this treatment, which will be proxied and cached with
+default behavior, and which may be explicitly disallowed to cache both
+compressed and deflated versions (because, for example, the cost of compression
+is known ahead of time to outweigh the space and bandwidth savings and you wish
+to avoid Traffic Server even testing for the possibility).</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is considered stable and is included with Traffic Server by default. There
+are no special steps necessary for its installation.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This plugin can be used as either global plugin or remap plugin.
+It can be enabled globally for Traffic Server by adding the following to your
+<a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compress</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<p>With no further options, this will enable the following default behavior:</p>
+<ul class="simple">
+<li><p>Enable caching of both compressed and uncompressed versions of origin
+responses as <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a>.</p></li>
+<li><p>Compress objects with <cite>text/*</cite> content types for every origin.</p></li>
+<li><p>Don’t hide <cite>Accept</cite> encoding headers from origin servers (for an offloading
+reverse proxy).</p></li>
+<li><p>No URLs are disallowed from compression.</p></li>
+<li><p>Disable flush (flush compressed content to client).</p></li>
+<li><p>Only objects greater than 1Kb will be compressed</p></li>
+</ul>
+<p>Alternatively, a configuration may be specified (shown here using the sample
+configuration provided with the plugin’s source):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compress</span><span class="o">.</span><span class="n">so</span> <span class="o">&lt;</span><span class="n">path</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">plugin</span><span class="o">&gt;/</span><span class="n">sample</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>This can be used as remap plugin by pointing to config file in remap rule
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">compress</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">compress</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>The following sections detail the options you may specify in the plugin’s
+configuration file. Options may be used globally, or may be specified on a
+per-site basis by preceding them with a <cite>[&lt;site&gt;]</cite> line, where <cite>&lt;site&gt;</cite> is the
+client-facing domain for which the options should apply.</p>
+<p>Per site configuration for remap plugin should be ignored.</p>
+<div class="section" id="cache">
+<h3>cache<a class="headerlink" href="#cache" title="Permalink to this headline">¶</a></h3>
+<p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, causes Traffic Server to cache both the compressed and uncompressed
+versions of the content as <a class="reference internal" href="../../appendices/glossary.en.html#term-alternate"><span class="xref std std-term">alternates</span></a>. When set to
+<code class="docutils literal notranslate"><span class="pre">false</span></code>, Traffic Server will cache only the compressed or decompressed variant returned
+by the origin. Enabled by default.</p>
+</div>
+<div class="section" id="range-request">
+<h3>range-request<a class="headerlink" href="#range-request" title="Permalink to this headline">¶</a></h3>
+<p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, causes Traffic Server to compress responses to Range Requests.
+Disabled by default. Setting this to true while setting cache to false leads to delivering corrupted content.</p>
+</div>
+<div class="section" id="compressible-content-type">
+<h3>compressible-content-type<a class="headerlink" href="#compressible-content-type" title="Permalink to this headline">¶</a></h3>
+<p>Provides a wildcard to match against content types, determining which are to be
+considered compressible. This defaults to <code class="docutils literal notranslate"><span class="pre">text/*</span></code>. Takes one Content-Type
+per line.</p>
+</div>
+<div class="section" id="compressible-status-code">
+<h3>compressible-status-code<a class="headerlink" href="#compressible-status-code" title="Permalink to this headline">¶</a></h3>
+<p>A comma separated list of response status codes for which to enable
+compression. Defaults to 200, 206, 304.</p>
+</div>
+<div class="section" id="minimum-content-length">
+<h3>minimum-content-length<a class="headerlink" href="#minimum-content-length" title="Permalink to this headline">¶</a></h3>
+<p>Minimum Content-Length value sent by the origin server to consider the response
+compressible. Due to the overhead and latency of compression and decompression,
+it only makes sense to compress files above a certain size threshold.
+Compressing files below 150 bytes can actually make them larger. This setting
+only applies if the response explicitly sends Content-Length. Regardless of
+this setting, responses with <code class="docutils literal notranslate"><span class="pre">Content-Length:</span> <span class="pre">0</span></code> are considered not
+compressible.</p>
+</div>
+<div class="section" id="allow">
+<h3>allow<a class="headerlink" href="#allow" title="Permalink to this headline">¶</a></h3>
+<p>Provides a wildcard pattern which will be applied to request URLs. Any which
+match the pattern will be considered compressible, and only deflated versions
+of the objects will be cached and returned to clients. This may be useful for
+objects which already have their own compression built-in, to avoid the expense
+of multiple rounds of compression for trivial gains. If the regex is preceded by
+<code class="docutils literal notranslate"><span class="pre">!</span></code> (for example <code class="docutils literal notranslate"><span class="pre">allow</span> <span class="pre">!*/nothere/*</span></code>), it disables the plugin from those machine URLs.</p>
+</div>
+<div class="section" id="enabled">
+<h3>enabled<a class="headerlink" href="#enabled" title="Permalink to this headline">¶</a></h3>
+<p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code> (the default) permits objects to be compressed, and when <code class="docutils literal notranslate"><span class="pre">false</span></code>
+effectively disables the plugin in the current context.</p>
+</div>
+<div class="section" id="flush">
+<h3>flush<a class="headerlink" href="#flush" title="Permalink to this headline">¶</a></h3>
+<p>Enables (<code class="docutils literal notranslate"><span class="pre">true</span></code>) or disables (<code class="docutils literal notranslate"><span class="pre">false</span></code>) flushing of compressed objects to
+clients. This calls the compression algorithm’s mechanism (Z_SYNC_FLUSH and for gzip
+and BROTLI_OPERATION_FLUSH for brotli) to send compressed data early.</p>
+</div>
+<div class="section" id="remove-accept-encoding">
+<h3>remove-accept-encoding<a class="headerlink" href="#remove-accept-encoding" title="Permalink to this headline">¶</a></h3>
+<p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code> this option causes the plugin to strip the request’s
+<code class="docutils literal notranslate"><span class="pre">Accept-Encoding</span></code> header when contacting the origin server. Setting this option to <code class="docutils literal notranslate"><span class="pre">false</span></code>
+will leave the header intact if the client provided it.</p>
+<ul class="simple">
+<li><p>To ease the load on the origins.</p></li>
+<li><p>For when the proxy parses responses, and the resulting compression and
+decompression is wasteful.</p></li>
+</ul>
+</div>
+<div class="section" id="supported-algorithms">
+<h3>supported-algorithms<a class="headerlink" href="#supported-algorithms" title="Permalink to this headline">¶</a></h3>
+<p>Provides the compression algorithms that are supported, a comma separate list
+of values. This will allow Traffic Server to selectively support <code class="docutils literal notranslate"><span class="pre">gzip</span></code>, <code class="docutils literal notranslate"><span class="pre">deflate</span></code>,
+and brotli (<code class="docutils literal notranslate"><span class="pre">br</span></code>) compression. The default is <code class="docutils literal notranslate"><span class="pre">gzip</span></code>. Multiple algorithms can
+be selected using ‘,’ delimiter, for instance, <code class="docutils literal notranslate"><span class="pre">supported-algorithms</span>
+<span class="pre">deflate,gzip,br</span></code>. Note that this list must <strong>not</strong> contain any white-spaces!</p>
+<p>Note that if <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-normalize-ae" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.normalize_ae</span></code></a> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, only gzip will
+be considered, and if it is <code class="docutils literal notranslate"><span class="pre">2</span></code>, only br or gzip will be considered.</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>To establish global defaults for all site requests passing through Traffic Server, while
+overriding just a handful for requests to content at <code class="docutils literal notranslate"><span class="pre">www.example.com</span></code>, you
+might create a configuration with the following options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># Set some global options first
+cache true
+remove-accept-encoding false
+compressible-content-type text/*
+compressible-content-type application/json
+compressible-status-code 200, 206
+minimum-content-length 860
+flush false
+
+# Now set a configuration for www.example.com
+[www.example.com]
+cache false
+remove-accept-encoding true
+allow !/notthis/*.js
+allow /this/*.js
+flush true
+
+# Allows brotli encoded response from origin but is not capable of brotli compression
+[brotli.allowed.com]
+enabled true
+compressible-content-type text/*
+compressible-content-type application/json
+flush true
+supported-algorithms gzip,deflate
+
+# Supports brotli compression
+[brotli.compress.com]
+enabled true
+compressible-content-type text/*
+compressible-content-type application/json
+flush true
+supported-algorithms br,gzip
+
+# This origin does it all
+[bar.example.com]
+enabled false
+
+# A reasonable list of content-types that are compressible
+compressible-content-type text/*
+compressible-content-type *font*
+compressible-content-type *javascript
+compressible-content-type *json
+compressible-content-type *ml;*
+compressible-content-type *mpegURL
+compressible-content-type *mpegurl
+compressible-content-type *otf
+compressible-content-type *ttf
+compressible-content-type *type
+compressible-content-type *xml
+compressible-content-type application/eot
+compressible-content-type application/pkix-crl
+compressible-content-type application/x-httpd-cgi
+compressible-content-type application/x-perl
+compressible-content-type image/vnd.microsoft.icon
+compressible-content-type image/x-icon
+</pre></div>
+</div>
+<p>Assuming the above options are in a file at <code class="docutils literal notranslate"><span class="pre">/etc/trafficserver/compress.config</span></code>
+the plugin would be enabled for Traffic Server in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compress</span><span class="o">.</span><span class="n">so</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">trafficserver</span><span class="o">/</span><span class="n">compress</span><span class="o">.</span><span class="n">config</span>
+</pre></div>
+</div>
+<p>Alternatively, the compress plugin can be used as a remap plugin:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>map http://www.example.com http://origin.example.com \
+   @plugin=compress.so @pparam=compress.config
+
+$ cat /etc/trafficserver/compress.config
+enabled true
+cache true
+compressible-content-type *xml
+supported-algorithms
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="generator.en.html" class="btn btn-neutral float-right" title="Generator Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="escalate.en.html" class="btn btn-neutral float-left" title="Escalate Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

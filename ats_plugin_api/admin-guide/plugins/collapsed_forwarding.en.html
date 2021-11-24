@@ -1,0 +1,470 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Collapsed Forwarding Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="GeoIP ACLs Plugin" href="geoip_acl.en.html" />
+    <link rel="prev" title="Cert Reporting Tool Plugin" href="cert_reporting_tool.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Collapsed Forwarding Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/collapsed_forwarding.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="collapsed-forwarding-plugin">
+<span id="admin-plugins-collapsed-forwarding"></span><h1>Collapsed Forwarding Plugin<a class="headerlink" href="#collapsed-forwarding-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This is a plugin for Apache Traffic Server that allows to achieve
+effective connection collapse by blocking all but one of the multiple
+concurrent requests for the same object from going to the Origin.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To make this plugin available, you must either enable experimental plugins
+when building Traffic Server:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">configure</span> <span class="o">--</span><span class="n">enable</span><span class="o">-</span><span class="n">experimental</span><span class="o">-</span><span class="n">plugins</span>
+</pre></div>
+</div>
+<p>Or use <strong class="program">tsxs</strong> to compile the plugin against your current Traffic Server build.
+To do this, you must ensure that:</p>
+<ol class="arabic simple">
+<li><p>Development packages for Traffic Server are installed.</p></li>
+<li><p>The <strong class="program">tsxs</strong> binary is in your path.</p></li>
+<li><p>The version of this plugin you are building, and the version of Traffic Server against
+which you are building it are compatible.</p></li>
+</ol>
+<p>Once those conditions are satisfied, enter the source directory for the plugin
+and perform the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="n">Makefile</span><span class="o">.</span><span class="n">tsxs</span>
+<span class="n">make</span> <span class="o">-</span><span class="n">f</span> <span class="n">Makefile</span><span class="o">.</span><span class="n">tsxs</span> <span class="n">install</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-the-plugin">
+<h2>Using the plugin<a class="headerlink" href="#using-the-plugin" title="Permalink to this headline">¶</a></h2>
+<p>This plugin can function as a per remap plugin or a global plugin, and it takes two optional
+arguments for specifying the delay between successive retries and a max
+number of retries.</p>
+<p>To activate the plugin in per remap mode, in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, simply append the
+below to the specific remap line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@plugin</span><span class="o">=</span><span class="n">collapsed_forwarding</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">delay</span><span class="o">=&lt;</span><span class="n">delay</span><span class="o">&gt;</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">retries</span><span class="o">=&lt;</span><span class="n">retries</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>To activate the plugin globally, in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>, add the following line:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">collapsed_forwarding</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">delay</span><span class="o">=&lt;</span><span class="n">delay</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">retries</span><span class="o">=&lt;</span><span class="n">retries</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If the plugin is enabled both globally and per remap, Traffic Server will issue an error on startup.</p>
+</div>
+<div class="section" id="functionality">
+<h2>Functionality<a class="headerlink" href="#functionality" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server plugin to allow collapsed forwarding of concurrent requests for
+the same object. This plugin is based on open_write_fail_action feature, which
+detects cache open write failure on a cache miss and returns a 502 error along
+with a special &#64;-header indicating the reason for 502 error. The plugin acts
+on the error by using an internal redirect follow back to itself, essentially
+blocking the request until a response arrives, at which point, relies on
+read-while-writer feature to start downloading the object to all waiting
+clients. The following config parameters are assumed to be set for this
+plugin to work:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-cache-open-write-fail-action" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.cache.open_write_fail_action</span></code></a>        <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-cache-enable-read-while-writer" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.cache.enable_read_while_writer</span></code></a>           <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-number-of-redirections" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.number_of_redirections</span></code></a>             <code class="docutils literal notranslate"><span class="pre">10</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-redirect-use-orig-cache-key" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.redirect_use_orig_cache_key</span></code></a>         <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-active-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_active_timeout</span></code></a>      <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+<li><p><a class="reference internal" href="../files/records.config.en.html#proxy-config-http-background-fill-completed-threshold" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.background_fill_completed_threshold</span></code></a> <code class="docutils literal notranslate"><span class="pre">0</span></code></p></li>
+</ul>
+<p>Additionally, given that collapsed forwarding works based on cache write
+lock failure detection, the plugin requires cache to be enabled and ready.
+On a restart, Traffic Server typically takes a few seconds to initialize
+the cache depending on the cache size and number of dirents. While the
+cache is not ready yet, collapsed forwarding can not detect the write lock
+contention and so can not work. The setting <a class="reference internal" href="../files/records.config.en.html#proxy-config-http-wait-for-cache" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.wait_for_cache</span></code></a>
+may be enabled which allows blocking incoming connections from being
+accepted until cache is ready.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Traffic Server has been affected severely by the Thundering Herd problem caused
+by its inability to do effective connection collapse of multiple concurrent
+requests for the same segment. This is especially critical when Traffic Server
+is used as a solution to use cases such as delivering a large scale video
+live streaming. This problem results in a specific behavior where multiple
+number of requests for the same file are leaked upstream to the Origin layer
+choking the upstream bandwidth due to the duplicated large file downloads or
+process intensive file at the Origin layer. This ultimately can cause
+stability problems on the origin layer disrupting the overall network
+performance.</p>
+<p>Traffic Server supports several kind of connection collapse mechanisms including
+Read-While-Writer (RWW), Stale-While-Revalidate (SWR) etc each very effective
+dealing with a majority of the use cases that can result in the
+Thundering herd problem.</p>
+<p>For a large scale Video Streaming scenario, there’s a combination of a
+large number of revalidations (e.g. media playlists) and cache misses
+(e.g. media segments) that occur for the same file. Traffic Server’s
+RWW works great in collapsing the concurrent requests in such a scenario,
+however, as described in <a class="reference internal" href="../configuration/cache-basics.en.html#admin-configuration-reducing-origin-requests"><span class="std std-ref">Reducing Origin Server Requests (Avoiding the Thundering Herd)</span></a>,
+Traffic Server’s implementation of RWW has a significant limitation, which
+restricts its ability to invoke RWW only when the response headers are
+already received. This means that any number of concurrent requests for
+the same file that are received before the response headers arrive are
+leaked upstream, which can result in a severe Thundering herd problem,
+depending on the network latencies (which impact the TTFB for the
+response headers) at a given instant of time.</p>
+<p>To address this limitation, Traffic Server supports a few Cache tuning
+solutions, such as Open Read Retry, and a new feature called
+Open Write Fail action from 6.0. To understand how these approaches work,
+it is important to understand the high level flow of how Traffic Server
+handles a GET request.</p>
+<p>On receiving a HTTP GET request, Traffic Server generates the cache key
+(basically, a hash of the request URL) and looks up for the directory
+entry (dirent) using the generated index. On a cache miss, the lookup
+fails and Traffic Server then tries to just get a write lock for the
+cache object and proceeds to the origin to download the object. On
+the Other hand, if the lookup is successful, meaning, the dirent
+exists for the generated cache key, Traffic Server tries to obtain
+a read lock on the cache object to be able to serve it from the cache.
+If the read lock is not successful (possibly, due to the fact that
+the object’s being written to at that same instant and the response
+headers are not in the cache yet), Traffic Server then moves to the
+next step of trying to obtain an exclusive write lock. If the write
+lock is already held exclusively by another request (transaction), the
+attempt fails and at this point Traffic Server simply disables the
+cache on that transaction and downloads the object in a proxy-only
+mode:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">)</span><span class="o">.</span> <span class="n">Cache</span> <span class="n">Lookup</span> <span class="p">(</span><span class="n">lookup</span> <span class="k">for</span> <span class="n">the</span> <span class="n">dirent</span> <span class="n">using</span> <span class="n">the</span> <span class="n">request</span> <span class="n">URL</span> <span class="k">as</span> <span class="n">cache</span> <span class="n">key</span><span class="p">)</span><span class="o">.</span>
+  <span class="mf">1.1</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">lookup</span> <span class="n">fails</span> <span class="p">(</span><span class="n">cache</span> <span class="n">miss</span><span class="p">),</span> <span class="n">goto</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>
+  <span class="mf">1.2</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">lookup</span> <span class="n">succeeds</span><span class="p">,</span> <span class="k">try</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">a</span> <span class="n">read</span> <span class="n">lock</span><span class="p">,</span> <span class="n">goto</span> <span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span>
+<span class="mi">2</span><span class="p">)</span><span class="o">.</span> <span class="n">Open</span> <span class="n">Cache</span> <span class="n">Read</span> <span class="p">(</span><span class="k">try</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">read</span> <span class="n">lock</span><span class="p">)</span>
+  <span class="mf">2.1</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">read</span> <span class="n">lock</span> <span class="n">succeeds</span><span class="p">,</span> <span class="n">serve</span> <span class="kn">from</span> <span class="nn">cache</span><span class="p">,</span> <span class="n">goto</span> <span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span>
+  <span class="mf">2.2</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">read</span> <span class="n">lock</span> <span class="n">fails</span><span class="p">,</span> <span class="n">goto</span> <span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span>
+<span class="mi">3</span><span class="p">)</span><span class="o">.</span> <span class="n">Open</span> <span class="n">Cache</span> <span class="n">Write</span> <span class="p">(</span><span class="k">try</span> <span class="n">to</span> <span class="n">obtain</span> <span class="n">write</span> <span class="n">lock</span><span class="p">)</span><span class="o">.</span>
+  <span class="mf">3.1</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">write</span> <span class="n">lock</span> <span class="n">succeeds</span><span class="p">,</span> <span class="n">download</span> <span class="n">the</span> <span class="nb">object</span> <span class="n">into</span> <span class="n">cache</span> <span class="ow">and</span> <span class="n">to</span> <span class="n">the</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">parallel</span>
+  <span class="mf">3.2</span><span class="p">)</span><span class="o">.</span> <span class="n">If</span> <span class="n">write</span> <span class="n">lock</span> <span class="n">fails</span><span class="p">,</span> <span class="n">disable</span> <span class="n">cache</span><span class="p">,</span> <span class="ow">and</span> <span class="n">download</span> <span class="n">to</span> <span class="n">the</span> <span class="n">client</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">proxy</span><span class="o">-</span><span class="n">only</span> <span class="n">mode</span><span class="o">.</span>
+<span class="mi">4</span><span class="p">)</span><span class="o">.</span> <span class="n">Done</span>
+</pre></div>
+</div>
+<p>As can be seen above, if a majority of concurrent requests arrive before
+response headers are received, they hit (2.2) and (3.2) above. Open Read
+Retry can help to repeat (2) after a configured delay on 2.2, thereby
+increasing the chances for obtaining a read lock and being able to serve
+from the cache.</p>
+<p>However, the Open Read Retry can not help with the concurrent requests
+that hit (1.1) above, jumping to (3) directly. Only one such request will
+be able to obtain the exclusive write lock and all other requests are
+leaked upstream. This is where, the recently developed Traffic Server
+feature Open Write Fail Action will help. The feature detects the write
+lock failure and can return a stale copy for a Cache Revalidation or a
+5xx status code for a Cache Miss with a special internal header
+&lt;&#64;Ats-Internal&gt; that allows a TS plugin to take other special actions
+depending on the use-case.</p>
+<p><code class="docutils literal notranslate"><span class="pre">collapsed_forwarding</span></code> plugin catches that error in SEND_RESPONSE_HDR_HOOK
+and performs an internal 3xx Redirect back to the same host, the configured
+number of times with the configured amount of delay between consecutive
+retries, allowing to be able to initiate RWW, whenever the response headers
+are received for the request that was allowed to go to the Origin.</p>
+<p>More details are available at <a class="reference internal" href="../configuration/cache-basics.en.html#admin-configuration-reducing-origin-requests"><span class="std std-ref">Reducing Origin Server Requests (Avoiding the Thundering Herd)</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="geoip_acl.en.html" class="btn btn-neutral float-right" title="GeoIP ACLs Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cert_reporting_tool.en.html" class="btn btn-neutral float-left" title="Cert Reporting Tool Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -1,0 +1,437 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Tools &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="RAM Cache" href="ram-cache.en.html" />
+    <link rel="prev" title="API functions" href="api-functions.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="architecture.en.html">Cache Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-functions.en.html">API functions</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#volume-tagging">Volume Tagging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#version-upgrade">Version Upgrade</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#controlling-the-cache-key">Controlling the cache key</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tool.en.html">Cache Tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiered-storage.en.html">Tiered Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>Cache Tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/consistency.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cache-tools">
+<span id="developer-cache-consistency"></span><h1>Cache Tools<a class="headerlink" href="#cache-tools" title="Permalink to this headline">¶</a></h1>
+<p>Tools and techniques for cache monitoring and inspection.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../../admin-guide/storage/index.en.html#inspecting-the-cache"><span class="std std-ref">The cache inspector</span></a>.</p></li>
+</ul>
+</div>
+<div class="section" id="topics-to-be-done">
+<h1>Topics to be done<a class="headerlink" href="#topics-to-be-done" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p>Resident alternates</p></li>
+<li><p>Object refresh</p></li>
+</ul>
+</div>
+<div class="section" id="cache-consistency">
+<h1>Cache Consistency<a class="headerlink" href="#cache-consistency" title="Permalink to this headline">¶</a></h1>
+<p>The cache is completely consistent, up to and including kicking the power cord
+out, if the write buffer on consumer disk drives is disabled. You need to use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hdparm</span> <span class="o">-</span><span class="n">W0</span>
+</pre></div>
+</div>
+<p>The cache validates that all the data for the document is available and will
+silently mark a partial document as a miss on read. There is no gentle
+shutdown for Traffic Server. You simply kill the process and the recovery code
+(fsck) is run every time Traffic Server starts up.</p>
+<p>On startup the two versions of the index are checked, and the last valid one is
+read into memory. Traffic Server then moves forward from the last snapped write
+cursor and reads all the fragments written to disk and updates the directory
+(as in a log-based file system). It stops reading at the write before the last
+valid write header it sees (as a write is not necessarily atomic because of
+sector reordering). Then the new updated index is written to the invalid
+version (in case of a crash during startup) and the system starts.</p>
+</div>
+<div class="section" id="volume-tagging">
+<span id="id1"></span><h1>Volume Tagging<a class="headerlink" href="#volume-tagging" title="Permalink to this headline">¶</a></h1>
+<p>Currently, <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">cache volumes</span></a> are allocated somewhat
+arbitrarily from storage elements. <a class="reference external" href="https://issues.apache.org/jira/browse/TS-1728">This enhancement</a>
+allows <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> to assign <a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage units</span></a> to
+specific <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">volumes</span></a> although the volumes must still be
+listed in <a class="reference internal" href="../../admin-guide/files/volume.config.en.html#std-configfile-volume.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">volume.config</span></code></a> in general and in particular to map domains to
+specific volumes. A primary use case for this is to be able to map specific
+types of content to different storage elements. This can be employed to have
+different storage devices for various types of content (SSD vs. rotational).</p>
+<div class="section" id="version-upgrade">
+<h2>Version Upgrade<a class="headerlink" href="#version-upgrade" title="Permalink to this headline">¶</a></h2>
+<p>It is currently the case that any change to the cache format will clear the
+cache. This is an issue when upgrading the Traffic Server version and should be kept in mind.</p>
+</div>
+<div class="section" id="controlling-the-cache-key">
+<span id="cache-key"></span><h2>Controlling the cache key<a class="headerlink" href="#controlling-the-cache-key" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a> is by default the URL of the request. There are two
+possible choices, the original (pristine) URL and the remapped URL. Which of
+these is used is determined by the configuration value
+<a class="reference internal" href="../../admin-guide/files/records.config.en.html#proxy-config-url-remap-pristine-host-hdr" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.pristine_host_hdr</span></code></a>.</p>
+<p>This is an <code class="docutils literal notranslate"><span class="pre">INT</span></code> value. If set to <code class="docutils literal notranslate"><span class="pre">0</span></code> (disabled) then the remapped URL is
+used, and if it is not <code class="docutils literal notranslate"><span class="pre">0</span></code> (enabled) then the original URL is used. This
+setting also controls the value of the <code class="docutils literal notranslate"><span class="pre">HOST</span></code> header that is placed in the
+request sent to the <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin server</span></a>, using the hostname from the original
+URL if not <code class="docutils literal notranslate"><span class="pre">0</span></code> and the host name from the remapped URL if <code class="docutils literal notranslate"><span class="pre">0</span></code>. It has no
+other effects.</p>
+<p>For caching, this setting is irrelevant if no remapping is done or there is a
+one-to-one mapping between the original and remapped URLs.</p>
+<p>It becomes significant if multiple original URLs are mapped to the same
+remapped URL. If pristine headers are enabled, requests to different original
+URLs will be stored as distinct <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-object"><span class="xref std std-term">objects</span></a> in the cache. If
+disabled, the remapped URL will be used and there may be collisions. This is
+bad if the contents different, but quite useful if they are the same (as in
+situations where the original URLs are just aliases for the same underlying
+server resource).</p>
+<p>This is also an issue if a remapping is changed because it is effectively a
+time axis version of the previous case. If an original URL is remapped to a
+different server address then the setting determines if existing cached objects
+will be served for new requests (enabled) or not (disabled). Similarly, if the
+original URL mapped to a particular URL is changed then cached objects from the
+initial original URL will be served from the updated original URL if pristine
+headers is disabled.</p>
+<p>These collisions are not by themselves good or bad. An administrator needs to
+decide which is appropriate for their situation and set the value correspondingly.</p>
+<p>If a greater degree of control is desired, a plugin must be used to invoke the
+API calls <a class="reference internal" href="../api/functions/TSHttpTxnCacheLookupUrlGet.en.html#c.TSHttpTxnCacheLookupUrlSet" title="TSHttpTxnCacheLookupUrlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnCacheLookupUrlSet()</span></code></a> or  <a class="reference internal" href="api-functions.en.html#c.TSCacheUrlSet" title="TSCacheUrlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheUrlSet()</span></code></a>
+to provide a specific <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a>. The <a class="reference internal" href="api-functions.en.html#c.TSCacheUrlSet" title="TSCacheUrlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheUrlSet()</span></code></a> API can
+be called as early as <code class="docutils literal notranslate"><span class="pre">TS_HTTP_READ_REQUEST_HDR_HOOK</span></code> but no later than
+<code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>. It can be called only once per transaction;
+calling it multiple times has no additional effect.</p>
+<p>A plugin that changes the cache key must do so consistently for both cache hit
+and cache miss requests because two different requests that map to the same
+cache key will be considered equivalent by the cache. Use of the URL directly
+provides this and so must any substitute. This is entirely the responsibility
+of the plugin; there is no way for the Traffic Server core to detect such an occurrence.</p>
+<p>If <a class="reference internal" href="../api/functions/TSHttpTxnCacheLookupUrlGet.en.html#c.TSHttpTxnCacheLookupUrlGet" title="TSHttpTxnCacheLookupUrlGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnCacheLookupUrlGet()</span></code></a> is called after new cache url set by
+<a class="reference internal" href="../api/functions/TSHttpTxnCacheLookupUrlGet.en.html#c.TSHttpTxnCacheLookupUrlSet" title="TSHttpTxnCacheLookupUrlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSHttpTxnCacheLookupUrlSet()</span></code></a> or <a class="reference internal" href="api-functions.en.html#c.TSCacheUrlSet" title="TSCacheUrlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheUrlSet()</span></code></a>, it should
+use a URL location created by <a class="reference internal" href="../api/functions/TSUrlCreate.en.html#c.TSUrlCreate" title="TSUrlCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSUrlCreate()</span></code></a> as its third input
+parameter instead of getting <code class="docutils literal notranslate"><span class="pre">url_loc</span></code> from the client request.</p>
+<p>It is a requirement that the string be syntactically a URL but otherwise it is
+completely arbitrary and need not have any path. For instance, if the company
+Network Geographics wanted to store certain content under its own
+<a class="reference internal" href="../../appendices/glossary.en.html#term-cache-key"><span class="xref std std-term">cache key</span></a>, using a document GUID as part of the key, it could use a
+cache key like</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ngeo</span><span class="p">:</span><span class="o">//</span><span class="n">W39WaGTPnvg</span>
+</pre></div>
+</div>
+<p>The scheme <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> was picked specifically because it is not a valid URL
+scheme, and so will never collide with any valid URL.</p>
+<p>This can be useful if the URL encodes both important and unimportant data.
+Instead of storing potentially identical content under different URLs (because
+they differ on the unimportant parts) a url containing only the important parts
+could be created and used.</p>
+<p>For example, suppose the URL for Network Geographics content encoded both the
+document GUID and a referral key.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">1.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="o">.</span><span class="mf">2511635.</span><span class="n">UQB_zCc8B8H</span>
+</pre></div>
+</div>
+<p>We don’t want to serve the same content for every possible referrer. Instead,
+we could use a plugin to convert this to the previous example and requests that
+differed only in the referrer key would all reference the same cache entry.
+Note that we would also map the following to the same cache key</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">network</span><span class="o">-</span><span class="n">geographics</span><span class="o">-</span><span class="n">farm</span><span class="o">-</span><span class="mf">56.</span><span class="n">com</span><span class="o">/</span><span class="n">doc</span><span class="o">/</span><span class="n">W39WaGTPnvg</span><span class="o">.</span><span class="mf">2511635.</span><span class="n">UQB_zCc8B8H</span>
+</pre></div>
+</div>
+<p>This can be handy for sharing content between servers when that content is
+identical. Plugins can change the cache key, or not, depending on any data in
+the request header. For instance, not changing the cache key if the request is
+not in the <code class="docutils literal notranslate"><span class="pre">doc</span></code> directory. If distinguishing servers is important, that can
+easily be pulled from the request URL and used in the synthetic cache key. The
+implementer is free to extract all relevant elements for use in the cache key.</p>
+<p>While there is no explicit requirement that the synthetic cache key be based on
+the HTTP request header, in practice it is generally necessary due to the
+consistency requirement. Because cache lookup happens before attempting to
+connect to the <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin server</span></a>, no data from the HTTP response header is
+available, leaving only the request header. The most common case is the one
+described above where the goal is to elide elements of the URL that do not
+affect the content to minimize cache footprint and improve cache hit rates.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ram-cache.en.html" class="btn btn-neutral float-right" title="RAM Cache" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api-functions.en.html" class="btn btn-neutral float-left" title="API functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

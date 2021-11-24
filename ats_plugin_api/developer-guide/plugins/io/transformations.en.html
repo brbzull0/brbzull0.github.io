@@ -1,0 +1,464 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Transformations &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="VIOs" href="vios.en.html" />
+    <link rel="prev" title="Net Vconnections" href="net-vconnections.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">IO</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="net-vconnections.en.html">Net Vconnections</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Transformations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="vios.en.html">VIOs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="io-buffers.en.html">IO Buffers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache-api.en.html">Cache API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.en.html#vconnections">Vconnections</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../new-protocol-plugins.en.html">New Protocol Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Plugin Development</a> &raquo;</li>
+        
+          <li><a href="index.en.html">IO</a> &raquo;</li>
+        
+      <li>Transformations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/plugins/io/transformations.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transformations">
+<span id="developer-plugins-io-transformations"></span><h1>Transformations<a class="headerlink" href="#transformations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="vconnection-implementer-s-view">
+<h2>Vconnection Implementer’s View<a class="headerlink" href="#vconnection-implementer-s-view" title="Permalink to this headline">¶</a></h2>
+<p>A VConnection implementer writes only transformations. All other
+VConnections (net VConnections and cache VConnections) are implemented
+in iocore. As mentioned earlier, a given vconnection can have a maximum
+of one read operation and one write operation being performed on it. The
+vconnection user gets information about the operation being performed by
+examining the VIO returned by a call to <a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a> or
+<a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a>. The implementer, in turn, gets a handle on the VIO
+operation by examining the VIO returned by <a class="reference internal" href="../../api/functions/TSVConnReadVIOGet.en.html#c.TSVConnReadVIOGet" title="TSVConnReadVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnReadVIOGet()</span></code></a> or
+<a class="reference internal" href="../../api/functions/TSVConnWriteVIOGet.en.html#c.TSVConnWriteVIOGet" title="TSVConnWriteVIOGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWriteVIOGet()</span></code></a> (recall that every vconnection created through
+the Traffic Server API has an associated read VIO and write VIO, even if
+it only supports reading or writing).</p>
+<p>For example, the null transform plugin’s transformation examines the
+input VIO by calling:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">input_vio</span> <span class="o">=</span> <span class="n">TSVConnWriteVIOGet</span> <span class="p">(</span><span class="n">contp</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">contp</span></code> is the transformation.</p>
+<p>A vconnection is a continuation. This means it has a handler function
+that is run when an event is sent to it, or more accurately, when an
+event that was sent to it is received. It is the handler function’s job
+to examine the event, the current state of its read VIO and write VIO,
+and any other internal state the vconnection might have and potentially
+make some progress on the IO operations.</p>
+<p>It is common for the handler function for all vconnections to look
+similar. Their basic form looks something like the code fragment below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span>
+<span class="nf">vconnection_handler</span> <span class="p">(</span><span class="n">TSCont</span> <span class="n">contp</span><span class="p">,</span> <span class="n">TSEvent</span> <span class="n">event</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">edata</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">TSVConnClosedGet</span> <span class="p">(</span><span class="n">contp</span><span class="p">))</span> <span class="p">{</span>
+        <span class="cm">/* Destroy any vconnection specific data here. */</span>
+        <span class="n">TSContDestroy</span> <span class="p">(</span><span class="n">contp</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="cm">/* Handle the incoming event */</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This code fragment basically shows that many vconnections simply want to
+destroy themselves when they are closed. However, the situation might
+also require the vconnection to do some cleanup processing - which is
+why <a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a> does not simply just destroy the vconnection.</p>
+<p>Vconnections are state machines that are animated by the events they
+receive. An event is sent to the vconnection whenever an
+<a class="reference internal" href="../../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a>, <a class="reference internal" href="../../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a>, <a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a>,
+<a class="reference internal" href="../../api/functions/TSVConnShutdown.en.html#c.TSVConnShutdown" title="TSVConnShutdown"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnShutdown()</span></code></a>, or <a class="reference internal" href="../../api/functions/TSVIOReenable.en.html#c.TSVIOReenable" title="TSVIOReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIOReenable()</span></code></a> call is performed.
+<a class="reference internal" href="../../api/functions/TSVIOReenable.en.html#c.TSVIOReenable" title="TSVIOReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIOReenable()</span></code></a> indirectly references the vconnection through a
+back-pointer in the VIO structure to the vconnection. The vconnection
+itself only knows which call was performed by examining its state and
+the state of its VIOs. For example, when <a class="reference internal" href="../../api/functions/TSVConnClose.en.html#c.TSVConnClose" title="TSVConnClose"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnClose()</span></code></a> is called, the
+vconnection is sent an immediate event (<code class="docutils literal notranslate"><span class="pre">TS_EVENT_IMMEDIATE</span></code>). For
+every event the vconnection receives, it needs to check its closed flag
+to see if it has been closed. Similarly, when <a class="reference internal" href="../../api/functions/TSVIOReenable.en.html#c.TSVIOReenable" title="TSVIOReenable"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIOReenable()</span></code></a> is
+called, the vconnection is sent an immediate event. For every event the
+vconnection receives, it must check its VIOs to see if the buffers have
+been modified to a state in which it can continue processing one of its
+operations.</p>
+<p>Finally, a vconnection is likely the user of other vconnections. It also
+receives events as the user of these other vconnections. When it
+receives such an event, like <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_READY</span></code>, it might
+just enable another vconnection that’s writing into the buffer used by
+the vconnection reading from it. The above description is merely
+intended to give the overall idea for what a vconnection needs to do.</p>
+<div class="section" id="transformation-vconnection">
+<h3>Transformation VConnection<a class="headerlink" href="#transformation-vconnection" title="Permalink to this headline">¶</a></h3>
+<p>A <a class="reference internal" href="../http-transformations/index.en.html#transformations"><span class="std std-ref">transformation</span></a> is
+a specific type of vconnection. It supports a subset of the vconnection
+functionality that enables one or more transformations to be chained
+together. A transformation sits as a bottleneck between an input data
+source and an output data sink, which enables it to view and modify all
+the data passing through it. Alternatively, some transformations simply
+scan the data and pass it on. A common transformation is one that
+compresses data in some manner.</p>
+<p>A transformation can modify either the data stream being sent <em>to</em> an
+HTTP client (e.g. the document) or the data stream being sent <em>from</em> an
+HTTP client (e.g. post data). To do this, the transformation should hook
+on to one of the following hooks:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_REQUEST_TRANSFORM_HOOK</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TS_HTTP_RESPONSE_TRANSFORM_HOOK</span></code></p></li>
+</ul>
+<p>Note that because a transformation is intimately associated with a given
+transaction, it is only possible to add the hook to the transaction
+hooks - not to the global or session hooks. Transformations reside in a
+chain, so their ordering is quite easily determined: transformations
+that add themselves to the chain are simply appended to it.</p>
+<p>Data is passed in to the transformation by initiating a vconnection
+write operation on the transformation. As a consequence of this design,
+a transformation must support the vconnection write operation. In other
+words, your transformation must expect an upstream vconnection to write
+data to it. The transformation has to read the data, consume it, and
+tell the upstream vconnection it is finished by sending it an
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_WRITE_COMPLETE</span></code> event. Transformations cannot send the
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code> event to the upstream vconnection
+unless they are finished consuming all incoming data. If
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code> is sent prematurely, then certain
+internal Traffic Server data structures will not be deallocated, thereby
+causing a memory leak.</p>
+<p>Here’s how to make sure that all incoming data is consumed:</p>
+<ul>
+<li><p>After reading or copying data, make sure that you consume the data
+and increase the value of ndone for the input VIO, as in the
+following example taken from <code class="docutils literal notranslate"><span class="pre">null_transform.c</span></code>:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TSIOBufferCopy</span> <span class="p">(</span><span class="n">TSVIOBufferGet</span> <span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">output_vio</span><span class="p">),</span>
+<span class="n">TSVIOReaderGet</span> <span class="p">(</span><span class="n">input_vio</span><span class="p">),</span> <span class="n">towrite</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="cm">/* Tell the read buffer that we have read the data and are no longer interested in it. */</span>
+<span class="n">TSIOBufferReaderConsume</span> <span class="p">(</span><span class="n">TSVIOReaderGet</span> <span class="p">(</span><span class="n">input_vio</span><span class="p">),</span> <span class="n">towrite</span><span class="p">);</span>
+<span class="cm">/* Modify the input VIO to reflect how much has been read.*/</span>
+<span class="n">TSVIONDoneSet</span> <span class="p">(</span><span class="n">input_vio</span><span class="p">,</span> <span class="n">TSVIONDoneGet</span> <span class="p">(</span><span class="n">input_vio</span><span class="p">)</span> <span class="o">+</span> <span class="n">towrite</span><span class="p">);</span>
+</pre></div>
+</div>
+</li>
+<li><p>Before sending <code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code>, your transformation
+should check the number of bytes remaining in the upstream
+vconnection’s write VIO (input VIO) using the function
+<code class="docutils literal notranslate"><span class="pre">TSVIONTodoGet</span></code> (<code class="docutils literal notranslate"><span class="pre">input_vio</span></code>). This value should go to zero when
+all of the upstream data is consumed
+(<code class="docutils literal notranslate"><span class="pre">TSVIONTodoGet</span> <span class="pre">=</span> <span class="pre">nbytes</span> <span class="pre">-</span> <span class="pre">ndone</span></code>). Do not send
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_WRITE_COMPLETE</span></code> events if <a class="reference internal" href="../../api/functions/TSVIONTodoGet.en.html#c.TSVIONTodoGet" title="TSVIONTodoGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVIONTodoGet()</span></code></a> is
+greater than zero.</p></li>
+<li><p>The transformation passes data out of itself by using the output
+vconnection retrieved by <a class="reference internal" href="../../api/functions/TSTransformOutputVConnGet.en.html#c.TSTransformOutputVConnGet" title="TSTransformOutputVConnGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformOutputVConnGet()</span></code></a>. Immediately
+before Traffic Server initiates the write operation (which inputs
+data into the transformation), it sets the output vconnection either
+to the next transformation in the chain of transformations or to a
+special terminating transformation (if it’s the last transformation
+in the chain). Since the transformation is handed ownership of the
+output vconnection, it must close it at some point in order for it to
+be deallocated.</p></li>
+<li><p>All of the transformations in a transformation chain share the
+transaction’s mutex. This small restriction (enforced by
+<a class="reference internal" href="../../api/functions/TSTransformCreate.en.html#c.TSTransformCreate" title="TSTransformCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformCreate()</span></code></a>) removes many of the locking complications of
+implementing general vconnections. For example, a transformation does
+not have to grab its write VIO mutex before accessing its write VIO
+because it knows it already holds the mutex.</p></li>
+</ul>
+<p>The transformation functions are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="../../api/functions/TSTransformCreate.en.html#c.TSTransformCreate" title="TSTransformCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformCreate()</span></code></a></p></li>
+<li><p><a class="reference internal" href="../../api/functions/TSTransformOutputVConnGet.en.html#c.TSTransformOutputVConnGet" title="TSTransformOutputVConnGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTransformOutputVConnGet()</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="vios.en.html" class="btn btn-neutral float-right" title="VIOs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="net-vconnections.en.html" class="btn btn-neutral float-left" title="Net Vconnections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

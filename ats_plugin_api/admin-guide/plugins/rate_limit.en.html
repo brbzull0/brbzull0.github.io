@@ -1,0 +1,462 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Rate Limit Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="URI Signing Plugin" href="uri_signing.en.html" />
+    <link rel="prev" title="Parent Select Plugin" href="parent_select.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>Rate Limit Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/rate_limit.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rate-limit-plugin">
+<span id="admin-plugins-rate-limit"></span><h1>Rate Limit Plugin<a class="headerlink" href="#rate-limit-plugin" title="Permalink to this headline">¶</a></h1>
+<p>The <strong class="program">rate_limit</strong> plugin provides basic mechanism for how much
+traffic a particular service (remap rule) is allowed to do. Currently,
+the only implementation is a limit on how many active client transactions
+a service can have. However, it would be easy to refactor this plugin to
+allow for adding new limiter policies later on.</p>
+<p>The limit counters and queues are per remap rule only, i.e. there is
+(currently) no way to group transaction limits from different remap rules
+into a single rate limiter.</p>
+<div class="section" id="remap-plugin">
+<h2>Remap Plugin<a class="headerlink" href="#remap-plugin" title="Permalink to this headline">¶</a></h2>
+<p>All configuration is done via <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, and the following options
+are available:</p>
+<dl class="std option">
+<dt id="cmdoption-rate-limit-limit">
+<code class="sig-name descname">--limit</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of active client transactions.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-queue">
+<code class="sig-name descname">--queue</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the limit (above) has been reached, all new transactions are placed
+on a FIFO queue. This option (optional) sets an upper bound on how many
+queued transactions we will allow. When this threshold is reached, all
+additional transactions are immediately served with an error message.</p>
+<p>The queue is effectively disabled if this is set to <cite>0</cite>, which implies
+that when the transaction limit is reached, we immediately start serving
+error responses.</p>
+<p>The default queue size is <cite>UINT_MAX</cite>, which is essentially unlimited.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-error">
+<code class="sig-name descname">--error</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-error" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional HTTP status error code, to be used together with the
+<a class="reference internal" href="#cmdoption-rate-limit-1"><code class="xref std std-option docutils literal notranslate"><span class="pre">--queue</span></code></a> option above. The default is <cite>429</cite>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-retry">
+<code class="sig-name descname">--retry</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional retry-after value, which if set will cause rejected (e.g. <cite>429</cite>)
+responses to also include a header <cite>Retry-After</cite>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-header">
+<code class="sig-name descname">--header</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-header" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is an optional HTTP header name, which will be added to the client
+request header IF the transaction was delayed (queued). The value of the
+header is the delay, in milliseconds. This can be useful to for example
+log the delays for later analysis.</p>
+<p>It is recommended that an <cite>&#64;</cite> header is used here, e.g. <cite>&#64;RateLimit-Delay</cite>,
+since this header will not leave the ATS server instance.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-maxage">
+<code class="sig-name descname">--maxage</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-maxage" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional <cite>max-age</cite> for how long a transaction can sit in the delay queue.
+The value (default 0) is the age in milliseconds.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="global-plugin">
+<h2>Global Plugin<a class="headerlink" href="#global-plugin" title="Permalink to this headline">¶</a></h2>
+<p>As a global plugin, the rate limiting currently applies only for TLS enabled
+connections, based on the SNI from the TLS handshake. The basic use is as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rate_limit</span><span class="o">.</span><span class="n">so</span> <span class="n">SNI</span><span class="o">=</span><span class="n">www1</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="p">,</span><span class="n">www2</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> <span class="o">--</span><span class="n">limit</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">queue</span><span class="o">=</span><span class="mi">2</span> <span class="o">--</span><span class="n">maxage</span><span class="o">=</span><span class="mi">10000</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As a global plugin, it’s highly recommended to also reduce the Keep-Alive inactive
+timeout for the service(s) controlled by this plugin. This avoids the risk of having
+idle connections consume too many of the available resources. This is easily
+done using e.g. the <code class="docutils literal notranslate"><span class="pre">conf_remap</span></code> plugin,
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-http-keep-alive-no-activity-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.keep_alive_no_activity_timeout_in</span></code></a>.</p>
+</div>
+<p>The following options are available:</p>
+<dl class="std option">
+<dt id="cmdoption-rate-limit-0">
+<code class="sig-name descname">--limit</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximum number of active client transactions.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-1">
+<code class="sig-name descname">--queue</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-1" title="Permalink to this definition">¶</a></dt>
+<dd><p>When the limit (above) has been reached, all new connections are placed
+on a FIFO queue. This option (optional) sets an upper bound on how many
+queued transactions we will allow. When this threshold is reached, all
+additional connections are immediately errored out in the TLS handshake.</p>
+<p>The queue is effectively disabled if this is set to <cite>0</cite>, which implies
+that when the transaction limit is reached, we immediately start serving
+error responses.</p>
+<p>The default queue size is <cite>UINT_MAX</cite>, which is essentially unlimited.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-rate-limit-2">
+<code class="sig-name descname">--maxage</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-rate-limit-2" title="Permalink to this definition">¶</a></dt>
+<dd><p>An optional <cite>max-age</cite> for how long a transaction can sit in the delay queue.
+The value (default 0) is the age in milliseconds.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This example shows a simple rate limiting of <cite>128</cite> concurrently active client
+transactions, with a maximum queue size of <cite>256</cite>. The default of HTTP status
+code <cite>429</cite> is used when queue is full:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">rate_limit</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">limit</span><span class="o">=</span><span class="mi">128</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">queue</span><span class="o">=</span><span class="mi">256</span>
+</pre></div>
+</div>
+<p>This example would put a hard transaction (in) limit to 256, with no backoff
+queue, and add a header with the transaction delay if it was queued:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">rate_limit</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">limit</span><span class="o">=</span><span class="mi">256</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">queue</span><span class="o">=</span><span class="mi">0</span> \
+  <span class="nd">@pparam</span><span class="o">=--</span><span class="n">header</span><span class="o">=</span><span class="nd">@RateLimit</span><span class="o">-</span><span class="n">Delay</span>
+</pre></div>
+</div>
+<p>This final example will limit the active transaction, queue size, and also
+add a <cite>Retry-After</cite> header once the queue is full and we return a <cite>429</cite> error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">cdn</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">some</span><span class="o">-</span><span class="n">server</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span> \
+  <span class="nd">@plugin</span><span class="o">=</span><span class="n">rate_limit</span><span class="o">.</span><span class="n">so</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">limit</span><span class="o">=</span><span class="mi">256</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">queue</span><span class="o">=</span><span class="mi">1024</span> \
+  <span class="nd">@pparam</span><span class="o">=--</span><span class="n">retry</span><span class="o">=</span><span class="mi">3600</span> <span class="nd">@pparam</span><span class="o">=--</span><span class="n">header</span><span class="o">=</span><span class="nd">@RateLimit</span><span class="o">-</span><span class="n">Delay</span>
+</pre></div>
+</div>
+<p>In this case, the response would look like this when the queue is full:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span> <span class="mi">429</span> <span class="n">Too</span> <span class="n">Many</span> <span class="n">Requests</span>
+<span class="n">Date</span><span class="p">:</span> <span class="n">Fri</span><span class="p">,</span> <span class="mi">26</span> <span class="n">Mar</span> <span class="mi">2021</span> <span class="mi">22</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">38</span> <span class="n">GMT</span>
+<span class="n">Connection</span><span class="p">:</span> <span class="n">keep</span><span class="o">-</span><span class="n">alive</span>
+<span class="n">Server</span><span class="p">:</span> <span class="n">ATS</span><span class="o">/</span><span class="mf">10.0</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">Cache</span><span class="o">-</span><span class="n">Control</span><span class="p">:</span> <span class="n">no</span><span class="o">-</span><span class="n">store</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Type</span><span class="p">:</span> <span class="n">text</span><span class="o">/</span><span class="n">html</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Language</span><span class="p">:</span> <span class="n">en</span>
+<span class="n">Retry</span><span class="o">-</span><span class="n">After</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="p">:</span> <span class="mi">207</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="uri_signing.en.html" class="btn btn-neutral float-right" title="URI Signing Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="parent_select.en.html" class="btn btn-neutral float-left" title="Parent Select Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

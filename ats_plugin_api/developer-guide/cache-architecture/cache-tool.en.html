@@ -1,0 +1,388 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cache Tool &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Tiered Storage" href="tiered-storage.en.html" />
+    <link rel="prev" title="RAM Cache" href="ram-cache.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="architecture.en.html">Cache Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-functions.en.html">API functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#volume-tagging">Volume Tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Cache Tool</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#internals">Internals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tiered-storage.en.html">Tiered Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>Cache Tool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/cache-tool.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cache-tool">
+<span id="id1"></span><h1>Cache Tool<a class="headerlink" href="#cache-tool" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="internals">
+<h2>Internals<a class="headerlink" href="#internals" title="Permalink to this headline">¶</a></h2>
+<dl class="cpp type">
+<dt id="_CPPv49Megabytes">
+<span id="_CPPv39Megabytes"></span><span id="_CPPv29Megabytes"></span><span id="Megabytes"></span><em class="property">type </em><code class="sig-name descname">Megabytes</code><a class="headerlink" href="#_CPPv49Megabytes" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A <a class="reference internal" href="../internal-libraries/scalar.en.html#_CPPv4I_8intmax_t00E6Scalar" title="Scalar"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Scalar</span></code></a> type with a scale of 2~20~.</p>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv417CacheStripeBlocks">
+<span id="_CPPv317CacheStripeBlocks"></span><span id="_CPPv217CacheStripeBlocks"></span><span id="CacheStripeBlocks"></span><em class="property">type </em><code class="sig-name descname">CacheStripeBlocks</code><a class="headerlink" href="#_CPPv417CacheStripeBlocks" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A <a class="reference internal" href="../internal-libraries/scalar.en.html#_CPPv4I_8intmax_t00E6Scalar" title="Scalar"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Scalar</span></code></a> type with a scale of 2~27~. This represents the units in which storage is
+allocated to stripes.</p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt id="_CPPv412VolumeConfig">
+<span id="_CPPv312VolumeConfig"></span><span id="_CPPv212VolumeConfig"></span><span id="VolumeConfig"></span><em class="property">class </em><code class="sig-name descname">VolumeConfig</code><a class="headerlink" href="#_CPPv412VolumeConfig" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A container for parsed cache volume configuration.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N12VolumeConfig4DataE">
+<span id="_CPPv3N12VolumeConfig4DataE"></span><span id="_CPPv2N12VolumeConfig4DataE"></span><span id="VolumeConfig::Data"></span><em class="property">class </em><code class="sig-name descname">Data</code><a class="headerlink" href="#_CPPv4N12VolumeConfig4DataE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Configuration information for a single cache volume.</p>
+<dl class="cpp member">
+<dt id="_CPPv4N12VolumeConfig4Data4_idxE">
+<span id="_CPPv3N12VolumeConfig4Data4_idxE"></span><span id="_CPPv2N12VolumeConfig4Data4_idxE"></span><span id="VolumeConfig::Data::_idx__i"></span>int <code class="sig-name descname">_idx</code><a class="headerlink" href="#_CPPv4N12VolumeConfig4Data4_idxE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The volume index, 0 if not specified in the configuration.</p>
+</dd></dl>
+
+<dl class="cpp member">
+<dt id="_CPPv4N12VolumeConfig4Data8_percentE">
+<span id="_CPPv3N12VolumeConfig4Data8_percentE"></span><span id="_CPPv2N12VolumeConfig4Data8_percentE"></span><span id="VolumeConfig::Data::_percent__i"></span>int <code class="sig-name descname">_percent</code><a class="headerlink" href="#_CPPv4N12VolumeConfig4Data8_percentE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Volume size if specified as a percentage, otherwise 0 if not specified.</p>
+</dd></dl>
+
+<dl class="cpp member">
+<dt id="_CPPv4N12VolumeConfig4Data5_sizeE">
+<span id="_CPPv3N12VolumeConfig4Data5_sizeE"></span><span id="_CPPv2N12VolumeConfig4Data5_sizeE"></span><span id="VolumeConfig::Data::_size__Megabytes"></span><a class="reference internal" href="#_CPPv49Megabytes" title="Megabytes">Megabytes</a> <code class="sig-name descname">_size</code><a class="headerlink" href="#_CPPv4N12VolumeConfig4Data5_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Volume size if specified as an explicit size, otherwise 0 if not specified.</p>
+</dd></dl>
+
+<dl class="cpp member">
+<dt id="_CPPv4N12VolumeConfig4Data6_allocE">
+<span id="_CPPv3N12VolumeConfig4Data6_allocE"></span><span id="_CPPv2N12VolumeConfig4Data6_allocE"></span><span id="VolumeConfig::Data::_alloc__CacheStripeBlocks"></span><a class="reference internal" href="#_CPPv417CacheStripeBlocks" title="CacheStripeBlocks">CacheStripeBlocks</a> <code class="sig-name descname">_alloc</code><a class="headerlink" href="#_CPPv4N12VolumeConfig4Data6_allocE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Already allocated size, used during allocation computations.</p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp class">
+<dt id="_CPPv415VolumeAllocator">
+<span id="_CPPv315VolumeAllocator"></span><span id="_CPPv215VolumeAllocator"></span><span id="VolumeAllocator"></span><em class="property">class </em><code class="sig-name descname">VolumeAllocator</code><a class="headerlink" href="#_CPPv415VolumeAllocator" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>This class provides handling for allocating storage space to stripes based on volume configuration.</p>
+<dl class="cpp class">
+<dt id="_CPPv4N15VolumeAllocator1VE">
+<span id="_CPPv3N15VolumeAllocator1VE"></span><span id="_CPPv2N15VolumeAllocator1VE"></span><span id="VolumeAllocator::V"></span><em class="property">class </em><code class="sig-name descname">V</code><a class="headerlink" href="#_CPPv4N15VolumeAllocator1VE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cache volume data for a single cache volume.</p>
+<dl class="cpp member">
+<dt id="_CPPv4N15VolumeAllocator1V7_configE">
+<span id="_CPPv3N15VolumeAllocator1V7_configE"></span><span id="_CPPv2N15VolumeAllocator1V7_configE"></span><span id="VolumeAllocator::V::_config__VolumeConfig::DataCR"></span><a class="reference internal" href="#_CPPv412VolumeConfig" title="VolumeConfig">VolumeConfig</a>::<a class="reference internal" href="#_CPPv4N12VolumeConfig4DataE" title="VolumeConfig::Data">Data</a> <em class="property">const</em> &amp;<code class="sig-name descname">_config</code><a class="headerlink" href="#_CPPv4N15VolumeAllocator1V7_configE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A reference to the (parsed) volume configuration for a single volume to be used for allocating
+storage to that cache volume.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp member">
+<dt id="_CPPv4N15VolumeAllocator3_avE">
+<span id="_CPPv3N15VolumeAllocator3_avE"></span><span id="_CPPv2N15VolumeAllocator3_avE"></span><span id="VolumeAllocator::_av__std::vector:V:"></span>std::<a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv4I0ENSt6vectorE" title="std::vector">vector</a>&lt;<a class="reference internal" href="#_CPPv4N15VolumeAllocator1VE" title="VolumeAllocator::V">V</a>&gt; <code class="sig-name descname">_av</code><a class="headerlink" href="#_CPPv4N15VolumeAllocator3_avE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Cache volume data for all the volumes in the configuration.</p>
+</dd></dl>
+
+<dl class="cpp member">
+<dt id="_CPPv4N15VolumeAllocator5_volsE">
+<span id="_CPPv3N15VolumeAllocator5_volsE"></span><span id="_CPPv2N15VolumeAllocator5_volsE"></span><span id="VolumeAllocator::_vols__VolumeConfig"></span><a class="reference internal" href="#_CPPv412VolumeConfig" title="VolumeConfig">VolumeConfig</a> <code class="sig-name descname">_vols</code><a class="headerlink" href="#_CPPv4N15VolumeAllocator5_volsE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The parsed cache volume configuration.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tiered-storage.en.html" class="btn btn-neutral float-right" title="Tiered Storage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ram-cache.en.html" class="btn btn-neutral float-left" title="RAM Cache" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

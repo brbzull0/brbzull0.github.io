@@ -1,0 +1,551 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TSHttpHdrTypeGet &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="TSHttpHdrTypeSet" href="TSHttpHdrTypeSet.en.html" />
+    <link rel="prev" title="TSHttpHdrStatusSet" href="TSHttpHdrStatusSet.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.en.html">API Reference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../types/index.en.html">API Types</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html">API Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="TSAPI.en.html">TSAPI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSAcceptor.en.html">TSAcceptor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSActionCancel.en.html">TSActionCancel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSActionDone.en.html">TSActionDone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheRead.en.html">TSCacheRead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheRemove.en.html">TSCacheRemove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSCacheWrite.en.html">TSCacheWrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSClientProtocolStack.en.html">TSClientProtocolStack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSConfig.en.html">TSConfig Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContCall.en.html">TSContCall</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContCreate.en.html">TSContCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDataGet.en.html">TSContDataGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDataSet.en.html">TSContDataSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContDestroy.en.html">TSContDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContMutexGet.en.html">TSContMutexGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleEveryOnPool.en.html">TSContScheduleEveryOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnPool.en.html">TSContScheduleOnPool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContScheduleOnThread.en.html">TSContScheduleOnThread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityGet.en.html">TSContThreadAffinityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinitySet.en.html">TSContThreadAffinitySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSDebug.en.html">TSDebug</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSEventThreadSelf.en.html">TSEventThreadSelf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSFetchCreate.en.html">TSFetchCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHostLookup.en.html">TSHostLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHostLookupResultAddrGet.en.html">TSHostLookupResultAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpArgs.en.html">TSHttpArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnect.en.html">TSHttpConnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnectOptionsGet.en.html">TSHttpConnectOptionsGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnectPlugin.en.html">TSHttpConnectPlugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpConnectWithPluginId.en.html">TSHttpConnectWithPluginId</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrClone.en.html">TSHttpHdrClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrCopy.en.html">TSHttpHdrCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrCreate.en.html">TSHttpHdrCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrDestroy.en.html">TSHttpHdrDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrHostGet.en.html">TSHttpHdrHostGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrLengthGet.en.html">TSHttpHdrLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrMethodGet.en.html">TSHttpHdrMethodGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrMethodSet.en.html">TSHttpHdrMethodSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrPrint.en.html">TSHttpHdrPrint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonGet.en.html">TSHttpHdrReasonGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonLookup.en.html">TSHttpHdrReasonLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrReasonSet.en.html">TSHttpHdrReasonSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrStatusGet.en.html">TSHttpHdrStatusGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrStatusSet.en.html">TSHttpHdrStatusSet</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TSHttpHdrTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrTypeSet.en.html">TSHttpHdrTypeSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrUrlGet.en.html">TSHttpHdrUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrUrlSet.en.html">TSHttpHdrUrlSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrVersionGet.en.html">TSHttpHdrVersionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHdrVersionSet.en.html">TSHttpHdrVersionSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpHookAdd.en.html">TSHttpHookAdd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpOverridableConfig.en.html">TSHttpOverridableConfig</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpParserCreate.en.html">TSHttpParserCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnClientFdGet.en.html">TSHttpSsnClientFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnIdGet.en.html">TSHttpSsnIdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpSsnReenable.en.html">TSHttpSsnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnAborted.en.html">TSHttpTxnAborted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCacheLookupStatusGet.en.html">TSHttpTxnCacheLookupStatusGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCacheLookupUrlGet.en.html">TSHttpTxnCacheLookupUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCachedReqGet.en.html">TSHttpTxnCachedReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCachedRespGet.en.html">TSHttpTxnCachedRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientFdGet.en.html">TSHttpTxnClientFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketDscpSet.en.html">TSHttpTxnClientPacketDscpSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketMarkSet.en.html">TSHttpTxnClientPacketMarkSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientPacketTosSet.en.html">TSHttpTxnClientPacketTosSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientReqGet.en.html">TSHttpTxnClientReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientRespGet.en.html">TSHttpTxnClientRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamIdGet.en.html">TSHttpTxnClientStreamIdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnClientStreamPriorityGet.en.html">TSHttpTxnClientStreamPriorityGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnCntl.en.html">TSHttpTxnCntl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnErrorBodySet.en.html">TSHttpTxnErrorBodySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIncomingAddrGet.en.html">TSHttpTxnIncomingAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnInfoIntGet.en.html">TSHttpTxnInfoIntGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIntercept.en.html">TSHttpTxnIntercept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsCacheable.en.html">TSHttpTxnIsCacheable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsInternal.en.html">TSHttpTxnIsInternal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnIsWebsocket.en.html">TSHttpTxnIsWebsocket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnMilestoneGet.en.html">TSHttpTxnMilestoneGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnNextHopAddrGet.en.html">TSHttpTxnNextHopAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnNextHopNameGet.en.html">TSHttpTxnNextHopNameGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnOutgoingAddrGet.en.html">Local outbound address</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnParentProxySet.en.html">TSHttpTxnParentProxySet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnParentSelectionUrlGet.en.html">TSHttpTxnParentSelectionUrlSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnPluginTagGet.en.html">TSHttpTxnPluginTagGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnPostBufferReaderGet.en.html">TSHttpTxnPostBufferReaderGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnRedoCacheLookup.en.html">TSHttpTxnRedoCacheLookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnReenable.en.html">TSHttpTxnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerAddrGet.en.html">TSHttpTxnServerAddrGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerAddrSet.en.html">TSHttpTxnServerAddrSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerFdGet.en.html">TSHttpTxnServerFdGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerIntercept.en.html">TSHttpTxnServerIntercept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketDscpSet.en.html">TSHttpTxnServerPacketDscpSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketMarkSet.en.html">TSHttpTxnServerPacketMarkSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPacketTosSet.en.html">TSHttpTxnServerPacketTosSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerPush.en.html">TSHttpTxnServerPush</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerReqGet.en.html">TSHttpTxnServerReqGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerRespGet.en.html">TSHttpTxnServerRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnServerSsnTransactionCount.en.html">TSHttpTxnServerSsnTransactionCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnSsnGet.en.html">TSHttpTxnSsnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformRespGet.en.html">TSHttpTxnTransformRespGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnTransformedRespCache.en.html">TSHttpTxnTransformedRespCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSHttpTxnUntransformedRespCache.en.html">TSHttpTxnUntransformedRespCache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferBlockReadStart.en.html">TSIOBufferBlockReadStart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferCopy.en.html">TSIOBufferCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferCreate.en.html">TSIOBufferCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIOBufferReader.en.html">TSIOBufferReader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSInstallDirGet.en.html">TSInstallDirGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSIpStringToAddr.en.html">TSIpStringToAddr</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSLifecycleHookAdd.en.html">TSLifecycleHookAdd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMBufferCreate.en.html">TSMBufferCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtConfigFileAdd.en.html">TSMgmtConfigFileAdd</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtCounterGet.en.html">TSMgmtCounterGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtDataTypeGet.en.html">TSMgmtDataTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtFloatGet.en.html">TSMgmtFloatGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtIntGet.en.html">TSMgmtIntGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtSourceGet.en.html">TSMgmtSourceGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtStringGet.en.html">TSMgmtStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMgmtUpdateRegister.en.html">TSMgmtUpdateRegister</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrClone.en.html">TSMimeHdrClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrCopy.en.html">TSMimeHdrCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrCreate.en.html">TSMimeHdrCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrDestroy.en.html">TSMimeHdrDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldAppend.en.html">TSMimeHdrFieldAppend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldClone.en.html">TSMimeHdrFieldClone</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCopy.en.html">TSMimeHdrFieldCopy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCopyValues.en.html">TSMimeHdrFieldCopyValues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldCreate.en.html">TSMimeHdrFieldCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldDestroy.en.html">TSMimeHdrFieldDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldFind.en.html">TSMimeHdrFieldFind</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldGet.en.html">TSMimeHdrFieldGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldLengthGet.en.html">TSMimeHdrFieldLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNameGet.en.html">TSMimeHdrFieldNameGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNameSet.en.html">TSMimeHdrFieldNameSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNext.en.html">TSMimeHdrFieldNext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldNextDup.en.html">TSMimeHdrFieldNextDup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldRemove.en.html">TSMimeHdrFieldRemove</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueAppend.en.html">TSMimeHdrFieldValueAppend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueDateInsert.en.html">TSMimeHdrFieldValueDateInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueDateSet.en.html">TSMimeHdrFieldValueDateSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueIntSet.en.html">TSMimeHdrFieldValueIntSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringGet.en.html">TSMimeHdrFieldValueStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringInsert.en.html">TSMimeHdrFieldValueStringInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueStringSet.en.html">TSMimeHdrFieldValueStringSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueUintInsert.en.html">TSMimeHdrFieldValueUintInsert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValueUintSet.en.html">TSMimeHdrFieldValueUintSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValuesClear.en.html">TSMimeHdrFieldValuesClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldValuesCount.en.html">TSMimeHdrFieldValuesCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldsClear.en.html">TSMimeHdrFieldsClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrFieldsCount.en.html">TSMimeHdrFieldsCount</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrLengthGet.en.html">TSMimeHdrLengthGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrParse.en.html">TSMimeHdrParse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeHdrPrint.en.html">TSMimeHdrPrint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserClear.en.html">TSMimeParserClear</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserCreate.en.html">TSMimeParserCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMimeParserDestroy.en.html">TSMimeParserDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexCreate.en.html">TSMutexCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexDestroy.en.html">TSMutexDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexLock.en.html">TSMutexLock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexLockTry.en.html">TSMutexLockTry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSMutexUnlock.en.html">TSMutexUnlock</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetAccept.en.html">TSNetAccept</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetAcceptNamedProtocol.en.html">TSNetAcceptNamedProtocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetConnect.en.html">TSNetConnect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSNetInvokingGet.en.html">TSNetInvokingContGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginDSOReloadEnable.en.html">TSPluginDSOReloadEnable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginInit.en.html">TSPluginInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginVCIOBufferIndexGet.en.html">TSPluginVCIOBufferIndexGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSPluginVCIOBufferWaterMarkGet.en.html">TSPluginVCIOBufferWaterMarkGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRPCRegister.en.html">TSRPCRegister</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRecords.en.html">Traffic Server Records</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRemap.en.html">TSRemapInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSRemapFromToUrlGet.en.html">TSRemapFrom/ToUrlGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslClientCertUpdate.en.html">TSSslClientCertUpdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslClientContext.en.html">TSSslClientContext</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslContext.en.html">TS SSL Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html">TSSslSecretSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretget">TSSslSecretGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSecret.en.html#tssslsecretupdate">TSSslSecretUpdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslServerCertUpdate.en.html">TSSslServerCertUpdate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslServerContextCreate.en.html">TSSslServerContextCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSSslSession.en.html">TSSslSession</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSStat.en.html">Plugin Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTextLogObjectCreate.en.html">TSTextLogObjectCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadCreate.en.html">TSThreadCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadDestroy.en.html">TSThreadDestroy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadInit.en.html">TSThreadInit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSThreadSelf.en.html">TSThreadSelf</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTrafficServerVersionGet.en.html">TSTrafficServerVersionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTransformCreate.en.html">TSTransformCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTransformOutputVConnGet.en.html">TSTransformOutputVConnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSTypes.en.html">TSAPI Types</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlCreate.en.html">TSUrlCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlFtpTypeGet.en.html">TSUrlFtpTypeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlFtpTypeSet.en.html">TSUrlFtpTypeSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlHostGet.en.html">TSUrlHostGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlHostSet.en.html">TSUrlHostSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlPercentEncode.en.html">TSUrlPercentEncode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUrlStringGet.en.html">TSUrlStringGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUserArgs.en.html">TSUserArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSUuidCreate.en.html">TSUuidCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConn.en.html">TSVConn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnAbort.en.html">TSVConnAbort</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnArgs.en.html">TSVConnArgs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnCacheObjectSizeGet.en.html">TSVConnCacheObjectSizeGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnClose.en.html">TSVConnClose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnClosedGet.en.html">TSVConnClosedGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnCreate.en.html">TSVConnCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnFdCreate.en.html">TSVConnFdCreate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnIsSsl.en.html">TSVConnIsSsl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnProtocol.en.html">TSVConnProtocolEnable/Disable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnProvidedSslCert.en.html">TSVConnProvidedSslCert</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnRead.en.html">TSVConnRead</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReadVIOGet.en.html">TSVConnReadVIOGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html">TSVConnReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnReenable.en.html#tsvconnreenableex">TSVConnReenableEx</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnShutdown.en.html">TSVConnShutdown</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslConnectionGet.en.html">TSVConnSslConnectionGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslSniGet.en.html">TSVConnSslSniGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnSslVerifyCTXGet.en.html">TSVConnSslVerifyCTXGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnTunnel.en.html">TSVConnTunnel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnWrite.en.html">TSVConnWrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVConnWriteVIOGet.en.html">TSVConnWriteVIOGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOBufferGet.en.html">TSVIOBufferGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOContGet.en.html">TSVIOContGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOMutexGet.en.html">TSVIOMutexGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONBytesGet.en.html">TSVIONBytesGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONBytesSet.en.html">TSVIONBytesSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONDoneGet.en.html">TSVIONDoneGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONDoneSet.en.html">TSVIONDoneSet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIONTodoGet.en.html">TSVIONTodoGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOReaderGet.en.html">TSVIOReaderGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOReenable.en.html">TSVIOReenable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSVIOVConnGet.en.html">TSVIOVConnGet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfclose.en.html">TSfclose</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfflush.en.html">TSfflush</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfgets.en.html">TSfgets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfopen.en.html">TSfopen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfread.en.html">TSfread</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSfwrite.en.html">TSfwrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="TSmalloc.en.html">TSmalloc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="index.en.html">API Functions</a> &raquo;</li>
+        
+      <li>TSHttpHdrTypeGet</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/developer-guide/api/functions/TSHttpHdrTypeGet.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tshttphdrtypeget">
+<h1>TSHttpHdrTypeGet<a class="headerlink" href="#tshttphdrtypeget" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/ts.h&gt;</span><span class="cp"></span>
+</pre></div>
+</div>
+<dl class="c function">
+<dt id="c.TSHttpHdrTypeGet">
+<a class="reference internal" href="../types/TSHttpType.en.html#c.TSHttpType" title="TSHttpType">TSHttpType</a> <code class="sig-name descname">TSHttpHdrTypeGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSMBuffer" title="TSMBuffer">TSMBuffer</a> <em>bufp</em>, <a class="reference internal" href="TSTypes.en.html#c.TSMLoc" title="TSMLoc">TSMLoc</a> <em>offset</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpHdrTypeGet" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="TSHttpHdrTypeSet.en.html" class="btn btn-neutral float-right" title="TSHttpHdrTypeSet" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSHttpHdrStatusSet.en.html" class="btn btn-neutral float-left" title="TSHttpHdrStatusSet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

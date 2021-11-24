@@ -1,0 +1,409 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tiered Storage &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Logging Architecture" href="../logging-architecture/index.en.html" />
+    <link rel="prev" title="Cache Tool" href="cache-tool.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="architecture.en.html">Cache Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api-functions.en.html">API functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#volume-tagging">Volume Tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tool.en.html">Cache Tool</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Tiered Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operations">Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#copying">Copying</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#additional-notes">Additional Notes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>Tiered Storage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/tiered-storage.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tiered-storage">
+<span id="developer-cache-tiered-storage"></span><h1>Tiered Storage<a class="headerlink" href="#tiered-storage" title="Permalink to this headline">¶</a></h1>
+<p>Tiered storage is an attempt to allow Traffic Server to take advantage of physical storage
+with different properties. This design concerns only mechanism. Policies to take
+advantage of these are outside of the scope of this document. Instead we will
+presume an <em>oracle</em> which implements this policy and describe the queries that
+must be answered by the oracle and the effects of the answers.</p>
+<p>Beyond avoiding question of tier policy, the design is also intended to be
+effectively identical to current operations for the case where there is only
+one tier.</p>
+<p>The most common case for tiers is an ordered list of tiers, where higher tiers
+are presumed faster but more expensive (or more limited in capacity). This is
+not required. It might be that different tiers are differentiated by other
+properties (such as expected persistence). The design here is intended to
+handle both cases.</p>
+<p>The design presumes that if a user has multiple tiers of storage and an ordering
+for those tiers, they will usually want content stored at one tier level to also
+be stored at every other lower level as well, so that it does not have to be
+copied if evicted from a higher tier.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Each <a class="reference internal" href="../../appendices/glossary.en.html#term-storage-unit"><span class="xref std std-term">storage unit</span></a> in <a class="reference internal" href="../../admin-guide/files/storage.config.en.html#std-configfile-storage.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">storage.config</span></code></a> can be marked with a
+<em>quality</em> value which is 32 bit number. Storage units that are not marked are
+all assigned the same value which is guaranteed to be distinct from all explicit
+values. The quality value is arbitrary from the point of view of this design,
+serving as a tag rather than a numeric value. The user (via the oracle) can
+impose what ever additional meaning is useful on this value (rating, bit
+slicing, etc.).</p>
+<p>In such cases, all <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">volumes</span></a> should be explicitly assigned
+a value, as the default (unmarked) value is not guaranteed to have any
+relationship to explicit values. The unmarked value is intended to be useful in
+situations where the user has no interest in tiered storage and so wants to let
+Traffic Server automatically handle all volumes as a single tier.</p>
+</div>
+<div class="section" id="operations">
+<h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
+<p>After a client request is received and processed, volume assignment is done. For
+each tier, the oracle would return one of four values along with a volume
+pointer:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">READ</span></code></dt><dd><p>The tier appears to have the object and can serve it.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">WRITE</span></code></dt><dd><p>The object is not in this tier and should be written to this tier if
+possible.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">RW</span></code></dt><dd><p>Treat as <code class="docutils literal notranslate"><span class="pre">READ</span></code> if possible, but if the object turns out to not in the
+cache treat as <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">NO_SALE</span></code></dt><dd><p>Do not interact with this tier for this object.</p>
+</dd>
+</dl>
+<p>The <a class="reference internal" href="../../appendices/glossary.en.html#term-cache-volume"><span class="xref std std-term">volume</span></a> returned for the tier must be a volume with
+the corresponding tier quality value. In effect, the current style of volume
+assignment is done for each tier, by assigning one volume out of all of the
+volumes of the same quality and returning one of <code class="docutils literal notranslate"><span class="pre">RW</span></code> or <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>, depending
+on whether the initial volume directory lookup succeeds. Note that as with
+current volume assignment, it is presumed this can be done from in memory
+structures (no disk I/O required).</p>
+<p>If the oracle returns <code class="docutils literal notranslate"><span class="pre">READ</span></code> or <code class="docutils literal notranslate"><span class="pre">RW</span></code> for more than one tier, it must also
+return an ordering for those tiers (it may return an ordering for all tiers,
+ones that are not readable will be ignored). For each tier, in that order, a
+read of cache storage is attempted for the object. A successful read locks that
+tier as the provider of cached content. If no tier has a successful read, or no
+tier is marked <code class="docutils literal notranslate"><span class="pre">READ</span></code> or <code class="docutils literal notranslate"><span class="pre">RW</span></code> then it is a cache miss. Any tier marked
+<code class="docutils literal notranslate"><span class="pre">RW</span></code> that fails the read test is demoted to <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>.</p>
+<p>If the object is cached, every tier that returns <code class="docutils literal notranslate"><span class="pre">WRITE</span></code> receives the object
+to store in the selected volume (this includes <code class="docutils literal notranslate"><span class="pre">RW</span></code> returns that are demoted
+to <code class="docutils literal notranslate"><span class="pre">WRITE</span></code>). This is a cache to cache copy, not from the <a class="reference internal" href="../../appendices/glossary.en.html#term-origin-server"><span class="xref std std-term">origin server</span></a>.
+In this case, tiers marked <code class="docutils literal notranslate"><span class="pre">RW</span></code> that are not tested for read will not receive
+any data and will not be further involved in the request processing.</p>
+<p>For a cache miss, all tiers marked <code class="docutils literal notranslate"><span class="pre">WRITE</span></code> will receive data from the origin
+server connection (if successful).</p>
+<p>This means, among other things, that if there is a tier with the object all
+other tiers that are written will get a local copy of the object, and the origin
+server will not be used. In terms of implementation, currently a cache write to
+a volume is done via the construction of an instance of <a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a>
+which receives the object stream. For tiered storage, the same thing is done
+for each target volume.</p>
+<p>For cache volume overrides (via <a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a>) this same process is
+used except with only the volumes stripes contained within the specified cache
+volume.</p>
+</div>
+<div class="section" id="copying">
+<h2>Copying<a class="headerlink" href="#copying" title="Permalink to this headline">¶</a></h2>
+<p>It may be necessary to provide a mechanism to copy objects between tiers outside
+of a client originated transaction. In terms of implementation, this is straight
+forward using <a class="reference internal" href="data-structures.en.html#_CPPv410HttpTunnel" title="HttpTunnel"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">HttpTunnel</span></code></a> as if in a transaction, only using a
+<a class="reference internal" href="data-structures.en.html#_CPPv47CacheVC" title="CacheVC"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CacheVC</span></code></a> instance for both the producer and consumer. The more
+difficult question is what event would trigger a possible copy. A signal could
+be provided whenever a volume directory entry is deleted, although it should be
+noted that the object in question may have already been evicted when this event
+happens.</p>
+</div>
+<div class="section" id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
+<p>As an example use, it would be possible to have only one cache volume that uses
+tiered storage for a particular set of domains using volume tagging.
+<a class="reference internal" href="../../admin-guide/files/hosting.config.en.html#std-configfile-hosting.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">hosting.config</span></code></a> would be used to direct those domains to the selected
+cache volume. The oracle would check the URL in parallel and return <code class="docutils literal notranslate"><span class="pre">NO_SALE</span></code>
+for the tiers in the target cache volume for other domains. For the other tier
+(that of the unmarked storage units), the oracle would return <code class="docutils literal notranslate"><span class="pre">RW</span></code> for the
+tier in all cases as that tier would not be queried for the target domains.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../logging-architecture/index.en.html" class="btn btn-neutral float-right" title="Logging Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cache-tool.en.html" class="btn btn-neutral float-left" title="Cache Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

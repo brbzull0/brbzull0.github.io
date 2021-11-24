@@ -1,0 +1,583 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>New Protocol Plugins &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Plugin Interfaces" href="plugin-interfaces.en.html" />
+    <link rel="prev" title="Remap Plugins" href="remap-plugins.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugin Development</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="introduction.en.html">Plugin Development Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="building-plugins.en.html">Building Plugins</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.en.html">Plugin Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-management/index.en.html">Plugin Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="actions/index.en.html">Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hooks-and-transactions/index.en.html">Hooks and Transactions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="continuations/index.en.html">Continuations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mutexes.en.html">Mutexes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="io/index.en.html">IO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-headers/index.en.html">HTTP Headers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="http-transformations/index.en.html">HTTP Transformations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="remap-plugins.en.html">Remap Plugins</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">New Protocol Plugins</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#about-the-sample-protocol">About the Sample Protocol</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#protocol-plugin-structure">Protocol Plugin Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#continuations-in-the-protocol-plugin">Continuations in the Protocol Plugin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event-flow">Event Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#one-way-to-implement-a-transaction-state-machine">One Way to Implement a Transaction State Machine</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing-a-typical-transaction">Processing a Typical Transaction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="plugin-interfaces.en.html">Plugin Interfaces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="adding-statistics.en.html">Adding Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="example-plugins/index.en.html">Example Plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugin Development</a> &raquo;</li>
+        
+      <li>New Protocol Plugins</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/plugins/new-protocol-plugins.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="new-protocol-plugins">
+<span id="developer-plugins-new-protocol-plugins"></span><h1>New Protocol Plugins<a class="headerlink" href="#new-protocol-plugins" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>The new protocol APIs enable you to extend Traffic Server to be a web
+proxy for any protocol. This chapter describes new protocol APIs and the
+plugins that support new protocols. It also provides a detailed review
+of code for a sample Protocol plugin that supports a very simple
+artificial HTTP-like protocol.</p>
+<div class="section" id="about-the-sample-protocol">
+<span id="id1"></span><h2>About the Sample Protocol<a class="headerlink" href="#about-the-sample-protocol" title="Permalink to this headline">¶</a></h2>
+<p>The sample protocol enables a client to ask a server for a file. Clients
+send requests to a specific Traffic Server port (specified in
+<a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>); each request has the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server_name</span> <span class="n">file_name</span>
+</pre></div>
+</div>
+<p>Using the Protocol plugin, Traffic Server can accept these requests,
+parse them, and act as a proxy cache (i.e., request the file from the
+origin server on the client’s behalf and store copies of response
+messages in cache). The Protocol plugin is a state machine that flows
+through the states illustrated in the <a class="reference internal" href="#sampleprotocolstdiag"><span class="std std-ref">Sample Protocol State
+Diagram</span></a>. This figure illustrates the steps
+that Traffic Server and the Protocol plugin go through in order to
+support the sample protocol.</p>
+<p>In more specific terms, Traffic Server and the Protocol plugin must:</p>
+<ul class="simple">
+<li><p>Listen for and accept client connections (on the accept port
+specified in <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>)</p></li>
+<li><p>Read incoming client requests</p></li>
+<li><p>Look up the requested content in the Traffic Server cache</p></li>
+<li><p>Serve content from cache if the request is a cache hit (this simple
+example does not do freshness checking)</p></li>
+<li><p>Open a connection to the origin server if the request is a cache miss
+(on the server port specified in <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>)</p></li>
+<li><p>Forward the request to the origin server</p></li>
+<li><p>Receive the origin server response</p></li>
+<li><p>Cache the response and send it on to the client</p></li>
+</ul>
+<p><strong>Sample Protocol State Diagram</strong></p>
+<div class="figure align-default" id="id3">
+<span id="sampleprotocolstdiag"></span><img alt="Sample Protocol State Diagram" src="../../_images/Protocol_state_diagram.jpg" />
+<p class="caption"><span class="caption-text">Sample Protocol State Diagram</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="protocol-plugin-structure">
+<h2>Protocol Plugin Structure<a class="headerlink" href="#protocol-plugin-structure" title="Permalink to this headline">¶</a></h2>
+<p>To see how the Protocol plugin works, you need to understand some
+broader concepts. This section assumes you’re familiar with the concepts
+of <a class="reference internal" href="../../appendices/glossary.en.html#term-continuation"><span class="xref std std-term">continuation</span></a>, Traffic Server’s <strong>asynchronous event model</strong>, and
+basic Traffic Server <strong>plugin structure</strong>. If you are not familiar with
+these concepts, then you may want to begin with the
+<a class="reference internal" href="getting-started/index.en.html#developer-plugins-getting-started"><span class="std std-ref">Getting Started</span></a> section.</p>
+</div>
+<div class="section" id="continuations-in-the-protocol-plugin">
+<h2>Continuations in the Protocol Plugin<a class="headerlink" href="#continuations-in-the-protocol-plugin" title="Permalink to this headline">¶</a></h2>
+<p>The Protocol plugin creates a static continuation that is an <strong>“accept”
+state machine</strong> - that is, a state machine whose job is to accept client
+connections on the appropriate port. When Traffic Server accepts a net
+connection from a client on that port, the accept state machine is
+activated. It then creates a new continuation: a transaction state
+machine. The accept state machine creates one transaction state machine
+for each transaction (where a <a class="reference internal" href="../../appendices/glossary.en.html#term-transaction"><span class="xref std std-term">transaction</span></a> consists of a client
+request and Traffic Server’s response). Each transaction state machine
+lives until the transaction completes; then it is destroyed. If the
+client’s request for content is a cache miss, then a transaction state
+machine might need to open a connection to the origin server. This is
+illustrated in the <a class="reference internal" href="#protocolpluginoverview"><span class="std std-ref">Protocol Plugin
+Overview</span></a> diagram below.</p>
+<p><strong>Protocol Plugin Overview</strong></p>
+<div class="figure align-default" id="id4">
+<span id="protocolpluginoverview"></span><img alt="Protocol Plugin Overview" src="../../_images/protocol_sm_big.jpg" />
+<p class="caption"><span class="caption-text">Protocol Plugin Overview</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+<p>The first steps for writing the Protocol plugin are now clear: in
+<code class="docutils literal notranslate"><span class="pre">TSPluginInit</span></code>, you must create a continuation that listens for net
+connections on the client port specified in <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> (this
+continuation is the accept state machine).</p>
+<p>Below is a summary of the continuations implemented for the Protocol
+plugin:</p>
+<ul class="simple">
+<li><p>An <strong>accept state machine</strong> that listens for client connections, and
+then creates transaction state machines whenever Traffic Server
+accepts a new client connection. The accept state machine lives as
+long as Traffic Server is running.</p></li>
+<li><p><strong>Transaction state machines</strong> that read client requests, process
+them, and are then destroyed when the transaction is finished.</p></li>
+</ul>
+</div>
+<div class="section" id="event-flow">
+<h2>Event Flow<a class="headerlink" href="#event-flow" title="Permalink to this headline">¶</a></h2>
+<p>Implementing the rest of the Protocol plugin requires that you
+understand the flow of events during the course of a transaction. Unlike
+HTTP transaction plugins, this plugin must read data from network
+connections and then read/write data to the Traffic Server cache. This
+means that its continuations do not receive HTTP state machine events;
+they receive events from Traffic Server’s processor subsystems. For
+example: the accept state machine is activated by an
+<code class="docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code> event from Traffic Server’s Net Processor; the
+handler function for the accept state machine must therefore be able to
+handle that event.</p>
+<p>The transaction state machines are activated when the client connection
+receives incoming request data. The <strong>Net Processor</strong> notifies the
+transaction state machine of incoming data. The transaction state
+machine reads the data; when finished, it initiates a cache lookup of
+the requested file. When the cache lookup completes, the transaction
+state machine is activated by the Traffic Server <strong>Cache Processor</strong>.</p>
+<p>If the transaction state machine needs to open a connection to the
+origin server to fetch content (in the case of a cache miss), then the
+transaction state machine initiates a DNS lookup of the server name. The
+transaction state machine is activated by a DNS lookup event from the
+Traffic Server <strong>Host Database Processor</strong>. If the transaction must
+connect to the origin server, then the transaction state machine
+initiates a net connection and waits for an event from the Net
+Processor.</p>
+<p><strong>Protocol Plugin Flow of Events</strong></p>
+<div class="figure align-default" id="id5">
+<span id="protocolpluginflow"></span><img alt="Protocol Plugin Flow of Events" src="../../_images/protocol_evt.jpg" />
+<p class="caption"><span class="caption-text">Protocol Plugin Flow of Events</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+<p>The flow of events is illustrated in the <a class="reference internal" href="#protocolpluginflow"><span class="std std-ref">Protocol Plugin Flow of
+Events</span></a> diagram above. The thin straight lines
+show Net Processor event flow, the thin dashed lines represent Host
+Database event flow, and the thick dashed lines show Cache event flow.</p>
+<p>Notice that this flow of events is independent of the Protocol plugin’s
+design (i.e., whether you build <strong>accept</strong> or <strong>transaction</strong> state
+machines). Any plugin that supports network connections uses the net
+vconnection interfaces (<a class="reference internal" href="../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>, <a class="reference internal" href="../api/functions/TSNetConnect.en.html#c.TSNetConnect" title="TSNetConnect"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetConnect()</span></code></a>) and thus
+receives events from the Net Processor. Any plugin that performs cache
+lookups or cache writes uses <a class="reference internal" href="../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a>, <a class="reference internal" href="../api/functions/TSCacheWrite.en.html#c.TSCacheWrite" title="TSCacheWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheWrite()</span></code></a>,
+<a class="reference internal" href="../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a>, and <a class="reference internal" href="../api/functions/TSVConnWrite.en.html#c.TSVConnWrite" title="TSVConnWrite"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnWrite()</span></code></a> and thus receives events from the
+Cache Processor and Traffic Server event system. Similarly, any plugin
+that does DNS lookups receives events from the Host Database Processor.</p>
+</div>
+<div class="section" id="one-way-to-implement-a-transaction-state-machine">
+<span id="id2"></span><h2>One Way to Implement a Transaction State Machine<a class="headerlink" href="#one-way-to-implement-a-transaction-state-machine" title="Permalink to this headline">¶</a></h2>
+<p><strong>Transaction state machines</strong> (<strong>TSMs</strong>) in the Protocol plugin must do
+the following:</p>
+<ul class="simple">
+<li><p>Keep track of the state of the transaction</p></li>
+<li><p>Handle events received (based on the state of the transaction and the
+event received)</p></li>
+<li><p>Update the state of the transaction as it changes</p></li>
+</ul>
+<p>Below is one way you can implement TSMs. Details about how the Protocol
+plugin does this are provided in the next section.</p>
+<ul class="simple">
+<li><p>Create a data structure for transactions that contains all of the
+state data you need to keep track of. In the Protocol plugin this is
+a struct, <code class="docutils literal notranslate"><span class="pre">Txn_SM</span></code>.</p></li>
+<li><p>When you create the TSM’s continuation, initialize data of type
+<code class="docutils literal notranslate"><span class="pre">Txn_SM</span></code>. Initialize the data to the initial state of a transaction
+(in this case, a net connection has just been accepted). Associate
+this data to the TSM continuation using <code class="docutils literal notranslate"><span class="pre">TSContDataSet</span></code>.</p></li>
+<li><p>Write state handler functions that handle the expected events for
+each state.</p></li>
+<li><p>Write the handler for the TSM. Its job is to receive events, examine
+the current state, and execute the appropriate state handler
+function. In the Protocol plugin, the handler is <code class="docutils literal notranslate"><span class="pre">main_handler</span></code>.
+<code class="docutils literal notranslate"><span class="pre">main_handler</span></code> calls the state handler functions to handle each
+state.</p></li>
+</ul>
+<p>The steps below describe the flow of execution illustrated in <a class="reference internal" href="#implementtransstmachine"><span class="std std-ref">“How
+Transaction State Machines are Implemented in the Protocol
+Plugin”</span></a>.</p>
+<ol class="arabic simple">
+<li><p>The handler for the TSM, (called <code class="docutils literal notranslate"><span class="pre">main_handler</span></code> in the Protocol
+plugin) receives events from the TSM.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main_handler</span></code> examines the state of the transaction-in
+particular, it examines the current handler.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main_handler</span></code> calls the <code class="docutils literal notranslate"><span class="pre">current_handler</span></code> (which is one
+of the state handler functions), and then passes the current event to
+<code class="docutils literal notranslate"><span class="pre">current_handler</span></code>. In <a class="reference internal" href="#implementtransstmachine"><span class="std std-ref">the image
+below</span></a> below, the current handler is
+called <code class="docutils literal notranslate"><span class="pre">state2_handler</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">current_handler</span></code> handles the event and updates the data.
+In <a class="reference internal" href="#implementtransstmachine"><span class="std std-ref">the image below</span></a> below, the state is
+changed from <code class="docutils literal notranslate"><span class="pre">state2</span></code> to <code class="docutils literal notranslate"><span class="pre">state3</span></code> (and the current
+handler is changed from <code class="docutils literal notranslate"><span class="pre">state2_handler</span></code> to
+<code class="docutils literal notranslate"><span class="pre">state3_handler</span></code>). The next time <code class="docutils literal notranslate"><span class="pre">main_handler</span></code> receives
+an event, it will be processed by <code class="docutils literal notranslate"><span class="pre">state3_handler</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state2_handler</span></code> arranges the next callback of the TSM.
+Typically, it gives Traffic Server additional work to do (such as
+writing a file to cache) so that it can progress to the next state.
+The TSM (<code class="docutils literal notranslate"><span class="pre">main_handler</span></code>) then waits for the next event to
+arrive from Traffic Server.</p></li>
+</ol>
+<p><strong>How Transaction State Machines are Implemented in the Protocol
+Plugin</strong></p>
+<div class="figure align-default" id="id6">
+<span id="implementtransstmachine"></span><img alt="How Transaction State Machines are Implemented in the Protocol Plugin" src="../../_images/txn_sm.jpg" />
+<p class="caption"><span class="caption-text">How Transaction State Machines are Implemented in the Protocol Plugin</span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="processing-a-typical-transaction">
+<h2>Processing a Typical Transaction<a class="headerlink" href="#processing-a-typical-transaction" title="Permalink to this headline">¶</a></h2>
+<p>The code is contained in the following files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Protocol.c</span></code> and <code class="docutils literal notranslate"><span class="pre">Protocol.h</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TxnSM.c</span></code> and <code class="docutils literal notranslate"><span class="pre">TxnSM.h</span></code></p></li>
+</ul>
+<p>Below is a step-by-step walk-through of the code that processes a
+typical transaction.</p>
+<ol class="arabic simple">
+<li><p>The <a class="reference internal" href="../api/functions/TSPluginInit.en.html#c.TSPluginInit" title="TSPluginInit"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSPluginInit()</span></code></a> function is in the <code class="docutils literal notranslate"><span class="pre">Protocol.c</span></code> file. It
+checks the validity of the <a class="reference internal" href="../../admin-guide/files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a> entries (there must be two: a client accept port
+and a server port) and runs an initialization routine, <code class="docutils literal notranslate"><span class="pre">init</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">init</span></code> function (in <code class="docutils literal notranslate"><span class="pre">Protocol.c</span></code>) creates the plugin’s
+log file using <a class="reference internal" href="../api/functions/TSTextLogObjectCreate.en.html#c.TSTextLogObjectCreate" title="TSTextLogObjectCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSTextLogObjectCreate()</span></code></a>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">init</span></code> function creates the accept state machine using
+<code class="docutils literal notranslate"><span class="pre">AcceptCreate</span></code>. The code for <code class="docutils literal notranslate"><span class="pre">AcceptCreate</span></code> is in the
+<code class="docutils literal notranslate"><span class="pre">Accept.c</span></code> file.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">init</span></code> function arranges the callback of the accept state
+machine when there is a network connection by using
+<a class="reference internal" href="../api/functions/TSNetAccept.en.html#c.TSNetAccept" title="TSNetAccept"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSNetAccept()</span></code></a>.</p></li>
+<li><p>The handler for the accept state machine is <code class="docutils literal notranslate"><span class="pre">accept_handler</span></code> in
+the <code class="docutils literal notranslate"><span class="pre">Protocol.c</span></code> file. When Traffic Server’s Net Processor sends <a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a>
+to the accept state machine, <code class="docutils literal notranslate"><span class="pre">accept_handler</span></code> creates a transaction state machine (<code class="docutils literal notranslate"><span class="pre">txn_sm</span></code>)
+by calling <code class="docutils literal notranslate"><span class="pre">TxnSMCreate</span></code>. Notice that <code class="docutils literal notranslate"><span class="pre">accept_event</span></code> creates a mutex for the transaction
+state machine, since each transaction state machine has its own mutex.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">TxnSMCreate</span></code> function is in the <code class="docutils literal notranslate"><span class="pre">TxnSM.c</span></code> file. The
+first thing it does is initialize the transaction’s data, which is of type <code class="docutils literal notranslate"><span class="pre">TxnSM</span></code> (as defined
+in <code class="docutils literal notranslate"><span class="pre">TxnSM.h</span></code>). Notice that the current handler (<code class="docutils literal notranslate"><span class="pre">q_current_handler</span></code>) is set to
+<code class="docutils literal notranslate"><span class="pre">state_start</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TxnSMCreate</span></code> then creates a transaction state machine using
+:c:func`TSContCreate`. The handler for the transaction state machine
+is <code class="docutils literal notranslate"><span class="pre">main_handler</span></code>, which is in the <code class="docutils literal notranslate"><span class="pre">TxnSM.c</span></code> file.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">accept_event</span></code> receives <a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a>, it
+calls the transaction state machine (
+<code class="docutils literal notranslate"><span class="pre">TSContCall</span> <span class="pre">(txn_sm,</span> <span class="pre">0,</span> <span class="pre">NULL);</span></code> ). The event passed to
+<code class="docutils literal notranslate"><span class="pre">main_handler</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code> (<a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_NONE" title="TS_EVENT_NONE"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NONE</span></code></a>).</p></li>
+<li><p>The first thing <code class="docutils literal notranslate"><span class="pre">main_handler</span></code> does is examine the current
+<code class="docutils literal notranslate"><span class="pre">txn_sm</span></code> state by calling <a class="reference internal" href="../api/functions/TSContDataGet.en.html#c.TSContDataGet" title="TSContDataGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSContDataGet()</span></code></a>. The state is
+<code class="docutils literal notranslate"><span class="pre">state_start</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main_handler</span></code> then invokes the handler for
+<code class="docutils literal notranslate"><span class="pre">state_start</span></code> by using the function pointer
+<code class="docutils literal notranslate"><span class="pre">TxnSMHandler</span></code> (as defined in <code class="docutils literal notranslate"><span class="pre">TxnSM.h</span></code>).</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">state_start</span></code> handler function (in the <code class="docutils literal notranslate"><span class="pre">TxnSM.c</span></code> file)
+is handed an event (at this stage, the event is <a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_NET_ACCEPT" title="TS_EVENT_NET_ACCEPT"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_NET_ACCEPT</span></code></a>) and a client
+vconnection. <code class="docutils literal notranslate"><span class="pre">state_start</span></code> checks to see if this client vconnection is closed; if it is not,
+then <code class="docutils literal notranslate"><span class="pre">state_start</span></code> attempts to read data from the client vconnection into an
+<a class="reference internal" href="../api/functions/TSTypes.en.html#c.TSIOBuffer" title="TSIOBuffer"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSIOBuffer</span></code></a> (<code class="docutils literal notranslate"><span class="pre">state_start</span></code> is handling the event it receives).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_start</span></code> changes the current handler to
+<code class="docutils literal notranslate"><span class="pre">state_interface_with_client</span></code> (that is, it updates the state of the transaction to the next
+state).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_start</span></code> initiates a read of the client vconnection
+(arranges for Traffic Server to send
+<a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_READY" title="TS_EVENT_VCONN_READ_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></a> events to the TSM) by calling
+<a class="reference internal" href="../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_interface_with_client</span></code> is activated by the next event
+from Traffic Server. It checks for errors and examines the read VIO
+for the read operation initiated by <a class="reference internal" href="../api/functions/TSVConnRead.en.html#c.TSVConnRead" title="TSVConnRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSVConnRead()</span></code></a>.</p></li>
+<li><p>If the read VIO is the <code class="docutils literal notranslate"><span class="pre">client_read_VIO</span></code> (which we are
+expecting at this stage in the transaction), then
+<code class="docutils literal notranslate"><span class="pre">state_interface_with_client</span></code> updates the state to
+<code class="docutils literal notranslate"><span class="pre">state_read_request_from_client</span></code> .</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_read_request_from_client</span></code> handles actual
+<a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_VCONN_READ_READY" title="TS_EVENT_VCONN_READ_READY"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_VCONN_READ_READY</span></code></a> events and reads the client request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_read_request_from_client</span></code> parses the client request.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_read_request_from_client</span></code> updates the current state to
+the next state, <code class="docutils literal notranslate"><span class="pre">state_handle_cache_lookup</span></code> .</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">state_read_request_from_client</span></code> arranges for Traffic Server
+to call back the TSM with the next set of events (initiating the
+cache lookup) by calling <a class="reference internal" href="../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a>.</p></li>
+<li><p>When the <a class="reference internal" href="../api/functions/TSCacheRead.en.html#c.TSCacheRead" title="TSCacheRead"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSCacheRead()</span></code></a> sends the TSM either
+<a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ" title="TS_EVENT_CACHE_OPEN_READ"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ</span></code></a> (a cache hit) or
+<a class="reference internal" href="../api/types/TSEvent.en.html#c.TS_EVENT_CACHE_OPEN_READ_FAILED" title="TS_EVENT_CACHE_OPEN_READ_FAILED"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TS_EVENT_CACHE_OPEN_READ_FAILED</span></code></a> (a cache miss),
+<code class="docutils literal notranslate"><span class="pre">main_handler</span></code> calls <code class="docutils literal notranslate"><span class="pre">state_handle_cache_lookup</span></code>.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="plugin-interfaces.en.html" class="btn btn-neutral float-right" title="Plugin Interfaces" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="remap-plugins.en.html" class="btn btn-neutral float-left" title="Remap Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

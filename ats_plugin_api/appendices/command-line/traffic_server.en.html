@@ -1,0 +1,515 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>traffic_server &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="traffic_top" href="traffic_top.en.html" />
+    <link rel="prev" title="traffic_manager" href="traffic_manager.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Appendices</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Command Line Utilities</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cvtremappi.en.html">cvtremappi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_cache_tool.en.html">traffic_cache_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_crashlog.en.html">traffic_crashlog</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_ctl_jsonrpc.en.html">traffic_ctl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_layout.en.html">traffic_layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logcat.en.html">traffic_logcat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_logstats.en.html">traffic_logstats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_manager.en.html">traffic_manager</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">traffic_server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#options">Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment">Environment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signals">Signals</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_top.en.html">traffic_top</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_via.en.html">traffic_via</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_wccp.en.html">traffic_wccp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tspush.en.html">tspush</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tsxs.en.html">tsxs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html">Frequently Asked Questions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../faq.en.html#troubleshooting-tips">Troubleshooting Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../glossary.en.html">Glossary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../http-status-codes.en.html">HTTP Status Codes</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Appendices</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Command Line Utilities</a> &raquo;</li>
+        
+      <li>traffic_server</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/appendices/command-line/traffic_server.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-server">
+<span id="id1"></span><h1>traffic_server<a class="headerlink" href="#traffic-server" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="options">
+<h2>Options<a class="headerlink" href="#options" title="Permalink to this headline">¶</a></h2>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-a">
+<span id="cmdoption-traffic-server-a"></span><span id="cmdoption-traffic_server-accepts_thread"></span><span id="cmdoption-traffic-server-accepts-thread"></span><code class="sig-name descname">-a</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--accepts_thread</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-a" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-b">
+<span id="cmdoption-traffic-server-b"></span><span id="cmdoption-traffic_server-accept_till_done"></span><span id="cmdoption-traffic-server-accept-till-done"></span><code class="sig-name descname">-b</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--accept_till_done</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-B">
+<span id="cmdoption-traffic_server-action_tags"></span><span id="cmdoption-traffic-server-action-tags"></span><code class="sig-name descname">-B</code><code class="sig-prename descclassname"> TAGS</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--action_tags</code><code class="sig-prename descclassname"> TAGS</code><a class="headerlink" href="#cmdoption-traffic_server-B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-bind_stdout">
+<span id="cmdoption-traffic-server-bind-stdout"></span><code class="sig-name descname">--bind_stdout</code><code class="sig-prename descclassname"> FILE</code><a class="headerlink" href="#cmdoption-traffic_server-bind_stdout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The file to which the stdout stream for Traffic Server will be bound.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-bind_stderr">
+<span id="cmdoption-traffic-server-bind-stderr"></span><code class="sig-name descname">--bind_stderr</code><code class="sig-prename descclassname"> FILE</code><a class="headerlink" href="#cmdoption-traffic_server-bind_stderr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The file to which the stderr stream for Traffic Server will be bound.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-C">
+<span id="cmdoption-traffic-server-c"></span><span id="cmdoption-traffic_server-command"></span><span id="cmdoption-traffic-server-command"></span><code class="sig-name descname">-C</code><code class="sig-prename descclassname"> 'CMD [ARGS]'</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--command</code><code class="sig-prename descclassname"> 'CMD [ARGS]'</code><a class="headerlink" href="#cmdoption-traffic_server-C" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Run a Traffic Server maintenance command. These commands perform various administrative
+actions or queries against Traffic Server. Note that some commands (such as <code class="docutils literal notranslate"><span class="pre">help</span></code> and
+<code class="docutils literal notranslate"><span class="pre">verify_global_plugin</span></code>) take an argument. To invoke the command and its
+argument, surround the <code class="docutils literal notranslate"><span class="pre">CMD</span></code> and its argument in quotes. For instance, to
+request help for the <code class="docutils literal notranslate"><span class="pre">verify_global_plugin</span></code> command, format your command like
+so:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">C</span> <span class="s2">&quot;help verify_global_plugin&quot;</span>
+</pre></div>
+</div>
+<p>The following commands are supported:</p>
+<dl class="simple">
+<dt>list</dt><dd><p>List the sizes of the host database and cache index as well as the storage
+available to the cache.</p>
+</dd>
+<dt>check</dt><dd><p>Check the cache for inconsistencies or corruption. <code class="docutils literal notranslate"><span class="pre">check</span></code> does not make
+any changes to the data stored in the cache. <code class="docutils literal notranslate"><span class="pre">check</span></code> requires a scan of
+the contents of the cache and may take a long time for large caches.</p>
+</dd>
+<dt>clear</dt><dd><p>Clear the entire cache, both the document and the host database caches.  All
+data in the cache is lost and the cache is reconfigured based on the current
+description of database sizes and available storage.</p>
+</dd>
+<dt>clear_cache</dt><dd><p>Clear the document cache.  All documents in the cache are lost and the cache
+is reconfigured based on the current description of database sizes and
+available storage.</p>
+</dd>
+<dt>clear_hostdb</dt><dd><p>Clear the entire host database cache.  All host name resolution information
+is lost.</p>
+</dd>
+<dt>verify_config</dt><dd><p>Load the config and verify Traffic Server comes up correctly.</p>
+</dd>
+<dt>verify_global_plugin PLUGIN_SO_FILE</dt><dd><p>Load a global plugin’s shared object file and verify it meets minimal global
+plugin API requirements.</p>
+</dd>
+<dt>verify_remap_plugin PLUGIN_SO_FILE</dt><dd><p>Load a remap plugin’s shared object file and verify it meets minimal remap
+plugin API requirements.</p>
+</dd>
+<dt>help [CMD]</dt><dd><p>Obtain a short description of a command. For example, <code class="docutils literal notranslate"><span class="pre">'help</span> <span class="pre">clear'</span></code>
+prints a description of the <code class="docutils literal notranslate"><span class="pre">clear</span></code> maintenance command. If no argument
+is passed to <code class="docutils literal notranslate"><span class="pre">help</span></code> then a list of the supported maintenance commands are
+printed along with a brief description of each.</p>
+</dd>
+</dl>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-f">
+<span id="cmdoption-traffic-server-f"></span><span id="cmdoption-traffic_server-disable_freelist"></span><span id="cmdoption-traffic-server-disable-freelist"></span><code class="sig-name descname">-f</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--disable_freelist</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-f" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>In order to improve performance, <strong class="program">traffic_server</strong> caches commonly used data structures in a
+set of free object lists. This option disables these caches, causing <strong class="program">traffic_server</strong> to
+use <em class="manpage">malloc(3)</em> for every allocation. Though this option should not commonly be needed, it
+may be beneficial in memory-constrained environments or where the working set is highly variable.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-F">
+<span id="cmdoption-traffic_server-disable_pfreelist"></span><span id="cmdoption-traffic-server-disable-pfreelist"></span><code class="sig-name descname">-F</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--disable_pfreelist</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-F" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Disable free list in ProxyAllocator which were left out by the -f option. This option includes the
+functionality of <a class="reference internal" href="#cmdoption-traffic_server-f"><code class="xref std std-option docutils literal notranslate"><span class="pre">-f</span></code></a>.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-R">
+<span id="cmdoption-traffic-server-r"></span><span id="cmdoption-traffic_server-regression"></span><span id="cmdoption-traffic-server-regression"></span><code class="sig-name descname">-R</code><code class="sig-prename descclassname"> LEVEL</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--regression</code><code class="sig-prename descclassname"> LEVEL</code><a class="headerlink" href="#cmdoption-traffic_server-R" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-r">
+<span id="cmdoption-traffic_server-regression_test"></span><span id="cmdoption-traffic-server-regression-test"></span><code class="sig-name descname">-r</code><code class="sig-prename descclassname"> TEST</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--regression_test</code><code class="sig-prename descclassname"> TEST</code><a class="headerlink" href="#cmdoption-traffic_server-r" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-l">
+<span id="cmdoption-traffic-server-l"></span><span id="cmdoption-traffic_server-regression_list"></span><span id="cmdoption-traffic-server-regression-list"></span><code class="sig-name descname">-l</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--regression_list</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-l" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>If Traffic Server was built with tests enabled, this option lists
+the available tests.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-T">
+<span id="cmdoption-traffic-server-t"></span><span id="cmdoption-traffic_server-debug_tags"></span><span id="cmdoption-traffic-server-debug-tags"></span><code class="sig-name descname">-T</code><code class="sig-prename descclassname"> TAGS</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--debug_tags</code><code class="sig-prename descclassname"> TAGS</code><a class="headerlink" href="#cmdoption-traffic_server-T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-i">
+<span id="cmdoption-traffic-server-i"></span><span id="cmdoption-traffic_server-interval"></span><span id="cmdoption-traffic-server-interval"></span><code class="sig-name descname">-i</code><code class="sig-prename descclassname"> COUNT</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--interval</code><code class="sig-prename descclassname"> COUNT</code><a class="headerlink" href="#cmdoption-traffic_server-i" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-m">
+<span id="cmdoption-traffic-server-m"></span><span id="cmdoption-traffic_server-maxRecords"></span><span id="cmdoption-traffic-server-maxrecords"></span><code class="sig-name descname">-m</code><code class="sig-prename descclassname"> COUNT</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--maxRecords</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-m" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>The maximum number of entries in metrics and configuration variables. The default is 1600, which is
+also the minimum. This may need to be increased if running plugins that create metrics.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-M">
+<span id="cmdoption-traffic_server-remote_management"></span><span id="cmdoption-traffic-server-remote-management"></span><code class="sig-name descname">-M</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--remote_management</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-M" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Indicates the process should expect to be managed by <a class="reference internal" href="traffic_manager.en.html#traffic-manager"><span class="std std-ref">traffic_manager</span></a>. This option should not
+be used except by that process.</p>
+<dl class="std option">
+<dt id="cmdoption-traffic_server-n">
+<span id="cmdoption-traffic-server-n"></span><span id="cmdoption-traffic_server-net_threads"></span><span id="cmdoption-traffic-server-net-threads"></span><code class="sig-name descname">-n</code><code class="sig-prename descclassname"> COUNT</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--net_threads</code><code class="sig-prename descclassname"> COUNT</code><a class="headerlink" href="#cmdoption-traffic_server-n" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-k">
+<span id="cmdoption-traffic-server-k"></span><span id="cmdoption-traffic_server-clear_hostdb"></span><span id="cmdoption-traffic-server-clear-hostdb"></span><code class="sig-name descname">-k</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--clear_hostdb</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-k" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-K">
+<span id="cmdoption-traffic_server-clear_cache"></span><span id="cmdoption-traffic-server-clear-cache"></span><code class="sig-name descname">-K</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--clear_cache</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-K" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-accept_mss">
+<span id="cmdoption-traffic-server-accept-mss"></span><code class="sig-name descname">--accept_mss</code><code class="sig-prename descclassname"> MSS</code><a class="headerlink" href="#cmdoption-traffic_server-accept_mss" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-t">
+<span id="cmdoption-traffic_server-poll_timeout"></span><span id="cmdoption-traffic-server-poll-timeout"></span><code class="sig-name descname">-t</code><code class="sig-prename descclassname"> MSECS</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--poll_timeout</code><code class="sig-prename descclassname"> MSECS</code><a class="headerlink" href="#cmdoption-traffic_server-t" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-h">
+<span id="cmdoption-traffic-server-h"></span><span id="cmdoption-traffic_server-help"></span><span id="cmdoption-traffic-server-help"></span><code class="sig-name descname">-h</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--help</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print usage information and exit.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-p">
+<span id="cmdoption-traffic-server-p"></span><span id="cmdoption-traffic_server-httpport"></span><span id="cmdoption-traffic-server-httpport"></span><code class="sig-name descname">-p</code><code class="sig-prename descclassname"> PORT</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--httpport</code><code class="sig-prename descclassname"> PORT</code><a class="headerlink" href="#cmdoption-traffic_server-p" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-U">
+<span id="cmdoption-traffic-server-u"></span><span id="cmdoption-traffic_server-udp_threads"></span><span id="cmdoption-traffic-server-udp-threads"></span><code class="sig-name descname">-U</code><code class="sig-prename descclassname"> COUNT</code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--udp_threads</code><code class="sig-prename descclassname"> COUNT</code><a class="headerlink" href="#cmdoption-traffic_server-U" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt id="cmdoption-traffic_server-V">
+<span id="cmdoption-traffic-server-v"></span><span id="cmdoption-traffic_server-version"></span><span id="cmdoption-traffic-server-version"></span><code class="sig-name descname">-V</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-traffic_server-V" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print version information and exit.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="environment">
+<h2>Environment<a class="headerlink" href="#environment" title="Permalink to this headline">¶</a></h2>
+<dl class="std envvar">
+<dt id="envvar-PROXY_REMOTE_MGMT">
+<code class="sig-name descname">PROXY_REMOTE_MGMT</code><a class="headerlink" href="#envvar-PROXY_REMOTE_MGMT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This environment variable forces <strong class="program">traffic_server</strong> to believe that it is being managed by
+<strong class="program">traffic_manager</strong>.</p>
+<dl class="std envvar">
+<dt id="envvar-PROXY_AUTO_EXIT">
+<code class="sig-name descname">PROXY_AUTO_EXIT</code><a class="headerlink" href="#envvar-PROXY_AUTO_EXIT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>When this environment variable is set to an integral number of
+seconds, <strong class="program">traffic_server</strong> will exit that many seconds after
+startup. This is primarily useful for testing.</p>
+</div>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>SIGINT, SIGTERM</dt><dd><p>On <cite>SIGINT</cite> and <cite>SIGTERM</cite>, <strong class="program">traffic_server</strong> exits.</p>
+</dd>
+<dt>SIGUSR1</dt><dd><p>On <cite>SIGUSR1</cite>, <strong class="program">traffic_server</strong> logs its current memory usage.</p>
+</dd>
+<dt>SIGUSR2</dt><dd><p>On <cite>SIGUSR2</cite>, <strong class="program">traffic_server</strong> re-opens its standard error and standard out file descriptors.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p><em class="manpage">traffic_ctl(8)</em>,
+<em class="manpage">traffic_manager(8)</em></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="traffic_top.en.html" class="btn btn-neutral float-right" title="traffic_top" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="traffic_manager.en.html" class="btn btn-neutral float-left" title="traffic_manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

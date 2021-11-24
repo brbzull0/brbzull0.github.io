@@ -1,0 +1,646 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Extendible &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ArgParser" href="ArgParser.en.html" />
+    <link rel="prev" title="AcidPtr &amp; AcidCommitPtr" href="AcidPtr.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cache-architecture/index.en.html">Cache Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Internal libraries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="TextView.en.html">TextView</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemSpan.en.html">MemSpan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html">TS.Scalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="scalar.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="buffer-writer.en.html">BufferWriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html">IntrusiveDList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#definition">Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-list.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html">IntrusiveHashMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#details">Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intrusive-hash-map.en.html#design-notes">Design Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MemArena.en.html">MemArena</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AcidPtr.en.html">AcidPtr &amp; AcidCommitPtr</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Extendible</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#synopsis">Synopsis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ArgParser.en.html">ArgParser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Internal libraries</a> &raquo;</li>
+        
+      <li>Extendible</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/internal-libraries/Extendible.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extendible">
+<span id="id1"></span><h1>Extendible<a class="headerlink" href="#extendible" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="synopsis">
+<h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;tscore/Extendible.h&quot;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> allows Plugins to append additional storage to Core data structures and interface like a map or dictionary. Each additional field is declared during init, so that a custom allocator can malloc one block for the Datatype and its extended fields.
+In C++, the <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> are strongly typed field handles, which allows you to use Extendible in multiple inheritance, and at many levels of inheritance hierarchy, with compile time type safety.</p>
+<p>Use Case:</p>
+<blockquote>
+<div><dl>
+<dt>TSCore</dt><dd><p>Defines class <code class="docutils literal notranslate"><span class="pre">Host</span></code> as <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a></p>
+</dd>
+<dt>TSPlugin <code class="docutils literal notranslate"><span class="pre">HealthStatus</span></code></dt><dd><p>Extend the <code class="docutils literal notranslate"><span class="pre">Host</span></code> datatype with field <code class="docutils literal notranslate"><span class="pre">&lt;int&gt;</span> <span class="pre">down</span> <span class="pre">reason</span> <span class="pre">code</span></code>. API returns a handle.</p>
+<p>Use <em>Data</em> and <em>handle</em> to read &amp; write fields.</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A data class that inherits from Extendible, uses a CRTP (Curiously Recurring Template Pattern)
+so that its static <a class="reference internal" href="#_CPPv46Schema" title="Schema"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Schema</span></code></a> instance is unique among other <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> types. Thus all instances of the type implicitly know memory layout of the fields.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ExtendibleExample</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ext</span><span class="o">::</span><span class="n">Extendible</span><span class="o">&lt;</span><span class="n">ExtendibleExample</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="kt">int</span> <span class="n">real_member</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The documentation and code refers to the <cite>Derived</cite> type as the class that is inheriting from an <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a>.</p>
+<p>During system init, code and plugins add fields to the <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a>’s schema. This will update the <a class="reference internal" href="#memory-layout">Memory Layout</a> of the schema,
+and the memory offsets of all fields. The schema does not know the field’s type, but it stores the byte size and creates std::functions of
+the type’s constructor, destructor, and serializer. And to avoid corruption, the code asserts that no instances are in use when adding fields.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">ExtendibleExample</span><span class="p">,</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">fld_my_int</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">PluginInit</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">fld_my_int</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">fieldAdd</span><span class="p">(</span><span class="n">fld_my_int</span><span class="p">,</span> <span class="s">&quot;my_plugin_int&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When an derived class is instantiated, <a class="reference internal" href="#_CPPv4I0E6createP10Extendiblev" title="create"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">template&lt;&gt;</span> <span class="pre">create()</span></code></a> will allocate a block of memory for the derived class and all added
+fields. The only memory overhead per instance is an uint16 used as a offset to the start of the extendible block. Then the constructor of the class
+is called, followed by the constructors of each extendible field.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">ExtendibleExample</span><span class="o">*</span> <span class="nf">alloc_example</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">ext</span><span class="o">::</span><span class="n">create</span><span class="o">&lt;</span><span class="n">ExtendibleExample</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="memory-layout">
+<h3>Memory Layout<a class="headerlink" href="#memory-layout" title="Permalink to this headline">¶</a></h3>
+<p>One block of memory is allocated per <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a>, which include all member variables and extended fields.
+Within the block, memory is arranged in the following order:</p>
+<ol class="arabic simple">
+<li><p>Derived members (+padding align next field)</p></li>
+<li><p>Fields (largest to smallest)</p></li>
+<li><p>Packed Bits</p></li>
+</ol>
+<p>When using inheritance, all base cases arranged from most super to most derived,
+then all <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> blocks are arranged from most super to most derived.
+If the fields are aligned, padding will be inserted where needed.</p>
+</div>
+<div class="section" id="strongly-typed-fields">
+<h3>Strongly Typed Fields<a class="headerlink" href="#strongly-typed-fields" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a></p>
+<p><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> is a templated <code class="docutils literal notranslate"><span class="pre">Field_t</span></code> reference. One benefit is that all type casting is internal to the <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a>,
+which simplifies the code using it. Also this provides compile errors for common misuses and type mismatches.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// Core code</span>
+<span class="k">class</span> <span class="nc">Food</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ext</span><span class="o">::</span><span class="n">Extendible</span><span class="o">&lt;</span><span class="n">Food</span><span class="o">&gt;</span> <span class="p">{};</span>
+<span class="k">class</span> <span class="nc">Car</span> <span class="o">:</span> <span class="k">public</span> <span class="n">ext</span><span class="o">::</span><span class="n">Extendible</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span> <span class="p">{};</span>
+
+<span class="c1">// Example Plugin</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">Food</span><span class="p">,</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">fld_food_weight</span><span class="p">;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">Food</span><span class="p">,</span><span class="kt">time_t</span><span class="o">&gt;</span> <span class="n">fld_expr_date</span><span class="p">;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">Car</span><span class="p">,</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">fld_max_speed</span><span class="p">;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">Car</span><span class="p">,</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">fld_car_weight</span><span class="p">;</span>
+
+<span class="n">PluginInit</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">ext</span><span class="o">::</span><span class="n">addField</span><span class="p">(</span><span class="n">fld_food_weight</span><span class="p">,</span> <span class="s">&quot;weight&quot;</span><span class="p">);</span>
+   <span class="n">ext</span><span class="o">::</span><span class="n">addField</span><span class="p">(</span><span class="n">fld_expr_date</span><span class="p">,</span><span class="s">&quot;expire date&quot;</span><span class="p">);</span>
+   <span class="n">ext</span><span class="o">::</span><span class="n">addField</span><span class="p">(</span><span class="n">fld_max_speed</span><span class="p">,</span><span class="s">&quot;max_speed&quot;</span><span class="p">);</span>
+   <span class="n">ext</span><span class="o">::</span><span class="n">addField</span><span class="p">(</span><span class="n">fld_car_weight</span><span class="p">,</span><span class="s">&quot;weight&quot;</span><span class="p">);</span> <span class="c1">// &#39;weight&#39; is unique within &#39;Car&#39;</span>
+<span class="p">}</span>
+
+<span class="n">PluginFunc</span><span class="p">()</span> <span class="p">{</span>
+   <span class="n">Food</span> <span class="o">*</span><span class="n">banana</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">create</span><span class="o">&lt;</span><span class="n">Food</span><span class="o">&gt;</span><span class="p">();</span>
+   <span class="n">Car</span> <span class="o">*</span><span class="n">camry</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">create</span><span class="o">&lt;</span><span class="n">Car</span><span class="o">&gt;</span><span class="p">();</span>
+
+   <span class="c1">// Common user errors</span>
+
+   <span class="kt">float</span> <span class="n">expire_date</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">banana</span><span class="p">,</span><span class="n">fld_expr_date</span><span class="p">);</span>
+   <span class="c1">//^^^</span>
+   <span class="c1">// Compile error: cannot convert time_t to float</span>
+
+   <span class="kt">float</span> <span class="n">speed</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">banana</span><span class="p">,</span><span class="n">fld_max_speed</span><span class="p">);</span>
+   <span class="c1">//                            ^^^^^^^^^^^^^</span>
+   <span class="c1">// Compile error: Cannot convert banana to type Extendible&lt;Car&gt;</span>
+
+   <span class="kt">float</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">get</span><span class="p">(</span><span class="n">camry</span><span class="p">,</span><span class="n">fld_food_weight</span><span class="p">);</span>
+   <span class="c1">//                            ^^^^^^^^^^^^^^^</span>
+   <span class="c1">// Compile error: Cannot convert camry to type Extendible&lt;Food&gt;, even though Car and Food each have a &#39;weight&#39; field, the FieldId is strongly typed.</span>
+
+<span class="p">}</span>
+
+<span class="c1">// Inheritance Example</span>
+<span class="k">class</span> <span class="nc">Fruit</span> <span class="o">:</span> <span class="n">Food</span><span class="p">,</span> <span class="n">Extendible</span><span class="o">&lt;</span><span class="n">Fruit</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="k">using</span> <span class="n">super_type</span> <span class="o">=</span> <span class="n">Food</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">Fruit</span><span class="p">,</span><span class="n">has_seeds</span><span class="o">&gt;</span> <span class="n">fld_has_seeds</span><span class="p">;</span>
+
+<span class="n">Fruit</span><span class="p">.</span><span class="n">schema</span><span class="p">.</span><span class="n">addField</span><span class="p">(</span><span class="n">fld_has_seeds</span><span class="p">,</span> <span class="s">&quot;has_seeds&quot;</span><span class="p">);</span>
+
+<span class="n">Fruit</span> <span class="n">mango</span> <span class="o">=</span> <span class="n">ext</span><span class="o">::</span><span class="n">create</span><span class="o">&lt;</span><span class="n">Fruit</span><span class="o">&gt;</span><span class="p">();</span>
+
+<span class="n">ext</span><span class="o">::</span><span class="n">set</span><span class="p">(</span><span class="n">mango</span><span class="p">,</span> <span class="n">fld_has_seeds</span><span class="p">)</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>         <span class="c1">// converts mango to Extendible&lt;Fruit&gt;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">set</span><span class="p">(</span><span class="n">mango</span><span class="p">,</span> <span class="n">fld_food_weight</span><span class="p">)</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>          <span class="c1">// converts mango to Extendible&lt;Food&gt;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">set</span><span class="p">(</span><span class="n">mango</span><span class="p">,</span> <span class="n">fld_max_speed</span><span class="p">)</span> <span class="o">=</span> <span class="mi">9</span><span class="p">;</span>
+<span class="c1">//              ^^^^^^^^^^^^^</span>
+<span class="c1">// Compile error: Cannot convert mango to type Extendible&lt;Car&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inheritance">
+<h3>Inheritance<a class="headerlink" href="#inheritance" title="Permalink to this headline">¶</a></h3>
+<p>Unfortunately it is non-trivial handle multiple <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> super types in the same inheritance
+tree. <a class="reference internal" href="#_CPPv4I0E6createP10Extendiblev" title="create"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">template&lt;&gt;</span> <span class="pre">create()</span></code></a> handles allocation and initialization of the entire <cite>Derived</cite>
+class, but it is dependent on each class defining <code class="code docutils literal notranslate"><span class="pre">using</span> <span class="pre">super_type</span> <span class="pre">=</span> <span class="pre">*some_super_class*;</span></code> so
+that it recurse through the classes.</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="nl">A</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Extendible</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="kt">uint16_t</span> <span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">B</span> <span class="p">:</span> <span class="k">public</span> <span class="n">A</span> <span class="p">{</span>
+   <span class="k">using</span> <span class="n">super_type</span> <span class="o">=</span> <span class="n">A</span><span class="p">;</span>
+   <span class="kt">uint16_t</span> <span class="n">b</span>       <span class="o">=</span> <span class="p">{</span><span class="mi">2</span><span class="p">};</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">C</span> <span class="p">:</span> <span class="k">public</span> <span class="n">B</span><span class="p">,</span> <span class="k">public</span> <span class="n">Extendible</span><span class="o">&lt;</span><span class="n">C</span><span class="o">&gt;</span> <span class="p">{</span>
+   <span class="k">using</span> <span class="n">super_type</span> <span class="o">=</span> <span class="n">B</span><span class="p">;</span>
+   <span class="kt">uint16_t</span> <span class="n">c</span>       <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">};</span>
+<span class="p">};</span>
+
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">A</span><span class="p">,</span> <span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint16_t</span><span class="o">&gt;&gt;</span> <span class="n">ext_a_1</span><span class="p">;</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">FieldId</span><span class="o">&lt;</span><span class="n">C</span><span class="p">,</span> <span class="kt">uint16_t</span><span class="o">&gt;</span> <span class="n">ext_c_1</span><span class="p">;</span>
+
+<span class="n">C</span> <span class="o">&amp;</span><span class="n">x</span> <span class="o">=</span> <span class="o">*</span><span class="p">(</span><span class="n">ext</span><span class="o">::</span><span class="n">create</span><span class="o">&lt;</span><span class="n">C</span><span class="o">&gt;</span><span class="p">());</span>
+<span class="n">ext</span><span class="o">::</span><span class="n">viewFormat</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#_CPPv4I0E10viewFormatvv" title="viewFormat"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">viewFormat()</span></code></a> prints a diagram of the position and size of bytes used within the allocated
+memory.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1A | EXT  | 2b | ##________##__ |
+1A | BASE | 2b | __##__________ |
+1B | BASE | 2b | ____##________ |
+1C | EXT  | 2b | ______##____## |
+1C | BASE | 2b | ________##____ |
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://github.com/apache/trafficserver/blob/master/src/tscore/unit_tests/test_Extendible.cc">src/tscore/unit_tests/test_Extendible.cc</a> for more examples.</p>
+</div>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<p>Namespace <cite>ext</cite></p>
+<dl class="cpp class">
+<dt id="_CPPv4I00E7FieldId">
+<span id="_CPPv3I00E7FieldId"></span><span id="_CPPv2I00E7FieldId"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">FieldId</code><a class="headerlink" href="#_CPPv4I00E7FieldId" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The handle used to access a field. These are templated to prevent human error, and branching logic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that you want to extend at runtime.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp type">
+<dt id="_CPPv415ExtFieldContext">
+<span id="_CPPv315ExtFieldContext"></span><span id="_CPPv215ExtFieldContext"></span><span id="ExtFieldContext"></span><em class="property">typedef </em><em class="property">const</em> void *<code class="sig-name descname">ExtFieldContext</code><a class="headerlink" href="#_CPPv415ExtFieldContext" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>The handle used to access a field through C API. Human error not allowed by convention.</p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt id="_CPPv4I0E10Extendible">
+<span id="_CPPv3I0E10Extendible"></span><span id="_CPPv2I0E10Extendible"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><em class="property">class </em><code class="sig-name descname">Extendible</code><a class="headerlink" href="#_CPPv4I0E10Extendible" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Allocates block of memory, uses <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> and <a class="reference internal" href="#_CPPv46Schema" title="Schema"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Schema</span></code></a> to access slices of memory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class that you want to extend at runtime.</p>
+</dd>
+</dl>
+<dl class="cpp member">
+<dt id="_CPPv4N10Extendible6schemaE">
+<span id="_CPPv3N10Extendible6schemaE"></span><span id="_CPPv2N10Extendible6schemaE"></span><span id="Extendible::schema__Schema"></span><em class="property">static</em> <a class="reference internal" href="#_CPPv46Schema" title="Schema">Schema</a> <code class="sig-name descname">schema</code><a class="headerlink" href="#_CPPv4N10Extendible6schemaE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>one schema instance per <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> to define contained <a class="reference internal" href="#_CPPv49FieldDesc" title="FieldDesc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FieldDesc</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0E6createP10Extendiblev">
+<span id="_CPPv3I0E6createv"></span><span id="_CPPv2I0E6createv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible">Extendible</a> *<code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6createP10Extendiblev" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>To be used in place of <cite>new Derived_t()</cite>.
+Allocate a block of memory. Construct the base data.
+Recursively construct and initialize <cite>Derived_t::super_type</cite> and its <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The Derived class to allocate.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE">
+<span id="_CPPv3I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E8fieldAddR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />bool <code class="sig-name descname">fieldAdd</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldAdd::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E8fieldAddbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Declare a new <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> for Derived_t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE">
+<span id="_CPPv3I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span><span id="_CPPv2I00E9fieldFindR7FieldIdI9Derived_t7Field_tERKNSt6stringE"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />bool <code class="sig-name descname">fieldFind</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="fieldFind::Field_t">Field_t</a>&gt; &amp;<em>field_id</em>, std::string <em class="property">const</em> &amp;<em>field_name</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I00E9fieldFindbR7FieldIdI9Derived_t7Field_tERKNSt6stringE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Find an existing <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a> for Derived_t.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE">
+<span id="_CPPv3I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3getRK1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="sig-name descname">T</code>, typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br />auto <em class="property">const</em> <code class="sig-name descname">get</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::T">T</a> <em class="property">const</em>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="get::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3getKDaRK1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns T const&amp; value from the field stored in the <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The class passed in.</p></li>
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE">
+<span id="_CPPv3I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span><span id="_CPPv2I000E3setR1T7FieldIdI9Derived_t7Field_tE"></span>template&lt;typename <code class="sig-name descname">T</code>, typename <code class="sig-name descname">Derived_t</code>, typename <code class="sig-name descname">Field_t</code>&gt;<br /><a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::T">T</a> &amp;<code class="sig-name descname">set</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::T">T</a>&amp;, <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId">FieldId</a>&lt;<a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::Derived_t">Derived_t</a>, <a class="reference internal" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="set::Field_t">Field_t</a>&gt;<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I000E3setR1TR1T7FieldIdI9Derived_t7Field_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Returns T &amp; value from the field stored in <a class="reference internal" href="#_CPPv4I0E10Extendible" title="Extendible"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Extendible</span></code></a> allocation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>T</strong> – The class passed in.</p></li>
+<li><p><strong>Derived_t</strong> – The class that uses this field.</p></li>
+<li><p><strong>Field_t</strong> – The type of the field.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0E6sizeOf6size_tv">
+<span id="_CPPv3I0E6sizeOfv"></span><span id="_CPPv2I0E6sizeOfv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br /><a class="reference internal" href="../api/types/SystemTypes.en.html#_CPPv46size_t" title="size_t">size_t</a> <code class="sig-name descname">sizeOf</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E6sizeOf6size_tv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Recurse through super classes and sum memory needed for allocation.</p>
+<p>Depends on usage of <cite>super_type</cite> in each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to measure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0E10viewFormatvv">
+<span id="_CPPv3I0E10viewFormatv"></span><span id="_CPPv2I0E10viewFormatv"></span>template&lt;typename <code class="sig-name descname">Derived_t</code>&gt;<br />void <code class="sig-name descname">viewFormat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E10viewFormatvv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Recurse through super classes and prints chart of bytes used within the allocation.</p>
+<p>Depends on usage of <cite>super_type</cite> in each class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to analyze.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0E8toStringNSt6stringERK1T">
+<span id="_CPPv3I0E8toStringRK1T"></span><span id="_CPPv2I0E8toStringRK1T"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br />std::string <code class="sig-name descname">toString</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="toString::T">T</a> <em class="property">const</em> &amp;<em>t</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E8toStringNSt6stringERK1T" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Convert all extendible fields to std::strings (in a YAML-like format) using the <a class="reference internal" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="serializeField"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">serializeField()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The class to convert to string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t">
+<span id="_CPPv3I0E14serializeFieldRNSt7ostreamERK7Field_t"></span><span id="_CPPv2I0E14serializeFieldRNSt7ostreamERK7Field_t"></span>template&lt;typename <code class="sig-name descname">Field_t</code>&gt;<br />void <code class="sig-name descname">serializeField</code><span class="sig-paren">(</span>std::ostream &amp;<em>os</em>, <a class="reference internal" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="serializeField::Field_t">Field_t</a> <em class="property">const</em> &amp;<em>f</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0E14serializeFieldvRNSt7ostreamERK7Field_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Converts a single field into a std::string (in a YAML-like format).</p>
+<p>Specialize this template or overload the <cite>operator&lt;&lt;</cite> for your field to convert properly.</p>
+<p>This is very useful when debugging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>Derived_t</strong> – The field data type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p>Namespace <cite>ext::details</cite></p>
+<dl class="cpp class">
+<dt id="_CPPv49FieldDesc">
+<span id="_CPPv39FieldDesc"></span><span id="_CPPv29FieldDesc"></span><span id="FieldDesc"></span><em class="property">class </em><code class="sig-name descname">FieldDesc</code><a class="headerlink" href="#_CPPv49FieldDesc" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Defines a span of memory within the allocation, and holds the constructor, destructor and serializer as std::functions.</p>
+<p>Effectively the type-erased version of <a class="reference internal" href="#_CPPv4I00E7FieldId" title="FieldId"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">template&lt;typename</span> <span class="pre">Derived_t,</span> <span class="pre">typename</span> <span class="pre">Field_t&gt;</span> <span class="pre">FieldId</span></code></a>.</p>
+</dd></dl>
+
+<dl class="cpp class">
+<dt id="_CPPv46Schema">
+<span id="_CPPv36Schema"></span><span id="_CPPv26Schema"></span><span id="Schema"></span><em class="property">class </em><code class="sig-name descname">Schema</code><a class="headerlink" href="#_CPPv46Schema" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Manages a memory layout through a map of <a class="reference internal" href="#_CPPv49FieldDesc" title="FieldDesc"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">FieldDesc</span></code></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ArgParser.en.html" class="btn btn-neutral float-right" title="ArgParser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="AcidPtr.en.html" class="btn btn-neutral float-left" title="AcidPtr &amp; AcidCommitPtr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

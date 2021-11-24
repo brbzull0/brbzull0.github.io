@@ -1,0 +1,536 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TCPInfo Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="XDebug Plugin" href="xdebug.en.html" />
+    <link rel="prev" title="Stats Over HTTP Plugin" href="stats_over_http.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_promote.en.html">Cache Promotion Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_range_requests.en.html">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="esi.en.html">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compress.en.html">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>TCPInfo Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/tcpinfo.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tcpinfo-plugin">
+<span id="admin-plugins-tcpinfo"></span><h1>TCPInfo Plugin<a class="headerlink" href="#tcpinfo-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This global plugin logs TCP metrics at various points in the HTTP
+processing pipeline. The TCP information is retrieved by the
+<em class="manpage">getsockopt(2)</em> function using the <code class="docutils literal notranslate"><span class="pre">TCP_INFO</span></code> option.
+This is only supported on systems that support the <code class="docutils literal notranslate"><span class="pre">TCP_INFO</span></code>
+option, currently Linux and BSD.</p>
+<div class="section" id="plugin-options">
+<h2>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h2>
+<p>The following options may be specified in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>:</p>
+<dl class="option-list">
+<dt><kbd><span class="option">--hooks=<var>NAMELIST</var></span></kbd></dt>
+<dd><p>This option specifies when TCP information should be logged. The
+argument is a comma-separated list of the event names listed
+below. TCP information will be sampled and logged each time the
+specified set of events occurs.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Event Name</p></th>
+<th class="head"><p>Triggered when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>send_resp_hdr</p></td>
+<td><p>The server begins sending an HTTP response.</p></td>
+</tr>
+<tr class="row-odd"><td><p>ssn_start</p></td>
+<td><p>A new TCP connection is accepted.</p></td>
+</tr>
+<tr class="row-even"><td><p>txn_close</p></td>
+<td><p>A HTTP transaction is completed.</p></td>
+</tr>
+<tr class="row-odd"><td><p>txn_start</p></td>
+<td><p>A HTTP transaction is initiated.</p></td>
+</tr>
+</tbody>
+</table>
+</dd>
+<dt><kbd><span class="option">--log-file=<var>NAME</var></span></kbd></dt>
+<dd><p>This specifies the base name of the file where TCP information
+should be logged. If this option is not specified, the name
+<code class="docutils literal notranslate"><span class="pre">tcpinfo</span></code> is used. Traffic Server will automatically append
+the <code class="docutils literal notranslate"><span class="pre">.log</span></code> suffix.</p>
+</dd>
+<dt><kbd><span class="option">--log-level=<var>LEVEL</var></span></kbd></dt>
+<dd><p>The log level can be either <code class="docutils literal notranslate"><span class="pre">1</span></code> to log only the round trip
+time estimate, or <code class="docutils literal notranslate"><span class="pre">2</span></code> to log the complete set of TCP information.</p>
+<p>The following fields are logged when the log level is <code class="docutils literal notranslate"><span class="pre">1</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 83%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p>Event timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>event</p></td>
+<td><p>Event name (one of the names listed above)</p></td>
+</tr>
+<tr class="row-even"><td><p>client</p></td>
+<td><p>Client IP address</p></td>
+</tr>
+<tr class="row-odd"><td><p>server</p></td>
+<td><p>Server IP address</p></td>
+</tr>
+<tr class="row-even"><td><p>rtt</p></td>
+<td><p>Estimated round trip time in microseconds</p></td>
+</tr>
+</tbody>
+</table>
+<p>The following fields are logged when the log level is <code class="docutils literal notranslate"><span class="pre">2</span></code>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>timestamp</p></td>
+<td><p>Event timestamp</p></td>
+</tr>
+<tr class="row-odd"><td><p>event</p></td>
+<td><p>Event name (one of the names listed above)</p></td>
+</tr>
+<tr class="row-even"><td><p>client</p></td>
+<td><p>Client IP address</p></td>
+</tr>
+<tr class="row-odd"><td><p>server</p></td>
+<td><p>Server IP address</p></td>
+</tr>
+<tr class="row-even"><td><p>rtt</p></td>
+<td><p>Estimated round trip time in microseconds</p></td>
+</tr>
+<tr class="row-odd"><td><p>rttvar</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>last_sent</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>last_recv</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>snd_cwnd</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>snd_ssthresh</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>rcv_ssthresh</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>unacked</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>sacked</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>lost</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>retrans</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>fackets</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>all_retrans</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>In addition, on newer Linux system, the following two fields are appended
+in log level 2:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Field Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>data_segs_in</p></td>
+<td><p>Number of incoming data segments</p></td>
+</tr>
+<tr class="row-odd"><td><p>data_segs_out</p></td>
+<td><p>Number of outgoing data segments</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note: Features such as TSO (TCP Segment Offload) might skew the numbers
+here. That’s true as well for e.g. the retransmit metrics, i.e. anything
+that deals with segments.</p>
+</dd>
+<dt><kbd><span class="option">--sample-rate=<var>COUNT</var></span></kbd></dt>
+<dd><p>This is the number of times per 1000 requests that the data will
+be logged.  A pseudo-random number generator is used to determine if a
+request will be logged.  The default value is 1000 and this option is
+not required to be in the configuration file.  To achieve a log rate
+of 1% you would set this value to 10.</p>
+</dd>
+<dt><kbd><span class="option">--rolling-enabled=<var>VALUE</var></span></kbd></dt>
+<dd><p>This logfile option allows you to set logfile rolling behaviour of
+the output log file  without making any changes to the global
+logging configurations.  This option overrides the
+<a class="reference internal" href="../files/records.config.en.html#proxy-config-output-logfile-rolling-enabled" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.output.logfile.rolling_enabled</span></code></a> setting in <a class="reference internal" href="../files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a>
+for the <code class="docutils literal notranslate"><span class="pre">tcpinfo</span></code> plugin.  The setting may range from <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">3</span></code>.
+<code class="docutils literal notranslate"><span class="pre">0</span></code> disables logfile rolling.  <code class="docutils literal notranslate"><span class="pre">1</span></code> is the <code class="docutils literal notranslate"><span class="pre">default</span></code> and enables logfile
+rolling at specific intervals set by <code class="docutils literal notranslate"><span class="pre">--rolling-interval-sec</span></code> discussed
+below.  <code class="docutils literal notranslate"><span class="pre">2</span></code> enables logfile rolling by logfile size, see
+<code class="docutils literal notranslate"><span class="pre">--rolling-size-mb</span></code> below.  Finally a value of <code class="docutils literal notranslate"><span class="pre">3</span></code> enables logfile rolling
+at specific intervals or size, whichever occurs first using the interval or size
+settings discussed below.</p>
+</dd>
+<dt><kbd><span class="option">--rolling-offset-hr=<var>VALUE</var></span></kbd></dt>
+<dd><p>Set the hour <code class="docutils literal notranslate"><span class="pre">0</span></code> to <code class="docutils literal notranslate"><span class="pre">23</span></code> at which the output log file will roll when
+using interval rolling. Default value is <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt><kbd><span class="option">--rolling-interval-sec=<var>VALUE</var></span></kbd></dt>
+<dd><p>Set the rolling interval in seconds for the output log file. May be set
+from <code class="docutils literal notranslate"><span class="pre">60</span></code> to <code class="docutils literal notranslate"><span class="pre">86400</span></code> seconds, Defaults to <code class="docutils literal notranslate"><span class="pre">86400</span></code>.</p>
+</dd>
+<dt><kbd><span class="option">--rolling-size=<var>VALUE</var></span></kbd></dt>
+<dd><p>Set the size in MB at which the output log file  will roll when using log size
+rolling.  Minimum value is <code class="docutils literal notranslate"><span class="pre">10</span></code>, defaults to <code class="docutils literal notranslate"><span class="pre">1024</span></code>. In your config file,
+you may use the K, M, or G suffix as in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">rolling</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="mi">10</span><span class="n">M</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This example logs the simple TCP information to <code class="docutils literal notranslate"><span class="pre">tcp-metrics.log</span></code>
+at the start of a TCP connection and once for each HTTP
+transaction thereafter:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tcpinfo</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">file</span><span class="o">=</span><span class="n">tcp</span><span class="o">-</span><span class="n">metrics</span> <span class="o">--</span><span class="n">log</span><span class="o">-</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">hooks</span><span class="o">=</span><span class="n">ssn_start</span><span class="p">,</span><span class="n">txn_start</span>
+</pre></div>
+</div>
+<p>The file <code class="docutils literal notranslate"><span class="pre">tcp-metrics.log</span></code> will contain the following log format (with client and server both on 127.0.0.1):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timestamp</span> <span class="n">event</span> <span class="n">client</span> <span class="n">server</span> <span class="n">rtt</span>
+<span class="mf">20140414.17</span><span class="n">h40m14s</span> <span class="n">ssn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">153859</span>
+<span class="mf">20140414.17</span><span class="n">h40m14s</span> <span class="n">txn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">181018</span>
+<span class="mf">20140414.17</span><span class="n">h40m16s</span> <span class="n">ssn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">86869</span>
+<span class="mf">20140414.17</span><span class="n">h40m16s</span> <span class="n">txn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">19088</span>
+<span class="mf">20140414.17</span><span class="n">h40m16s</span> <span class="n">ssn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">85718</span>
+<span class="mf">20140414.17</span><span class="n">h40m16s</span> <span class="n">txn_start</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="mi">38059</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="xdebug.en.html" class="btn btn-neutral float-right" title="XDebug Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="stats_over_http.en.html" class="btn btn-neutral float-left" title="Stats Over HTTP Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

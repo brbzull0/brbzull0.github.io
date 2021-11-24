@@ -1,0 +1,345 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API functions &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Cache Tools" href="consistency.en.html" />
+    <link rel="prev" title="Data Structures" href="data-structures.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../admin-guide/index.en.html">Administrator’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Developer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction/index.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../release-process/index.en.html">Release Process</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../contributing/index.en.html">Contributing to Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing-with-vagrant/index.en.html">Using Vagrant to Test Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../debugging/index.en.html">Debugging and Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../threads-and-events.en.html">Threads and Event Processing</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Cache Architecture</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="architecture.en.html">Cache Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-initialization.en.html">Cache Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="core-cache-functions.en.html">Core Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-structures.en.html">Data Structures</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">API functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#cache-internals">Cache Internals</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html">Cache Tools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#topics-to-be-done">Topics to be done</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#cache-consistency">Cache Consistency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="consistency.en.html#volume-tagging">Volume Tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ram-cache.en.html">RAM Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cache-tool.en.html">Cache Tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tiered-storage.en.html">Tiered Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging-architecture/index.en.html">Logging Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal-libraries/index.en.html">Internal libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plugins/index.en.html">Plugin Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../config-vars.en.html">Configuration Variable Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api/index.en.html">API Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../continuous-integration/index.en.html">Continuous Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../documentation/index.en.html">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../host-resolution-proposal.en.html">Host Resolution Proposal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../client-session-architecture.en.html">An Overview Client Sessions and Transactions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core-architecture/index.en.html">Core Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../design-documents/index.en.html">Design Documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layout/index.en.html">Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../testing/index.en.html">Testing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Cache Architecture</a> &raquo;</li>
+        
+      <li>API functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/developer-guide/cache-architecture/api-functions.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api-functions">
+<span id="developer-cache-api-functions"></span><h1>API functions<a class="headerlink" href="#api-functions" title="Permalink to this headline">¶</a></h1>
+<dl class="c function">
+<dt id="c.TSHttpTxnReqCacheableSet">
+void <code class="sig-name descname">TSHttpTxnReqCacheableSet</code><span class="sig-paren">(</span><a class="reference internal" href="../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, int <em>flag</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnReqCacheableSet" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set a flag that marks a request as cacheable. This is a positive override
+only, setting <em>flag</em> to <code class="docutils literal notranslate"><span class="pre">0</span></code> restores the default behavior, it does not
+force the request to be uncacheable.</p>
+</dd></dl>
+
+<dl class="c function">
+<dt id="c.TSCacheUrlSet">
+<a class="reference internal" href="../api/types/TSReturnCode.en.html#c.TSReturnCode" title="TSReturnCode">TSReturnCode</a> <code class="sig-name descname">TSCacheUrlSet</code><span class="sig-paren">(</span><a class="reference internal" href="../api/functions/TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, char <em class="property">const</em> *<em>url</em>, int <em>length</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSCacheUrlSet" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Set the cache key for the transaction <em>txnp</em> as the string pointed at by
+<em>url</em> of <em>length</em> characters. It need not be NUL-terminated. This should
+be called from <code class="docutils literal notranslate"><span class="pre">TS_HTTP_READ_REQUEST_HDR_HOOK</span></code> which is before cache lookup
+but late enough that the HTTP request header is available.</p>
+</dd></dl>
+
+<p>The APIs that modify the cache key can be called as early as
+<code class="docutils literal notranslate"><span class="pre">TS_HTTP_READ_REQUEST_HDR_HOOK</span></code> but no later than
+<code class="docutils literal notranslate"><span class="pre">TS_HTTP_POST_REMAP_HOOK</span></code>. The cache key is not only used for a cache lookup
+before going to origin, but also to mark the intent to write to cache on an
+origin response (if possible).</p>
+<div class="section" id="cache-internals">
+<h2>Cache Internals<a class="headerlink" href="#cache-internals" title="Permalink to this headline">¶</a></h2>
+<dl class="cpp function">
+<dt id="_CPPv419DIR_SIZE_WITH_BLOCKi">
+<span id="_CPPv319DIR_SIZE_WITH_BLOCKi"></span><span id="_CPPv219DIR_SIZE_WITH_BLOCKi"></span><span id="DIR_SIZE_WITH_BLOCK__i"></span>int <code class="sig-name descname">DIR_SIZE_WITH_BLOCK</code><span class="sig-paren">(</span>int <em>big</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv419DIR_SIZE_WITH_BLOCKi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A preprocessor macro which computes the maximum size of a fragment based on
+the value of <em>big</em>. This is computed as if the argument where the value of
+the <em>big</em> field in a struct <a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a>.</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv414DIR_BLOCK_SIZEi">
+<span id="_CPPv314DIR_BLOCK_SIZEi"></span><span id="_CPPv214DIR_BLOCK_SIZEi"></span><span id="DIR_BLOCK_SIZE__i"></span>int <code class="sig-name descname">DIR_BLOCK_SIZE</code><span class="sig-paren">(</span>int <em>big</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv414DIR_BLOCK_SIZEi" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>A preprocessor macro which computes the block size multiplier for a struct
+<a class="reference internal" href="architecture.en.html#_CPPv43Dir" title="Dir"><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">Dir</span></code></a> where <em>big</em> is the <em>big</em> field value.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="consistency.en.html" class="btn btn-neutral float-right" title="Cache Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="data-structures.en.html" class="btn btn-neutral float-left" title="Data Structures" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

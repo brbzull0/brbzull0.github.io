@@ -1,0 +1,449 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ESI Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Escalate Plugin" href="escalate.en.html" />
+    <link rel="prev" title="Cookie Based Routing Inside TrafficServer Using cookie_remap" href="cookie_remap.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="s3_auth.en.html">AWS S3 Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="authproxy.en.html">AuthProxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="background_fetch.en.html">Background Fetch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cachekey.en.html">Cache Key Manipulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_promote.en.html">Cache Promotion Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_range_requests.en.html">Cache Range Requests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="combo_handler.en.html">Combo Handler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conf_remap.en.html">Configuration Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cookie_remap.en.html">Cookie Remap</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ESI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="escalate.en.html">Escalate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="compress.en.html">Compress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
+<li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="remap_purge.en.html">Remap Purge</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stats_over_http.en.html">Stats over HTTP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tcpinfo.en.html">TCPInfo</a></li>
+<li class="toctree-l4"><a class="reference internal" href="xdebug.en.html">XDebug</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>ESI Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/esi.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="admin-plugins-esi"></span><div class="section" id="esi-plugin">
+<h1>ESI Plugin<a class="headerlink" href="#esi-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin implements the ESI specification.</p>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<p>Supported ESI tags:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>esi:include
+esi:remove
+esi:comment
+esi:vars
+esi:choose
+esi:when
+esi:otherwise
+esi:try
+esi:attempt
+esi:except
+&lt;!--esi ... --&gt;
+</pre></div>
+</div>
+<p>Extended ESI tags: <code class="docutils literal notranslate"><span class="pre">esi:special-include</span></code></p>
+<p>Supported variables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$(HTTP_HOST)
+$(HTTP_REFERER)
+$(HTTP_ACCEPT_LANGUAGE{name})
+$(HTTP_COOKIE{name}) or $(HTTP_COOKIE{name;subkey})
+$(QUERY_STRING{name})
+$(HTTP_HEADER{hdr_name})
+</pre></div>
+</div>
+<p>Note: the name is the key name such as “username”, “id” etc. For cookie support sub-name or sub-key, the format is:
+name;subkey, such as “l;u”, “l;t” etc. e.g. such cookie string: l=u=test&amp;t=1350952328, the value of
+$(HTTP_COOKIE{“l;u”}) is test and the value of $(HTTP_COOKIE{“l;t”}) is 1350952328</p>
+</div>
+<div class="section" id="compilation-and-installation">
+<h2>Compilation and Installation<a class="headerlink" href="#compilation-and-installation" title="Permalink to this headline">¶</a></h2>
+<p>This plugin is considered stable and is included with Traffic Server by default. There
+are no special steps necessary for it to be built and installed.</p>
+</div>
+<div class="section" id="enabling-esi">
+<h2>Enabling ESI<a class="headerlink" href="#enabling-esi" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>First, enable the ESI plugin by adding an entry for it in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>. Here is an example of such an entry
+without passing any optional arguments to ESI:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">esi</span><span class="o">.</span><span class="n">so</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>There are four optional arguments that can be passed to the above <code class="docutils literal notranslate"><span class="pre">esi.so</span></code> entry:</p></li>
+</ol>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--private-response</span></code> will add private cache control and expires headers to the processed ESI document.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--packed-node-support</span></code> will enable the support for using the packed node feature, which will improve the
+performance of parsing cached ESI document. As mentioned below, this option is not extensively tested and is therefore
+not recommended for production environments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--disable-gzip-output</span></code> will disable gzipped output for output which would <strong>not</strong> already be gzipeed anyway.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--first-byte-flush</span></code> will enable the first byte flush feature, which will flush content to users as soon as the entire
+ESI document is received and parsed without all ESI includes fetched. The flushing will stop at the ESI include markup
+till that include is fetched.</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">HTTP_COOKIE</span></code> variable support is turned off by default. It can be turned on with <code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">&lt;handler_config&gt;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">-handler</span> <span class="pre">&lt;handler_config&gt;</span></code>. For example:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">esi</span><span class="o">.</span><span class="n">so</span> <span class="o">-</span><span class="n">f</span> <span class="n">handler</span><span class="o">.</span><span class="n">conf</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">handler.conf</span></code> file then contains the list of allowed cookie names. For example, to allow the <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">LOGIN</span></code>
+cookies, the file will look like the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">allowlistCookie</span> <span class="n">A</span>
+<span class="n">allowlistCookie</span> <span class="n">LOGIN</span>
+</pre></div>
+</div>
+<p>You can also allow all cookies for <code class="docutils literal notranslate"><span class="pre">HTTP_COOKIE</span></code> variable by using a wildcard character. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">allowlistCookie</span> <span class="o">*</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>An entry in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> will be needed to map to the orginer server providing the ESI response. Assume that
+the ATS proxy is <code class="docutils literal notranslate"><span class="pre">abc.com</span></code>, your origin server is <code class="docutils literal notranslate"><span class="pre">xyz.com</span></code>, and the URI containing ESI markup is
+<code class="docutils literal notranslate"><span class="pre">http://xyz.com/esi.php</span></code>. In this case, the following line in <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> will be needed:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">abc</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">esi</span><span class="o">.</span><span class="n">php</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">xyz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">esi</span><span class="o">.</span><span class="n">php</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Your response should contain ESI markup and a response header of <code class="docutils literal notranslate"><span class="pre">X-Esi:</span> <span class="pre">1</span></code>. Here is a PHP example:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php   header(&#39;X-Esi: 1&#39;); ?&gt;
+&lt;html&gt;
+&lt;body&gt;
+Hello, &lt;esi:include src=&quot;http://abc.com/date.php&quot;/&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>You will also need a mapping for the resource in the ESI include (<code class="docutils literal notranslate"><span class="pre">http://abc.com/date.php</span></code> in this case) in
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> if it is not already present:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">abc</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">date</span><span class="o">.</span><span class="n">php</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">xyz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">date</span><span class="o">.</span><span class="n">php</span>
+</pre></div>
+</div>
+<p>Or if both your ESI response and the ESI include comes from the same origin server, your <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> entry can
+have the following single generic rule for all resources instead of separate rules for <code class="docutils literal notranslate"><span class="pre">date.php</span></code> and <code class="docutils literal notranslate"><span class="pre">esi.php</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">abc</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">xyz</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Here is sample PHP content for <code class="docutils literal notranslate"><span class="pre">date.php</span></code>:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;?php
+header (&quot;Cache-control: no-cache&quot;);
+echo date(&#39;l jS \of F Y h:i:s A&#39;);
+?&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="useful-notes">
+<h2>Useful Notes<a class="headerlink" href="#useful-notes" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p>With proper cache control headers for each, the ESI response and the ESI include responses can be cached separately.
+This is extremely useful for rendering a page with multiple modules. The page layout can be an ESI response with
+multiple ESI includes, each for a different module. Thus Traffic Server can have a single cached entry for the page layout ESI response
+while each individual ESI included responses can also be cached separately, each with a different duration per their
+cache-control headers.</p></li>
+<li><p>We do <strong>not</strong> recommend running the plugin with “packed node support” because it is not fully tested.</p></li>
+</ol>
+</div>
+<div class="section" id="differences-from-spec-http-www-w3-org-tr-esi-lang">
+<h2>Differences from Spec - <a class="reference external" href="http://www.w3.org/TR/esi-lang">http://www.w3.org/TR/esi-lang</a><a class="headerlink" href="#differences-from-spec-http-www-w3-org-tr-esi-lang" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;esi:include&gt;</span></code> does not support “alt” and “onerror” attributes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&lt;esi:inline&gt;</span></code> is not supported.</p></li>
+<li><p>You cannot have <code class="docutils literal notranslate"><span class="pre">&lt;esi:try&gt;</span></code> inside another <code class="docutils literal notranslate"><span class="pre">&lt;esi:try&gt;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HTTP_USER_AGENT</span></code> variable is not supported.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HTTP_COOKIE</span></code> supports fetching for sub-key.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">HTTP_HEADER</span></code> supports accessing request headers as variables except “Cookie”.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="escalate.en.html" class="btn btn-neutral float-right" title="Escalate Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cookie_remap.en.html" class="btn btn-neutral float-left" title="Cookie Based Routing Inside TrafficServer Using cookie_remap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2021, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>
