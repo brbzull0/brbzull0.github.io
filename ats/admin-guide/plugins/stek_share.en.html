@@ -1,0 +1,418 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>STEK Share Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="System Stats Plugin" href="system_stats.en.html" />
+    <link rel="prev" title="SSL Session Reuse Plugin" href="ssl_session_reuse.en.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Traffic Server
+          
+
+          
+            
+            <img src="../../_static/trans_logo_tm_380x69.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/index.en.html">Preface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started/index.en.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release-notes/index.en.html">Release Notes</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.en.html">Administrator’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../introduction.en.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/index.en.html">Installing Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuration/index.en.html">Proxy Cache Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../interaction/index.en.html">Interacting with Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../security/index.en.html">Security</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../storage/index.en.html">Cache Storage</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.en.html">Plugins</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index.en.html#stable-plugins">Stable plugins</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.en.html#experimental-plugins">Experimental plugins</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="access_control.en.html">Access Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cache_fill.en.html">Cache Fill</a></li>
+<li class="toctree-l4"><a class="reference internal" href="certifier.en.html">Certifier</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cert_reporting_tool.en.html">Cert Reporting Tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="collapsed_forwarding.en.html">Collapsed-Forwarding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="geoip_acl.en.html">GeoIP ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="fq_pacing.en.html">FQ Pacing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="header_freq.en.html">Header Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="hook-trace.en.html">Hook Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="icap.en.html">ICAP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ja3_fingerprint.en.html">JA3 Fingerprint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="maxmind_acl.en.html">Maxmind ACL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memcache.en.html">Memcache</a></li>
+<li class="toctree-l4"><a class="reference internal" href="memory_profile.en.html">Memory Profile</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metalink.en.html">Metalink</a></li>
+<li class="toctree-l4"><a class="reference internal" href="money_trace.en.html">Money Trace</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="otel_tracer.en.html">OpenTelemetry Tracer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
+<li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="url_sig.en.html">Legacy Signed URLs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">STEK Share</a></li>
+<li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
+<li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="prefetch.en.html">Prefetch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../logging/index.en.html">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../monitoring/index.en.html">Monitoring</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../configuring-traffic-server.en.html">Configuring Traffic Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developer-guide/index.en.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../appendices/index.en.html">Appendices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Apache Traffic Server</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
+        
+          <li><a href="index.en.html">Plugins</a> &raquo;</li>
+        
+      <li>STEK Share Plugin</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/admin-guide/plugins/stek_share.en.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stek-share-plugin">
+<span id="admin-plugins-stek-share"></span><h1>STEK Share Plugin<a class="headerlink" href="#stek-share-plugin" title="Permalink to this headline">¶</a></h1>
+<p>This plugin coordinates STEK (Session Ticket Encryption Key) between ATS instances running in a group.
+As the ID based session resumption rate continue to decrease, this new plugin will replace the
+<a class="reference internal" href="ssl_session_reuse.en.html#admin-plugins-ssl-session-reuse"><span class="std std-ref">SSL Session Reuse Plugin</span></a> plugin.</p>
+<div class="section" id="how-it-works">
+<h2>How It Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
+<p>This plugin implements the <cite>Raft consensus algorithm &lt;https://raft.github.io/&gt;</cite> to decide on a leader. The leader will
+periodically create a new STEK key and share it with all other ATS boxes in the group. When the plugin starts up, it
+will automatically join the cluster of all other ATS boxes in the group, which will also automatically elect a leader.
+The plugin uses the <cite>TSSslTicketKeyUpdate</cite> call to update ATS with the latest two STEK’s it has received.</p>
+<p>All communication are encrypted. All the ATS boxes participating in the STEK sharing must have access to the cert/key pair.</p>
+<p>Note that since the this plugin only updates STEK every few hours, all Raft related stuff are kept in memory, and some code is
+borrowed from the examples from <cite>NuRaft library &lt;https://github.com/eBay/NuRaft&gt;</cite> that is used in this plugin.</p>
+</div>
+<div class="section" id="building">
+<h2>Building<a class="headerlink" href="#building" title="Permalink to this headline">¶</a></h2>
+<p>This plugin uses <cite>NuRaft library &lt;https://github.com/eBay/NuRaft&gt;</cite> for leader election and communication.
+The NuRaft library must be installed for this plugin to build. It can be specified by the <cite>–with-nuraft</cite> argument to configure.</p>
+<p>This plugin also uses <cite>YAML-CPP library &lt;https://github.com/jbeder/yaml-cpp&gt;</cite> for reading the configuration file.
+The YAML-CPP library must be installed for this plugin to build. It can be specified by the <cite>–with-yaml-cpp</cite> argument to configure.</p>
+<p>As part of the experimental plugs, the <cite>–enable-experimental-plugins</cite> option must also be given to configure to build this plugin.</p>
+</div>
+<div class="section" id="config-file">
+<h2>Config File<a class="headerlink" href="#config-file" title="Permalink to this headline">¶</a></h2>
+<p>STEK Share is a global plugin. Its configuration file uses YAML, and is given as an argument to the plugin in <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
+<dl class="simple">
+<dt>::</dt><dd><p>stek_share.so etc/trafficserver/example_server_conf.yaml</p>
+</dd>
+</dl>
+<p>Available options:</p>
+<ul class="simple">
+<li><p>server_id - An unique ID for the server.</p></li>
+<li><p>address - Hostname or IP address of the server.</p></li>
+<li><p>port - Port number for communication.</p></li>
+<li><p>asio_thread_pool_size - [Optional] Thread pool size for <cite>ASIO library &lt;http://think-async.com/Asio/&gt;</cite>. Default size is 4.</p></li>
+<li><p>heart_beat_interval - [Optional] Heart beat interval of Raft leader, must be less than “election_timeout_lower_bound”. Default value is 100 ms.</p></li>
+<li><p>election_timeout_lower_bound - [Optional] Lower bound of Raft leader election timeout. Default value is 200 ms.</p></li>
+<li><p>election_timeout_upper_bound - [Optional] Upper bound of Raft leader election timeout. Default value is 400 ms.</p></li>
+<li><p>reserved_log_items - [Optional] The maximum number of logs preserved ahead the last snapshot. Default value is 5.</p></li>
+<li><p>snapshot_distance - [Optional] The number of log appends for each snapshot. Default value is 5.</p></li>
+<li><p>client_req_timeout - [Optional] Client request timeout. Default value is 3000 ms.</p></li>
+<li><p>key_update_interval - The interval between STEK update.</p></li>
+<li><p>server_list_file - Path to a file containing information of all the servers that’s supposed to be in the Raft cluster.</p></li>
+<li><p>root_cert_file - Path to the root ca file.</p></li>
+<li><p>server_cert_file - Path to the cert file.</p></li>
+<li><p>server_key_file - Path to the key file.</p></li>
+<li><p>cert_verify_str - SSL verification string, for example “/C=US/ST=IL/O=Yahoo/OU=Edge/CN=localhost”</p></li>
+</ul>
+</div>
+<div class="section" id="example-config-file">
+<h2>Example Config File<a class="headerlink" href="#example-config-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">server_id</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="n">port</span><span class="p">:</span> <span class="mi">10001</span>
+<span class="n">asio_thread_pool_size</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">heart_beat_interval</span><span class="p">:</span> <span class="mi">100</span>
+<span class="n">election_timeout_lower_bound</span><span class="p">:</span> <span class="mi">200</span>
+<span class="n">election_timeout_upper_bound</span><span class="p">:</span> <span class="mi">400</span>
+<span class="n">reserved_log_items</span><span class="p">:</span> <span class="mi">5</span>
+<span class="n">snapshot_distance</span><span class="p">:</span> <span class="mi">5</span>
+<span class="n">client_req_timeout</span><span class="p">:</span> <span class="mi">3000</span> <span class="c1"># this is in milliseconds</span>
+<span class="n">key_update_interval</span><span class="p">:</span> <span class="mi">3600</span> <span class="c1"># this is in seconds</span>
+<span class="n">server_list_file</span><span class="p">:</span> <span class="o">/</span><span class="nb">abs</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server_list</span><span class="o">.</span><span class="n">yaml</span>
+<span class="n">root_cert_file</span><span class="p">:</span> <span class="o">/</span><span class="nb">abs</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">ca</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">server_cert_file</span><span class="p">:</span> <span class="o">/</span><span class="nb">abs</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">server_key_file</span><span class="p">:</span> <span class="o">/</span><span class="nb">abs</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">key</span>
+<span class="n">cert_verify_str</span><span class="p">:</span> <span class="o">/</span><span class="n">C</span><span class="o">=</span><span class="n">US</span><span class="o">/</span><span class="n">ST</span><span class="o">=</span><span class="n">IL</span><span class="o">/</span><span class="n">O</span><span class="o">=</span><span class="n">Yahoo</span><span class="o">/</span><span class="n">OU</span><span class="o">=</span><span class="n">Edge</span><span class="o">/</span><span class="n">CN</span><span class="o">=</span><span class="n">localhost</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="server-list-file">
+<h2>Server List File<a class="headerlink" href="#server-list-file" title="Permalink to this headline">¶</a></h2>
+<p>Server list file as mentioned above, also in YAML.</p>
+<ul class="simple">
+<li><p>server_id - ID of the server.</p></li>
+<li><p>address - Hostname or IP address of the server.</p></li>
+<li><p>port - Port number of the server.</p></li>
+</ul>
+</div>
+<div class="section" id="example-server-list-file">
+<h2>Example Server List File<a class="headerlink" href="#example-server-list-file" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">server_id</span><span class="p">:</span> <span class="mi">1</span>
+  <span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">port</span><span class="p">:</span> <span class="mi">10001</span>
+<span class="o">-</span> <span class="n">server_id</span><span class="p">:</span> <span class="mi">2</span>
+  <span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">port</span><span class="p">:</span> <span class="mi">10002</span>
+<span class="o">-</span> <span class="n">server_id</span><span class="p">:</span> <span class="mi">3</span>
+  <span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">port</span><span class="p">:</span> <span class="mi">10003</span>
+<span class="o">-</span> <span class="n">server_id</span><span class="p">:</span> <span class="mi">4</span>
+  <span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">port</span><span class="p">:</span> <span class="mi">10004</span>
+<span class="o">-</span> <span class="n">server_id</span><span class="p">:</span> <span class="mi">5</span>
+  <span class="n">address</span><span class="p">:</span> <span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+  <span class="n">port</span><span class="p">:</span> <span class="mi">10005</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="system_stats.en.html" class="btn btn-neutral float-right" title="System Stats Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ssl_session_reuse.en.html" class="btn btn-neutral float-left" title="SSL Session Reuse Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2022, dev@trafficserver.apache.org
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+<div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    <span class="fa fa-book"> Apache Traffic Server</span>
+    v: 10.0
+    <span class="fa fa-caret-down"></span>
+  </span>
+  <div class="rst-other-versions">
+    <dl id="lang-list">
+      <dt>Languages</dt>
+    </dl>
+    <dl id="version-list">
+      <dt>Versions</dt>
+    </dl>
+  </div>
+</div>
+<script>
+$(function() {
+  function update_langlist (json) {
+    for (var lang in json) {
+      $('#lang-list').append('<dd><a href="/' + lang + '/latest/">' + json[lang]['name'] + '</a></dd>');
+    }
+    for (var i in json[curlang]['versions']) {
+      var ver = json[curlang]['versions'][i];
+      $('#version-list').append('<dd><a href="/' + curlang + '/' + ver + '/">' + ver + '</a></dd>');
+    }
+  }
+  var curlang = "None" == "None" ? "en" : "None";
+  $.ajax({
+    'url':      "/en/latest/_static/languages.json",
+    'dataType': "json",
+    'success':  function (json) { update_langlist(json) },
+    'error':    function (xhr,errstr,e) {
+      $.ajax({
+        'url':      "/_static/languages.json",
+        'dataType': "json",
+        'success':  function (json) { update_langlist(json) }
+      })
+    }
+  });
+});
+</script>
+ 
+
+
+</body>
+</html>

@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Performance Tuning &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Configuration Files" href="../files/index.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -143,7 +139,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -154,7 +149,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -189,13 +183,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +196,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/performance/index.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -505,7 +497,7 @@ after which a retry will be performed (the delay is configured with
 engine.</p>
 <p><a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-handshake-timeout-in" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.handshake_timeout_in</span></code></a> configures the time, in seconds,
 after which incoming client connections will abort should the SSL handshake not
-be completed. The default of <code class="docutils literal notranslate"><span class="pre">0</span></code> disables the timeout.</p>
+be completed. A value of <code class="docutils literal notranslate"><span class="pre">0</span></code> will disable the timeout.</p>
 <p>When <a class="reference internal" href="../security/index.en.html#admin-ocsp-stapling"><span class="std std-ref">OCSP Stapling</span></a> is enabled in Traffic Server, you can configure two
 separate timeouts; one for setting the length of time which cached OCSP results
 will persist, specified in seconds using
@@ -514,7 +506,7 @@ the remote OCSP responders, in seconds, with
 <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-ocsp-request-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.ocsp.request_timeout</span></code></a>.</p>
 <p>Lastly, you can control the number of seconds for which SSL sessions will be
 cached in Traffic Server using <a class="reference internal" href="../files/records.config.en.html#proxy-config-ssl-session-cache-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.ssl.session_cache.timeout</span></code></a>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">handshake_timeout_in</span> <span class="n">INT</span> <span class="mi">0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">handshake_timeout_in</span> <span class="n">INT</span> <span class="mi">30</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ocsp</span><span class="o">.</span><span class="n">cache_timeout</span> <span class="n">INT</span> <span class="mi">3600</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">ocsp</span><span class="o">.</span><span class="n">request_timeout</span> <span class="n">INT</span> <span class="mi">10</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">ssl</span><span class="o">.</span><span class="n">session_cache</span><span class="o">.</span><span class="n">timeout</span> <span class="n">INT</span> <span class="mi">0</span>
@@ -633,29 +625,29 @@ shortcuts to identifying problem areas, or realizing easier performance gains.</
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../files/index.en.html" class="btn btn-neutral float-right" title="Configuration Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../layer-4-routing.en.html" class="btn btn-neutral float-left" title="Layer 4 Routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="../files/index.en.html" class="btn btn-neutral float-right" title="Configuration Files" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../layer-4-routing.en.html" class="btn btn-neutral float-left" title="Layer 4 Routing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -663,6 +655,7 @@ shortcuts to identifying problem areas, or realizing easier performance gains.</
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

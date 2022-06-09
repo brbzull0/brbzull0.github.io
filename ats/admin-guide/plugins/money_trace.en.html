@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Money Trace Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MP4 Plugin" href="mp4.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -129,6 +125,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="otel_tracer.en.html">OpenTelemetry Tracer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
@@ -136,6 +133,7 @@
 <li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stek_share.en.html">STEK Share</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
 <li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
@@ -150,7 +148,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -161,7 +158,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -196,13 +192,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -213,7 +207,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/money_trace.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -229,35 +223,106 @@
             
   <div class="section" id="money-trace-plugin">
 <span id="admin-plugins-money-trace"></span><h1>Money Trace Plugin<a class="headerlink" href="#money-trace-plugin" title="Permalink to this headline">¶</a></h1>
-<p>This is a remap plugin  that allows ATS to participate in a distributed tracing system based upon
-the Comcast “Money” distributed tracing and monitoring library.  The Comcast “Money” library has
-its roots in Google’s Dapper and Twitters Zipkin systems.  A money trace header or session id, is
-attached to transaction and allows an operator with the appropriate logging systems in place,
-to determine where errors and/or latency may exit.</p>
-<p>Use of the library enables the tracing of a transaction through all systems that participate in
-handling the request. See the documentation on this open source library at
-<a class="reference external" href="https://github.com/Comcast/money">https://github.com/Comcast/money</a>.</p>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This plugin allows ATS to participate in a distributed tracing system
+based upon the Comcast “Money” distributed tracing and monitoring library.
+The Comcast “Money” library has its roots in Google’s Dapper and Twitters
+Zipkin systems.  A money trace header or session id, is attached to
+transaction and allows an operator with the appropriate logging systems
+in place, to determine where errors and/or latency may exit.</p>
+<p>Use of the library enables the tracing of a transaction through all
+systems that participate in handling the request. See the documentation
+on this open source library at <a class="reference external" href="https://github.com/Comcast/money">https://github.com/Comcast/money</a>.</p>
+</div>
 <div class="section" id="how-it-works">
 <h2>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
-<p>This plugin checks incoming requests for the “X-MoneyTrace” header.  If the header is not present
-no further processing takes place.  However if the header is present,  the plugin will check to
-to see if the request has been cached.  If so, the plugin will add the “X-Moneytrace” header from the
-incoming request to the cached response returned to the client as required by the money_trace
-protocol.  If the request has not been cached, the plugin will extends the trace context by creating a new
-“X-MoneyTrace” header for inclusion in the outgoing request to a parent cache or origin server.
-The extended header includes the ‘trace-id’ from the incoming request, the incoming span-id
-becomes the outgoing parent-id and the plugin generates a new random long span id for the outgoing request.
-See the documentation at the link above for a complete description on the “X-MoneyTrace” header and how
-to use and extend it in a distributed tracing system.</p>
+<p>This plugin checks incoming requests for the “X-MoneyTrace” header.
+If the header is not present no further processing takes place.
+However if the header is present,  the plugin will check to see if the
+request has been cached.  If so, the plugin will add the “X-Moneytrace”
+header from the incoming request to the cached response returned to the
+client as required by the money_trace protocol.  If the request has not
+been cached, the plugin will extends the trace context by creating a new
+“X-MoneyTrace” header for inclusion in the outgoing request to a parent
+cache or origin server.  The extended header includes the ‘trace-id’
+from the incoming request, the incoming span-id becomes the outgoing
+parent-id and the plugin generates a new span id for the
+outgoing request using the current state machine id.</p>
+<p>See the documentation at the link above for a complete description on
+the “X-MoneyTrace” header and how to use and extend it in a distributed
+tracing system.</p>
+<p>A sample money-trace header:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">-</span><span class="n">MoneyTrace</span><span class="p">:</span> <span class="n">trace</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="n">aa234a23</span><span class="o">-</span><span class="mf">189e-4</span><span class="n">cc4</span><span class="o">-</span><span class="mi">98</span><span class="n">ed</span><span class="o">-</span><span class="n">b5327b1ec231</span><span class="o">-</span><span class="mi">3</span><span class="p">;</span><span class="n">parent</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">span</span><span class="o">-</span><span class="nb">id</span><span class="o">=</span><span class="mi">4303691729133364974</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>The <cite>Money Trace</cite> plugin is a <a class="reference internal" href="../../appendices/glossary.en.html#term-remap-plugin"><span class="xref std std-term">remap plugin</span></a>.  Enable it by adding
-<code class="docutils literal notranslate"><span class="pre">money_trace.so</span></code> to your <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file.  There are no options.</p>
+<p>The <cite>Money Trace</cite> plugin can be either a <a class="reference internal" href="../../appendices/glossary.en.html#term-remap-plugin"><span class="xref std std-term">remap plugin</span></a> or
+<a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a>.  Enable it by adding <code class="docutils literal notranslate"><span class="pre">money_trace.so</span></code> to your
+<a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file or <a class="reference internal" href="../files/plugin.config.en.html#std-configfile-plugin.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">plugin.config</span></code></a>.</p>
 <p>Here is an example remap.config entry:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">vod</span><span class="o">.</span><span class="n">foobar</span><span class="o">.</span><span class="n">com</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">origin</span><span class="o">.</span><span class="n">vod</span><span class="o">.</span><span class="n">foobar</span><span class="o">.</span><span class="n">com</span> <span class="nd">@plugin</span><span class="o">=</span><span class="n">money_trace</span><span class="o">.</span><span class="n">so</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The plugin supports the following options:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--create-if-none=[true|false]</span></code> (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+</ul>
+<p>If no X-MoneyTrace header is found in the client request one will
+be manufactured using the transaction UUID as trace-id,
+the transaction state machine id as span-id and parent-id set to ‘0’.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--global-skip-header=[header</span> <span class="pre">name]</span></code> (default: null/disable)</p></li>
+</ul>
+<p>This setting only applies to a <a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a> instance
+and allows remap plugin instances to override <a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a>
+behavior by disabling the <a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a></p>
+<p>Because a <a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a> runs before any <a class="reference internal" href="../../appendices/glossary.en.html#term-remap-plugin"><span class="xref std std-term">remap plugin</span></a>
+in the remap phase a pregen header may still be created by the
+<a class="reference internal" href="../../appendices/glossary.en.html#term-global-plugin"><span class="xref std std-term">global plugin</span></a> if configured to do so.</p>
+<p>The global skip check is performed during the post remap phase in order
+to allow remap plugins (like <cite>header rewrite</cite>) to set this skip header.</p>
+<p>It is strongly suggested to use a private ATS header (begins with ‘&#64;’)
+as this value.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--header=[header</span> <span class="pre">name]</span></code> (default: <code class="docutils literal notranslate"><span class="pre">X-MoneyTrace</span></code>)</p></li>
+</ul>
+<p>Allows the money trace header to be overridden.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--passthru=[true|false]</span></code> (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+</ul>
+<p>In this mode ATS acts transparently and passes the client money trace
+header through to the parent.  It also returns this same header back to
+the client.  This option ignores the –create-if-none setting.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--pregen-header=[header</span> <span class="pre">name]</span></code> (default: null/disable)</p></li>
+</ul>
+<p>Normally the money trace header for a transaction is only added to the
+transaction server request headers.  If this argument is supplied the
+header will be generated earlier in the transaction and added to the
+client request headers.  Use this for debug or for logging the current
+transaction’s money trace header.  It is suggested to use a private
+ATS header (begins with a ‘&#64;’) for this value.  A <a class="reference internal" href="../files/logging.yaml.en.html#std-configfile-logging.yaml"><code class="xref std std-file docutils literal notranslate"><span class="pre">logging.yaml</span></code></a>
+entry with <a class="reference external" href="mailto:pregen-header=&#37;&#52;&#48;MoneyTrace">pregen-header=<span>&#64;</span>MoneyTrace</a> might look like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%&lt;</span><span class="p">{</span><span class="nd">@MoneyTrace</span><span class="p">}</span><span class="n">cqh</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="robustness">
+<h2>Robustness<a class="headerlink" href="#robustness" title="Permalink to this headline">¶</a></h2>
+<p>This plugin tries to be robust in its parsing.  At a minimum the value
+must start with <cite>trace-id=</cite> set to a none empty value.</p>
+<p>If <cite>span-id=</cite> is found in the header value that will be used as the
+parent-id for an upstream request.  Otherwise ‘0’ will be its value.</p>
+<p>If the incoming money trace header is invalid, it is handled based
+on the –create-if-none setting.  If create-if-none is set a new
+money trace header will be generated and used.  Otherwise the
+incoming client header value will be passed through.</p>
 </div>
 </div>
 
@@ -266,29 +331,29 @@ to use and extend it in a distributed tracing system.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="mp4.en.html" class="btn btn-neutral float-right" title="MP4 Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="metalink.en.html" class="btn btn-neutral float-left" title="Metalink Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="mp4.en.html" class="btn btn-neutral float-right" title="MP4 Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metalink.en.html" class="btn btn-neutral float-left" title="Metalink Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -296,6 +361,7 @@ to use and extend it in a distributed tracing system.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

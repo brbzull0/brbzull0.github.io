@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Header Rewrite Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Health Checks Plugin" href="healthchecks.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -124,6 +120,7 @@
 <li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Header Rewrite</a></li>
 <li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http_stats.en.html">HTTP Stats</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
 <li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
 <li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
@@ -142,7 +139,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -153,7 +149,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -188,13 +183,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -205,7 +198,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/header_rewrite.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -876,6 +869,8 @@ Requires at least Linux 2.6.25.</p>
 the appropriate logs even when the debug tag has not been enabled. For
 additional information on Traffic Server debugging statements, refer to
 <a class="reference internal" href="../../developer-guide/debugging/debug-tags.en.html#developer-debug-tags"><span class="std std-ref">Debug Tags</span></a> in the developer’s documentation.</p>
+<p>+**Note**: This operator is deprecated, use the <code class="docutils literal notranslate"><span class="pre">set-http-cntl</span></code> operator instead,
++with the <code class="docutils literal notranslate"><span class="pre">TXN_DEBUG</span></code> control.</p>
 </div>
 <div class="section" id="set-destination">
 <h4>set-destination<a class="headerlink" href="#set-destination" title="Permalink to this headline">¶</a></h4>
@@ -956,6 +951,8 @@ instead of the standard string (which depends on the <a class="reference interna
 <p>When invoked, and when <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code> is any of <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">true</span></code>, or <code class="docutils literal notranslate"><span class="pre">TRUE</span></code>, this
 operator causes Traffic Server to abort further request remapping. Any other value and
 the operator will effectively be a no-op.</p>
+<p><strong>Note</strong>: This operator is deprecated, use the <code class="docutils literal notranslate"><span class="pre">set-http-cntl</span></code> operator instead,
+with the <code class="docutils literal notranslate"><span class="pre">SKIP_REMAP</span></code> control.</p>
 </div>
 <div class="section" id="set-cookie">
 <h4>set-cookie<a class="headerlink" href="#set-cookie" title="Permalink to this headline">¶</a></h4>
@@ -964,6 +961,50 @@ the operator will effectively be a no-op.</p>
 </div>
 <p>Replaces the value of cookie <code class="docutils literal notranslate"><span class="pre">&lt;name&gt;</span></code> with <code class="docutils literal notranslate"><span class="pre">&lt;value&gt;</span></code>, creating the cookie
 if necessary.</p>
+</div>
+<div class="section" id="set-http-cntl">
+<h4>set-http-cntl<a class="headerlink" href="#set-http-cntl" title="Permalink to this headline">¶</a></h4>
+<p>;;</p>
+<blockquote>
+<div><p>set-http-cntl &lt;controller&gt; &lt;flag&gt;</p>
+</div></blockquote>
+<p>This operator lets you turn off (or on) the logging for a particular transaction.
+The <code class="docutils literal notranslate"><span class="pre">&lt;flag&gt;</span></code> is any of <code class="docutils literal notranslate"><span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">off</span></code>, and <code class="docutils literal notranslate"><span class="pre">false</span></code>, or <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">on</span></code> and <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+The available controllers are:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Controller</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>LOGGING</p></td>
+<td><p>Turns off logging for the transction (default: <code class="docutils literal notranslate"><span class="pre">on</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>INTERCEPT_RETRY</p></td>
+<td><p>Allow intercepts to be retried (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>RESP_CACHEABLE</p></td>
+<td><p>Force the response to be cacheable (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>REQ_CACHEABLE</p></td>
+<td><p>Force the request to be cacheable (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>SERVER_NO_STORE</p></td>
+<td><p>Don’t allow the response to be written to cache (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>TXN_DEBUG</p></td>
+<td><p>Enable transaction debugging (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>SKIP_REMAP</p></td>
+<td><p>Don’t require a remap match for the transaction (default: <code class="docutils literal notranslate"><span class="pre">off</span></code>)</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section" id="operator-flags">
@@ -1454,29 +1495,29 @@ set-header ATS-SRVR-UUID %{ID:UNIQUE}
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="healthchecks.en.html" class="btn btn-neutral float-right" title="Health Checks Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="generator.en.html" class="btn btn-neutral float-left" title="Generator Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="healthchecks.en.html" class="btn btn-neutral float-right" title="Health Checks Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="generator.en.html" class="btn btn-neutral float-left" title="Generator Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -1484,6 +1525,7 @@ set-header ATS-SRVR-UUID %{ID:UNIQUE}
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

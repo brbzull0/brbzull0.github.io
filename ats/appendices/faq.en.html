@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Frequently Asked Questions &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Glossary" href="glossary.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -140,6 +136,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#low-memory-symptoms">Low memory symptoms</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#config-checker">Config checker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#connection-timeouts-with-the-origin-server">Connection timeouts with the origin server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#log-entries-for-some-transactions-are-skipped">Log entries for some transactions are skipped</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="glossary.en.html">Glossary</a></li>
@@ -151,7 +148,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -186,13 +182,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../index.html">Docs</a> &raquo;</li>
         
           <li><a href="index.en.html">Appendices</a> &raquo;</li>
         
@@ -201,7 +195,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../_sources/appendices/faq.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -890,6 +884,22 @@ performance on your origin servers, you may adjust the origin connection timeout
 in Traffic Server by changing <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-http-connect-attempts-timeout" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.http.connect_attempts_timeout</span></code></a>
 in <a class="reference internal" href="../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> to a larger value.</p>
 </div>
+<div class="section" id="log-entries-for-some-transactions-are-skipped">
+<h2>Log entries for some transactions are skipped<a class="headerlink" href="#log-entries-for-some-transactions-are-skipped" title="Permalink to this headline">¶</a></h2>
+<p>You will see lines like this in the diags log file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">NOTE</span><span class="p">:</span> <span class="n">Skipping</span> <span class="n">the</span> <span class="n">current</span> <span class="n">log</span> <span class="n">entry</span> <span class="k">for</span> <span class="o">...</span>
+</pre></div>
+</div>
+<p>This happens when a log entry is too big to fit in a log buffer.  This is often causeed by very long
+URLs in the entry.  You can truncate long URLs using the slice syntax for the URL log field in the log
+format, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%&lt;</span><span class="n">cquc</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can also increase the value of <a class="reference internal" href="../admin-guide/files/records.config.en.html#proxy-config-log-log-buffer-size" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.log.log_buffer_size</span></code></a>, but this can have impacts
+on performance and memory usage.  Very large values may trigger software bugs.  Some production proxies
+have run successfully using 26624 as the value for this configuration variable.</p>
+</div>
 </div>
 
 
@@ -897,29 +907,29 @@ in <a class="reference internal" href="../admin-guide/files/records.config.en.ht
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="glossary.en.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="command-line/tsxs.en.html" class="btn btn-neutral float-left" title="tsxs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="glossary.en.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="command-line/tsxs.en.html" class="btn btn-neutral float-left" title="tsxs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -927,6 +937,7 @@ in <a class="reference internal" href="../admin-guide/files/records.config.en.ht
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

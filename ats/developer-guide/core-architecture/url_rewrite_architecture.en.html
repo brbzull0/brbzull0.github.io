@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>URL Rewrite Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Design Documents" href="../design-documents/index.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -138,7 +134,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -173,13 +168,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -190,7 +183,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/core-architecture/url_rewrite_architecture.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -216,7 +209,7 @@ a leading ‘&#64;’ character, which marks an argument. Otherwise it is a para
 <h2>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <dl class="cpp class">
 <dt id="_CPPv415acl_filter_rule">
-<span id="_CPPv315acl_filter_rule"></span><span id="_CPPv215acl_filter_rule"></span><span id="acl_filter_rule"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">acl_filter_rule</span></code><a class="headerlink" href="#_CPPv415acl_filter_rule" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv315acl_filter_rule"></span><span id="_CPPv215acl_filter_rule"></span><span id="acl_filter_rule"></span><em class="property">class </em><code class="sig-name descname">acl_filter_rule</code><a class="headerlink" href="#_CPPv415acl_filter_rule" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>An access check to determine if a rule is enabled for a request. The filter has a set of matching
 criteria and an action, which is either <code class="docutils literal notranslate"><span class="pre">ALLOW</span></code> or <code class="docutils literal notranslate"><span class="pre">DENY</span></code>. If the filter matches the request
 the action is used, otherwise the next filter is checked.</p>
@@ -224,7 +217,7 @@ the action is used, otherwise the next filter is checked.</p>
 
 <dl class="cpp class">
 <dt id="_CPPv410UrlRewrite">
-<span id="_CPPv310UrlRewrite"></span><span id="_CPPv210UrlRewrite"></span><span id="UrlRewrite"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">UrlRewrite</span></code><a class="headerlink" href="#_CPPv410UrlRewrite" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv310UrlRewrite"></span><span id="_CPPv210UrlRewrite"></span><span id="UrlRewrite"></span><em class="property">class </em><code class="sig-name descname">UrlRewrite</code><a class="headerlink" href="#_CPPv410UrlRewrite" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The top level remapping structure. This is created from a configuration file and then used during
 a transaction to perform remapping. Data that is shared or needs to persist as long as the
 configuration is stored in this class. These are</p>
@@ -233,7 +226,7 @@ container contains the rule. It is assumed that all rules in a container have th
 for the rule type of that container.</p>
 <dl class="cpp class">
 <dt id="_CPPv4N10UrlRewrite12RegexMappingE">
-<span id="_CPPv3N10UrlRewrite12RegexMappingE"></span><span id="_CPPv2N10UrlRewrite12RegexMappingE"></span><span id="UrlRewrite::RegexMapping"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">RegexMapping</span></code><a class="headerlink" href="#_CPPv4N10UrlRewrite12RegexMappingE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N10UrlRewrite12RegexMappingE"></span><span id="_CPPv2N10UrlRewrite12RegexMappingE"></span><span id="UrlRewrite::RegexMapping"></span><em class="property">class </em><code class="sig-name descname">RegexMapping</code><a class="headerlink" href="#_CPPv4N10UrlRewrite12RegexMappingE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>A container for a regular expression mapping. This contains the base mapping along with the
 regular expression and a format string. The format string is annotated with the locations of
 regular expression match group substitutions so that if the regular expression matches, the
@@ -252,29 +245,29 @@ results can be efficiently assembled in to the output host name.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../design-documents/index.en.html" class="btn btn-neutral float-right" title="Design Documents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="rpc.en.html" class="btn btn-neutral float-left" title="RPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="../design-documents/index.en.html" class="btn btn-neutral float-right" title="Design Documents" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="rpc.en.html" class="btn btn-neutral float-left" title="RPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -282,6 +275,7 @@ results can be efficiently assembled in to the output host name.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

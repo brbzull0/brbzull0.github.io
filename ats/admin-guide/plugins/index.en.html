@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Plugins &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="AWS S3 Authentication plugin" href="s3_auth.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -124,6 +120,7 @@
 <li class="toctree-l4"><a class="reference internal" href="generator.en.html">Generator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="header_rewrite.en.html">Header Rewrite</a></li>
 <li class="toctree-l4"><a class="reference internal" href="healthchecks.en.html">Health Checks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="http_stats.en.html">HTTP Stats</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lua.en.html">Lua</a></li>
 <li class="toctree-l4"><a class="reference internal" href="regex_remap.en.html">Regex Remap</a></li>
 <li class="toctree-l4"><a class="reference internal" href="regex_revalidate.en.html">Regex Revalidate</a></li>
@@ -153,6 +150,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="otel_tracer.en.html">OpenTelemetry Tracer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
@@ -160,6 +158,7 @@
 <li class="toctree-l4"><a class="reference internal" href="slice.en.html">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stek_share.en.html">STEK Share</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
 <li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
@@ -174,7 +173,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -185,7 +183,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -220,13 +217,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -235,7 +230,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/index.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -297,6 +292,8 @@ the core.</p>
 other transaction attributes.</p>
 </dd>
 <dt><a class="reference internal" href="healthchecks.en.html"><span class="doc">Health Checks</span></a></dt><dd><p>Define service health check links.</p>
+</dd>
+<dt><a class="reference internal" href="http_stats.en.html"><span class="doc">HTTP Stats</span></a></dt><dd><p>A remap-based plugin that provides an HTTP interface to all Traffic Server statistics.</p>
 </dd>
 <dt><a class="reference internal" href="lua.en.html"><span class="doc">Lua</span></a></dt><dd><p>Allows plugins to be written in Lua instead of C code.</p>
 </dd>
@@ -362,6 +359,8 @@ experimental upstreams.</p>
 </dd>
 <dt><a class="reference internal" href="mysql_remap.en.html"><span class="doc">MySQL Remap</span></a></dt><dd><p>Allows dynamic remaps from a MySQL database.</p>
 </dd>
+<dt><a class="reference internal" href="otel_tracer.en.html"><span class="doc">OpenTelemetry Tracer</span></a></dt><dd><p>Allows Trafficserver to participate in OpenTelemetry distributed tracing system</p>
+</dd>
 <dt><a class="reference internal" href="prefetch.en.html"><span class="doc">Prefetch</span></a></dt><dd><p>Pre-fetch objects based on the requested URL path pattern.</p>
 </dd>
 <dt><a class="reference internal" href="parent_select.en.html"><span class="doc">Parent Select</span></a></dt><dd><p>This remap plugin allows selection of parent proxies or origins during requests. This
@@ -389,6 +388,8 @@ these chunks together.</p>
 </dd>
 <dt><a class="reference internal" href="sslheaders.en.html"><span class="doc">SSL Headers</span></a></dt><dd><p>Populate request headers with SSL session information.</p>
 </dd>
+<dt><a class="reference internal" href="stek_share.en.html"><span class="doc">STEK Share</span></a></dt><dd><p>Coordinates STEK (Session Ticket Encryption Key) between ATS instances running in a group.</p>
+</dd>
 <dt><a class="reference internal" href="system_stats.en.html"><span class="doc">System Stats</span></a></dt><dd><p>Inserts system statistics in to the stats list</p>
 </dd>
 <dt><a class="reference internal" href="traffic_dump.en.html"><span class="doc">Traffic Dump</span></a></dt><dd><p>Dumps traffic data into a JSON format file which can be used to replay traffic.</p>
@@ -404,29 +405,29 @@ these chunks together.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="s3_auth.en.html" class="btn btn-neutral float-right" title="AWS S3 Authentication plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../storage/index.en.html" class="btn btn-neutral float-left" title="Cache Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="s3_auth.en.html" class="btn btn-neutral float-right" title="AWS S3 Authentication plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../storage/index.en.html" class="btn btn-neutral float-left" title="Cache Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -434,6 +435,7 @@ these chunks together.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

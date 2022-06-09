@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>remap.config &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="splitdns.config" href="splitdns.config.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -139,9 +135,9 @@
 <li class="toctree-l3"><a class="reference internal" href="storage.config.en.html">storage.config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="strategies.yaml.en.html">strategies.yaml</a></li>
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc.yaml.en.html">jsonrpc.yaml</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -152,7 +148,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -187,13 +182,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -204,7 +197,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/files/remap.config.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -238,7 +231,11 @@ Server having to contact any origin servers</p></li>
 <p>Refer to  <a class="reference internal" href="../configuration/redirecting-http-requests.en.html#reverse-proxy-and-http-redirects"><span class="std std-ref">Reverse Proxy and HTTP Redirects</span></a>, for information about
 redirecting HTTP requests and using reverse proxy.</p>
 <p>After you modify the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> run the
-<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the changes.</p>
+<a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#cmdoption-traffic_ctl-config-arg-reload"><code class="xref std std-option docutils literal notranslate"><span class="pre">traffic_ctl</span> <span class="pre">config</span> <span class="pre">reload</span></code></a> to apply the changes. The current configuration is replaced
+with the new configuration only if there are no errors in the file. Any syntax error will prevent
+an update. Even if syntactically correct the file is considered valid only if it has at least <a class="reference internal" href="records.config.en.html#proxy-config-url-remap-min-rules-required" title="records.config"><code class="xref ts ts-cv docutils literal notranslate"><span class="pre">proxy.config.url_remap.min_rules_required</span></code></a>
+rules in it. This defaults to 0, but can be set higher if it is desirable to prevent loading an
+empty or missing file.</p>
 <div class="section" id="format">
 <h2>Format<a class="headerlink" href="#format" title="Permalink to this headline">¶</a></h2>
 <p>Each line in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a> file must contain a mapping rule. Empty lines,
@@ -422,8 +419,8 @@ that match the second rule also match the first rule. The first rule
 takes precedence because it appears earlier in the <a class="reference internal" href="#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>
 file.</p>
 <p>This is different if one rule does not have a host. For example consider these rules using the <a class="reference internal" href="#match-all">Match-All</a> rule:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
-<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
 </pre></div>
 </div>
 <p>These rules are set up to redirect requests to another local process. Using them will result in</p>
@@ -455,8 +452,8 @@ second rule does have a host that matches the host in the second request along w
 of the URL and is therefore selected in the first phase.</p>
 <p>This will yield the same results if the rules are reversed because the rule selection happens in
 different phases making the order irrelevant.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
-<span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0.0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">dist_get_user</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span><span class="n">denied</span><span class="o">.</span><span class="n">html</span>
+<span class="nb">map</span> <span class="o">/</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8001</span><span class="o">/</span>
 </pre></div>
 </div>
 <p>The following example shows a mapping with a path prefix specified in
@@ -655,12 +652,12 @@ accommodate remap markup</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neverpost</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">neverpost</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span>
 <span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">onlypost</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">onlypost</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span>
 
-<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">1.2.3.4</span>
-<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0.0.1</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.4</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
 
-<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.5.2.1</span> <span class="nd">@in_ip</span><span class="o">=</span><span class="mf">72.209.23.4</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.5</span><span class="o">.</span><span class="mf">2.1</span> <span class="nd">@in_ip</span><span class="o">=</span><span class="mf">72.209</span><span class="o">.</span><span class="mf">23.4</span>
 
-<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0.0.1</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span> <span class="nd">@method</span><span class="o">=</span><span class="n">get</span> <span class="nd">@method</span><span class="o">=</span><span class="n">head</span>
+<span class="nb">map</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span>  <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">foo</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span><span class="o">/</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span> <span class="nd">@method</span><span class="o">=</span><span class="n">post</span> <span class="nd">@method</span><span class="o">=</span><span class="n">get</span> <span class="nd">@method</span><span class="o">=</span><span class="n">head</span>
 </pre></div>
 </div>
 <p>Note that these Acl filters will return a 403 response if the resource is restricted.</p>
@@ -684,7 +681,7 @@ are allowed.</p>
 <div class="section" id="id5">
 <h3>Examples<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">definefilter</span> <span class="n">disable_delete_purge</span> <span class="nd">@action</span><span class="o">=</span><span class="n">deny</span> <span class="nd">@method</span><span class="o">=</span><span class="n">delete</span> <span class="nd">@method</span><span class="o">=</span><span class="n">purge</span>
-<span class="o">.</span><span class="n">definefilter</span> <span class="n">local_only</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">192.168.0.1</span><span class="o">-</span><span class="mf">192.168.0.254</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.0.0.1</span><span class="o">-</span><span class="mf">10.0.0.254</span>
+<span class="o">.</span><span class="n">definefilter</span> <span class="n">local_only</span> <span class="nd">@action</span><span class="o">=</span><span class="n">allow</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">0.1</span><span class="o">-</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">0.254</span> <span class="nd">@src_ip</span><span class="o">=</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.1</span><span class="o">-</span><span class="mf">10.0</span><span class="o">.</span><span class="mf">0.254</span>
 
 <span class="o">.</span><span class="n">activatefilter</span> <span class="n">disable_delete_purge</span>
 
@@ -763,29 +760,29 @@ references additional mapping rules files</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="splitdns.config.en.html" class="btn btn-neutral float-right" title="splitdns.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="records.config.en.html" class="btn btn-neutral float-left" title="records.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="splitdns.config.en.html" class="btn btn-neutral float-right" title="splitdns.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="records.config.en.html" class="btn btn-neutral float-left" title="records.config" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -793,6 +790,7 @@ references additional mapping rules files</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

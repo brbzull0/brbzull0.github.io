@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>TLS Session Plugin API &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="HTTP Transaction Timers" href="trafficserver-timers.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -162,7 +158,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -197,13 +192,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -216,7 +209,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../../_sources/developer-guide/plugins/hooks-and-transactions/ssl-session-api.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -236,7 +229,7 @@
 to enable the plugin to update the session cache based on outside information, e.g. peer servers.</p>
 <dl class="c macro">
 <dt id="c.TS_SSL_SESSION_HOOK">
-<code class="sig-name descname"><span class="pre">TS_SSL_SESSION_HOOK</span></code><a class="headerlink" href="#c.TS_SSL_SESSION_HOOK" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TS_SSL_SESSION_HOOK</code><a class="headerlink" href="#c.TS_SSL_SESSION_HOOK" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>This hook is invoked when a change has been made to the ATS session cache or a session has been accessed
@@ -245,7 +238,7 @@ use.  This means <a class="reference internal" href="../../../admin-guide/files/
 <p>The hook callback has the following signature</p>
 <dl class="c function">
 <dt id="c.SSL_session_callback">
-<span class="pre">int</span> <code class="sig-name descname"><span class="pre">SSL_session_callback</span></code><span class="sig-paren">(</span><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSCont" title="TSCont"><span class="pre">TSCont</span></a> <em><span class="pre">contp</span></em>, <a class="reference internal" href="../../api/types/TSEvent.en.html#c.TSEvent" title="TSEvent"><span class="pre">TSEvent</span></a> <em><span class="pre">event</span></em>, <span class="pre">void</span> <span class="pre">*</span><em><span class="pre">edata</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.SSL_session_callback" title="Permalink to this definition">¶</a><br /></dt>
+int <code class="sig-name descname">SSL_session_callback</code><span class="sig-paren">(</span><a class="reference internal" href="../../api/functions/TSTypes.en.html#c.TSCont" title="TSCont">TSCont</a> <em>contp</em>, <a class="reference internal" href="../../api/types/TSEvent.en.html#c.TSEvent" title="TSEvent">TSEvent</a> <em>event</em>, void *<em>edata</em><span class="sig-paren">)</span><a class="headerlink" href="#c.SSL_session_callback" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>The edata parameter is a pointer to a <a class="reference internal" href="../../api/types/TSSslSession.en.html#c.TSSslSessionID" title="TSSslSessionID"><code class="xref c c-type docutils literal notranslate"><span class="pre">TSSslSessionID</span></code></a>.</p>
@@ -253,19 +246,19 @@ use.  This means <a class="reference internal" href="../../../admin-guide/files/
 <p>The following events can be sent to this callback</p>
 <dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_NEW">
-<code class="sig-name descname"><span class="pre">TS_EVENT_SSL_SESSION_NEW</span></code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_NEW" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_NEW</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_NEW" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a new session has been inserted into the SSL session cache.  The plugin can call <a class="reference internal" href="../../api/functions/TSSslSession.en.html#c.TSSslSessionGet" title="TSSslSessionGet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSSslSessionGet()</span></code></a> to retrieve the actual session object.  The plugin could communicate information about the new session to other processes or update additional logging or statistics.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_GET">
-<code class="sig-name descname"><span class="pre">TS_EVENT_SSL_SESSION_GET</span></code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_GET" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_GET</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_GET" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a session has been fetched from the SSL session cache by a client request.  The plugin could update additional logging and statistics.</p>
 </dd></dl>
 
 <dl class="c macro">
 <dt id="c.TS_EVENT_SSL_SESSION_REMOVE">
-<code class="sig-name descname"><span class="pre">TS_EVENT_SSL_SESSION_REMOVE</span></code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TS_EVENT_SSL_SESSION_REMOVE</code><a class="headerlink" href="#c.TS_EVENT_SSL_SESSION_REMOVE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Sent after a session has been removed from the SSL session cache.  The plugin could communication information about the session removal to other processes or update additional logging and statistics.</p>
 </dd></dl>
 
@@ -298,29 +291,29 @@ peers.  The plugin calls <a class="reference internal" href="../../api/functions
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="trafficserver-timers.en.html" class="btn btn-neutral float-right" title="HTTP Transaction Timers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="ssl-hooks.en.html" class="btn btn-neutral float-left" title="TLS User Agent Hooks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="trafficserver-timers.en.html" class="btn btn-neutral float-right" title="HTTP Transaction Timers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ssl-hooks.en.html" class="btn btn-neutral float-left" title="TLS User Agent Hooks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -328,6 +321,7 @@ peers.  The plugin calls <a class="reference internal" href="../../api/functions
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

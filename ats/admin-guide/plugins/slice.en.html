@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Slice Plugin &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="SSL Headers Plugin" href="sslheaders.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -129,6 +125,7 @@
 <li class="toctree-l4"><a class="reference internal" href="mp4.en.html">MP4</a></li>
 <li class="toctree-l4"><a class="reference internal" href="multiplexer.en.html">Multiplexer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="mysql_remap.en.html">MySQL Remap</a></li>
+<li class="toctree-l4"><a class="reference internal" href="otel_tracer.en.html">OpenTelemetry Tracer</a></li>
 <li class="toctree-l4"><a class="reference internal" href="parent_select.en.html">Parent Select</a></li>
 <li class="toctree-l4"><a class="reference internal" href="rate_limit.en.html">Rate Limit</a></li>
 <li class="toctree-l4"><a class="reference internal" href="uri_signing.en.html">URI Signing</a></li>
@@ -136,6 +133,7 @@
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Slice</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sslheaders.en.html">SSL Headers</a></li>
 <li class="toctree-l4"><a class="reference internal" href="ssl_session_reuse.en.html">SSL Session Reuse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="stek_share.en.html">STEK Share</a></li>
 <li class="toctree-l4"><a class="reference internal" href="system_stats.en.html">System Statistics</a></li>
 <li class="toctree-l4"><a class="reference internal" href="traffic_dump.en.html">Traffic Dump</a></li>
 <li class="toctree-l4"><a class="reference internal" href="webp_transform.en.html">WebP Transform</a></li>
@@ -150,7 +148,6 @@
 <li class="toctree-l2"><a class="reference internal" href="../layer-4-routing.en.html">Layer 4 Routing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../performance/index.en.html">Performance Tuning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../files/index.en.html">Configuration Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -161,7 +158,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -196,13 +192,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -213,7 +207,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/plugins/slice.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -267,53 +261,73 @@ and If-* conditional header evaluations.</p></li>
 <div class="section" id="plugin-options">
 <h3>Plugin Options<a class="headerlink" href="#plugin-options" title="Permalink to this headline">¶</a></h3>
 <p>The slice plugin supports the following options:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">--</span><span class="n">blockbytes</span><span class="o">=&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Default</span> <span class="ow">is</span> <span class="mi">1</span><span class="n">m</span> <span class="ow">or</span> <span class="mi">1048576</span> <span class="nb">bytes</span>
-    <span class="o">-</span><span class="n">b</span> <span class="o">&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">short</span><span class="o">.</span>
-    <span class="n">Suffix</span> <span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">g</span> <span class="n">supported</span>
-    <span class="n">Limited</span> <span class="n">to</span> <span class="mi">32</span><span class="n">k</span> <span class="ow">and</span> <span class="mi">128</span><span class="n">m</span> <span class="n">inclusive</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>--blockbytes=&lt;bytes&gt; (optional)
+    Default is 1m or 1048576 bytes
+    -b &lt;bytes&gt; for short.
+    Suffix k,m,g supported
+    Limited to 32k and 128m inclusive.
 
-<span class="o">--</span><span class="n">blockbytes</span><span class="o">-</span><span class="n">test</span><span class="o">=&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Suffix</span> <span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">g</span> <span class="n">supported</span>
-    <span class="o">-</span><span class="n">t</span> <span class="o">&lt;</span><span class="nb">bytes</span><span class="o">&gt;</span> <span class="k">for</span> <span class="n">short</span><span class="o">.</span>
-    <span class="n">Limited</span> <span class="n">to</span> <span class="nb">any</span> <span class="n">positive</span> <span class="n">number</span><span class="o">.</span>
-    <span class="n">Ignored</span> <span class="k">if</span> <span class="o">--</span><span class="n">blockbytes</span> <span class="n">provided</span><span class="o">.</span>
+--blockbytes-test=&lt;bytes&gt; (optional)
+    Suffix k,m,g supported
+    -t &lt;bytes&gt; for short.
+    Limited to any positive number.
+    Ignored if --blockbytes provided.
 
-<span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">errorlog</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Disable</span> <span class="n">writing</span> <span class="n">block</span> <span class="n">stitch</span> <span class="n">errors</span> <span class="n">to</span> <span class="n">the</span> <span class="n">error</span> <span class="n">log</span><span class="o">.</span>
-    <span class="o">-</span><span class="n">d</span> <span class="k">for</span> <span class="n">short</span>
+--disable-errorlog (optional)
+    Disable writing block stitch errors to the error log.
+    -d for short
 
-<span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">regex</span><span class="o">=&lt;</span><span class="n">regex</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">If</span> <span class="n">provided</span><span class="p">,</span> <span class="n">only</span> <span class="nb">slice</span> <span class="n">what</span> <span class="n">matches</span><span class="o">.</span>
-    <span class="n">If</span> <span class="ow">not</span> <span class="n">provided</span> <span class="n">will</span> <span class="n">always</span> <span class="nb">slice</span>
-    <span class="n">Cannot</span> <span class="n">be</span> <span class="n">used</span> <span class="k">with</span> <span class="o">--</span><span class="n">include</span><span class="o">-</span><span class="n">regex</span>
-    <span class="o">-</span><span class="n">e</span> <span class="k">for</span> <span class="n">short</span>
+--exclude-regex=&lt;regex&gt; (optional)
+    If provided, only slice what matches.
+    If not provided will always slice
+    Cannot be used with --include-regex
+    -e for short
 
-<span class="o">--</span><span class="n">include</span><span class="o">-</span><span class="n">regex</span><span class="o">=&lt;</span><span class="n">regex</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">If</span> <span class="n">provided</span><span class="p">,</span> <span class="n">only</span> <span class="nb">slice</span> <span class="n">what</span> <span class="n">matches</span><span class="o">.</span>
-    <span class="n">If</span> <span class="ow">not</span> <span class="n">provided</span> <span class="n">will</span> <span class="n">always</span> <span class="nb">slice</span>
-    <span class="n">Cannot</span> <span class="n">be</span> <span class="n">used</span> <span class="k">with</span> <span class="o">--</span><span class="n">exclude</span><span class="o">-</span><span class="n">regex</span>
-    <span class="o">-</span><span class="n">i</span> <span class="k">for</span> <span class="n">short</span>
+--include-regex=&lt;regex&gt; (optional)
+    If provided, only slice what matches.
+    If not provided will always slice
+    Cannot be used with --exclude-regex
+    -i for short
 
-<span class="o">--</span><span class="n">pace</span><span class="o">-</span><span class="n">errorlog</span><span class="o">=&lt;</span><span class="n">seconds</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Limit</span> <span class="n">stitching</span> <span class="n">error</span> <span class="n">logs</span> <span class="n">to</span> <span class="n">every</span> <span class="s1">&#39;n&#39;</span> <span class="n">second</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="o">-</span><span class="n">p</span> <span class="k">for</span> <span class="n">short</span>
+--pace-errorlog=&lt;seconds&gt; (optional)
+    Limit stitching error logs to every &#39;n&#39; second(s)
+    -p for short
 
-<span class="o">--</span><span class="n">ref</span><span class="o">-</span><span class="n">relative</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Self</span> <span class="n">healing</span> <span class="n">mode</span> <span class="n">typically</span> <span class="n">uses</span> <span class="nb">slice</span> <span class="mi">0</span> <span class="k">as</span> <span class="n">the</span> <span class="n">reference</span> <span class="nb">slice</span>
-    <span class="k">for</span> <span class="n">every</span> <span class="n">request</span><span class="o">.</span>  <span class="n">This</span> <span class="ow">is</span> <span class="n">very</span> <span class="n">safe</span> <span class="n">but</span> <span class="n">also</span> <span class="n">increases</span> <span class="n">plugin</span>
-    <span class="n">time</span> <span class="ow">and</span> <span class="n">latency</span> <span class="k">as</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">slice</span> <span class="ow">is</span> <span class="n">always</span> <span class="n">fully</span> <span class="n">processed</span>
-    <span class="n">whether</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">the</span> <span class="n">original</span> <span class="n">requests</span> <span class="n">needs</span> <span class="nb">any</span> <span class="n">data</span> <span class="kn">from</span> <span class="nn">slice</span> <span class="mf">0.</span>
-    <span class="n">This</span> <span class="n">option</span> <span class="n">uses</span> <span class="n">the</span> <span class="n">first</span> <span class="nb">slice</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">request</span> <span class="k">as</span> <span class="n">reference</span>
-    <span class="n">which</span> <span class="n">has</span> <span class="n">better</span> <span class="n">performance</span><span class="o">.</span>  <span class="n">A</span> <span class="n">downside</span> <span class="n">of</span> <span class="n">this</span> <span class="n">mode</span> <span class="ow">is</span> <span class="n">that</span>
-    <span class="bp">self</span> <span class="n">healing</span> <span class="n">won</span><span class="s1">&#39;t happen if blocks in a request agree.</span>
-    <span class="n">Normally</span> <span class="n">leave</span> <span class="n">this</span> <span class="n">off</span><span class="o">.</span>
-    <span class="o">-</span><span class="n">l</span> <span class="k">for</span> <span class="n">short</span>
+--ref-relative (optional)
+    Self healing mode typically uses slice 0 as the reference slice
+    for every request.  This is very safe but also increases plugin
+    time and latency as the first slice is always fully processed
+    whether or not the original requests needs any data from slice 0.
+    This option uses the first slice in the request as reference
+    which has better performance.  A downside of this mode is that
+    self healing won&#39;t happen if blocks in a request agree.
+    Normally leave this off.
+    -l for short
 
-<span class="o">--</span><span class="n">remap</span><span class="o">-</span><span class="n">host</span><span class="o">=&lt;</span><span class="n">loopback</span> <span class="n">hostname</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-    <span class="n">Uses</span> <span class="n">effective</span> <span class="n">url</span> <span class="k">with</span> <span class="n">given</span> <span class="n">hostname</span> <span class="k">for</span> <span class="n">remapping</span><span class="o">.</span>
-    <span class="n">Requires</span> <span class="n">setting</span> <span class="n">up</span> <span class="n">an</span> <span class="n">intermediate</span> <span class="n">loopback</span> <span class="n">remap</span> <span class="n">rule</span><span class="o">.</span>
-    <span class="o">-</span><span class="n">r</span> <span class="k">for</span> <span class="n">short</span>
+--remap-host=&lt;loopback hostname&gt; (optional)
+    Uses effective url with given hostname for remapping.
+    Requires setting up an intermediate loopback remap rule.
+    -r for short
+
+--skip-header=&lt;header name&gt; (default: X-Slicer-Info)
+    Header name used by the slice plugin after the loopback
+    to indicate that the slice plugin should be skipped.
+    -s for short
+
+--crr-ims-header=&lt;header name&gt; (default: X-Crr-Ims)
+    Header name used by the slice plugin to tell the
+    `cache_range_requests` plugin that a request should
+    be marked as STALE.  Used for self healing.
+    This must match the `--ims-header` option used by the
+    `cache_range_requests` plugin.
+    -i for short
+
+--prefetch-count=&lt;int&gt; (optional)
+    Default is 0
+    Prefetches successive &#39;n&#39; slice block requests in the background
+    and cached. Especially for large objects, prefetching can improve
+    cache miss latency.
+    -f for short
 </pre></div>
 </div>
 <p>Examples:</p>
@@ -345,7 +359,7 @@ following options are provided to help with log overrun:</p>
 <span class="nb">slice</span><span class="o">.</span><span class="n">so</span> <span class="o">--</span><span class="n">disable</span><span class="o">-</span><span class="n">errorlog</span>
 </pre></div>
 </div>
-<p>After modifying <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, restart or reload traffic server
+<p>After modifying <a class="reference internal" href="../files/remap.config.en.html#std-configfile-remap.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">remap.config</span></code></a>, restart or reload Traffic Server
 (sudo traffic_ctl config reload) or (sudo traffic_ctl server restart)
 to activate the new configuration values.</p>
 <p>Don’t slice txt files:</p>
@@ -372,7 +386,7 @@ content revalidation.</p>
 </div>
 <p>By default more detailed stitching errors are written to <code class="docutils literal notranslate"><span class="pre">diags.log</span></code>.</p>
 <div class="topic">
-<p class="topic-title">Example</p>
+<p class="topic-title first">Example</p>
 <p>ERROR: [slice.cc: 288] logSliceError(): 1555705573.639 reason=”Non 206 internal block response” uri=”<a class="reference external" href="http://ats_ep/someasset.mp4">http://ats_ep/someasset.mp4</a>” uas=”curl” req_range=”bytes=1000000-” norm_range=”bytes 1000000-52428799/52428800” etag_exp=”%221603934496%22” lm_exp=”Fri, 19 Apr 2019 18:53:20 GMT” blk_range=”21000000-21999999” status_got=”206” cr_got=”” etag_got=”%221603934496%22” lm_got=”” cc=”no-store” via=””</p>
 <p>ERROR: [server.cc: 288] logSliceError(): 1572370000.219 reason=”Mismatch block Etag” uri=”<a class="reference external" href="http://ats_ep/someasset.mp4">http://ats_ep/someasset.mp4</a>” uas=”curl” req_range=”bytes=1092779033-1096299354” norm_range=”bytes 1092779033-1096299354/2147483648” etag_exp=”%223719843648%22” lm_exp=”Tue, 29 Oct 2019 14:40:00 GMT” blk_range=”1095000000-1095999999” status_got=”206” cr_got=”bytes 1095000000-1095999999/2147483648” etag_got=”%223719853648%22” lm_got=”Tue, 29 Oct 2019 17:26:40 GMT” cc=”max-age=10000” via=””</p>
 </div>
@@ -409,7 +423,7 @@ to Slice either via cache OR parent request.</p>
 and sends it to the client.  If necessary it then skips over bytes in the
 first block and starts sending byte content, examining each block header
 and sends its bytes to the client until the client request is satisfied.</p>
-<p>Any extra bytes at the end of the last block are consumed by the the
+<p>Any extra bytes at the end of the last block are consumed by the
 Slice plugin to allow cache_range_requests to finish the block fetch to
 ensure the block is cached.</p>
 </div>
@@ -504,29 +518,29 @@ to interact with ATS.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="sslheaders.en.html" class="btn btn-neutral float-right" title="SSL Headers Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="url_sig.en.html" class="btn btn-neutral float-left" title="Signed URL Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="sslheaders.en.html" class="btn btn-neutral float-right" title="SSL Headers Plugin" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="url_sig.en.html" class="btn btn-neutral float-left" title="Signed URL Plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -534,6 +548,7 @@ to interact with ATS.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

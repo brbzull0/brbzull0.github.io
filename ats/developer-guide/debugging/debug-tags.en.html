@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Debug Tags &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Core Dump Analysis" href="core-dump-analysis.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -142,7 +138,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -177,13 +172,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -194,7 +187,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/debugging/debug-tags.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -210,35 +203,66 @@
             
   <div class="section" id="debug-tags">
 <span id="developer-debug-tags"></span><h1>Debug Tags<a class="headerlink" href="#debug-tags" title="Permalink to this headline">¶</a></h1>
-<p>Use the API
-<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">TSDebug</span> <span class="pre">(const</span> <span class="pre">char</span> <span class="pre">*tag,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*format_str,</span> <span class="pre">...)</span></code> to add
-traces in your plugin. In this API:</p>
+<p>Use the API macro
+<code class="docutils literal notranslate"><span class="pre">TSDbg(ctlptr,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*format_str,</span> <span class="pre">...)</span></code> to add
+traces in your plugin. In this macro:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code> is the Traffic Server parameter that enables Traffic Server
-to print out <em>``format_str``</em></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code> are variables for <em>``format_str``</em> in the standard <code class="docutils literal notranslate"><span class="pre">printf</span></code>
+<li><p><code class="docutils literal notranslate"><span class="pre">ctlptr</span></code> is the Traffic Server parameter that enables Traffic Server
+to print out <code class="docutils literal notranslate"><span class="pre">format_str</span></code>.  It is returned by <code class="docutils literal notranslate"><span class="pre">TSDbgCtlCreate()</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code> are variables for <code class="docutils literal notranslate"><span class="pre">format_str</span></code> in the standard <code class="docutils literal notranslate"><span class="pre">printf</span></code>
 style.</p></li>
 </ul>
+<p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">TSDbgCtlCreate</span> <span class="pre">(const</span> <span class="pre">char</span> <span class="pre">*tag)</span></code> returns a (const) pointer to
+<code class="docutils literal notranslate"><span class="pre">TSDbgCtl</span></code>.  The <code class="docutils literal notranslate"><span class="pre">TSDbgCtl</span></code> control is enabled when debug output is
+enabled globally by configuaration, and <code class="docutils literal notranslate"><span class="pre">tag</span></code> matches a configured
+regular expression.</p>
+<p>The deprecated API
+<code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">TSDebug</span> <span class="pre">(const</span> <span class="pre">char</span> <span class="pre">*tag,</span> <span class="pre">const</span> <span class="pre">char</span> <span class="pre">*format_str,</span> <span class="pre">...)</span></code> also
+outputs traces.  In this API:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tag</span></code> is the Traffic Server parameter that enables Traffic Server
+to print out <code class="docutils literal notranslate"><span class="pre">format_str</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">...</span></code> are variables for <code class="docutils literal notranslate"><span class="pre">format_str</span></code> in the standard <code class="docutils literal notranslate"><span class="pre">printf</span></code>
+style.</p></li>
+</ul>
+<p>Use of <code class="docutils literal notranslate"><span class="pre">TSDebug()</span></code> causes trace output to have a more negative impact
+on proxy throughput.</p>
 <p>Run Traffic Server with the <code class="docutils literal notranslate"><span class="pre">-Ttag</span></code> option. For example, if the tag is
 <code class="docutils literal notranslate"><span class="pre">my-plugin</span></code>, then the debug output goes to <code class="docutils literal notranslate"><span class="pre">traffic.out.</span></code>See
 below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">T</span><span class="s2">&quot;my-plugin&quot;</span>
 </pre></div>
 </div>
-<p>Set the following variables in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> (in the Traffic Server
+<p>Sets the following variables in <a class="reference internal" href="../../admin-guide/files/records.config.en.html#std-configfile-records.config"><code class="xref std std-file docutils literal notranslate"><span class="pre">records.config</span></code></a> (in the Traffic Server
 <code class="docutils literal notranslate"><span class="pre">config</span></code> directory):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">enabled</span> <span class="n">INT</span> <span class="mi">1</span>
 <span class="n">CONFIG</span> <span class="n">proxy</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">diags</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">tags</span> <span class="n">STRING</span> <span class="n">debug</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">name</span>
 </pre></div>
 </div>
-<p>In this case, debug output goes to <code class="docutils literal notranslate"><span class="pre">traffic.out</span></code>.</p>
+<p>(Performance will be better if <code class="docutils literal notranslate"><span class="pre">enabled</span></code> is set to 3 rather than 1, but,
+using 3, output from <code class="docutils literal notranslate"><span class="pre">TSDebug()</span></code> will not be enabled, only from <code class="docutils literal notranslate"><span class="pre">TSDbg()</span></code>.)
+In this case, debug output goes to <code class="docutils literal notranslate"><span class="pre">traffic.out</span></code>.</p>
 <p>Example:</p>
-<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">TSDebug</span> <span class="p">(</span><span class="s">&quot;my-plugin&quot;</span><span class="p">,</span> <span class="s">&quot;Starting my-plugin at %d&quot;</span><span class="p">,</span> <span class="n">the_time</span><span class="p">);</span>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">TSDbgCtl</span> <span class="k">const</span> <span class="o">*</span><span class="n">my_dbg_ctl</span><span class="p">;</span> <span class="c1">// Non-local variable.</span>
+<span class="p">...</span>
+<span class="n">my_dbg_ctl</span> <span class="o">=</span> <span class="n">TSDbgCtlCreate</span><span class="p">(</span><span class="s">&quot;my-plugin&quot;</span><span class="p">);</span> <span class="c1">// In TSPluginInit() or TSRemapInit().</span>
+<span class="p">...</span>
+<span class="n">TSDbg</span><span class="p">(</span><span class="n">my_dbg_ctl</span><span class="p">,</span> <span class="s">&quot;Starting my-plugin at %d&quot;</span><span class="p">,</span> <span class="n">the_time</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">TSDbg</span><span class="p">(</span><span class="n">my_dbg_ctl</span><span class="p">,</span> <span class="s">&quot;Later on in my-plugin&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The statement <code class="docutils literal notranslate"><span class="pre">&quot;Starting</span> <span class="pre">my-plugin</span> <span class="pre">at</span> <span class="pre">&lt;time&gt;&quot;</span></code> appears whenever you
 run Traffic Server with the <code class="docutils literal notranslate"><span class="pre">my-plugin</span></code> tag:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">traffic_server</span> <span class="o">-</span><span class="n">T</span><span class="s2">&quot;my-plugin&quot;</span>
+</pre></div>
+</div>
+<p>If your plugin is a C++ plugin, the above example can be written as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">auto</span> <span class="n">my_dbg_ctl</span> <span class="o">=</span> <span class="n">TSDbgCtlCreate</span><span class="p">(</span><span class="s">&quot;my-plugin&quot;</span><span class="p">);</span> <span class="c1">// Non-local variable.</span>
+<span class="p">...</span>
+<span class="n">TSDbg</span><span class="p">(</span><span class="n">my_dbg_ctl</span><span class="p">,</span> <span class="s">&quot;Starting my-plugin at %d&quot;</span><span class="p">,</span> <span class="n">the_time</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="n">TSDbg</span><span class="p">(</span><span class="n">my_dbg_ctl</span><span class="p">,</span> <span class="s">&quot;Later on in my-plugin&quot;</span><span class="p">);</span>
 </pre></div>
 </div>
 <div class="section" id="other-useful-internal-debug-tags">
@@ -247,7 +271,7 @@ run Traffic Server with the <code class="docutils literal notranslate"><span cla
 internal debugging purposes. These can also be used to follow Traffic
 Server behavior for testing and analysis.</p>
 <p>The debug tag setting (<code class="docutils literal notranslate"><span class="pre">-T</span></code> and <code class="docutils literal notranslate"><span class="pre">proxy.config.diags.debug.tags</span></code>) is a
-anchored regular expression against which the tag for a specific debug
+anchored regular expression (PCRE) against which the tag for a specific debug
 message is matched. This means the value “http” matches debug messages
 with the tag “http” but also “http_seq” and “http_trans”. If you want
 multiple tags then use a pipe symbol to separate the tags. For example
@@ -280,29 +304,29 @@ narrow the tag set)</p></li>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="core-dump-analysis.en.html" class="btn btn-neutral float-right" title="Core Dump Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="using-tsassert.en.html" class="btn btn-neutral float-left" title="Using TSAssert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="core-dump-analysis.en.html" class="btn btn-neutral float-right" title="Core Dump Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="using-tsassert.en.html" class="btn btn-neutral float-left" title="Using TSAssert" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -310,6 +334,7 @@ narrow the tag set)</p></li>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

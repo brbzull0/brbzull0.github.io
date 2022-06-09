@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>parent.config &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="plugin.config" href="plugin.config.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -131,9 +127,9 @@
 <li class="toctree-l3"><a class="reference internal" href="storage.config.en.html">storage.config</a></li>
 <li class="toctree-l3"><a class="reference internal" href="strategies.yaml.en.html">strategies.yaml</a></li>
 <li class="toctree-l3"><a class="reference internal" href="volume.config.en.html">volume.config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jsonrpc.yaml.en.html">jsonrpc.yaml</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../jsonrpc/index.en.html">JSONRPC</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.en.html#audience">Audience</a></li>
 </ul>
 </li>
@@ -144,7 +140,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -179,13 +174,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Administrator’s Guide</a> &raquo;</li>
         
@@ -196,7 +189,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/admin-guide/files/parent.config.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -380,10 +373,10 @@ the http request line.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="simple" id="parent-config-format-parent-retry">
+<dl id="parent-config-format-parent-retry">
 <dt><code class="docutils literal notranslate"><span class="pre">parent_retry</span></code></dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">simple_retry</span></code> - If the parent returns a 404 response or if the response matches
-a list of http 4xx responses defined in <code class="docutils literal notranslate"><span class="pre">simple_server_retry_responses</span></code> on a request
+a list of http 4xx and/or 5xx responses defined in <code class="docutils literal notranslate"><span class="pre">simple_server_retry_responses</span></code> on a request
 a new parent is selected and the request is retried.  The number of retries is controlled
 by <code class="docutils literal notranslate"><span class="pre">max_simple_retries</span></code> which is set to 1 by default.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">unavailable_server_retry</span></code> - If the parent returns a 503 response or if the response matches
@@ -391,12 +384,19 @@ a list of http 5xx responses defined in <code class="docutils literal notranslat
 parent is marked down and a new parent is selected to retry the request.  The number of
 retries is controlled by <code class="docutils literal notranslate"><span class="pre">max_unavailable_server_retries</span></code> which is set to 1 by default.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">both</span></code> - This enables both <code class="docutils literal notranslate"><span class="pre">simple_retry</span></code> and <code class="docutils literal notranslate"><span class="pre">unavailable_server_retry</span></code> as described above.</p></li>
+<li><p>If not set, by default all response codes will be considered a success, and parents will not be retried based on any HTTP response code.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If a response code exists in both the simple and unavailable lists and both
+is the retry type then simple_retry will take precedence and unavailable_server_retry
+will not be used for that code.</p>
+</div>
 </dd>
 </dl>
 <dl class="simple" id="parent-config-format-simple-server-retry-responses">
 <dt><code class="docutils literal notranslate"><span class="pre">simple_server_retry_responses</span></code></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">parent_retry</span></code> is set to either <code class="docutils literal notranslate"><span class="pre">simple_retry</span></code> or <code class="docutils literal notranslate"><span class="pre">both</span></code>, this parameter is a comma separated list of
-http 4xx response codes that will invoke the <code class="docutils literal notranslate"><span class="pre">simple_retry</span></code> described in the <code class="docutils literal notranslate"><span class="pre">parent_retry</span></code> section. By
+http 4xx and/or 5xx response codes that will invoke the <code class="docutils literal notranslate"><span class="pre">simple_retry</span></code> described in the <code class="docutils literal notranslate"><span class="pre">parent_retry</span></code> section. By
 default, <code class="docutils literal notranslate"><span class="pre">simple_server_retry_responses</span></code> is set to 404.</p>
 </dd>
 </dl>
@@ -429,7 +429,7 @@ will be retried at most 1 to 5 times as configured by <code class="docutils lite
 <li><p><code class="docutils literal notranslate"><span class="pre">strict</span></code> - Traffic Server machines serve requests strictly in
 turn. For example: machine <code class="docutils literal notranslate"><span class="pre">proxy1</span></code> serves the first request,
 <code class="docutils literal notranslate"><span class="pre">proxy2</span></code> serves the second request, and so on.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> - Round robin selection does not occur.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> - The default. Round robin selection does not occur.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">consistent_hash</span></code> - consistent hash of the url so that one parent
 is chosen for a given url. If a parent is down, the traffic that
 would go to the down parent is rehashed amongst the remaining parents.
@@ -449,7 +449,7 @@ retry time has elapsed and the transaction using the primary succeeds.</p></li>
 <dl class="simple" id="parent-config-format-go-direct">
 <dt><code class="docutils literal notranslate"><span class="pre">go_direct</span></code></dt><dd><p>One of the following values:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> - requests bypass parent hierarchies and go directly to
+<li><p><code class="docutils literal notranslate"><span class="pre">true</span></code> - The default. Requests bypass parent hierarchies and go directly to
 the origin server.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">false</span></code> - requests do not bypass parent hierarchies.</p></li>
 </ul>
@@ -458,7 +458,7 @@ the origin server.</p></li>
 <dl class="simple" id="parent-config-format-qstring">
 <dt><code class="docutils literal notranslate"><span class="pre">qstring</span></code></dt><dd><p>One of the following values:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">consider</span></code> - Use the query string when finding a parent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">consider</span></code> - The default. Use the query string when finding a parent.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ignore</span></code> - Do not consider the query string when finding a parent. This
 is especially useful when using the <code class="docutils literal notranslate"><span class="pre">consistent_hash</span></code> selection strategy,
 and a random query string would prevent a consistent parent selection.</p></li>
@@ -513,29 +513,29 @@ secondary ring will be chosen for the retry.:</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="plugin.config.en.html" class="btn btn-neutral float-right" title="plugin.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="logging.yaml.en.html" class="btn btn-neutral float-left" title="logging.yaml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="plugin.config.en.html" class="btn btn-neutral float-right" title="plugin.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="logging.yaml.en.html" class="btn btn-neutral float-left" title="logging.yaml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -543,6 +543,7 @@ secondary ring will be chosen for the retry.:</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

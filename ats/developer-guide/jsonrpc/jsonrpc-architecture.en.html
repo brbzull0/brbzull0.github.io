@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Architecture &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API" href="jsonrpc-api.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -149,7 +145,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -184,13 +179,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -201,7 +194,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/jsonrpc/jsonrpc-architecture.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -227,7 +220,7 @@
 <span id="jsonrpc-architecture-ipc"></span><h3>IPC<a class="headerlink" href="#ipc" title="Permalink to this headline">¶</a></h3>
 <p>The current server implementation runs on an IPC Socket(Unix Domain Socket). This server implements an iterative server style.
 The implementation runs on a dedicated <code class="docutils literal notranslate"><span class="pre">TSThread</span></code> and as their style express, this performs blocking calls to all the registered handlers.
-Configuration for this particular server style can be found in the admin section <a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>.</p>
+Configuration for this particular server style can be found in the admin section <a class="reference internal" href="../../admin-guide/files/jsonrpc.yaml.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>.</p>
 </div>
 </div>
 <div class="section" id="using-the-jsonrpc-mechanism">
@@ -645,85 +638,85 @@ express that the call was successfully handled and the command was executed.</p>
 Some of this errors are already defined by the <a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> specs and some (<code class="docutils literal notranslate"><span class="pre">&gt;=1</span></code>) are defined by Traffic Server.</p>
 <dl class="cpp class">
 <dt id="_CPPv412RPCErrorCode">
-<span id="_CPPv312RPCErrorCode"></span><span id="_CPPv212RPCErrorCode"></span><span id="RPCErrorCode"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">RPCErrorCode</span></code><a class="headerlink" href="#_CPPv412RPCErrorCode" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv312RPCErrorCode"></span><span id="_CPPv212RPCErrorCode"></span><span id="RPCErrorCode"></span><em class="property">class </em><code class="sig-name descname">RPCErrorCode</code><a class="headerlink" href="#_CPPv412RPCErrorCode" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Defines the API error codes that will be used in case of any RPC error.</p>
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode15INVALID_REQUESTE">
-<span id="_CPPv3N12RPCErrorCode15INVALID_REQUESTE"></span><span id="_CPPv2N12RPCErrorCode15INVALID_REQUESTE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">INVALID_REQUEST</span></code> <span class="pre">=</span> <span class="pre">-</span><span class="pre">32600</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode15INVALID_REQUESTE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode15INVALID_REQUESTE"></span><span id="_CPPv2N12RPCErrorCode15INVALID_REQUESTE"></span><em class="property">enumerator </em><code class="sig-name descname">INVALID_REQUEST</code> = -32600<a class="headerlink" href="#_CPPv4N12RPCErrorCode15INVALID_REQUESTE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode16METHOD_NOT_FOUNDE">
-<span id="_CPPv3N12RPCErrorCode16METHOD_NOT_FOUNDE"></span><span id="_CPPv2N12RPCErrorCode16METHOD_NOT_FOUNDE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">METHOD_NOT_FOUND</span></code> <span class="pre">=</span> <span class="pre">-</span><span class="pre">32601</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode16METHOD_NOT_FOUNDE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode16METHOD_NOT_FOUNDE"></span><span id="_CPPv2N12RPCErrorCode16METHOD_NOT_FOUNDE"></span><em class="property">enumerator </em><code class="sig-name descname">METHOD_NOT_FOUND</code> = -32601<a class="headerlink" href="#_CPPv4N12RPCErrorCode16METHOD_NOT_FOUNDE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode14INVALID_PARAMSE">
-<span id="_CPPv3N12RPCErrorCode14INVALID_PARAMSE"></span><span id="_CPPv2N12RPCErrorCode14INVALID_PARAMSE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">INVALID_PARAMS</span></code> <span class="pre">=</span> <span class="pre">-</span><span class="pre">32602</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode14INVALID_PARAMSE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode14INVALID_PARAMSE"></span><span id="_CPPv2N12RPCErrorCode14INVALID_PARAMSE"></span><em class="property">enumerator </em><code class="sig-name descname">INVALID_PARAMS</code> = -32602<a class="headerlink" href="#_CPPv4N12RPCErrorCode14INVALID_PARAMSE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode14INTERNAL_ERRORE">
-<span id="_CPPv3N12RPCErrorCode14INTERNAL_ERRORE"></span><span id="_CPPv2N12RPCErrorCode14INTERNAL_ERRORE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">INTERNAL_ERROR</span></code> <span class="pre">=</span> <span class="pre">-</span><span class="pre">32603</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode14INTERNAL_ERRORE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode14INTERNAL_ERRORE"></span><span id="_CPPv2N12RPCErrorCode14INTERNAL_ERRORE"></span><em class="property">enumerator </em><code class="sig-name descname">INTERNAL_ERROR</code> = -32603<a class="headerlink" href="#_CPPv4N12RPCErrorCode14INTERNAL_ERRORE" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode11PARSE_ERRORE">
-<span id="_CPPv3N12RPCErrorCode11PARSE_ERRORE"></span><span id="_CPPv2N12RPCErrorCode11PARSE_ERRORE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">PARSE_ERROR</span></code> <span class="pre">=</span> <span class="pre">-</span><span class="pre">32700</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode11PARSE_ERRORE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode11PARSE_ERRORE"></span><span id="_CPPv2N12RPCErrorCode11PARSE_ERRORE"></span><em class="property">enumerator </em><code class="sig-name descname">PARSE_ERROR</code> = -32700<a class="headerlink" href="#_CPPv4N12RPCErrorCode11PARSE_ERRORE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p><a class="reference external" href="https://www.jsonrpc.org/specification">JSONRPC</a> defined errors.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode14InvalidVersionE">
-<span id="_CPPv3N12RPCErrorCode14InvalidVersionE"></span><span id="_CPPv2N12RPCErrorCode14InvalidVersionE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">InvalidVersion</span></code> <span class="pre">=</span> <span class="pre">1</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode14InvalidVersionE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode14InvalidVersionE"></span><span id="_CPPv2N12RPCErrorCode14InvalidVersionE"></span><em class="property">enumerator </em><code class="sig-name descname">InvalidVersion</code> = 1<a class="headerlink" href="#_CPPv4N12RPCErrorCode14InvalidVersionE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed version is invalid. must be 2.0</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode18InvalidVersionTypeE">
-<span id="_CPPv3N12RPCErrorCode18InvalidVersionTypeE"></span><span id="_CPPv2N12RPCErrorCode18InvalidVersionTypeE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">InvalidVersionType</span></code> <span class="pre">=</span> <span class="pre">2</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode18InvalidVersionTypeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode18InvalidVersionTypeE"></span><span id="_CPPv2N12RPCErrorCode18InvalidVersionTypeE"></span><em class="property">enumerator </em><code class="sig-name descname">InvalidVersionType</code> = 2<a class="headerlink" href="#_CPPv4N12RPCErrorCode18InvalidVersionTypeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed version field type is invalid. must be a <code class="docutils literal notranslate"><span class="pre">string</span></code></p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode14MissingVersionE">
-<span id="_CPPv3N12RPCErrorCode14MissingVersionE"></span><span id="_CPPv2N12RPCErrorCode14MissingVersionE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">MissingVersion</span></code> <span class="pre">=</span> <span class="pre">3</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode14MissingVersionE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode14MissingVersionE"></span><span id="_CPPv2N12RPCErrorCode14MissingVersionE"></span><em class="property">enumerator </em><code class="sig-name descname">MissingVersion</code> = 3<a class="headerlink" href="#_CPPv4N12RPCErrorCode14MissingVersionE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Version field is missing from the request. This field is mandatory.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode17InvalidMethodTypeE">
-<span id="_CPPv3N12RPCErrorCode17InvalidMethodTypeE"></span><span id="_CPPv2N12RPCErrorCode17InvalidMethodTypeE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">InvalidMethodType</span></code> <span class="pre">=</span> <span class="pre">4</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode17InvalidMethodTypeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode17InvalidMethodTypeE"></span><span id="_CPPv2N12RPCErrorCode17InvalidMethodTypeE"></span><em class="property">enumerator </em><code class="sig-name descname">InvalidMethodType</code> = 4<a class="headerlink" href="#_CPPv4N12RPCErrorCode17InvalidMethodTypeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed method field type is invalid. must be a <code class="docutils literal notranslate"><span class="pre">string</span></code></p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode13MissingMethodE">
-<span id="_CPPv3N12RPCErrorCode13MissingMethodE"></span><span id="_CPPv2N12RPCErrorCode13MissingMethodE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">MissingMethod</span></code> <span class="pre">=</span> <span class="pre">5</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode13MissingMethodE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode13MissingMethodE"></span><span id="_CPPv2N12RPCErrorCode13MissingMethodE"></span><em class="property">enumerator </em><code class="sig-name descname">MissingMethod</code> = 5<a class="headerlink" href="#_CPPv4N12RPCErrorCode13MissingMethodE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>Method field is missing from the request. This field is mandatory.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode16InvalidParamTypeE">
-<span id="_CPPv3N12RPCErrorCode16InvalidParamTypeE"></span><span id="_CPPv2N12RPCErrorCode16InvalidParamTypeE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">InvalidParamType</span></code> <span class="pre">=</span> <span class="pre">6</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode16InvalidParamTypeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode16InvalidParamTypeE"></span><span id="_CPPv2N12RPCErrorCode16InvalidParamTypeE"></span><em class="property">enumerator </em><code class="sig-name descname">InvalidParamType</code> = 6<a class="headerlink" href="#_CPPv4N12RPCErrorCode16InvalidParamTypeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed parameter field type is not valid.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode13InvalidIdTypeE">
-<span id="_CPPv3N12RPCErrorCode13InvalidIdTypeE"></span><span id="_CPPv2N12RPCErrorCode13InvalidIdTypeE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">InvalidIdType</span></code> <span class="pre">=</span> <span class="pre">7</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode13InvalidIdTypeE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode13InvalidIdTypeE"></span><span id="_CPPv2N12RPCErrorCode13InvalidIdTypeE"></span><em class="property">enumerator </em><code class="sig-name descname">InvalidIdType</code> = 7<a class="headerlink" href="#_CPPv4N12RPCErrorCode13InvalidIdTypeE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed id field type is invalid.</p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode6NullIdE">
-<span id="_CPPv3N12RPCErrorCode6NullIdE"></span><span id="_CPPv2N12RPCErrorCode6NullIdE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">NullId</span></code> <span class="pre">=</span> <span class="pre">8</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode6NullIdE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode6NullIdE"></span><span id="_CPPv2N12RPCErrorCode6NullIdE"></span><em class="property">enumerator </em><code class="sig-name descname">NullId</code> = 8<a class="headerlink" href="#_CPPv4N12RPCErrorCode6NullIdE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>The passed if is <code class="docutils literal notranslate"><span class="pre">null</span></code></p>
 </dd></dl>
 
 <dl class="cpp enumerator">
 <dt id="_CPPv4N12RPCErrorCode14ExecutionErrorE">
-<span id="_CPPv3N12RPCErrorCode14ExecutionErrorE"></span><span id="_CPPv2N12RPCErrorCode14ExecutionErrorE"></span><em class="property"><span class="pre">enumerator</span> </em><code class="sig-name descname"><span class="pre">ExecutionError</span></code> <span class="pre">=</span> <span class="pre">9</span><a class="headerlink" href="#_CPPv4N12RPCErrorCode14ExecutionErrorE" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv3N12RPCErrorCode14ExecutionErrorE"></span><span id="_CPPv2N12RPCErrorCode14ExecutionErrorE"></span><em class="property">enumerator </em><code class="sig-name descname">ExecutionError</code> = 9<a class="headerlink" href="#_CPPv4N12RPCErrorCode14ExecutionErrorE" title="Permalink to this definition">¶</a><br /></dt>
 <dd><p>An error occurred during the execution of the RPC call. This error is used as a generic High level error. The details details about
 the error, in most cases are specified in the <code class="docutils literal notranslate"><span class="pre">data</span></code> field.</p>
 </dd></dl>
@@ -742,7 +735,7 @@ the error, in most cases are specified in the <code class="docutils literal notr
 </div>
 <div class="section" id="see-also">
 <h2>See also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
+<p><a class="reference internal" href="../../admin-guide/files/jsonrpc.yaml.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
 <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a></p>
 </div>
 </div>
@@ -752,29 +745,29 @@ the error, in most cases are specified in the <code class="docutils literal notr
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="jsonrpc-api.en.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.en.html" class="btn btn-neutral float-left" title="JSONRPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="jsonrpc-api.en.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="JSONRPC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -782,6 +775,7 @@ the error, in most cases are specified in the <code class="docutils literal notr
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Handler implementation &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Traffic Server JSONRPC Node C++ Client Implementation" href="jsonrpc-client-api.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -145,7 +141,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -180,13 +175,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -197,7 +190,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/jsonrpc/jsonrpc-handler-development.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -277,7 +270,7 @@ was specified.</p>
 <h4>JSONRPC Manager API<a class="headerlink" href="#jsonrpc-manager-api" title="Permalink to this headline">¶</a></h4>
 <p>Handler registration should be done by using the <code class="docutils literal notranslate"><span class="pre">JsonRPCManager</span></code> singleton object. Note that there are a set of convenient helper
 functions that can be used to achieve registration through the singleton object.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="nn">rpc</span> <span class="p">{</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">namespace</span> <span class="n">rpc</span> <span class="p">{</span>
     <span class="c1">// this set of functions will call the singleton object and perform the same as by using the singleton directly.</span>
     <span class="n">add_method_handler</span><span class="p">(...)</span>
     <span class="n">add_notification_handler</span><span class="p">(...)</span>
@@ -288,8 +281,8 @@ functions that can be used to achieve registration through the singleton object.
 <span class="n">ts</span><span class="o">::</span><span class="n">Rv</span><span class="o">&lt;</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span><span class="o">&gt;</span>
 <span class="n">my_handler_impl</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">string_view</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">id</span><span class="p">,</span> <span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">using</span> <span class="k">namespace</span> <span class="nn">rpc</span><span class="o">::</span><span class="nn">handlers</span><span class="o">::</span><span class="nn">errors</span><span class="p">;</span>
-    <span class="k">return</span> <span class="n">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
+    <span class="k">using</span> <span class="k">namespace</span> <span class="n">rpc</span><span class="o">::</span><span class="n">handlers</span><span class="o">::</span><span class="n">errors</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nf">make_errata</span><span class="p">(</span><span class="n">Codes</span><span class="o">::</span><span class="n">SERVER</span><span class="p">,</span> <span class="s">&quot;Something happened in the server&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -493,9 +486,9 @@ please check the <code class="docutils literal notranslate"><span class="pre">Cu
 </div>
 <div class="section" id="addjsonrpcclientrequest">
 <h4>AddJsonRPCClientRequest<a class="headerlink" href="#addjsonrpcclientrequest" title="Permalink to this headline">¶</a></h4>
-<p>This function will generate a json response as an output, internally it ses <strong class="program">traffic_ctl file --format json</strong> as client.
-The output can be used and compared with a gold file. This also provides schema validation for the entire JSONRPC protocol as well as
-the <code class="docutils literal notranslate"><span class="pre">param</span></code> field against a specific schema file. You can specify <code class="docutils literal notranslate"><span class="pre">schema_file_name</span></code> with a valid json schema file to validate
+<p>This function will generate a json response as an output, internally it uses <strong class="program">traffic_ctl rpc file --format json</strong> as client.
+The output can be used and compared with a gold file. This also provides an optional schema validation for the entire JSONRPC protocol
+as well as the <code class="docutils literal notranslate"><span class="pre">param</span></code> field against a specific schema file. You can specify <code class="docutils literal notranslate"><span class="pre">schema_file_name</span></code> with a valid json schema file to validate
 the entire JSONRPC 2.0 request(except the content of the <code class="docutils literal notranslate"><span class="pre">params</span></code> field). You can also set <code class="docutils literal notranslate"><span class="pre">params_field_schema_file_name</span></code> with a
 valid json schema file to validate only the <code class="docutils literal notranslate"><span class="pre">params</span></code> field.</p>
 <p>Example:</p>
@@ -543,7 +536,7 @@ Also you can set <code class="docutils literal notranslate"><span class="pre">re
 and to <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a> for how to implement a new command.</p></li>
 <li><p>To interact directly with the JSONRPC 2.0 node, please check <a class="reference internal" href="jsonrpc-node.en.html#jsonrpc-node"><span class="std std-ref">JSONRPC Endpoint</span></a></p></li>
 </ul>
-<p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>
+<p><a class="reference internal" href="../../admin-guide/files/jsonrpc.yaml.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>
 <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-protocol"><span class="std std-ref">JSONRPC 2.0 Protocol</span></a>
 <a class="reference internal" href="traffic_ctl-development.en.html#developer-guide-traffic-ctl-development"><span class="std std-ref">Traffic Control Development Guide</span></a></p>
 </div>
@@ -554,29 +547,29 @@ and to <a class="reference internal" href="traffic_ctl-development.en.html#devel
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="jsonrpc-client-api.en.html" class="btn btn-neutral float-right" title="Traffic Server JSONRPC Node C++ Client Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="jsonrpc-node.en.html" class="btn btn-neutral float-left" title="JSONRPC Endpoint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="jsonrpc-client-api.en.html" class="btn btn-neutral float-right" title="Traffic Server JSONRPC Node C++ Client Implementation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jsonrpc-node.en.html" class="btn btn-neutral float-left" title="JSONRPC Endpoint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -584,6 +577,7 @@ and to <a class="reference internal" href="traffic_ctl-development.en.html#devel
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

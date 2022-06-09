@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>TSDebug &mdash; Apache Traffic Server 10.0.0 documentation</title>
+  <title>TSDbg &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="TSEventThreadSelf" href="TSEventThreadSelf.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -136,7 +132,7 @@
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityClear.en.html">TSContThreadAffinityClear</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinityGet.en.html">TSContThreadAffinityGet</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSContThreadAffinitySet.en.html">TSContThreadAffinitySet</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">TSDebug</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">TSDbg</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSEventThreadSelf.en.html">TSEventThreadSelf</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSFetchCreate.en.html">TSFetchCreate</a></li>
 <li class="toctree-l4"><a class="reference internal" href="TSHostLookup.en.html">TSHostLookup</a></li>
@@ -376,7 +372,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -411,13 +406,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -425,12 +418,12 @@
         
           <li><a href="index.en.html">API Functions</a> &raquo;</li>
         
-      <li>TSDebug</li>
+      <li>TSDbg</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../../_sources/developer-guide/api/functions/TSDebug.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -444,8 +437,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tsdebug">
-<h1>TSDebug<a class="headerlink" href="#tsdebug" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="tsdbg">
+<h1>TSDbg<a class="headerlink" href="#tsdbg" title="Permalink to this headline">¶</a></h1>
 <p>Traffic Server Debugging APIs.</p>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
@@ -454,97 +447,117 @@
 </div>
 <dl class="c function">
 <dt id="c.TSStatus">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSStatus</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatus" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSStatus</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSStatus" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSNote">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSNote</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSNote" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSNote</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSNote" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSWarning">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSWarning</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSWarning" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSWarning</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSWarning" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSError">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSError</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSError" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSError</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSError" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSFatal">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSFatal</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSFatal" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSFatal</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSFatal" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSAlert">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSAlert</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSAlert" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSAlert</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSAlert" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSEmergency">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSEmergency</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSEmergency" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSEmergency</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSEmergency" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c type">
+<dt id="c.TSDbgCtl">
+<em class="property">type </em><code class="sig-name descname">TSDbgCtl</code><a class="headerlink" href="#c.TSDbgCtl" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSDbg">
+void <code class="sig-name descname">TSDbg</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#c.TSDbgCtl" title="TSDbgCtl">TSDbgCtl</a> *<em>ctlptr</em>, <em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSDbg" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSDbgCtlCreate">
+<em class="property">const</em> <a class="reference internal" href="#c.TSDbgCtl" title="TSDbgCtl">TSDbgCtl</a> *<code class="sig-name descname">TSDbgCtlCreate</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSDbgCtlCreate" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSDebug">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSDebug</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">tag</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebug" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSDebug</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>tag</em>, <em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebug" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="c function">
+<dt id="c.TSIsDbgCtlSet">
+int <code class="sig-name descname">TSIsDbgCtlSet</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="#c.TSDbgCtl" title="TSDbgCtl">TSDbgCtl</a> *<em>ctlptr</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSIsDbgCtlSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSIsDebugTagSet">
-<span class="pre">int</span> <code class="sig-name descname"><span class="pre">TSIsDebugTagSet</span></code><span class="sig-paren">(</span><em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">tag</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSIsDebugTagSet" title="Permalink to this definition">¶</a><br /></dt>
+int <code class="sig-name descname">TSIsDebugTagSet</code><span class="sig-paren">(</span><em class="property">const</em> char *<em>tag</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSIsDebugTagSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSDebugSpecific">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSDebugSpecific</span></code><span class="sig-paren">(</span><span class="pre">int</span> <em><span class="pre">debug_flag</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">tag</span></em>, <em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><em><span class="pre">format</span></em>, <span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebugSpecific" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSDebugSpecific</code><span class="sig-paren">(</span>int <em>debug_flag</em>, <em class="property">const</em> char *<em>tag</em>, <em class="property">const</em> char *<em>format</em>, ...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSDebugSpecific" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnDebugSet">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSHttpTxnDebugSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em>, <span class="pre">int</span> <em><span class="pre">on</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugSet" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSHttpTxnDebugSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em>, int <em>on</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpSsnDebugSet">
-<span class="pre">void</span> <code class="sig-name descname"><span class="pre">TSHttpSsnDebugSet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><span class="pre">TSHttpSsn</span></a> <em><span class="pre">ssn</span></em>, <span class="pre">int</span> <em><span class="pre">on</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugSet" title="Permalink to this definition">¶</a><br /></dt>
+void <code class="sig-name descname">TSHttpSsnDebugSet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssn</em>, int <em>on</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugSet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpTxnDebugGet">
-<span class="pre">int</span> <code class="sig-name descname"><span class="pre">TSHttpTxnDebugGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn"><span class="pre">TSHttpTxn</span></a> <em><span class="pre">txnp</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugGet" title="Permalink to this definition">¶</a><br /></dt>
+int <code class="sig-name descname">TSHttpTxnDebugGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpTxn" title="TSHttpTxn">TSHttpTxn</a> <em>txnp</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpTxnDebugGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpSsnDebugGet">
-<span class="pre">int</span> <code class="sig-name descname"><span class="pre">TSHttpSsnDebugGet</span></code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn"><span class="pre">TSHttpSsn</span></a> <em><span class="pre">ssn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugGet" title="Permalink to this definition">¶</a><br /></dt>
+int <code class="sig-name descname">TSHttpSsnDebugGet</code><span class="sig-paren">(</span><a class="reference internal" href="TSTypes.en.html#c.TSHttpSsn" title="TSHttpSsn">TSHttpSsn</a> <em>ssn</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpSsnDebugGet" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpServerStateNameLookup">
-<em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">TSHttpServerStateNameLookup</span></code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSServerState.en.html#c.TSServerState" title="TSServerState"><span class="pre">TSServerState</span></a> <em><span class="pre">state</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpServerStateNameLookup" title="Permalink to this definition">¶</a><br /></dt>
+<em class="property">const</em> char *<code class="sig-name descname">TSHttpServerStateNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSServerState.en.html#c.TSServerState" title="TSServerState">TSServerState</a> <em>state</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpServerStateNameLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpHookNameLookup">
-<em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">TSHttpHookNameLookup</span></code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID"><span class="pre">TSHttpHookID</span></a> <em><span class="pre">hook</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpHookNameLookup" title="Permalink to this definition">¶</a><br /></dt>
+<em class="property">const</em> char *<code class="sig-name descname">TSHttpHookNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSHttpHookID.en.html#c.TSHttpHookID" title="TSHttpHookID">TSHttpHookID</a> <em>hook</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpHookNameLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c function">
 <dt id="c.TSHttpEventNameLookup">
-<em class="property"><span class="pre">const</span></em> <span class="pre">char</span> <span class="pre">*</span><code class="sig-name descname"><span class="pre">TSHttpEventNameLookup</span></code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSEvent.en.html#c.TSEvent" title="TSEvent"><span class="pre">TSEvent</span></a> <em><span class="pre">event</span></em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpEventNameLookup" title="Permalink to this definition">¶</a><br /></dt>
+<em class="property">const</em> char *<code class="sig-name descname">TSHttpEventNameLookup</code><span class="sig-paren">(</span><a class="reference internal" href="../types/TSEvent.en.html#c.TSEvent" title="TSEvent">TSEvent</a> <em>event</em><span class="sig-paren">)</span><a class="headerlink" href="#c.TSHttpEventNameLookup" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt id="c.TSAssert">
-<code class="sig-name descname"><span class="pre">TSAssert</span></code><span class="sig-paren">(</span><span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSAssert" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TSAssert</code><span class="sig-paren">(</span>...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSAssert" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <dl class="c macro">
 <dt id="c.TSReleaseAssert">
-<code class="sig-name descname"><span class="pre">TSReleaseAssert</span></code><span class="sig-paren">(</span><span class="pre">...</span><span class="sig-paren">)</span><a class="headerlink" href="#c.TSReleaseAssert" title="Permalink to this definition">¶</a><br /></dt>
+<code class="sig-name descname">TSReleaseAssert</code><span class="sig-paren">(</span>...<span class="sig-paren">)</span><a class="headerlink" href="#c.TSReleaseAssert" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 </div>
@@ -622,9 +635,15 @@ the plugin fails to initialize properly.</p>
 </div>
 <div class="section" id="trafficserver-out">
 <h2>trafficserver.out<a class="headerlink" href="#trafficserver-out" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a> logs the debug message only if the given debug <em>tag</em> is enabled.
+<p><a class="reference internal" href="#c.TSDbg" title="TSDbg"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDbg()</span></code></a> logs the debug message only if the given debug control pointed to by
+<em>ctlptr</em> is enabled.  It writes output to the Traffic Server debug log through stderr.</p>
+<p><a class="reference internal" href="#c.TSDbgCtlCreate" title="TSDbgCtlCreate"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDbgCtlCreate()</span></code></a> creates a debug control, associated with the
+debug <em>tag</em>, and returns a const pointer to it.</p>
+<p><a class="reference internal" href="#c.TSIsDbgCtlSet" title="TSIsDbgCtlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDbgCtlSet()</span></code></a> returns non-zero if the given debug control, pointed to by <em>ctlptr</em>, is
+enabled.</p>
+<p><a class="reference internal" href="#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a> (deprecated) logs the debug message only if the given debug <em>tag</em> is enabled.
 It writes output to the Traffic Server debug log through stderr.</p>
-<p><a class="reference internal" href="#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a> returns non-zero if the given debug <em>tag</em> is
+<p><a class="reference internal" href="#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a> (deprecated) returns non-zero if the given debug <em>tag</em> is
 enabled.</p>
 <p>In debug mode, <a class="reference internal" href="#c.TSAssert" title="TSAssert"><code class="xref c c-macro docutils literal notranslate"><span class="pre">TSAssert</span></code></a> Traffic Server to prints the file
 name, line number and expression, and then aborts. In release mode,
@@ -670,29 +689,29 @@ debugging flag is enabled:</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="TSEventThreadSelf.en.html" class="btn btn-neutral float-right" title="TSEventThreadSelf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="TSContThreadAffinitySet.en.html" class="btn btn-neutral float-left" title="TSContThreadAffinitySet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="TSEventThreadSelf.en.html" class="btn btn-neutral float-right" title="TSEventThreadSelf" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="TSContThreadAffinitySet.en.html" class="btn btn-neutral float-left" title="TSContThreadAffinitySet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -700,6 +719,7 @@ debugging flag is enabled:</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

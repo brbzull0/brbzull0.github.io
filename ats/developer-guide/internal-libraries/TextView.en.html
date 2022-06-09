@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>TextView &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="MemSpan" href="MemSpan.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -155,7 +151,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -190,13 +185,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -207,7 +200,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/internal-libraries/TextView.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -225,12 +218,12 @@
 <h1>TextView<a class="headerlink" href="#textview" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="synopsis">
 <h2>Synopsis<a class="headerlink" href="#synopsis" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/TextView.h&gt;</span><span class="c1">`</span><span class="cp"></span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ts/TextView.h&gt;`</span><span class="cp"></span>
 </pre></div>
 </div>
 <dl class="cpp class">
 <dt id="_CPPv48TextView">
-<span id="_CPPv38TextView"></span><span id="_CPPv28TextView"></span><span id="TextView"></span><em class="property"><span class="pre">class</span> </em><code class="sig-name descname"><span class="pre">TextView</span></code><a class="headerlink" href="#_CPPv48TextView" title="Permalink to this definition">¶</a><br /></dt>
+<span id="_CPPv38TextView"></span><span id="_CPPv28TextView"></span><span id="TextView"></span><em class="property">class </em><code class="sig-name descname">TextView</code><a class="headerlink" href="#_CPPv48TextView" title="Permalink to this definition">¶</a><br /></dt>
 <dd></dd></dl>
 
 <p>This class acts as a view in to memory allocated / owned elsewhere. It is in effect a pointer and
@@ -292,9 +285,9 @@ strings in to fields without modifying the original data. For example, assume th
 contains a null terminated string which is possibly several tokens separated by commas.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
 <span class="n">parse_token</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">TextView</span> <span class="nf">v</span><span class="p">(</span><span class="n">value</span><span class="p">);</span> <span class="c1">// construct assuming null terminated string.</span>
+  <span class="n">TextView</span> <span class="n">v</span><span class="p">(</span><span class="n">value</span><span class="p">);</span> <span class="c1">// construct assuming null terminated string.</span>
   <span class="k">while</span> <span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">TextView</span> <span class="nf">token</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">extractPrefix</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">));</span>
+    <span class="n">TextView</span> <span class="n">token</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">extractPrefix</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">));</span>
     <span class="n">token</span><span class="p">.</span><span class="n">trim</span><span class="p">(</span><span class="o">&amp;</span><span class="n">isspace</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">token</span><span class="p">)</span> <span class="p">{</span>
       <span class="c1">// process token</span>
@@ -312,9 +305,9 @@ changes.</p>
 <p>What if the tokens were key / value pairs, of the form <cite>key=value</cite>? This is can be done as in the following example.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;ctype.h&gt;</span><span class="cp"></span>
 <span class="n">parse_token</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">TextView</span> <span class="nf">in</span><span class="p">(</span><span class="n">source</span><span class="p">);</span> <span class="c1">// construct assuming null terminated string.</span>
+  <span class="n">TextView</span> <span class="n">in</span><span class="p">(</span><span class="n">source</span><span class="p">);</span> <span class="c1">// construct assuming null terminated string.</span>
   <span class="k">while</span> <span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">TextView</span> <span class="nf">value</span><span class="p">(</span><span class="n">in</span><span class="p">.</span><span class="n">extractPrefix</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">));</span>
+    <span class="n">TextView</span> <span class="n">value</span><span class="p">(</span><span class="n">in</span><span class="p">.</span><span class="n">extractPrefix</span><span class="p">(</span><span class="sc">&#39;,&#39;</span><span class="p">));</span>
     <span class="n">TextView</span> <span class="nf">key</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="n">trim</span><span class="p">(</span><span class="o">&amp;</span><span class="n">isspace</span><span class="p">).</span><span class="n">splitPrefix</span><span class="p">(</span><span class="sc">&#39;=&#39;</span><span class="p">).</span><span class="n">rtrim</span><span class="p">(</span><span class="o">&amp;</span><span class="n">isspace</span><span class="p">));</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">{</span>
       <span class="c1">// it&#39;s a key=value token with key and value set appropriately.</span>
@@ -358,29 +351,29 @@ non-character based methods added.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="MemSpan.en.html" class="btn btn-neutral float-right" title="MemSpan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="index.en.html" class="btn btn-neutral float-left" title="Internal libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="MemSpan.en.html" class="btn btn-neutral float-right" title="MemSpan" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.en.html" class="btn btn-neutral float-left" title="Internal libraries" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -388,6 +381,7 @@ non-character based methods added.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

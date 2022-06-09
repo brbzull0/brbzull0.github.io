@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Traffic Control Development Guide &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="API Handler error codes" href="HandlerError.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -145,7 +141,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -180,13 +175,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -197,7 +190,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/jsonrpc/traffic_ctl-development.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -274,9 +267,9 @@ then you should check the existing command to decide where to place it.</p>
 <li><p>Define a new Request.</p>
 <p>So based on the above json, we can model our request as:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// RPCRequests.h</span>
-<span class="k">struct</span> <span class="nc">NewCommandJsonRPCRequest</span> <span class="o">:</span> <span class="n">shared</span><span class="o">::</span><span class="n">rpc</span><span class="o">::</span><span class="n">ClientRequest</span> <span class="p">{</span>
+<span class="k">struct</span> <span class="nl">NewCommandJsonRPCRequest</span> <span class="p">:</span> <span class="n">shared</span><span class="o">::</span><span class="n">rpc</span><span class="o">::</span><span class="n">ClientRequest</span> <span class="p">{</span>
    <span class="k">using</span> <span class="n">super</span> <span class="o">=</span> <span class="n">shared</span><span class="o">::</span><span class="n">rpc</span><span class="o">::</span><span class="n">ClientRequest</span><span class="p">;</span>
-   <span class="k">struct</span> <span class="nc">Params</span> <span class="p">{</span>
+   <span class="k">struct</span> <span class="n">Params</span> <span class="p">{</span>
       <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">named_var_1</span><span class="p">;</span>
    <span class="p">};</span>
    <span class="n">NewCommandJsonRPCRequest</span><span class="p">(</span><span class="n">Params</span> <span class="n">p</span><span class="p">)</span>
@@ -294,9 +287,9 @@ then you should check the existing command to decide where to place it.</p>
 </li>
 <li><p>Implement the yamlcpp convert function, Yaml-cpp has a built-in conversion mechanism. You can refer to <a class="reference external" href="https://github.com/jbeder/yaml-cpp/wiki/Tutorial">YAML</a> for more info.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// yaml_codecs.h</span>
-<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="nc">convert</span><span class="o">&lt;</span><span class="n">NewCommandJsonRPCRequest</span><span class="o">::</span><span class="n">Params</span><span class="o">&gt;</span> <span class="p">{</span>
+<span class="k">template</span> <span class="o">&lt;&gt;</span> <span class="k">struct</span> <span class="n">convert</span><span class="o">&lt;</span><span class="n">NewCommandJsonRPCRequest</span><span class="o">::</span><span class="n">Params</span><span class="o">&gt;</span> <span class="p">{</span>
    <span class="k">static</span> <span class="n">Node</span>
-   <span class="nf">encode</span><span class="p">(</span><span class="n">NewCommandJsonRPCRequest</span><span class="o">::</span><span class="n">Params</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
+   <span class="n">encode</span><span class="p">(</span><span class="n">NewCommandJsonRPCRequest</span><span class="o">::</span><span class="n">Params</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">params</span><span class="p">)</span>
    <span class="p">{</span>
       <span class="n">Node</span> <span class="n">node</span><span class="p">;</span>
       <span class="n">node</span><span class="p">[</span><span class="s">&quot;named_var_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">.</span><span class="n">named_var_1</span><span class="p">;</span>
@@ -308,7 +301,7 @@ then you should check the existing command to decide where to place it.</p>
 </li>
 <li><p>Define a new command. For the sake of simplicity I’ll only implement it in the <code class="docutils literal notranslate"><span class="pre">.h</span></code> files.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// CtrlCommands.h &amp; CtrlCommands.cc</span>
-<span class="k">struct</span> <span class="nc">NewCommand</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CtrlCommand</span> <span class="p">{</span>
+<span class="k">struct</span> <span class="nl">NewCommand</span> <span class="p">:</span> <span class="k">public</span> <span class="n">CtrlCommand</span> <span class="p">{</span>
    <span class="n">NewCommand</span><span class="p">(</span><span class="n">ts</span><span class="o">::</span><span class="n">Arguments</span> <span class="n">args</span><span class="p">)</span><span class="o">:</span> <span class="n">CtrlCommand</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
    <span class="p">{</span>
       <span class="c1">// we are interested in the format.</span>
@@ -337,7 +330,7 @@ then you should check the existing command to decide where to place it.</p>
 so we will create our own one.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyNewSubcommandPrinter</span> <span class="o">:</span> <span class="k">public</span> <span class="n">BasePrinter</span>
 <span class="p">{</span>
-   <span class="kt">void</span> <span class="nf">write_output</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
+   <span class="kt">void</span> <span class="n">write_output</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span> <span class="k">override</span> <span class="p">{</span>
       <span class="c1">// result will contain what&#39;s coming back from the server.</span>
    <span class="p">}</span>
 <span class="p">};</span>
@@ -353,7 +346,7 @@ from the server is a complex object, you can always model the response with your
 to decode the <code class="docutils literal notranslate"><span class="pre">YAML::Node</span></code>.  <code class="docutils literal notranslate"><span class="pre">write_output(YAML::Node</span> <span class="pre">const</span> <span class="pre">&amp;result)</span></code> will only have the result defined in the protocol,
 check <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-result"><span class="std std-ref">Result</span></a> for more detail. So something like this can be easily achieved:</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span>
-<span class="nf">GetHostStatusPrinter::write_output</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span>
+<span class="n">GetHostStatusPrinter</span><span class="o">::</span><span class="n">write_output</span><span class="p">(</span><span class="n">YAML</span><span class="o">::</span><span class="n">Node</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">result</span><span class="p">)</span>
 <span class="p">{</span>
    <span class="k">auto</span> <span class="n">response</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">as</span><span class="o">&lt;</span><span class="n">NewCommandJsonRPCRResponse</span><span class="o">&gt;</span><span class="p">();</span> <span class="c1">// will invoke the yamlcpp decode.</span>
    <span class="c1">// you can now deal with the Record object and not with the yaml node.</span>
@@ -367,7 +360,7 @@ check <a class="reference internal" href="jsonrpc-architecture.en.html#jsonrpc-r
 <h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
 <p>There is code that was written in this way by design, <code class="docutils literal notranslate"><span class="pre">RecordPrinter</span></code> and <code class="docutils literal notranslate"><span class="pre">RecordRequest</span></code> are meant to be use by any command
 that needs to query and print records without any major hassle.</p>
-<p><a class="reference internal" href="../../admin-guide/jsonrpc/index.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
+<p><a class="reference internal" href="../../admin-guide/files/jsonrpc.yaml.en.html#admnin-jsonrpc-configuration"><span class="std std-ref">Configuration</span></a>,
 <a class="reference internal" href="../../appendices/command-line/traffic_ctl_jsonrpc.en.html#traffic-ctl-jsonrpc"><span class="std std-ref">traffic_ctl</span></a>,
 <a class="reference internal" href="jsonrpc-handler-development.en.html#jsonrpc-development"><span class="std std-ref">Handler implementation</span></a></p>
 </div>
@@ -378,29 +371,29 @@ that needs to query and print records without any major hassle.</p>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="HandlerError.en.html" class="btn btn-neutral float-right" title="API Handler error codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="jsonrpc-client-api.en.html" class="btn btn-neutral float-left" title="Traffic Server JSONRPC Node C++ Client Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="HandlerError.en.html" class="btn btn-neutral float-right" title="API Handler error codes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="jsonrpc-client-api.en.html" class="btn btn-neutral float-left" title="Traffic Server JSONRPC Node C++ Client Implementation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -408,6 +401,7 @@ that needs to query and print records without any major hassle.</p>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {

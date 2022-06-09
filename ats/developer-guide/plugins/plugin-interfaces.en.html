@@ -2,44 +2,41 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <title>Plugin Interfaces &mdash; Apache Traffic Server 10.0.0 documentation</title>
   
 
   
-  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
-
-  
   
     <link rel="shortcut icon" href="../../_static/favicon.ico"/>
   
-
   
   
 
   
-
-  
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
     
     <script type="text/javascript" src="../../_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/override.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Adding Statistics" href="adding-statistics.en.html" />
@@ -87,7 +84,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -155,7 +151,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -190,13 +185,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
         
           <li><a href="../index.en.html">Developer’s Guide</a> &raquo;</li>
         
@@ -207,7 +200,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             <a href="../../_sources/developer-guide/plugins/plugin-interfaces.en.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -304,13 +297,14 @@ shared resources and data using the <code class="docutils literal notranslate"><
 <div class="section" id="debugging-functions">
 <h2>Debugging Functions<a class="headerlink" href="#debugging-functions" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a>
-prints out a formatted statement if you are running Traffic Server in
-debug mode.</p></li>
-<li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a>
-checks to see if a debug tag is set. If the debug tag is set, then
-Traffic Server prints out all debug statements associated with the
-tag.</p></li>
+<li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSDbg" title="TSDbg"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDbg()</span></code></a>
+(replaces deprecated <a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSDebug" title="TSDebug"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSDebug()</span></code></a>) prints out a formatted
+statement if you are running Traffic Server in debug mode.</p></li>
+<li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSIsDbgCtlSet" title="TSIsDbgCtlSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDbgCtlSet()</span></code></a>
+(replaces deprecated <a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSIsDebugTagSet" title="TSIsDebugTagSet"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSIsDebugTagSet()</span></code></a>)
+checks to see if a debug control (associated with a debug tag) is
+set. If the debug tag is set, then Traffic Server prints out all
+debug statements associated with the control.</p></li>
 <li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSError" title="TSError"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSError()</span></code></a>
 prints error messages to Traffic Server’s error log</p></li>
 <li><p><a class="reference internal" href="../api/functions/TSDebug.en.html#c.TSAssert" title="TSAssert"><code class="xref c c-func docutils literal notranslate"><span class="pre">TSAssert()</span></code></a>
@@ -326,29 +320,29 @@ enables the use of assertion in a plugin.</p></li>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="adding-statistics.en.html" class="btn btn-neutral float-right" title="Adding Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="new-protocol-plugins.en.html" class="btn btn-neutral float-left" title="New Protocol Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="adding-statistics.en.html" class="btn btn-neutral float-right" title="Adding Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="new-protocol-plugins.en.html" class="btn btn-neutral float-left" title="New Protocol Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 2021, dev@trafficserver.apache.org.
+        &copy; Copyright 2022, dev@trafficserver.apache.org
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -356,6 +350,7 @@ enables the use of assertion in a plugin.</p></li>
 
   </div>
   
+
 
   <script type="text/javascript">
       jQuery(function () {
